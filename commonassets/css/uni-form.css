@@ -1,0 +1,90 @@
+@import "uni-form-generic.css";
+/*
+*	MQ - 2/19/09
+*	The original uni-form.css content has been moved to the bottom half of uni-form-generic.css.
+*	This file contains rules that have been altered and are specific to the cfUniForm implementation.
+*
+*	If you want to make alterations to the rules, I would recommend copying/pasting the oringal rules 
+*	from the lower portion of uni-form-generic.css into a new file, and making changes there.  You 
+*	can then load your new file instead of this one.
+*/
+
+/* Keep in mind that wherever you see 'Required property' it means that the property must exist */
+
+/* ------------------------------------------------------------------------------ */
+
+	/* define a default background color of white and font color of black for our form elements (since some users have different color setups on their systems) */
+	.uniForm input, 
+			.uniForm textarea, 
+					.uniForm select { background-color: white; color: black; }
+  /* Generals */
+  .uniForm fieldset{ margin:0 0 7px 0; padding:0; }
+    .uniForm fieldset legend{ color: #333; font:bold small-caps 100%/100% "lucida grande", "lucida sans unicode", "trebuchet ms", arial, verdana, sans-serif; margin: 0 0 .5em; padding: 0; }
+    
+    /* This is the main unit that contains our form elements */
+    .uniForm .ctrlHolder{ padding: 7px; border: solid 1px #f9f9f9; border-width: 1px 0; background:#f9f9f9; }
+    
+    .uniForm .buttonHolder{ background:#f9f9f9; border:1px solid #ccc; border-width:1px 0; margin:10px 0 0 0; padding:10px; text-align:right; }
+    .uniForm .buttonHolder button { background-color: #ccc; border: outset 1px #f9f9f9; cursor: pointer; }
+    
+    /* This class gets added to div.ctrlHolder to highlight the row */
+    .uniForm .focused{ background: #fffcdf url(../images/uni-form/uf_focused.png); border:1px solid #EFE795; border-width:1px 0; }
+
+/* ------------------------------------------------------------------------------ */
+
+    /* .blockLabels (default style, will be applied even if you don't class the parent element) */
+      .uniForm .textInput,
+      .uniForm .blockLabels .textInput,
+      .uniForm .blockLabels .fileUpload{ width: 53%; /* <- Required property */ border:2px solid #dfdfdf; }
+    
+      .uniForm .selectInput,
+      .uniForm select,
+      .uniForm .blockLabels .selectInput,
+      .uniForm .blockLabels select{ width: 53.5%; /* <- Required property */ border:2px solid #dfdfdf; }
+      .uniForm textarea,
+      .uniForm .blockLabels textarea{ width: 53%; /* <- Required property */ height: 12em; border:2px solid #dfdfdf; }
+
+      .uniForm .formHint,
+      .uniForm .blockLabels .formHint{ width: 45%; /* <- Required property */ font-size: .9em; color: #777; position: relative; top: -.5em; font-style: italic; }
+      
+	/* Dan Wilson */
+	.uniForm .blockLabels .hasDatePicker, .uniForm .blockLabels .hasTimePicker{ float:left; width:9em; /* user prefs */ border:2px solid #dfdfdf; }
+
+/* ------------------------------------------------------------------------------ */
+
+    /* .inlineLabels */
+    .uniForm .inlineLabels label,
+    .uniForm .inlineLabels .label{ width: 30%; /* <- Required property */ margin: .3em 2% 0 0; /* <- Required property */ }
+    
+    .uniForm .inlineLabels .textInput,
+    .uniForm .inlineLabels .fileUpload{ width: 67%; /* <- Required property */ border:2px solid #dfdfdf; }
+    
+    .uniForm .inlineLabels .selectInput,
+    .uniForm .inlineLabels select{ width: 67%; /* <- Required property */ }
+    
+    .uniForm .inlineLabels textarea{  width: 67%; /* <- Required property */ height: 12em; border:2px solid #dfdfdf; }
+
+    .uniForm .inlineLabels .formHint{ margin-top: 0; margin-left: 32%; font-size: .9em; color: #777; position: static; width: 68%; font-style: italic; }
+    
+    .uniForm .inlineLabels .multiField{ width: 67%; /* <- Required property */ margin: 0 0 .3em 0; }
+      .uniForm .inlineLabels .multiField .inlineLabel{ display: block; margin: 0 0 .5em 0; }
+      .uniForm .inlineLabels .multiField .blockLabel{ float: left; width: 26%; margin: 0 3% 0 0; }
+      .uniForm .inlineLabels .multiField .blockLabel .textInput,
+      .uniForm .inlineLabels .multiField .blockLabel .selectInput,
+      .uniForm .inlineLabels .multiField .blockLabel select{ width: 100%; margin: .3em 0 0 0; }
+	/* Dan Wilson */
+	.uniForm .inlineLabels .hasDatePicker, .uniForm .inlineLabels .hasTimePicker{ float:left; /* user prefs */ width:9em; border:2px solid #dfdfdf; }
+
+/* Messages */
+.uniForm #errorMsg{ background: #ffdfdf url(../images/uni-form/uf_error.png) !important; border: 1px solid #df7d7d; border-width: 1px 0; margin: 0 0 1.5em 0; padding: 7px; }
+.uniForm .error{ background: #ffdfdf url(../images/uni-form/uf_error.png) !important; border: 1px solid #df7d7d; border-width: 1px 0; }
+
+  .uniForm #errorMsg dt, .uniForm #errorMsg h3{ margin: 0 0 .5em 0; font-size: 100%; line-height: 100%; font-weight: bold; padding:2px 0 2px 18px; background:url(../images/uni-form/icon-error.png) 0 0 no-repeat; }
+  .uniForm #errorMsg dd{ margin: 0; padding: 0; }
+    .uniForm #errorMsg ol{ margin: 0; padding: 0; }
+      .uniForm #errorMsg ol li{ margin: 0; padding: 2px; list-style-position: inside; border-bottom: 1px dotted #df7d7d; position: relative; }
+    .uniForm .errorField{ color: #af4c4c; margin: 0 0 6px 0; padding: 4px; background: #ffbfbf; }
+
+.uniForm #OKMsg{ background: #C8FFBF; border: 1px solid #A2EF95; border-width: 1px 0; margin: 0 0 1.5em 0; padding: 7px; }
+  .uniForm #OKMsg p{ margin: 0; padding-left: 20px; background: #c8ffbf url(../images/uni-form/icon-success.gif) no-repeat; }
+

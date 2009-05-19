@@ -1,0 +1,113 @@
+@import "uni-form-generic.css";
+/* Your styles below */
+/* Keep in mind that wherever you see "Required property" it means that the property must exist, adjust it's value to your liking */
+
+/* Generals */
+.uniForm fieldset{
+  margin:1em 0; 
+}
+.uniForm fieldset legend{
+  color:#000; /* Reset IE */
+  font-weight:bold; 
+  font-size:120%; 
+}
+.uniForm .ctrlHolder{ /* This is the main unit that contains our form elements */
+  padding:7px; 
+}
+.uniForm .buttonHolder{
+  text-align:right; /* Recommended */
+}
+.uniForm .focused{
+  background:#FFFCDF; 
+}
+
+/* .inlineLabels */
+.uniForm .inlineLabels label,
+.uniForm .inlineLabels .label{
+  width:30%; /* Required property */
+}
+.uniForm .inlineLabels .textInput,
+.uniForm .inlineLabels .fileUpload{
+  width:67%; /* Required property */
+}
+.uniForm .inlineLabels .selectInput{
+  width:67%; /* Required property */
+}
+.uniForm .inlineLabels textarea{
+  width:67%; /* Required property */
+  height:12em; 
+}
+.uniForm .inlineLabels .formHint{
+  margin-top:0;
+  margin-left:32%; 
+}
+
+/* .blockLabels */
+.uniForm .blockLabels .textInput,
+.uniForm .blockLabels .fileUpload{
+  width:53%; /* Required property */
+}
+
+.uniForm .blockLabels .selectInput{
+  display:block;
+  width:53.5%; /* Required property */
+}
+.uniForm .blockLabels textarea{
+  width:53%; /* Required property */
+  height:12em; 
+}
+.uniForm .blockLabels .formHint{
+  width:43%; /* Required property */
+}
+
+/* Columns */
+.uniForm .col{
+  width:47.9%; /* Required property */
+  margin:0 2% 0 0; 
+}
+.uniForm .columnLeft{
+  width:49%; /* Required property */
+}
+.uniForm .columnRight{
+  width:49%; /* Required property */
+}
+
+/* Messages */
+.uniForm #errorMsg{
+  background:#ffdfdf;
+  border:1px solid #df7d7d; border-width:1px 0;
+  margin:0 0 1em 0; padding:1em;
+}
+.uniForm .error{
+  background:#ffdfdf;
+  border:1px solid #df7d7d; border-width:1px 0;
+}
+  .uniForm #errorMsg dt,
+  .uniForm #errorMsg h3{
+    margin:0 0 .5em 0;
+    font-size:110%;
+    line-height:100%;
+    font-weight:bold;
+  }
+  .uniForm #errorMsg dd{
+    margin:0; padding:0;
+  }
+    .uniForm #errorMsg ol{
+      margin:0; padding:0;
+    }
+      .uniForm #errorMsg ol li{
+        margin:0; padding:2px;
+        list-style-position:inside;
+        border-bottom:1px dotted #df7d7d;
+        position:relative;
+      }
+    .uniForm .inlineLabels .errorField{
+      color:#af4c4c; 
+      margin:0 0 6px 0; padding:4px 4px 4px 31%;
+/*      background:#ffbfbf; */
+		width: 62%;
+    }
+	.uniForm .error input { background-color: white; }
+
+/* fix IE6 with select boxes */
+* html .ctrlHolder { zoom: 1; }

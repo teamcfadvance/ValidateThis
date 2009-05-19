@@ -1,0 +1,26 @@
+<reactor>
+	<config>
+		<project value="ServiceDemo" />
+		<dsn value="VTDemo" />
+		<type value="mssql" />
+		<mapping value="/ServiceDemo/Data" />
+		<mode value="production" />
+		<!-- These config values are not required -->
+		<!-- <username value="" />
+		<password value="" /> -->
+	</config>
+
+	<objects>
+		<object name="tblUser" alias="User">
+			<hasOne name="UserGroup">
+				<relate from="UserGroupId" to="UserGroupId" />
+			</hasOne>
+		</object>
+		
+		<object name="tblUserGroup" alias="UserGroup">
+			<hasMany name="User">
+				<relate from="UserGroupId" to="UserGroupId" />
+			</hasMany>			
+		</object>
+	</objects>
+</reactor>
