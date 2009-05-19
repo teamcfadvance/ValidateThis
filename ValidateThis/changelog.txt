@@ -1,0 +1,49 @@
+Version 0.5
+-----------
+
+- xml schema changed so that conditions are declared once in a <conditions> block at the top of the xml file, and then referred to by unique id throughout the rest of the document.
+- omitting the context attribute on a <rule> OR specifying a context of "*" will add a rule to the default context, which will automatically add that rule to ALL contexts.
+- when requesting validations from the BOValidator, specifying an empty context or a non-existent context will return the default context.
+
+Version 0.6
+-----------
+
+- xml schema addition of an optional <contexts> block which allows a developer to define the name of a form that should be used when generating client side validations for a specific context.  This is optional as there are two other ways of specifying the form name to be used.
+- added a ValidateThisConfig bean which is defined in the client coldspring.xml file and allows for customization of certain framework behaviours, including:
+	- BOValidatorPath - which specifies where to find the BOValidator.cfc component.  This allows a developer to replace the BOValidator that comes with the framework with one of their own.
+	- DefaultJSLib - which specifies the default JavaScript library to use when generating client-side validations.
+	- JSRoot - which specifies the path to the JavaScript files which will be loaded by the framework.
+	- defaultFormName - which specifies the form name to be used by default when generating client-side validations.
+- added a getAllContexts() method to the BOValidator which will return a Struct containing all of the contexts defined for the object.  Each key in the struct will contain an array of all of the business rules defined for that context.
+- added support for the remote attribute of the jQuery validation plugin.  Uses validation type "custom" with the parameter "remoteURL".
+- added support for custom error messages for standard validations using the jQuery validation plugin.
+- added automatic discovery of ClientScriptWriters, ClientRuleScripters and ServerRuleValidators so that they are no longer hardcoded into the coldspring config and new components will be recognized automatically.
+- added a generateInitializationScript method which can be used to generate all of the JavaScript statements necessary to load and configure the required JS libraries.
+- added a formName parameter to the getValidationScript method which allows a developer to pass in the name of a form when requesting client-side validation script.
+
+Version 0.61
+------------
+
+- changed the validate() method in the BOValidator to return a Result object.  This should not affect backward compatibility and allows for a very simple integration scenario.
+
+Version 0.62
+------------
+
+- added a getFailuresAsStruct() method to the Result object.
+- changed the behaviour of the email ServerRuleValidator to not fail on blank values.
+
+
+Version 0.65
+------------
+
+- implemented some internal changes required for Railo compatibility
+- fixed a bug in the Custom ClientRuleScripter
+- added the latest version of Brian Kotek's BeanInjector to the distribution
+
+Version 0.7
+------------
+
+- removed reliance on Coldspring - all DI is now done within the framework
+- added the ValidateThis.cfc service object, which allows for simpler integration
+- changed the ServerRuleValidation_Numeric to not fail on an empty property
+- added a getErrors method to the Result.cfc object to implement the interface for Model-Glue's ValidationErrorCollection
