@@ -20,11 +20,13 @@
 
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<!--- Set default values for keys in ValidateThisConfig --->
+		<cfparam name="variables.ValidateThisConfig.TranslatorPath" default="ValidateThis.core.BaseTranslator" />
 		<cfparam name="variables.ValidateThisConfig.BOValidatorPath" default="BOValidator" />
 		<cfparam name="variables.ValidateThisConfig.DefaultJSLib" default="jQuery" />
 		<cfparam name="variables.ValidateThisConfig.JSRoot" default="js/" />
 		<cfparam name="variables.ValidateThisConfig.defaultFormName" default="frmMain" />
 		<cfparam name="variables.ValidateThisConfig.definitionPath" default="/model/" />
+		<cfparam name="variables.ValidateThisConfig.localeMap" default="#StructNew()#" />
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		
 		<cfreturn this />
@@ -43,13 +45,14 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
+		<cfargument name="locale" type="any" required="false" default="" />
 
 		<cfset var BOValidator = getValidator(arguments.objectType,"") />
 		<!--- Inject testCondition if needed --->
 		<cfif NOT StructKeyExists(arguments.theObject,"testCondition")>
 			<cfset arguments.theObject["testCondition"] = this["testCondition"] />
 		</cfif>
-		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result) />
+		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.locale) />
 		
 		<cfreturn arguments.Result />
 

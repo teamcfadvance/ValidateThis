@@ -22,7 +22,7 @@
 
 	<cffunction name="init" access="public" output="false" returntype="any" hint="returns a configured transient factory">
 		<cfargument name="onMMHelper" type="any" required="true">
-		<cfset variables.classes = {Result="ValidateThis.util.Result",Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper"} />
+		<cfset variables.classes = {Result="ValidateThis.util.Result",Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.javaRB"} />
 		<cfset variables.afterCreateMethod = "setup" />
 		<cfset variables.onMMHelper = arguments.onMMHelper />
 		<cfreturn this />

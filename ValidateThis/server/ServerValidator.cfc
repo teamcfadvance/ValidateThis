@@ -18,9 +18,11 @@
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ServerValidator">
 		<cfargument name="FileSystem" type="any" required="true" />
 		<cfargument name="TransientFactory" type="any" required="true" />
+		<cfargument name="Translator" type="any" required="true" />
 
 		<cfset variables.FileSystem = arguments.FileSystem />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
+		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.RuleValidators = {} />
 
 		<cfset setRuleValidators() />
@@ -32,6 +34,7 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="Context" type="any" required="true" />
 		<cfargument name="Result" type="any" required="true" />
+		<cfargument name="locale" type="any" required="false" default="" />
 
 		<cfset var v = "" />
 		<cfset var theCondition = "" />
@@ -60,7 +63,7 @@
 					<cfif NOT theVal.getIsSuccess()>
 						<cfset arguments.Result.setIsSuccess(false) />
 						<cfif StructKeyExists(v,"FailureMessage") AND Len(v.FailureMessage)>
-							<cfset FailureMessage = v.FailureMessage />
+							<cfset FailureMessage = variables.Translator.translate(v.FailureMessage,arguments.locale) />
 						<cfelse>
 							<cfset FailureMessage = theVal.getFailureMessage() />
 						</cfif>

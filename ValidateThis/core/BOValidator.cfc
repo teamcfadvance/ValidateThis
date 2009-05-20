@@ -123,13 +123,14 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
+		<cfargument name="locale" type="any" required="false" default="" />
 
 		<cfif IsSimpleValue(arguments.Result)>
 			<cfset arguments.Result = newResult() />
 		</cfif>
 		<!--- Put the object into the result so it can be retrieved from there --->
 		<cfset arguments.Result.setTheObject(arguments.theObject) />
-		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result) />
+		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result,arguments.locale) />
 		<cfreturn arguments.Result />
 		
 	</cffunction>
