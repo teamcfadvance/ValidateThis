@@ -12,10 +12,10 @@
 	<objectProperties>
 		<property name="UserName" desc="Email Address">
 			<rule type="required" contexts="*" />
-			<rule type="email" contexts="*" failureMessage="Hey, buddy, you call that an Email Address?" />
+			<rule type="email" contexts="*" failureMessage="NotEmail" />
 		</property>
 		<property name="Nickname">
-			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname."> <!-- Specifying no context is the same as specifying a context of "*" -->
+			<rule type="custom" failureMessage="NicknameTaken"> <!-- Specifying no context is the same as specifying a context of "*" -->
 				<param methodname="CheckDupNickname" />
 				<param remoteURL="CheckDupNickname.cfm" />
 			</rule>
@@ -54,7 +54,7 @@
 		</property>
 		<property name="LikeOther" desc="What do you like?">
 			<rule type="required" contexts="*" condition="MustLikeSomething"
-				failureMessage="If you don't like Cheese and you don't like Chocolate, you must like something!">
+				failureMessage="MustLike">
 			</rule>
 		</property>
 		<property name="HowMuch" desc="How much money would you like?">
@@ -63,7 +63,7 @@
 		<property name="AllowCommunication" desc="Allow Communication" />
 		<property name="CommunicationMethod" desc="Communication Method">
 			<rule type="required" contexts="*"
-				failureMessage="If you are allowing communication, you must choose a communication method.">
+				failureMessage="CommMethod">
 				<param DependentPropertyName="AllowCommunication" />
 				<param DependentPropertyValue="1" />
 			</rule>
