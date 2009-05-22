@@ -32,7 +32,7 @@ purpose:		I BaseTranslatorTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfset setBeanFactory() />
-		<cfset BaseTranslator = getBeanFactory().getBean("ValidateThis").getBean("BaseTranslator") />
+		<cfset BaseTranslator = getBeanFactory().getBean("ValidateThis").getBean("Translator") />
 	</cffunction>
 
 	<cffunction name="BaseTranslatorReturnsBaseTranslator" access="public" returntype="void">

@@ -145,7 +145,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.ClientFieldName = "FirstName";
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = StructNew(); 
-			valStruct.Condition = StructNew(); 
+			valStruct.Condition = StructNew();
 			Script = ScriptWriter.generateValidationScript(valStruct);
 			debug(Script);
 			assertEquals(Script,"$(""##FirstName"").rules('add',{required: true});");
