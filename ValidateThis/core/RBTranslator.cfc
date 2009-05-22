@@ -19,14 +19,17 @@
 		<cfargument name="translateThis" type="Any" required="true" />
 		<cfargument name="locale" type="Any" required="false" default="" />
 		
+		<cfset var theKey = safeKey(arguments.translateThis) />
 		<cfif NOT StructKeyExists(variables.instance.locales,arguments.locale)>
 			<cfthrow type="validatethis.core.RBTranslator.LocaleNotDefined"
 				message="The locale requested, '#arguments.locale#', has not been defined in the localeMap in the ValidateThisConfig." />
-		<cfelseif NOT StructKeyExists(variables.instance.locales[arguments.locale],arguments.translateThis)>
-			<cfthrow type="validatethis.core.RBTranslator.KeyNotDefined"
-				message="The key requested, '#arguments.translateThis#', has not been defined in the locale '#arguments.locale#'." />
+		<cfelseif NOT StructKeyExists(variables.instance.locales[arguments.locale],theKey)>
+			<cflog file="safekey" text="#theKey#" />
+			<cfreturn arguments.translateThis />
+			<!--- <cfthrow type="validatethis.core.RBTranslator.KeyNotDefined"
+				message="The key requested, '#theKey#', has not been defined in the locale '#arguments.locale#'." /> --->
 		</cfif>
-		<cfreturn variables.instance.locales[arguments.locale][arguments.translateThis] />
+		<cfreturn variables.instance.locales[arguments.locale][theKey] />
 	</cffunction>
 
 	<cffunction name="loadLocales" returnType="void" access="public" output="false" hint="I load the resource bundle info into the cache">
@@ -38,6 +41,12 @@
 			<cfset variables.instance.locales[locale] = variables.TransientFactory.newResourceBundle().getResourceBundle(ExpandPath(arguments.localeMap[locale])) />
 		</cfloop>		
 
+	</cffunction>
+
+	<cffunction name="safeKey" returnType="any" access="public" output="false" hint="I take a message and turn it into a key">
+		<cfargument name="message" type="Any" required="true" />
+		
+		<cfreturn REReplace(Replace(arguments.message," ","_","all"),"\W","","all") />
 	</cffunction>
 
 </cfcomponent>
