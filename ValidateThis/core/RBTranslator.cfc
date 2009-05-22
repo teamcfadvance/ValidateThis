@@ -35,7 +35,7 @@
 		<cfset var locale = 0 />
 		
 		<cfloop collection="#arguments.localeMap#" item="locale">
-			<cfset variables.instance.locales[locale] = variables.TransientFactory.newResourceBundle().getResourceBundle(ExpandPath(arguments.localeMap[locale]),locale) />
+			<cfset variables.instance.locales[locale] = variables.TransientFactory.newResourceBundle().getResourceBundle(ExpandPath(arguments.localeMap[locale])) />
 		</cfloop>		
 
 	</cffunction>

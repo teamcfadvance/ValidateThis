@@ -16,22 +16,29 @@
 <cfcomponent output="false" name="AbstractClientRuleScripter" hint="I am a base object which all concrete ClientRuleScripters extend.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
+		<cfargument name="Translator" type="Any" required="yes" />
+		<cfset variables.Translator = arguments.Translator />
 		<cfreturn this />
 	</cffunction>
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn generateAddRule(arguments.validation) />
+		<cfreturn generateAddRule(validation=arguments.validation,locale=arguments.locale) />
 		
 	</cffunction>
 
 	<cffunction name="generateAddRule" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="ruleDef" type="any" required="no" default="#arguments.validation.ValType#: true" hint="The JS object that describes a rule to add to the DOM object." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var customMessage = "" />
 		<cfif StructKeyExists(arguments.validation,"failureMessage")>
+			<cfif Len(arguments.locale)>
+				<cfset arguments.validation.failureMessage = variables.Translator.translate(arguments.validation.failureMessage,arguments.locale) />
+			</cfif>
 			<cfset customMessage = ", messages: {#ListFirst(arguments.ruleDef,':')#: '#JSStringFormat(arguments.validation.failureMessage)#'}" />
 		</cfif>
 		<cfreturn "$(""###arguments.validation.ClientFieldName#"").rules('add',{#arguments.ruleDef##customMessage#});" />
@@ -42,14 +49,22 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="theCondition" type="any" required="yes" hint="The conditon to test." />
 		<cfargument name="theMessage" type="any" required="no" default="" hint="A custom message to display on failure." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
 		<cfset var fieldName = arguments.validation.ClientFieldName />
 		<cfset var valType = arguments.validation.ValType />
+		<cfif Len(arguments.theMessage)>
+			<cfif Len(arguments.locale)>
+				<cfset arguments.theMessage = variables.Translator.translate(arguments.theMessage,arguments.locale) />
+			</cfif>
+			<cfset messageScript = ', "' & arguments.theMessage & '"' />
+		</cfif>
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				$.validator.addMethod("#fieldName##valType#", $.validator.methods.#valType#<cfif Len(arguments.theMessage)>, "#arguments.theMessage#"</cfif>);
+				<!--- TODO: Do translation here! --->
+				$.validator.addMethod("#fieldName##valType#", $.validator.methods.#valType##messageScript#);
 				$.validator.addClassRules("#fieldName##valType#", {#fieldName##valType#: #arguments.theCondition#});
 				$("###fieldName#").addClass('#fieldName##valType#');
 			</cfoutput>

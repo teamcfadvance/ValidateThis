@@ -16,10 +16,13 @@
 <cfcomponent output="false" name="AbstractClientScriptWriter" hint="I am an abstract class responsible for generating script for a particular JS implementation (e.g., qForms, jQuery, etc.).">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ClientScriptWriter">
+		<!--- TODO: remove getters and setters in favour of variables. --->
 		<cfargument name="VTFileSystem" type="any" required="true" />
 		<cfargument name="ValidateThisConfig" type="any" required="true" />
+		<cfargument name="Translator" type="any" required="true" />
 		<cfset setVTFileSystem(arguments.VTFileSystem) />
 		<cfset setValidateThisConfig(arguments.ValidateThisConfig) />
+		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.RuleScripters = {} />
 
 		<cfset setRuleScripters() />
@@ -67,7 +70,7 @@
 		<cfset var RS = 0 />
 		<cfloop list="#RSNames#" index="RS">
 			<cfif ListLast(RS,".") EQ "cfc" AND NOT ListFindNoCase("AbstractClientRuleScripter.cfc,#thisName#.cfc",RS)>
-				<cfset variables.RuleScripters[ReplaceNoCase(ListLast(RS,"_"),".cfc","")] = CreateObject("component",ReplaceNoCase(theMeta.Name,thisName,ReplaceNoCase(RS,".cfc",""))).init() />
+				<cfset variables.RuleScripters[ReplaceNoCase(ListLast(RS,"_"),".cfc","")] = CreateObject("component",ReplaceNoCase(theMeta.Name,thisName,ReplaceNoCase(RS,".cfc",""))).init(variables.Translator) />
 			</cfif>
 		</cfloop>
 	</cffunction>

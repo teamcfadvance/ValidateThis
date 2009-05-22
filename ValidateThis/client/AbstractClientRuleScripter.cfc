@@ -16,6 +16,8 @@
 <cfcomponent output="false" name="AbstractClientRuleScripter" hint="I am an abstract scripter responsible for generating JS code for one specific type of validation.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
+		<cfargument name="Translator" type="Any" required="yes" />
+		<cfset variables.Translator = arguments.Translator />
 		<cfreturn this />
 	</cffunction>
 

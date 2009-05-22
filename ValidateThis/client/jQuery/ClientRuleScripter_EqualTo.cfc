@@ -17,8 +17,9 @@
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn generateAddMethod(arguments.validation,"'###arguments.validation.Parameters.ComparePropertyName#'","The #arguments.validation.PropertyDesc# must be the same as the #arguments.validation.Parameters.ComparePropertyDesc#.") />
+		<cfreturn generateAddMethod(arguments.validation,"'###arguments.validation.Parameters.ComparePropertyName#'","The #arguments.validation.PropertyDesc# must be the same as the #arguments.validation.Parameters.ComparePropertyDesc#.",arguments.locale) />
 		
 	</cffunction>
 

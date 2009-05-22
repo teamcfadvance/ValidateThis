@@ -22,7 +22,7 @@
 
 	<cffunction name="init" access="public" output="false" returntype="any" hint="returns a configured transient factory">
 		<cfargument name="onMMHelper" type="any" required="true">
-		<cfset variables.classes = {Result="ValidateThis.util.Result",Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.javaRB"} />
+		<cfset variables.classes = {Result="ValidateThis.util.Result",Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.ResourceBundle"} />
 		<cfset variables.afterCreateMethod = "setup" />
 		<cfset variables.onMMHelper = arguments.onMMHelper />
 		<cfreturn this />
@@ -36,9 +36,10 @@
 		<cfif StructKeyExists(local.obj,"init")>
 			<cfset variables.onMMHelper.doInvoke("init",arguments.initArgs,local.obj) />
 		</cfif>
-		<!--- Not used as this is the No Coldspring version
-			<cfset getBeanInjector().autowire(targetComponent=local.obj, targetComponentTypeName=arguments.transientName) />
-		--->
+		<!--- Need to do manual injections of singletons as we're not coupled to CS anymore, ugly but it works for now --->
+		<cfif arguments.transientName EQ "Result">
+			<cfset local.obj.setTranslator(variables.Translator) />
+		</cfif>
 		<cfif StructKeyExists(local.obj,variables.afterCreateMethod)>
 			<cfinvoke component="#local.obj#" method="#variables.afterCreateMethod#" />
 		</cfif>
@@ -51,6 +52,14 @@
 		<cfif (Left(arguments.MissingMethodName,3) eq "new")>
 			<cfreturn create(Right(arguments.MissingMethodName,Len(arguments.MissingMethodName)-3),arguments.MissingMethodArguments)>
 		</cfif>
+	</cffunction>
+
+	<cffunction name="getTranslator" access="public" output="false" returntype="any">
+		<cfreturn variables.Translator />
+	</cffunction>
+	<cffunction name="setTranslator" access="public" output="false" returntype="void">
+		<cfargument name="Translator" type="any" required="yes" />
+		<cfset variables.Translator = arguments.Translator />
 	</cffunction>
 
 </cfcomponent>

@@ -17,8 +17,9 @@
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn generateAddRule(arguments.validation,"rangelength: [#arguments.validation.Parameters.minlength#,#arguments.validation.Parameters.maxlength#]") />
+		<cfreturn generateAddRule(arguments.validation,"rangelength: [#arguments.validation.Parameters.minlength#,#arguments.validation.Parameters.maxlength#]",arguments.locale) />
 		
 	</cffunction>
 

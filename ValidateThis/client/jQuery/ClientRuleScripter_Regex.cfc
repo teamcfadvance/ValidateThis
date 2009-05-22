@@ -17,6 +17,7 @@
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theRegex = "" />
 		<cfset var theMessage = "" />
@@ -33,7 +34,7 @@
 			<cfset theMessage = "The #arguments.validation.PropertyDesc# does not match the specified pattern." />
 		</cfif>
 		
-		<cfreturn generateAddMethod(arguments.validation,"/#theRegex#/",theMessage) />
+		<cfreturn generateAddMethod(arguments.validation,"/#theRegex#/",theMessage,arguments.locale) />
 		
 	</cffunction>
 

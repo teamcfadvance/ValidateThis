@@ -45,14 +45,13 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
-		<cfargument name="locale" type="any" required="false" default="" />
 
 		<cfset var BOValidator = getValidator(arguments.objectType,"") />
 		<!--- Inject testCondition if needed --->
 		<cfif NOT StructKeyExists(arguments.theObject,"testCondition")>
 			<cfset arguments.theObject["testCondition"] = this["testCondition"] />
 		</cfif>
-		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.locale) />
+		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result) />
 		
 		<cfreturn arguments.Result />
 
