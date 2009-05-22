@@ -44,6 +44,18 @@ purpose:		I RBTranslatorTest.cfc
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="safeKeyReturnsProperKey" access="public" returntype="void">
+		<cfscript>
+			expected = "SafeKey";
+			assertEquals(expected,RBTranslator.safeKey("SafeKey"));
+			assertEquals(expected,RBTranslator.safeKey("Safe!Key"));
+			assertEquals(expected,RBTranslator.safeKey("Safe.Key$"));
+			expected = "Safe_Key";
+			assertEquals(expected,RBTranslator.safeKey("Safe!_Key"));
+			assertEquals(expected,RBTranslator.safeKey("Safe Key"));
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="GetLocalesReturnsCorrectStruct" access="public" returntype="void">
 		<cfscript>
 			assertEquals(StructCount(RBTranslator.getLocales()),2);
