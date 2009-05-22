@@ -19,7 +19,7 @@
 		<!--- Reactor First --->
 		<cfset application.Reactor = createObject("component", "reactor.reactorFactory").init("/ServiceDemo/model/config/reactor.xml") />
 		<!--- ValidateThis! --->
-		<cfset localeMap = {en_US="/ValidateThis/rbs/en_US.properties",fr_FR="/ValidateThis/rbs/fr_FR.properties"} />
+		<cfset localeMap = {en_US="/VTDemo/rbs/en_US.properties",fr_FR="/VTDemo/rbs/fr_FR.properties"} />
 		<cfset ValidateThisConfig = {definitionPath="/ServiceDemo/model/",JSRoot="/js/",translatorPath="ValidateThis.core.RBTranslator",localeMap=localeMap} />
 		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 	</cfif>

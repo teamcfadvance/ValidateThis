@@ -14,6 +14,7 @@
 	
 --->
 <cfparam name="SuccessMessage" default="" />
+<cfparam name="locale" default="fr_FR" />
 
 <cfif Form.Context EQ "Profile">
 	<cfset PageHeading = "Editing an existing User" />
@@ -73,8 +74,10 @@
 		</script>
 	</cfsavecontent>	
 	<cfhtmlhead text="#headJS#" />
-	<cfset ValidationScript = application.ValidateThis.getValidationScript(objectType="User",Context=Form.Context) />
+	<cfset ValidationScript = application.ValidateThis.getValidationScript(objectType="User",Context=Form.Context,locale="fr_FR") />
 	<cfhtmlhead text="#ValidationScript#" />
+	<!--- Include localization file for jQuery validate plugin --->
+	<cfhtmlhead text='<script src="/js/messages_fr.js" type="text/javascript"></script>' />
 </cfif>
 
 <cfoutput>
