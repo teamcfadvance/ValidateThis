@@ -33,9 +33,9 @@ purpose:		I RBTranslatorTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfset localeMap = {en_US="/ValidateThis/rbs/en_US.properties",fr_FR="/ValidateThis/rbs/fr_FR.properties"} />
-		<cfset validateThisConfig = {localeMap = localeMap} />
+		<cfset validateThisConfig = {localeMap = localeMap,TranslatorPath="ValidateThis.core.RBTranslator"} />
 		<cfset ValidateThis = createObject("component","ValidateThis.ValidateThis").init(validateThisConfig) />
-		<cfset RBTranslator = ValidateThis.getBean("RBTranslator") />
+		<cfset RBTranslator = ValidateThis.getBean("Translator") />
 	</cffunction>
 
 	<cffunction name="RBTranslatorReturnsRBTranslator" access="public" returntype="void">

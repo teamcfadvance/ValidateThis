@@ -43,7 +43,6 @@ purpose:		I AbstractDecoratorTest.cfc
 	<cffunction name="BOValidatorShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
 			assertTrue(GetMetadata(UserTO.getValidator()).name CONTAINS "BOValidator");
-			assertEquals(UserTO.getValidator().getObjectType(),"user.user");
 		</cfscript>  
 	</cffunction>
 

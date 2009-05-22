@@ -38,8 +38,8 @@
 		</cfif>
 	</cfloop>
 	<!--- Validate the object using ValidateThis! --->
-	<cfset Result = application.ValidateThis.validate(objectType="User",theObject=UserTO,Context=Form.Context,locale="fr_FR") />
-	<cfset UniFormErrors = Result.getFailuresForUniForm() />
+	<cfset Result = application.ValidateThis.validate(objectType="User",theObject=UserTO,Context=Form.Context) />
+	<cfset UniFormErrors = Result.getFailuresForUniForm(locale="fr_FR") />
 	<!--- If validations passed, save the record --->
 	<cfif Result.getIsSuccess()>
 		<cfset UserTO.save() />
