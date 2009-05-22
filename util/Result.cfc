@@ -22,7 +22,7 @@
 		<cfset variables.instance.IsSuccess = true />
 		<cfset variables.instance.SuccessMessage = "" />
 		<cfreturn this />
-
+		
 	</cffunction>
 	
 	<cffunction name="onMissingMethod" access="public" output="false" returntype="any" hint="provides for generic getter/setter.">
@@ -44,9 +44,10 @@
 	</cffunction>
 	
 	<cffunction name="getFailuresAsStruct" access="public" output="false" returntype="any">
+		<cfargument name="locale" type="Any" required="false" default="" />
 		<cfset var FailureList = StructNew() />
 		<cfset var Failure = 0 />
-		<cfset var Failures = getFailures() />
+		<cfset var Failures = getFailures(arguments.locale) />
 		<cfloop from="1" to="#ArrayLen(Failures)#" index="Failure">
 			<cfif StructKeyExists(FailureList,Failures[Failure].ClientFieldName)>
 				<cfset FailureList[Failures[Failure].ClientFieldName] =  FailureList[Failures[Failure].ClientFieldName] & "<br />" & Failures[Failure].Message />	
@@ -58,9 +59,10 @@
 	</cffunction>
 
 	<cffunction name="getFailuresAsValidationErrorCollection" access="public" output="false" returntype="any" hint="I return failures in a format expected from a ModelGlue.util.ValidationErrorCollection">
+		<cfargument name="locale" type="Any" required="false" default="" />
 		<cfset var FailureList = StructNew() />
 		<cfset var Failure = 0 />
-		<cfset var Failures = getFailures() />
+		<cfset var Failures = getFailures(arguments.locale) />
 		<cfloop from="1" to="#ArrayLen(Failures)#" index="Failure">
 			<cfif NOT StructKeyExists(FailureList,Failures[Failure].ClientFieldName)>
 				<cfset FailureList[Failures[Failure].ClientFieldName] =  ArrayNew(1) />
@@ -71,7 +73,8 @@
 	</cffunction>
 
 	<cffunction name="GetErrors" returntype="struct" access="public" output="false" hint="I get the Error collection as expected from ModelGlue.util.ValidationErrorCollection.">
-		<cfreturn getFailuresAsValidationErrorCollection() />
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfreturn getFailuresAsValidationErrorCollection(arguments.locale) />
 	</cffunction>
 	
 	<cffunction name="HasErrors" returntype="boolean" access="public" output="false" hint="I implement part of the ModelGlue.util.ValidationErrorCollection interface.">
@@ -115,14 +118,16 @@
 	</cffunction>
 
 	<cffunction name="getFailuresForUniForm" access="public" output="false" returntype="any">
-		<cfreturn getFailuresAsStruct() />
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfreturn getFailuresAsStruct(arguments.locale) />
 	</cffunction>
 
 	<!--- An example of a custom method that returns failures in a format expected by an existing application --->
 	<cffunction name="getFailuresForCAYA" access="public" output="false" returntype="any">
+		<cfargument name="locale" type="Any" required="false" default="" />
 		<cfset var FailureList = [] />
 		<cfset var Failure = 0 />
-		<cfloop array="#getFailures()#" index="Failure">
+		<cfloop array="#getFailures(arguments.locale)#" index="Failure">
 			<cfif Len(Failure.Message)>
 				<cfset ArrayAppend(FailureList,Failure.Message) />
 			</cfif>
@@ -143,8 +148,19 @@
 	</cffunction>
 
 	<cffunction name="getFailures" access="public" output="false" returntype="any">
+		<cfargument name="locale" type="Any" required="false" default="" />
+		
+		<cfset var failure = 0 />
+		
+		<cfif Len(arguments.locale)>
+			<cfloop array="#variables.instance.Failures#" index="failure">
+				<!--- TODO: This is programming to an implementation, not an interface, but is being done for performance reasons :-( --->
+				<cfset failure.Message = variables.Translator.translate(failure.Message,arguments.locale) />
+			</cfloop>
+		</cfif>
 		<cfreturn variables.instance.Failures />
 	</cffunction>
+
 	<cffunction name="addFailure" access="public" output="false" returntype="void">
 		<cfargument name="Failure" type="any" required="yes" />
 		<cfset ArrayAppend(variables.instance.Failures,arguments.Failure) />
@@ -164,6 +180,14 @@
 	<cffunction name="setSuccessMessage" access="public" output="false" returntype="void">
 		<cfargument name="SuccessMessage" type="any" required="yes" />
 		<cfset variables.instance.SuccessMessage = arguments.SuccessMessage />
+	</cffunction>
+
+	<cffunction name="getTranslator" access="public" output="false" returntype="any">
+		<cfreturn variables.Translator />
+	</cffunction>
+	<cffunction name="setTranslator" access="public" output="false" returntype="void">
+		<cfargument name="Translator" type="any" required="yes" />
+		<cfset variables.Translator = arguments.Translator />
 	</cffunction>
 
 </cfcomponent>

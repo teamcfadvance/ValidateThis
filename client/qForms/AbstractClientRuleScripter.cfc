@@ -16,11 +16,14 @@
 <cfcomponent output="false" name="AbstractClientRuleScripter" hint="I am a base object which all concrete ClientRuleScripters extend.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
+		<cfargument name="Translator" type="Any" required="yes" />
+		<cfset variables.Translator = arguments.Translator />
 		<cfreturn this />
 	</cffunction>
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "objForm#arguments.validation.formName#.#arguments.validation.clientFieldName#.description = '#JSStringFormat(arguments.validation.PropertyDesc)#';" />
 		<cfset theScript = theScript & generateSpecificValidationScript(arguments.validation) />
@@ -30,6 +33,7 @@
 
 	<cffunction name="generateSpecificValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfreturn "" />
 		

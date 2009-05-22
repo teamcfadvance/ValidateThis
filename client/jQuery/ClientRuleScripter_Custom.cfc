@@ -17,9 +17,10 @@
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfif StructKeyExists(arguments.validation.Parameters,"remoteURL")>
-			<cfreturn generateAddRule(arguments.validation,"remote: '#arguments.validation.Parameters.remoteURL#'") />
+			<cfreturn generateAddRule(arguments.validation,"remote: '#arguments.validation.Parameters.remoteURL#'",arguments.locale) />
 		<cfelse>
 			<cfreturn "" />
 		</cfif>

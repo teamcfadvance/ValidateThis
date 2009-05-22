@@ -18,8 +18,10 @@
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientValidator">
 		<cfargument name="FileSystem" type="any" required="true" />
 		<cfargument name="ValidateThisConfig" type="any" required="true" />
+		<cfargument name="Translator" type="any" required="true" />
 		<cfset variables.FileSystem = arguments.FileSystem />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
+		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.ScriptWriters = {} />
 
 		<cfset setScriptWriters() />
@@ -76,7 +78,7 @@
 			<cfset SWNames = variables.FileSystem.listFiles(basePath & SWDir) />
 			<cfloop list="#SWNames#" index="SW">
 				<cfif ListLast(SW,".") EQ "cfc" AND SW CONTAINS "ClientScriptWriter_">
-					<cfset variables.ScriptWriters[ReplaceNoCase(ListLast(SW,"_"),".cfc","")] = CreateObject("component",ReplaceNoCase(theMeta.Name,thisName,"") & "." & SWDir & "." & ReplaceNoCase(SW,".cfc","")).init(variables.FileSystem,variables.ValidateThisConfig) />
+					<cfset variables.ScriptWriters[ReplaceNoCase(ListLast(SW,"_"),".cfc","")] = CreateObject("component",ReplaceNoCase(theMeta.Name,thisName,"") & "." & SWDir & "." & ReplaceNoCase(SW,".cfc","")).init(variables.FileSystem,variables.ValidateThisConfig,variables.Translator) />
 				</cfif>
 			</cfloop>
 		</cfloop>

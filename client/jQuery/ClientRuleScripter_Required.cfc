@@ -17,6 +17,7 @@
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theCondition = "" />
 		<cfset var ConditionDesc = "" />
@@ -44,9 +45,9 @@
 				</cfif>
 				<cfset theMessage = "The #arguments.validation.PropertyDesc# is required#ConditionDesc#." />
 			</cfif>
-			<cfset theScript = generateAddMethod(arguments.validation,theCondition,theMessage) />
+			<cfset theScript = generateAddMethod(arguments.validation,theCondition,theMessage,arguments.locale) />
 		<cfelse>
-			<cfset theScript = generateAddRule(arguments.validation) />
+			<cfset theScript = generateAddRule(validation=arguments.validation,locale=arguments.locale) />
 		</cfif>
 
 		<cfreturn theScript />
