@@ -17,20 +17,17 @@
 <cfparam name="Form.NoJS" default="false" />
 <cfparam name="Form.Context" default="Register" />
 <cfparam name="Form.UserId" default="0" />
-<cfparam name="Form.Locale" default="en_US" />
 <cfset StructAppend(Form,URL,true) />
 <p>Welcome to the <strong>ValidateThis!</strong> Simple Service Integration Demo Page.
 	<ul><strong>Demo Options:</strong>
 		<cfoutput>
 		<cfif Form.NoJS>
-			<li><a href="index.cfm?NoJS=false&Context=#Form.Context#&Locale=#Form.Locale#">Turn on JS Validations</a></li>
+			<li><a href="index.cfm?NoJS=false&Context=#Form.Context#">Turn on JS Validations</a></li>
 		<cfelse>
-			<li><a href="index.cfm?NoJS=true&Context=#Form.Context#&Locale=#Form.Locale#">Turn off JS Validations</a></li>
+			<li><a href="index.cfm?NoJS=true&Context=#Form.Context#">Turn off JS Validations</a></li>
 		</cfif>
-		<li><a href="index.cfm?NoJS=#Form.NoJS#&Context=#Form.Context#">English Version</a></li>
-		<li><a href="index.cfm?NoJS=#Form.NoJS#&Context=#Form.Context#&Locale=fr_FR">French Version</a></li>
-		<li><a href="index.cfm?NoJS=#Form.NoJS#&Locale=#Form.Locale#">Register a New User</a></li>
-		<li><a href="index.cfm?Context=Profile&NoJS=#Form.NoJS#&Locale=#Form.Locale#">Edit an Existing User</a></li>
+		<li><a href="index.cfm?NoJS=#Form.NoJS#">Register a New User</a></li>
+		<li><a href="index.cfm?Context=Profile&NoJS=#Form.NoJS#">Edit an Existing User</a></li>
 		<li><a href="/index.cfm">Back to the Home Page</a></li>
 		</cfoutput>
 	</ul>
