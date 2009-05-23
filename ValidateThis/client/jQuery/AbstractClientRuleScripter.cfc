@@ -36,10 +36,7 @@
 
 		<cfset var customMessage = "" />
 		<cfif StructKeyExists(arguments.validation,"failureMessage")>
-			<cfif Len(arguments.locale)>
-				<cfset arguments.validation.failureMessage = variables.Translator.translate(arguments.validation.failureMessage,arguments.locale) />
-			</cfif>
-			<cfset customMessage = ", messages: {#ListFirst(arguments.ruleDef,':')#: '#JSStringFormat(arguments.validation.failureMessage)#'}" />
+			<cfset customMessage = ", messages: {#ListFirst(arguments.ruleDef,':')#: '#JSStringFormat(variables.Translator.translate(arguments.validation.failureMessage,arguments.locale))#'}" />
 		</cfif>
 		<cfreturn "$(""###arguments.validation.ClientFieldName#"").rules('add',{#arguments.ruleDef##customMessage#});" />
 		
@@ -55,15 +52,11 @@
 		<cfset var fieldName = arguments.validation.ClientFieldName />
 		<cfset var valType = arguments.validation.ValType />
 		<cfif Len(arguments.theMessage)>
-			<cfif Len(arguments.locale)>
-				<cfset arguments.theMessage = variables.Translator.translate(arguments.theMessage,arguments.locale) />
-			</cfif>
-			<cfset messageScript = ', "' & arguments.theMessage & '"' />
+			<cfset messageScript = ', "' & variables.Translator.translate(arguments.theMessage,arguments.locale) & '"' />
 		</cfif>
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<!--- TODO: Do translation here! --->
 				$.validator.addMethod("#fieldName##valType#", $.validator.methods.#valType##messageScript#);
 				$.validator.addClassRules("#fieldName##valType#", {#fieldName##valType#: #arguments.theCondition#});
 				$("###fieldName#").addClass('#fieldName##valType#');

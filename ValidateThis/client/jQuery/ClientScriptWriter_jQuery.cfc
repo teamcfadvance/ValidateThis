@@ -17,6 +17,7 @@
 
 	<cffunction name="generateInitializationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to initialize the libraries.">
 		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
 		<cfset var JSRoot = getValidateThisConfig().JSRoot />
@@ -26,6 +27,9 @@
 				<script src="#JSRoot#jquery-1.3.2.min.js" type="text/javascript"></script>
 				<script src="#JSRoot#jquery.field.min.js" type="text/javascript"></script>
 				<script src="#JSRoot#jquery.validate.pack.js" type="text/javascript"></script>
+				<cfif Len(arguments.locale) and ListFirst(arguments.locale,"_") NEQ "en">
+					<script src="#JSRoot#messages_#ListFirst(arguments.locale,'_')#.js" type="text/javascript"></script>
+				</cfif>
 				
 				<!--- <script src="/cfMgmt/common/UniForm/js/uni-form.jquery.js" type="text/javascript"></script>
 				<script src="/cfMgmt/common/scripts/jQuery/jquery.validate.mod.pack.js" type="text/javascript"></script> --->
@@ -46,6 +50,7 @@
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
 
@@ -53,7 +58,7 @@
 		<cfif (NOT (StructCount(arguments.validation.Condition) GT 0 OR
 			StructKeyExists(arguments.validation.Parameters,"DependentPropertyName")) OR arguments.validation.ValType EQ "required")
 			AND StructKeyExists(variables.RuleScripters,arguments.validation.ValType)>
-			<cfset theScript = variables.RuleScripters[arguments.validation.ValType].generateValidationScript(arguments.validation) />
+			<cfset theScript = variables.RuleScripters[arguments.validation.ValType].generateValidationScript(arguments.validation,arguments.locale) />
 		</cfif>
 		
 		<cfreturn theScript />

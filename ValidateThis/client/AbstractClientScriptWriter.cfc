@@ -31,6 +31,7 @@
 	
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
 				message="I am an abstract object, hence the generateValidationScript method must be overriden in a concrete object." />
@@ -54,6 +55,7 @@
 	
 	<cffunction name="generateInitializationScript" returntype="any" access="public" output="false" hint="I load the JS script required to initialize the libraries into the <head> tag.">
 		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
 				message="I am an abstract object, hence the generateInitializationScript method must be overriden in a concrete object." />

@@ -28,6 +28,7 @@
 		<cfif NOT Len(arguments.definitionPath)>
 			<cfset arguments.definitionPath = ExpandPath(arguments.ValidateThisConfig.definitionPath) />
 		</cfif>
+
 		<cfset variables.Instance = {objectType = arguments.objectType} />
 		<cfset variables.Instance.newRules = {} />
 		<cfset variables.XMLFileReader = arguments.XMLFileReader />
@@ -45,7 +46,7 @@
 		<cfargument name="definitionPath" type="any" required="true" />
 
 		<cfset var theStruct = variables.XMLFileReader.processXML(arguments.objectType,arguments.definitionPath) />
-		
+
 		<cfset variables.Instance.PropertyDescs = theStruct.PropertyDescs />
 		<cfset variables.Instance.ClientFieldDescs = theStruct.ClientFieldDescs />
 		<cfset variables.Instance.FormContexts = theStruct.FormContexts />
@@ -139,8 +140,9 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
 		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn variables.ClientValidator.getValidationScript(getValidations(arguments.Context),arguments.formName,arguments.JSLib) />
+		<cfreturn variables.ClientValidator.getValidationScript(getValidations(arguments.Context),arguments.formName,arguments.JSLib,arguments.locale) />
 
 	</cffunction>
 
@@ -149,8 +151,9 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
 		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn variables.ClientValidator.getInitializationScript(arguments.formName,arguments.JSLib) />
+		<cfreturn variables.ClientValidator.getInitializationScript(arguments.formName,arguments.JSLib,arguments.locale) />
 
 	</cffunction>
 
