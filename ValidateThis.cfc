@@ -27,6 +27,7 @@
 		<cfparam name="variables.ValidateThisConfig.defaultFormName" default="frmMain" />
 		<cfparam name="variables.ValidateThisConfig.definitionPath" default="/model/" />
 		<cfparam name="variables.ValidateThisConfig.localeMap" default="#StructNew()#" />
+		<cfparam name="variables.ValidateThisConfig.defaultLocale" default="en_US" />
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		
 		<cfreturn this />
@@ -77,6 +78,7 @@
 				<cfset local.returnValue = "" />
 			</cfif>
 		</cfif>
+		
 		<cfreturn local.returnValue />
 		
 	</cffunction>

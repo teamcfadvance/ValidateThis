@@ -32,6 +32,7 @@
 		<cfargument name="Validations" type="any" required="true" />
 		<cfargument name="formName" type="any" required="true" />
 		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var validation = "" />
 		<cfset var theScript = "" />
@@ -44,7 +45,7 @@
 				<cfoutput>#Trim(theScriptWriter.generateScriptHeader(arguments.formName))#</cfoutput>
 				<cfloop Array="#arguments.Validations#" index="validation">
 					<!--- Generate the JS validation statements  --->
-					<cfoutput>#Trim(theScriptWriter.generateValidationScript(validation))#</cfoutput>
+					<cfoutput>#Trim(theScriptWriter.generateValidationScript(validation,arguments.locale))#</cfoutput>
 				</cfloop>
 				<cfoutput>#Trim(theScriptWriter.generateScriptFooter())#</cfoutput>
 			</cfsavecontent>
@@ -57,8 +58,9 @@
 	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate the JS necessary to initialize the JS libraries.">
 		<cfargument name="formName" type="any" required="true" />
 		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn variables.ScriptWriters[arguments.JSLib].generateInitializationScript(arguments.formName) />
+		<cfreturn variables.ScriptWriters[arguments.JSLib].generateInitializationScript(arguments.formName,arguments.locale) />
 
 	</cffunction>
 
