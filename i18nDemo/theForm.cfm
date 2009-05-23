@@ -78,7 +78,7 @@
 </cfif>
 
 <cfoutput>
-<h1>ValidateThis! Simple Integration Demo - with Reactor</h1>
+<h1>ValidateThis! i18n Demo</h1>
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>, Language is <cfif Form.Locale EQ "en_US">English<cfelse>French</cfif>)</h3>
 <cfif Len(SuccessMessage)><h3>#SuccessMessage#</h3></cfif>
 <div class="formContainer">

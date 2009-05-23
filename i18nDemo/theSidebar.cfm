@@ -19,7 +19,7 @@
 <cfparam name="Form.UserId" default="0" />
 <cfparam name="Form.Locale" default="en_US" />
 <cfset StructAppend(Form,URL,true) />
-<p>Welcome to the <strong>ValidateThis!</strong> Simple Service Integration Demo Page.
+<p>Welcome to the <strong>ValidateThis!</strong> i18n Demo Page.
 	<ul><strong>Demo Options:</strong>
 		<cfoutput>
 		<cfif Form.NoJS>
@@ -39,7 +39,7 @@
 	</ul>
 </p>
 <p>This sample form includes hints which indicate the various validations that have been defined for the business object that underlies the form.</p>
-<p>Use the text links above to toggle JavaScript validations to see both the client-side and server-side validations in action.</p>
-<p>All of the validations are driven by a simple xml file, which is used to define the business rules that apply.  You can view the xml file <a href="model/user.user.xml" target="_blank">here</a>.</p>
-<p>The code for this demo integrates ValidateThis into the application via the ValidateThis service object, which is simpler than integrating the framework directly into your business objects.  This sample also uses Reactor as an ORM.</p>
+<p>Use the text links above to toggle JavaScript validations to see both the client-side and server-side validations in action. You can also use the links to toggle between English and French validation failure messages, both client-side and server-side.</p>
+<p>All of the validations are driven by a simple xml file, which is used to define the business rules that apply.  You can view the xml file <a href="model/user.xml" target="_blank">here</a>.</p>
+<p>Note that only the validation failure messages are internationalized - the form field names will always appear in English. Also note that for the purposes of this demo I translated all of my failure messages from English to French using Google Language Tools, so the translations may be off a bit ;-)</p>
 <p>Please refer to <a href="http://www.silverwareconsulting.com/index.cfm/ValidateThis" target="_blank">my blog</a> for more detailed information about the framework.</p>
