@@ -21,8 +21,7 @@
 
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
-		<cfset variables.instance = {locales = StructNew()} />
-		<cfset loadLocales(arguments.ValidateThisConfig.localeMap) />
+		<cfset variables.instance.locales = loadLocales(arguments.ValidateThisConfig.localeMap) />
 		<cfreturn this />
 	</cffunction>
 	
@@ -32,8 +31,9 @@
 		<cfreturn arguments.translateThis />
 	</cffunction>
 	
-	<cffunction name="loadLocales" returnType="void" access="public" output="false" hint="I load locale info into the cache">
+	<cffunction name="loadLocales" returnType="any" access="public" output="false" hint="I return a struct of locale info">
 		<cfargument name="localeMap" type="Any" required="true" />
+		<cfreturn StructNew() />
 	</cffunction>
 
 	<cffunction name="getLocales" returnType="any" access="public" output="false" hint="I return the cached locales">
