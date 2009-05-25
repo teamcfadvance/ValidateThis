@@ -33,7 +33,7 @@
 					ValidateThis! is a framework that allows you to define validation rules for your ColdFusion objects in a single place (either an xml file, or in ColdFusion code) and will then generate client-side and server-side validations for you.
 				</p>
 				<p>Please check out one of the demos, linked to the right, to see the framework in action, as well as a sample xml file.</p>
-				<p>The framework, as well as all of the demo code, can be downloaded from <a href="http://validatethis.riaforge.org/" title="validatethis.riaforge.org" target="_blank">validatethis.riaforge.org</a>.</p>
+				<p>The framework, as well as all of the demo code, can be downloaded from <a href="http://validatethis.riaforge.org/" title="validatethis.riaforge.org" target="_blank">validatethis.riaforge.org</a>. Much more information is available at <a href="http://www.silverwareconsulting.com/index.cfm/ValidateThis" target="_blank">my blog</a>.</p>
 				<p>The framework itself has been designed to be extremely flexible and extensible. For example:
 					<ul>
 						<li>The framework ships with a wide variety of built-in validation types. It is easy to add custom validation types without having to touch any existing framework code.</li>
@@ -41,6 +41,7 @@
 						<li>When validation failures occur the framework will return a suitable and meaningful failure message.  These default failure messages can easily be overriden by an application developer.</li>
 						<li>In addition to failure messages, the framework will return metadata about the validation failure, which can be used to further customize the display of failure information to a user.  This can facilitate internationalization.</li>
 						<li>The framework can be used in conjunction with any other framework (e.g., Transfer, Reactor, etc.), or no framework at all.  As long as you are using a Business Object, you can use the framework to fulfill your validation needs.</li>
+						<li>The framework now supports internationalization (i18n).</li>
 					</ul>
 				</p>
    
@@ -60,27 +61,30 @@
 	
 			<ul class="sidemenu">				
 				<li>
-					<a href="/BODemo/index.cfm">Full demo using integrated Business Objects and Transfer</a>
+					<a href="/ServiceDemo/index.cfm">Simple integration via the ValidateThis object, using Reactor</a>
 				</li>
 				<li>
-					<a href="/ServiceDemo/index.cfm">Full demo using simple integration via the ValidateThis object and Reactor</a>
+					<a href="/BODemo/index.cfm">Integrated Business Objects, using Transfer</a>
 				</li>
 				<li>
-					<a href="/BODemo/index.cfm?cfU=_cfU">Full demo using integrated Business Objects, Transfer and cfUniForm</a>
+					<a href="/i18nDemo/index.cfm">Internationalization (i18n) Demo</a>
+				</li>
+				<li>
+					<a href="/BODemo/index.cfm?cfU=_cfU">Integrated Business Objects, using Transfer and cfUniForm</a>
 				</li>
 			</ul>
 			
-			<h3>Tutorial Sample App</h3>
+			<h3>Documentation</h3>
+	
+			<p class="sidemenu">
+				The only documentation that currently exists for the framework is in the numerous postings that can be found on <a href="http://www.silverwareconsulting.com/index.cfm/ValidateThis" target="_blank">my blog</a>.  There is also a <a href="http://groups.google.com/group/validatethis" target="_blank">Google Group</a> available for questions and discussion.
+			</p>
+			
+			<h3>Presentations</h3>
 	
 			<ul class="sidemenu">				
 				<li>
-					<a href="http://www.validatethis.org/VTAndTransfer_Start/index.cfm">Inital sample app, with no validations</a>
-				</li>
-				<li>
-					<a href="http://www.validatethis.org/VTAndTransfer_PartII/index.cfm">Sample app with server-side validations</a>
-				</li>
-				<li>
-					<a href="http://www.validatethis.org/VTAndTransfer_PartIII/index.cfm">Sample app with client- and server-side validations</a>
+					<a href="http://www.silverwareconsulting.com/index.cfm/2009/5/19/An-Object-Oriented-Approach-to-Validations--Presentation-Materials-Available" target="_blank">An Object Oriented Approach to Validations</a>
 				</li>
 			</ul>
 			
