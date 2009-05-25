@@ -62,9 +62,5 @@ purpose:		I ResourceBundleTest.cfc
 		<cfreturn false />
 	</cffunction>
 
-	<cffunction name="RBFileExistsOverrideTrue" access="private" returntype="any">
-		<cfreturn true />
-	</cffunction>
-	
 </cfcomponent>
 
