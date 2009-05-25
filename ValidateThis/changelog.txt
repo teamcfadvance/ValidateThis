@@ -47,3 +47,9 @@ Version 0.7
 - added the ValidateThis.cfc service object, which allows for simpler integration
 - changed the ServerRuleValidation_Numeric to not fail on an empty property
 - added a getErrors method to the Result.cfc object to implement the interface for Model-Glue's ValidationErrorCollection
+
+Version 0.75
+------------
+
+- added internationalization (i18n) support
+- added a demo to show how to implement the i18n support
