@@ -32,10 +32,10 @@ purpose:		I RBTranslatorTest.cfc
 	<cfset RBTranslator = "" />
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset localeMap = {en_US="/ValidateThis/rbs/en_US.properties",fr_FR="/ValidateThis/rbs/fr_FR.properties"} />
-		<cfset validateThisConfig = {localeMap = localeMap,TranslatorPath="ValidateThis.core.RBTranslator"} />
-		<cfset ValidateThis = createObject("component","ValidateThis.ValidateThis").init(validateThisConfig) />
-		<cfset RBTranslator = ValidateThis.getBean("Translator") />
+		<cfset validateThisConfig = {defaultLocale = "en_US",localeMap=StructNew()} />
+		<cfset RBTranslator = CreateObject("component","ValidateThis.core.RBTranslator") />
+		<cfset injectMethod(RBTranslator, this, "loadLocalesOverride", "loadLocales") />
+		<cfset RBTranslator.init("MockTransientFactory",validateThisConfig) />
 	</cffunction>
 
 	<cffunction name="RBTranslatorReturnsRBTranslator" access="public" returntype="void">
@@ -62,16 +62,48 @@ purpose:		I RBTranslatorTest.cfc
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="TranslateReturnsTranslatedText" access="public" returntype="void">
+	<cffunction name="defaultLocaleDefinedKeyReturnsTranslatedText" access="public" returntype="void">
 		<cfscript>
-			theKey = "SomeText";
+			theKey = "NotEmail";
 			locale = "en_US";
-			expectedText = "Some Text";
-			assertEquals(RBTranslator.translate(theKey,locale),expectedText);
-			locale = "fr_FR";
-			expectedText = "Some Text In French";
-			assertEquals(RBTranslator.translate(theKey,locale),expectedText);
+			expectedText = "Hey, buddy, you call that an Email Address?";
+			assertEquals(expectedText,RBTranslator.translate(theKey,locale));
 		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="defaultLocaleUnDefinedNonKeyReturnsUnTranslatedText" access="public" returntype="void">
+		<cfscript>
+			theKey = "Some Undefined Key";
+			locale = "en_US";
+			expectedText = theKey;
+			assertEquals(expectedText,RBTranslator.translate(theKey,locale));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="defaultLocaleUnDefinedProperKeyThrowsExpectedException" access="public" returntype="void" mxunit:expectedException="validatethis.core.RBTranslator.KeyNotDefined">
+		<cfscript>
+			theKey = "Undefined_Proper_Key";
+			locale = "en_US";
+			expectedText = theKey;
+			assertEquals(expectedText,RBTranslator.translate(theKey,locale));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="notDefaultLocaleDefinedKeyReturnsTranslatedText" access="public" returntype="void">
+		<cfscript>
+			theKey = "NotEmail";
+			locale = "fr_FR";
+			expectedText = "Hé, mon pote, que vous appelez une adresse de courriel?";
+			assertEquals(expectedText,RBTranslator.translate(theKey,locale));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="notDefaultLocaleUnDefinedKeyThrowsExpectedException" access="public" returntype="void" mxunit:expectedException="validatethis.core.RBTranslator.KeyNotDefined">
+		<cfscript>
+			theKey = "Some Undefined Key";
+			locale = "fr_FR";
+			RBTranslator.translate(theKey,locale);
+		</cfscript>
 	</cffunction>
 	
 	<cffunction name="MissingLocaleThrowsExpectedException" access="public" returntype="void" mxunit:expectedException="validatethis.core.RBTranslator.LocaleNotDefined">
@@ -83,13 +115,14 @@ purpose:		I RBTranslatorTest.cfc
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="MissingKeyThrowsExpectedException" access="public" returntype="void" mxunit:expectedException="validatethis.core.RBTranslator.KeyNotDefined">
+	<cffunction name="loadLocalesOverride" access="private" returntype="any">
 		<cfscript>
-			theKey = "NotDefined";
-			locale = "en_US";
-			expectedText = "bob";
-			assertEquals(RBTranslator.translate(theKey,locale),expectedText);
-		</cfscript>  
+			locales = {en_US=StructNew(),fr_FR=StructNew()};
+			locales.en_US.NotEmail = "Hey, buddy, you call that an Email Address?";
+			locales.fr_FR.NotEmail = "Hé, mon pote, que vous appelez une adresse de courriel?";
+			locales.fr_FR.The_Email_Address_is_required = "L'adresse e-mail est requis.";
+			return locales;
+		</cfscript>
 	</cffunction>
 
 </cfcomponent>
