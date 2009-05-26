@@ -1,9 +1,9 @@
 <!---
 	
-filename:		\VTDemo\UnitTests\BaseTranslatorTest.cfc
+filename:		\VTDemo\UnitTests\BaseLocaleLoaderTest.cfc
 date created:	2008-10-22
 author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I BaseTranslatorTest.cfc
+purpose:		I BaseLocaleLoaderTest.cfc
 				
 	// **************************************** LICENSE INFO **************************************** \\
 	
@@ -26,30 +26,18 @@ purpose:		I BaseTranslatorTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="UnitTests.BaseTranslatorTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent displayname="UnitTests.BaseLocaleLoaderTest" extends="UnitTests.BaseTestCase" output="false">
+	
+	<cfset BaseLocaleLoader = "" />
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset MockBaseLoader = createObject('component','MightyMock.MightyMock') />
-		<cfset MockBaseLoader.loadLocales("{struct}").returns(StructNew()) />
-		<cfset variables.BaseTranslator = CreateObject("component","ValidateThis.core.BaseTranslator").init(MockBaseLoader,StructNew(),"") />
+		<cfset LoaderHelper = createObject('component','MightyMock.MightyMock') />
+		<cfset BaseLocaleLoader = CreateObject("component","ValidateThis.core.BaseLocaleLoader").init(LoaderHelper) />
 	</cffunction>
 
-	<cffunction name="BaseTranslatorReturnsBaseTranslator" access="public" returntype="void">
+	<cffunction name="loadLocalesReturnsEmptyStruct" access="public" returntype="void">
 		<cfscript>
-			assertTrue(GetMetadata(variables.BaseTranslator).name CONTAINS "BaseTranslator");
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="GetLocalesReturnsEmptyStruct" access="public" returntype="void">
-		<cfscript>
-			assertTrue(StructIsEmpty(variables.BaseTranslator.getLocales()));
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="TranslateReturnsUnTranslatedText" access="public" returntype="void">
-		<cfscript>
-			theText = "Some text";
-			assertEquals(variables.BaseTranslator.translate(theText),theText);
+			assertTrue(StructIsEmpty(BaseLocaleLoader.loadLocales()));
 		</cfscript>  
 	</cffunction>
 

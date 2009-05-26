@@ -29,36 +29,39 @@ purpose:		I RBTranslatorTest.cfc
 --->
 <cfcomponent displayname="UnitTests.RBTranslatorTest" extends="UnitTests.BaseTestCase" output="false">
 	
-	<cfset RBTranslator = "" />
-	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset validateThisConfig = {defaultLocale = "en_US",localeMap=StructNew()} />
-		<cfset RBTranslator = CreateObject("component","ValidateThis.core.RBTranslator") />
-		<cfset injectMethod(RBTranslator, this, "loadLocalesOverride", "loadLocales") />
-		<cfset RBTranslator.init("MockTransientFactory",validateThisConfig) />
+		<cfscript>
+			locales = {en_US=StructNew(),fr_FR=StructNew()};
+			locales.en_US.NotEmail = "Hey, buddy, you call that an Email Address?";
+			locales.fr_FR.NotEmail = "Hé, mon pote, que vous appelez une adresse de courriel?";
+			locales.fr_FR.The_Email_Address_is_required = "L'adresse e-mail est requis.";
+			MockRBLoader = createObject('component','MightyMock.MightyMock');
+			MockRBLoader.loadLocales("{struct}").returns(locales);
+			variables.RBTranslator = CreateObject("component","ValidateThis.core.RBTranslator").init(MockRBLoader,StructNew(),"en_US");
+		</cfscript>
 	</cffunction>
 
 	<cffunction name="RBTranslatorReturnsRBTranslator" access="public" returntype="void">
 		<cfscript>
-			assertTrue(GetMetadata(RBTranslator).name CONTAINS "RBTranslator");
+			assertTrue(GetMetadata(variables.RBTranslator).name CONTAINS "RBTranslator");
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="safeKeyReturnsProperKey" access="public" returntype="void">
 		<cfscript>
 			expected = "SafeKey";
-			assertEquals(expected,RBTranslator.safeKey("SafeKey"));
-			assertEquals(expected,RBTranslator.safeKey("Safe!Key"));
-			assertEquals(expected,RBTranslator.safeKey("Safe.Key$"));
+			assertEquals(expected,variables.RBTranslator.safeKey("SafeKey"));
+			assertEquals(expected,variables.RBTranslator.safeKey("Safe!Key"));
+			assertEquals(expected,variables.RBTranslator.safeKey("Safe.Key$"));
 			expected = "Safe_Key";
-			assertEquals(expected,RBTranslator.safeKey("Safe!_Key"));
-			assertEquals(expected,RBTranslator.safeKey("Safe Key"));
+			assertEquals(expected,variables.RBTranslator.safeKey("Safe!_Key"));
+			assertEquals(expected,variables.RBTranslator.safeKey("Safe Key"));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="GetLocalesReturnsCorrectStruct" access="public" returntype="void">
 		<cfscript>
-			assertEquals(StructCount(RBTranslator.getLocales()),2);
+			assertEquals(StructCount(variables.RBTranslator.getLocales()),2);
 		</cfscript>  
 	</cffunction>
 
@@ -67,7 +70,7 @@ purpose:		I RBTranslatorTest.cfc
 			theKey = "NotEmail";
 			locale = "en_US";
 			expectedText = "Hey, buddy, you call that an Email Address?";
-			assertEquals(expectedText,RBTranslator.translate(theKey,locale));
+			assertEquals(expectedText,variables.RBTranslator.translate(theKey,locale));
 		</cfscript>  
 	</cffunction>
 	
@@ -76,7 +79,7 @@ purpose:		I RBTranslatorTest.cfc
 			theKey = "Some Undefined Key";
 			locale = "en_US";
 			expectedText = theKey;
-			assertEquals(expectedText,RBTranslator.translate(theKey,locale));
+			assertEquals(expectedText,variables.RBTranslator.translate(theKey,locale));
 		</cfscript>  
 	</cffunction>
 	
@@ -85,7 +88,7 @@ purpose:		I RBTranslatorTest.cfc
 			theKey = "Undefined_Proper_Key";
 			locale = "en_US";
 			expectedText = theKey;
-			assertEquals(expectedText,RBTranslator.translate(theKey,locale));
+			assertEquals(expectedText,variables.RBTranslator.translate(theKey,locale));
 		</cfscript>  
 	</cffunction>
 	
@@ -94,7 +97,7 @@ purpose:		I RBTranslatorTest.cfc
 			theKey = "NotEmail";
 			locale = "fr_FR";
 			expectedText = "Hé, mon pote, que vous appelez une adresse de courriel?";
-			assertEquals(expectedText,RBTranslator.translate(theKey,locale));
+			assertEquals(expectedText,variables.RBTranslator.translate(theKey,locale));
 		</cfscript>  
 	</cffunction>
 	
@@ -102,7 +105,7 @@ purpose:		I RBTranslatorTest.cfc
 		<cfscript>
 			theKey = "Some Undefined Key";
 			locale = "fr_FR";
-			RBTranslator.translate(theKey,locale);
+			variables.RBTranslator.translate(theKey,locale);
 		</cfscript>
 	</cffunction>
 	
@@ -111,18 +114,8 @@ purpose:		I RBTranslatorTest.cfc
 			theKey = "SomeText";
 			locale = "bob";
 			expectedText = "bob";
-			assertEquals(RBTranslator.translate(theKey,locale),expectedText);
+			assertEquals(variables.RBTranslator.translate(theKey,locale),expectedText);
 		</cfscript>  
-	</cffunction>
-
-	<cffunction name="loadLocalesOverride" access="private" returntype="any">
-		<cfscript>
-			locales = {en_US=StructNew(),fr_FR=StructNew()};
-			locales.en_US.NotEmail = "Hey, buddy, you call that an Email Address?";
-			locales.fr_FR.NotEmail = "Hé, mon pote, que vous appelez une adresse de courriel?";
-			locales.fr_FR.The_Email_Address_is_required = "L'adresse e-mail est requis.";
-			return locales;
-		</cfscript>
 	</cffunction>
 
 </cfcomponent>
