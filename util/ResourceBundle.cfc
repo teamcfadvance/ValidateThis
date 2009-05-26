@@ -68,10 +68,6 @@ methods in this CFC:
 
 	<cffunction name="Init" access="Public" returntype="any" output="false">
 
-		<cfset variables.rB = createObject("java", "java.util.PropertyResourceBundle") />
-		<cfset variables.fis=createObject("java", "java.io.FileInputStream") />
-		<cfset variables.msgFormat=createObject("java", "java.text.MessageFormat") />
-		<cfset variables.locale=createObject("java","java.util.Locale") />
 		<cfreturn this />
 
 	</cffunction>
@@ -80,21 +76,23 @@ methods in this CFC:
 		<cfargument name="rbFile" required="Yes" type="string">
 		<cfscript>
 			var isOk=false; // success flag
+			var rB = createObject("java", "java.util.PropertyResourceBundle");
+			var fis=createObject("java", "java.io.FileInputStream");
 			var keys=""; // var to hold rb keys
 			var resourceBundle=structNew(); // structure to hold resource bundle
 			var thisKey="";
 			var thisMSG="";
-			if (fileExists(arguments.rbFile)) {
+			if (RBFileExists(arguments.rbFile)) {
 				isOk=true;
-				variables.fis.init(arguments.rbFile);
-				variables.rB.init(variables.fis);
-				keys=variables.rB.getKeys();
+				fis.init(arguments.rbFile);
+				rB.init(fis);
+				keys=rB.getKeys();
 				while (keys.hasMoreElements()) {
 					thisKEY=keys.nextElement();
-					thisMSG=variables.rB.handleGetObject(thisKey);
+					thisMSG=rB.handleGetObject(thisKey);
 					resourceBundle[thisKEY]=thisMSG;
 				}
-				variables.fis.close();
+				fis.close();
 			}
 		</cfscript>
 		<cfif isOK>
@@ -108,77 +106,5 @@ methods in this CFC:
 		<cfargument name="rbFile" required="Yes" type="string">
 		<cfreturn fileExists(arguments.rbFile) />
 	</cffunction> 
-
-	<cffunction name="formatRBString" access="public" output="no" returnType="string" hint="performs messageFormat like operation on compound rb string">
-		<cfargument name="rbString" required="yes" type="string">
-		<cfargument name="substituteValues" required="yes"> <!--- array or single value to format --->
-		<cfset var i=0>
-		<cfset tmpStr=arguments.rbString>
-		<cfif isArray(arguments.substituteValues)> <!--- do a bunch? --->
-			<cfloop index="i" from="1" to="#arrayLen(arguments.substituteValues)#">
-				<cfset tmpStr=replace(tmpStr,"{#i#}",arguments.substituteValues[i],"ALL")>
-			</cfloop>
-		<cfelse> <!--- do single --->
-			<cfset tmpStr=replace(tmpStr,"{1}",arguments.substituteValues,"ALL")>
-		</cfif> <!--- do a bunch? --->
-		<cfreturn tmpStr>
-	</cffunction>
-	
-	<cffunction name="messageFormat" access="public" output="no" returnType="string" hint="performs messageFormat on compound rb string">
-		<cfargument name="thisPattern" required="yes" type="string" hint="pattern to use in formatting">
-		<cfargument name="args" required="yes" hint="substitution values"> <!--- array or single value to format --->
-		<cfargument name="thisLocale" required="no" default="en_US" hint="locale to use in formatting, defaults to en_US">
-			<cfset var pattern=createObject("java","java.util.regex.Pattern")>
-			<cfset var regexStr="(\{[0-9]{1,},number.*?\})">
-			<cfset var p="">
-			<cfset var m="">
-			<cfset var i=0>
-			<cfset var thisFormat="">
-			<cfset var inputArgs=arguments.args>
-			<cfset var lang="">
-			<cfset var country="">
-			<cfset var variant="">
-			<cfset var tLocale="">
-			<cftry>
-				<cfset lang=listFirst(arguments.thisLocale,"_")>
-				<cfif listLen(arguments.thisLocale,"_") GT 1>
-					<cfset country=listGetAt(arguments.thisLocale,2,"_")>
-					<cfset variant=listLast(arguments.thisLocale,"_")>
-				</cfif>
-				<cfset tLocale=variables.locale.init(lang,country,variant)>
-				<cfif NOT isArray(inputArgs)>
-					<cfset inputArgs=listToArray(inputArgs)>
-				</cfif>	
-				<cfset thisFormat=msgFormat.init(arguments.thisPattern,tLocale)>
-				<!--- let's make sure any cf numerics are cast to java datatypes --->
-				<cfset p=pattern.compile(regexStr,pattern.CASE_INSENSITIVE)>
-				<cfset m=p.matcher(arguments.thisPattern)>
-				<cfloop condition="#m.find()#">
-					<cfset i=listFirst(replace(m.group(),"{",""))>
-					<cfset inputArgs[i]=javacast("float",inputArgs[i])>
-				</cfloop>
-				<cfset arrayPrepend(inputArgs,"")> <!--- dummy element to fool java --->
-				<!--- coerece to a java array of objects  --->
-				<cfreturn thisFormat.format(inputArgs.toArray())>
-				<cfcatch type="Any">
-					<cfthrow message="#cfcatch.message#" type="any" detail="#cfcatch.detail#">
-				</cfcatch>
-			</cftry>
-	</cffunction>
-	
-	<cffunction name="verifyPattern" access="public" output="no" returnType="boolean" hint="performs verification on MessageFormat pattern">
-		<cfargument name="pattern" required="yes" type="string" hint="format pattern to test">
-		<cfscript>
-			var test="";
-			var isOK=true;
-			try {
-				test=msgFormat.init(arguments.pattern);			
-			}
-			catch (Any e) {
-				isOK=false;
-			}
-			return isOk;
-		</cfscript>		
-	</cffunction>
 
 </cfcomponent>

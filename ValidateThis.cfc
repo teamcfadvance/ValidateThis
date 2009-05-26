@@ -21,7 +21,8 @@
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<!--- Set default values for keys in ValidateThisConfig --->
 		<cfparam name="variables.ValidateThisConfig.TranslatorPath" default="ValidateThis.core.BaseTranslator" />
-		<cfparam name="variables.ValidateThisConfig.BOValidatorPath" default="BOValidator" />
+		<cfparam name="variables.ValidateThisConfig.LocaleLoaderPath" default="ValidateThis.core.BaseLocaleLoader" />
+		<cfparam name="variables.ValidateThisConfig.BOValidatorPath" default="ValidateThis.core.BOValidator" />
 		<cfparam name="variables.ValidateThisConfig.DefaultJSLib" default="jQuery" />
 		<cfparam name="variables.ValidateThisConfig.JSRoot" default="js/" />
 		<cfparam name="variables.ValidateThisConfig.defaultFormName" default="frmMain" />
