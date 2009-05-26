@@ -13,15 +13,15 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="Translator" hint="I am a responsible for translating text.">
+<cfcomponent output="false" name="BaseTranslator" hint="I am a responsible for translating text.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new Translator">
-		<cfargument name="TransientFactory" type="any" required="true" />
-		<cfargument name="ValidateThisConfig" type="any" required="true" />
+		<cfargument name="LocaleLoader" type="any" required="true" />
+		<cfargument name="localeMap" type="any" required="true" />
+		<cfargument name="defaultLocale" type="any" required="true" />
 
-		<cfset variables.TransientFactory = arguments.TransientFactory />
-		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
-		<cfset variables.instance.locales = loadLocales(arguments.ValidateThisConfig.localeMap) />
+		<cfset variables.defaultLocale = arguments.defaultLocale />
+		<cfset variables.instance = {locales = arguments.LocaleLoader.loadLocales(arguments.localeMap)} />
 		<cfreturn this />
 	</cffunction>
 	
@@ -31,11 +31,6 @@
 		<cfreturn arguments.translateThis />
 	</cffunction>
 	
-	<cffunction name="loadLocales" returnType="any" access="public" output="false" hint="I return a struct of locale info">
-		<cfargument name="localeMap" type="Any" required="true" />
-		<cfreturn StructNew() />
-	</cffunction>
-
 	<cffunction name="getLocales" returnType="any" access="public" output="false" hint="I return the cached locales">
 		<cfreturn variables.instance.locales />
 	</cffunction>
