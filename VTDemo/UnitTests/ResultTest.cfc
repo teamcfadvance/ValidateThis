@@ -31,44 +31,56 @@ purpose:		I ResultTest.cfc
 	<cfset Result = "" />
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset setBeanFactory()>
-		<cfset TransientFactory = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory") />
-		<cfset Result = TransientFactory.newResult() />
+		<cfscript>
+			MockTranslator = createObject('component','MightyMock.MightyMock');
+			MockTranslator.translate("{string}","{string}").returns("Translated Text");
+			variables.Result = CreateObject("component","ValidateThis.util.Result").init();
+			variables.Result.setTranslator(MockTranslator);
+		</cfscript>
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
-	<cffunction name="testCreate" access="public" returntype="void">
+	<cffunction name="newResultLooksRight" access="public" returntype="void">
 		<cfscript>
-			assertEquals(Result.getIsSuccess(),true);
-			assertEquals(ArrayLen(Result.getFailures()),0);
-			assertEquals(Result.getDummyValue(),"");
+			assertEquals(variables.Result.getIsSuccess(),true);
+			assertEquals(ArrayLen(variables.Result.getFailures()),0);
+			assertEquals(variables.Result.getDummyValue(),"");
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="testSet" access="public" returntype="void">
+	<cffunction name="setGetMissingPropertyWorks" access="public" returntype="void">
 		<cfscript>
 			DummyValue = "Dummy Value";
-			Result.setDummyValue(DummyValue);
-			assertEquals(Result.getIsSuccess(),true);
-			assertEquals(ArrayLen(Result.getFailures()),0);
-			assertEquals(Result.getDummyValue(),DummyValue);
+			variables.Result.setDummyValue(DummyValue);
+			assertEquals(variables.Result.getDummyValue(),DummyValue);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="testAddFailure" access="public" returntype="void">
+	<cffunction name="addFailureAddsAFailure" access="public" returntype="void">
 		<cfscript>
 			Failure = StructNew();
 			Failure.Code = 999;
-			Result.addFailure(Failure);
-			Result.setIsSuccess(false);
-			assertEquals(Result.getIsSuccess(),false);
-			Failures = Result.getFailures();
+			variables.Result.addFailure(Failure);
+			variables.Result.setIsSuccess(false);
+			assertEquals(variables.Result.getIsSuccess(),false);
+			Failures = variables.Result.getFailures();
 			assertEquals(ArrayLen(Failures),1);
 			assertEquals(Failures[1].Code,999);
 		</cfscript>  
 	</cffunction>
+
+	<cffunction name="getFailuresReturnsTranslatedResult" access="public" returntype="void">
+		<cfscript>
+			Failure = StructNew();
+			Failure.Message = "Any Message";
+			variables.Result.addFailure(Failure);
+			Failures = variables.Result.getFailures("any Locale");
+			assertEquals("Translated Text",Failures[1].Message);
+		</cfscript>  
+	</cffunction>
+
 
 </cfcomponent>
 

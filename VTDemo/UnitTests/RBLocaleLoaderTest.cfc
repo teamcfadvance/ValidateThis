@@ -1,9 +1,9 @@
 <!---
 	
-filename:		\VTDemo\UnitTests\BaseTranslatorTest.cfc
+filename:		\VTDemo\UnitTests\RBLocaleLoaderTest.cfc
 date created:	2008-10-22
 author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I BaseTranslatorTest.cfc
+purpose:		I RBLocaleLoaderTest.cfc
 				
 	// **************************************** LICENSE INFO **************************************** \\
 	
@@ -26,31 +26,31 @@ purpose:		I BaseTranslatorTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="UnitTests.BaseTranslatorTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent displayname="UnitTests.RBLocaleLoaderTest" extends="UnitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset MockBaseLoader = createObject('component','MightyMock.MightyMock') />
-		<cfset MockBaseLoader.loadLocales("{struct}").returns(StructNew()) />
-		<cfset variables.BaseTranslator = CreateObject("component","ValidateThis.core.BaseTranslator").init(MockBaseLoader,StructNew(),"") />
+		<cfscript>
+			variables.LoaderHelper = createObject('component','MightyMock.MightyMock');
+			variables.locales = {valA="A",valB="B"};
+			variables.LoaderHelper.getResourceBundle("A").returns("A");
+			variables.LoaderHelper.getResourceBundle("B").returns("B");
+			variables.RBLocaleLoader = CreateObject("component","ValidateThis.core.RBLocaleLoader").init(variables.LoaderHelper);
+			injectMethod(variables.RBLocaleLoader, this, "findLocaleFileOverride", "findLocaleFile");
+		</cfscript>
 	</cffunction>
 
-	<cffunction name="BaseTranslatorReturnsBaseTranslator" access="public" returntype="void">
+	<cffunction name="loadLocalesReturnsCorrectStruct" access="public" returntype="void">
 		<cfscript>
-			assertTrue(GetMetadata(variables.BaseTranslator).name CONTAINS "BaseTranslator");
+			expected = variables.locales;
+			localeMap = variables.locales;
+			actual = variables.RBLocaleLoader.loadLocales(localeMap);
+			assertEquals(expected,actual);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="GetLocalesReturnsEmptyStruct" access="public" returntype="void">
-		<cfscript>
-			assertTrue(StructIsEmpty(variables.BaseTranslator.getLocales()));
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="TranslateReturnsUnTranslatedText" access="public" returntype="void">
-		<cfscript>
-			theText = "Some text";
-			assertEquals(variables.BaseTranslator.translate(theText),theText);
-		</cfscript>  
+	<cffunction name="findLocaleFileOverride" returnType="any" access="private" output="false" hint="I return the complete path to a locale file">
+		<cfargument name="localeFile" type="Any" required="true" />
+		<cfreturn arguments.localeFile />
 	</cffunction>
 
 </cfcomponent>
