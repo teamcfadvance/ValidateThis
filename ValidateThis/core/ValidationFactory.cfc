@@ -67,7 +67,7 @@
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 		
-		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("XMLFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),getBean("onMMHelper"),variables.ValidateThisConfig,arguments.definitionPath) />
+		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),getBean("XMLFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),getBean("onMMHelper"),variables.ValidateThisConfig,arguments.definitionPath) />
 		
 	</cffunction>
 
