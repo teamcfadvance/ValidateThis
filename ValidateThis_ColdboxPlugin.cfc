@@ -29,7 +29,11 @@
 				<cfset ValidateThisConfig[key] = getSetting(key) />
 			</cfif>
 		</cfloop>
-		<cfset variables.ValidateThis = CreateObject("component","ValidateThis").init(variables.ValidateThisConfig) />
+		<!--- If no definitionPath was defined, using the ModelsPath from the ColdBox config --->
+		<cfif NOT StructKeyExists(ValidateThisConfig,"definitionPath")>
+			<cfset ValidateThisConfig.definitionPath = getSetting("ModelsPath") />
+		</cfif>
+		<cfset variables.ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 		<cfreturn this>
 	</cffunction>
 

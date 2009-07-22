@@ -75,10 +75,16 @@
 	</cffunction>
 
 	<cffunction name="CheckFileExists" access="public" output="false" returntype="any">
-		<cfargument name="Destination" required="true" type="string" />
+		<cfargument name="Destination" required="true" type="any" />
 		<cfargument name="FileName" required="true" type="any" />
 		
 		<cfreturn FileExists(arguments.Destination & arguments.FileName) />
+	</cffunction>
+
+	<cffunction name="CheckDirectoryExists" access="public" output="false" returntype="any">
+		<cfargument name="Destination" required="true" type="any" />
+		
+		<cfreturn DirectoryExists(arguments.Destination) />
 	</cffunction>
 
 	<cffunction name="listFiles" access="public" output="false" returntype="any" hint="returns a list of filenames">

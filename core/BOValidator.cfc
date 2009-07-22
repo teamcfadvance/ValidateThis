@@ -17,6 +17,7 @@
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new BOValidator">
 		<cfargument name="objectType" type="any" required="true" />
+		<cfargument name="FileSystem" type="any" required="true" />
 		<cfargument name="XMLFileReader" type="any" required="true" />
 		<cfargument name="ServerValidator" type="any" required="true" />
 		<cfargument name="ClientValidator" type="any" required="true" />
@@ -25,18 +26,22 @@
 		<cfargument name="ValidateThisConfig" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 
-		<cfif NOT Len(arguments.definitionPath)>
-			<cfset arguments.definitionPath = ExpandPath(arguments.ValidateThisConfig.definitionPath) />
-		</cfif>
-
 		<cfset variables.Instance = {objectType = arguments.objectType} />
 		<cfset variables.Instance.newRules = {} />
+		<cfset variables.FileSystem = arguments.FileSystem />
 		<cfset variables.XMLFileReader = arguments.XMLFileReader />
 		<cfset variables.ServerValidator = arguments.ServerValidator />
 		<cfset variables.ClientValidator = arguments.ClientValidator />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.onMMHelper = arguments.onMMHelper />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
+		<cfif NOT Len(arguments.definitionPath)>
+			<cfif variables.FileSystem.CheckDirectoryExists(arguments.ValidateThisConfig.definitionPath)>
+				<cfset arguments.definitionPath = arguments.ValidateThisConfig.definitionPath />
+			<cfelse>
+				<cfset arguments.definitionPath = ExpandPath(arguments.ValidateThisConfig.definitionPath) />
+			</cfif>
+		</cfif>
 		<cfset processXML(arguments.objectType,arguments.definitionPath) />
 		<cfreturn this />
 	</cffunction>
