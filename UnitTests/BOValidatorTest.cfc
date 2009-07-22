@@ -28,20 +28,44 @@ purpose:		I BOValidatorTest.cfc
 --->
 <cfcomponent displayname="UnitTests.BOValidatorTest" extends="UnitTests.BaseTestCase" output="false">
 	
-	<cfset BOValidator = "" />
-	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			setBeanFactory();
-			XMLFileReader = getBeanFactory().getBean("ValidateThis").getBean("XMLFileReader");
-			ValidateThis = getBeanFactory().getBean("ValidateThis");
-			className = "user.user";
-			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\\]+?)(UnitTests\\)([\w\W]+)","\1BODemo\Model\");
-			BOValidator = ValidateThis.getValidator(className,defPath);
+			variables.ValidateThis = getBeanFactory().getBean("ValidateThis");
+			variables.className = "user.user";
+			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac
+			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
+			variables.BOValidator = ValidateThis.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="tearDown" access="public" returntype="void">
+	</cffunction>
+
+	<cffunction name="initReturnsCorrectObjectWithExplicitExpandedPath" access="public" returntype="void">
+		<cfscript>
+			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
+			variables.BOValidator = ValidateThis.getValidator(variables.className,defPath);
+			isBOCorrect();
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="initReturnsCorrectObjectWithMappingInValidateThisConfig" access="public" returntype="void">
+		<cfscript>
+			ValidateThisConfig = {definitionPath="/BODemo/Model/"};
+			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
+			variables.BOValidator = ValidateThis.getValidator(variables.className);
+			isBOCorrect();
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="initReturnsCorrectObjectWithPhysicalPathInValidateThisConfig" access="public" returntype="void">
+		<cfscript>
+			ValidateThisConfig = {definitionPath=ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/")};
+			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
+			variables.BOValidator = ValidateThis.getValidator(variables.className);
+			isBOCorrect();
+		</cfscript>  
 	</cffunction>
 
 	<cffunction name="getRequiredPropertiesReturnsCorrectStruct" access="public" returntype="void">
@@ -55,6 +79,15 @@ purpose:		I BOValidatorTest.cfc
 	</cffunction>
 
 	<cffunction name="getAllContextsReturnsCorrectStruct" access="public" returntype="void">
+		<cfscript>
+			AllContexts = BOValidator.getAllContexts();
+			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Profile"));
+			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"___Default"));
+			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Register"));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isBOCorrect" access="private" returntype="void">
 		<cfscript>
 			AllContexts = BOValidator.getAllContexts();
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Profile"));

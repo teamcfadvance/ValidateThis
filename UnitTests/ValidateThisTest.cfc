@@ -40,24 +40,8 @@ purpose:		I ValidateThisTest.cfc
 	
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
-
-	<cffunction name="determineObjectTypeReturnsFilename" access="public" returntype="void">
-		<cfscript>
-			objectType = ValidateThis.determineObjectType(ValidateThis);
-			debug(objectType);
-			objectType = ValidateThis.determineObjectType(UserTO);
-			debug(objectType);
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="getAllContextsReturnsCorrectStruct" access="public" returntype="void">
-		<cfscript>
-			AllContexts = ValidateThis.getAllContexts();
-			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Profile"));
-			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"___Default"));
-			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Register"));
-		</cfscript>  
-	</cffunction>
+	
+	<!--- No tests have been defined for this component yet --->
 
 </cfcomponent>
 

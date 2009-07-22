@@ -50,9 +50,18 @@ purpose:		I FileSystemTest.cfc
 
 	<cffunction name="testCheckFileExists" access="public" returntype="void">
 		<cfscript>
-			Result = FileSystem.CheckFileExists(Destination,ListLast(GetCurrentTemplatePath(),"\"));
+			Result = FileSystem.CheckFileExists(Destination,ListLast(GetCurrentTemplatePath(),"/"));
 			assertTrue(Result);
-			Result = FileSystem.CheckFileExists(Destination,ListLast(GetCurrentTemplatePath(),"\")&"notafile");
+			Result = FileSystem.CheckFileExists(Destination,ListLast(GetCurrentTemplatePath(),"/")&"notafile");
+			assertFalse(Result);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="testCheckDirectoryExists" access="public" returntype="void">
+		<cfscript>
+			Result = FileSystem.CheckDirectoryExists(GetDirectoryFromPath(GetCurrentTemplatePath()));
+			assertTrue(Result);
+			Result = FileSystem.CheckDirectoryExists(GetDirectoryFromPath(GetCurrentTemplatePath()) & "NotADirectory");
 			assertFalse(Result);
 		</cfscript>  
 	</cffunction>
