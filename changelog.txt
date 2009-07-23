@@ -58,3 +58,5 @@ Version 0.80
 ------------
 
 - changed the signature of the validate() method in the ValidateThis.cfc facade. The order of the first two arguments changed as objectType became an optional argument.
+- created a Coldbox Plugin for ValidateThis!
+
