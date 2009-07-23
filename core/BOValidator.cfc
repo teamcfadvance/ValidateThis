@@ -35,6 +35,7 @@
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.onMMHelper = arguments.onMMHelper />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
+		
 		<cfif NOT Len(arguments.definitionPath)>
 			<cfif variables.FileSystem.CheckDirectoryExists(arguments.ValidateThisConfig.definitionPath)>
 				<cfset arguments.definitionPath = arguments.ValidateThisConfig.definitionPath />
@@ -42,6 +43,7 @@
 				<cfset arguments.definitionPath = ExpandPath(arguments.ValidateThisConfig.definitionPath) />
 			</cfif>
 		</cfif>
+		
 		<cfset processXML(arguments.objectType,arguments.definitionPath) />
 		<cfreturn this />
 	</cffunction>
@@ -194,7 +196,7 @@
 	</cffunction>
 	
 	<cffunction name="getRequiredProperties" access="public" output="false" returntype="any">
-		<cfargument name="Context" type="any" required="true" />
+		<cfargument name="Context" type="any" required="false" default="" />
 		
 		<cfset var theContext = fixDefaultContext(arguments.Context) />
 		<cfset var validation = 0 />
@@ -208,7 +210,7 @@
 	</cffunction>
 	
 	<cffunction name="getRequiredFields" access="public" output="false" returntype="any">
-		<cfargument name="Context" type="any" required="true" />
+		<cfargument name="Context" type="any" required="false" default="" />
 		
 		<cfset var theContext = fixDefaultContext(arguments.Context) />
 		<cfset var validation = 0 />

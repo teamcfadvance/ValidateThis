@@ -43,12 +43,13 @@
 	</cffunction>
 	
 	<cffunction name="validate" access="public" output="false" returntype="any">
-		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="theObject" type="any" required="true" />
+		<cfargument name="objectType" type="any" required="false" default="" />
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
 
-		<cfset var BOValidator = getValidator(arguments.objectType,"") />
+		<cfset var theObjectType = determineObjectType(arguments) />
+		<cfset var BOValidator = getValidator(theObjectType,"") />
 		<!--- Inject testCondition if needed --->
 		<cfif NOT StructKeyExists(arguments.theObject,"testCondition")>
 			<cfset arguments.theObject["testCondition"] = this["testCondition"] />
@@ -63,25 +64,35 @@
 		<cfargument name="missingMethodName" type="any" required="true" />
 		<cfargument name="missingMethodArguments" type="any" required="true" />
 
-		<cfset var local = {} />
-		<cfset local.returnValue = "" />
-		<cfset local.objectType = "" />
-		
-		<cfif StructKeyExists(arguments.missingMethodArguments,"objectType")>
-			<cfset local.objectType = arguments.missingMethodArguments.objectType />
-		<cfelseif StructKeyExists(arguments.missingMethodArguments,"theObject") AND StructKeyExists(arguments.missingMethodArguments.theObject,"getobjectType")>
-			<cfinvoke component="#arguments.missingMethodArguments.theObject#" method="getobjectType" returnvariable="local.objectType" />
+		<cfset var theObjectType = determineObjectType(arguments.missingMethodArguments) />
+		<cfset var returnValue = "" />
+		<cfset var BOValidator = getValidator(theObjectType,"") />
+		<cfinvoke component="#BOValidator#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="returnValue" />
+		<cfif NOT IsDefined("returnValue")>
+			<cfset returnValue = "" />
 		</cfif>
-		<cfif Len(local.objectType)>
-			<cfset local.BOValidator = getValidator(local.objectType,"") />
-			<cfinvoke component="#local.BOValidator#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="local.returnValue" />
-			<cfif NOT StructKeyExists(local,"returnValue")>
-				<cfset local.returnValue = "" />
+		
+		<cfreturn returnValue />
+		
+	</cffunction>
+
+	<cffunction name="determineObjectType" returntype="any" access="public" output="false" hint="I try to determine the object type by looking at objectType and theObject arguments.">
+		<cfargument name="theArguments" type="any" required="true" />
+
+		<cfset var theObjectType = "" />
+		<cfif StructKeyExists(arguments.theArguments,"objectType") AND Len(arguments.theArguments.objectType)>
+			<cfreturn arguments.theArguments.objectType />
+		<cfelseif StructKeyExists(arguments.theArguments,"theObject") AND IsObject(arguments.theArguments.theObject)>
+			<cfif StructKeyExists(arguments.theArguments.theObject,"getobjectType")>
+				<cfinvoke component="#arguments.theArguments.theObject#" method="getobjectType" returnvariable="theObjectType" />
+			<cfelse>
+				<cfset theObjectType = ListLast(getMetaData(arguments.theArguments.theObject).Name,".") />
 			</cfif>
 		</cfif>
-		
-		<cfreturn local.returnValue />
-		
+		<cfif NOT IsDefined("theObjectType") OR NOT Len(theObjectType)>
+			<cfthrow type="ValidateThis.ValidateThis.ObjectTypeRequired" detail="You must pass either an object type name (via objectType) or an actual object when calling a method on the ValidateThis facade object." />
+		</cfif>
+		<cfreturn theObjectType />
 	</cffunction>
 
 	<cffunction name="newResult" returntype="any" access="public" output="false" hint="I create a Result object.">

@@ -137,6 +137,13 @@
 					</cfloop>
 				</cfif>
 			</cfloop>
+		<cfelse>
+			<!--- TODO: We're not going to throw an error if the file is not found.  Rather we'll just end up with a BO validator with no rules in it.
+					It would be nice to have a way of notifying the user of this for debugging purposes. trying a throw within a try for now. --->
+			<cftry>
+				<cfthrow type="ValidateThis.core.XMLFileReader.#arguments.objectType#.xml.NotFoundIn.#arguments.definitionPath#" detail="The rule definition file #arguments.objectType#.xml was not found in #arguments.definitionPath#." />
+				<cfcatch type="any"></cfcatch>
+			</cftry>
 		</cfif>
 		
 		<cfreturn ReturnStruct />

@@ -53,3 +53,8 @@ Version 0.75
 
 - added internationalization (i18n) support
 - added a demo to show how to implement the i18n support
+
+Version 0.80
+------------
+
+- changed the signature of the validate() method in the ValidateThis.cfc facade. The order of the first two arguments changed as objectType became an optional argument.
