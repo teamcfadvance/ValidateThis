@@ -48,11 +48,11 @@ purpose:		I FileSystemTest.cfc
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="testCheckFileExists" access="public" returntype="void">
+	<cffunction name="testcheckFileExists" access="public" returntype="void">
 		<cfscript>
-			Result = FileSystem.CheckFileExists(Destination,ListLast(GetCurrentTemplatePath(),"/"));
+			Result = FileSystem.checkFileExists(Destination,ListLast(GetCurrentTemplatePath(),"/"));
 			assertTrue(Result);
-			Result = FileSystem.CheckFileExists(Destination,ListLast(GetCurrentTemplatePath(),"/")&"notafile");
+			Result = FileSystem.checkFileExists(Destination,ListLast(GetCurrentTemplatePath(),"/")&"notafile");
 			assertFalse(Result);
 		</cfscript>  
 	</cffunction>
@@ -70,18 +70,18 @@ purpose:		I FileSystemTest.cfc
 		<cfscript>
 			FileName = CreateUUID() & ".txt";
 			Content = "The file content.";
-			Result = FileSystem.CheckFileExists(Destination,FileName);
+			Result = FileSystem.checkFileExists(Destination,FileName);
 			assertFalse(Result);
 			Result = FileSystem.CreateFile(Destination,FileName,Content);
 			assertTrue(Result.getIsSuccess());
-			Result = FileSystem.CheckFileExists(Destination,FileName);
+			Result = FileSystem.checkFileExists(Destination,FileName);
 			assertTrue(Result);
 			Result = FileSystem.Read(Destination,FileName);
 			assertTrue(Result.getIsSuccess());
 			assertEquals(Trim(Result.getContent()),Content);
 			Result = FileSystem.Delete(Destination,FileName);
 			assertTrue(Result.getIsSuccess());
-			Result = FileSystem.CheckFileExists(Destination,FileName);
+			Result = FileSystem.checkFileExists(Destination,FileName);
 			assertFalse(Result);
 		</cfscript>  
 	</cffunction>

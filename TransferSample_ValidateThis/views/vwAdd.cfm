@@ -9,9 +9,21 @@
 	Add User
 	</div>
 
-	<div align="left" style="margin-top:10px;border:1px solid black;background:##fffff0;padding:10px">
-	 Enter a new user information below and Transfer will create a new record.
-	</div>
+	<cfif StructKeyExists(rc,"VTResult")>
+		<div align="left" style="margin-top:10px;border:1px solid red;background:##fffff0;padding:10px">
+			The following problems were found with your form submission:
+			<ul>
+				<cfloop array="#rc.VTResult.getFailures()#" index="failure">
+					<li>#failure.Message#</li>
+				</cfloop>
+			</ul>
+		</div>
+	<cfelse>
+		<div align="left" style="margin-top:10px;border:1px solid black;background:##fffff0;padding:10px">
+		 Enter a new user information below and Transfer will create a new record.<br /><br />
+		 <strong>Demo Note: </strong>To demonstrate VT's server-side validations, no client-side validations have been generated for this form.
+		</div>
+	</cfif>
 
 	#renderView('tags/menu',true,10)#
 

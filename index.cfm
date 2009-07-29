@@ -60,22 +60,18 @@
 			<h3>Demos</h3>
 	
 			<ul class="sidemenu">
-				<!---		
 				<li>
 					<a href="/TransferSample_ValidateThis/index.cfm"><strong>New!</strong> - Integration via a Coldbox Plugin</a>
 				</li>
-				--->
 				<li>
 					<a href="/ServiceDemo/index.cfm">Simple integration via the ValidateThis object, using Reactor</a>
 				</li>
 				<li>
 					<a href="/BODemo/index.cfm">Integrated Business Objects, using Transfer</a>
 				</li>
-				<!---
 				<li>
 					<a href="/i18nDemo/index.cfm">Internationalization (i18n) Demo</a>
 				</li>
-				--->
 				<li>
 					<a href="/BODemo/index.cfm?cfU=_cfU">Integrated Business Objects, using Transfer and cfUniForm</a>
 				</li>

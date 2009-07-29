@@ -30,12 +30,9 @@ purpose:		I BOValidatorTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			setBeanFactory();
+			setBeanFactory(forceRefresh=true);
 			variables.ValidateThis = getBeanFactory().getBean("ValidateThis");
 			variables.className = "user.user";
-			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac
-			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
-			variables.BOValidator = ValidateThis.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
@@ -45,8 +42,30 @@ purpose:		I BOValidatorTest.cfc
 	<cffunction name="initReturnsCorrectObjectWithExplicitExpandedPath" access="public" returntype="void">
 		<cfscript>
 			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
-			variables.BOValidator = ValidateThis.getValidator(variables.className,defPath);
-			isBOCorrect();
+			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			isBOVCorrect();
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="initThrowsWithBadExplicitExpandedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+		<cfscript>
+			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "_Doesnt_Exist/";
+			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="initReturnsCorrectObjectWithExplicitMappedPath" access="public" returntype="void">
+		<cfscript>
+			defPath = "/BODemo/Model/";
+			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			isBOVCorrect();
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="initThrowsWithBadExplicitMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+		<cfscript>
+			defPath = "/BODemo/Model_Doesnt_Exist/";
+			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
@@ -54,8 +73,16 @@ purpose:		I BOValidatorTest.cfc
 		<cfscript>
 			ValidateThisConfig = {definitionPath="/BODemo/Model/"};
 			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			variables.BOValidator = ValidateThis.getValidator(variables.className);
-			isBOCorrect();
+			variables.BOValidator = variables.ValidateThis.getValidator(variables.className);
+			isBOVCorrect();
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="initThrowsWithBadMappingInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+		<cfscript>
+			ValidateThisConfig = {definitionPath="/BODemo/Model_Doesnt_Exist/"};
+			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
+			variables.BOValidator = variables.ValidateThis.getValidator(variables.className);
 		</cfscript>  
 	</cffunction>
 
@@ -63,14 +90,23 @@ purpose:		I BOValidatorTest.cfc
 		<cfscript>
 			ValidateThisConfig = {definitionPath=ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/")};
 			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			variables.BOValidator = ValidateThis.getValidator(variables.className);
-			isBOCorrect();
+			variables.BOValidator = variables.ValidateThis.getValidator(variables.className);
+			isBOVCorrect();
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="initThrowsWithBadPhysicalPathInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+		<cfscript>
+			ValidateThisConfig = {definitionPath=ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "Doesnt_Exist/"};
+			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
+			variables.BOValidator = variables.ValidateThis.getValidator(variables.className);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="getRequiredPropertiesReturnsCorrectStruct" access="public" returntype="void">
 		<cfscript>
-			FieldList = BOValidator.getRequiredProperties("Register");
+			createDefaultBOV();
+			FieldList = variables.BOValidator.getRequiredProperties("Register");
 			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserName"));
 			assertTrue(ListFindNoCase(StructKeyList(FieldList),"VerifyPassword"));
 			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserGroup"));
@@ -80,16 +116,25 @@ purpose:		I BOValidatorTest.cfc
 
 	<cffunction name="getAllContextsReturnsCorrectStruct" access="public" returntype="void">
 		<cfscript>
-			AllContexts = BOValidator.getAllContexts();
+			createDefaultBOV();
+			AllContexts = variables.BOValidator.getAllContexts();
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Profile"));
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"___Default"));
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Register"));
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="isBOCorrect" access="private" returntype="void">
+	<cffunction name="createDefaultBOV" access="private" returntype="void">
 		<cfscript>
-			AllContexts = BOValidator.getAllContexts();
+			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac
+			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
+			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isBOVCorrect" access="private" returntype="void">
+		<cfscript>
+			AllContexts = variables.BOValidator.getAllContexts();
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Profile"));
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"___Default"));
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Register"));

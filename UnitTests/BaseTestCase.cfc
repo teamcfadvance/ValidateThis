@@ -35,14 +35,15 @@ purpose:		I BaseTestCase.cfc
 		<cfargument name="MockList" type="struct" required="false" default="#StructNew()#" />
 		<cfargument name="params" type="struct" required="false" default="#StructNew()#" />
 		<cfargument name="baseBeanPath" type="any" required="false" default="/BODemo/model/config/Coldspring.xml.cfm" />
+		<cfargument name="forceRefresh" type="any" required="false" default="false" />
 		
 		
 		<cfset var xmlFile = 0 />
 		
-		<!--- Put debug on server --->
-		<cfset server.debug = debug />
+		<!--- Put debug on server - NO LONGER NEEDED!
+		<cfset server.debug = debug /> --->
 		
-		<cfif NOT structkeyExists(variables,"beanFactory") OR comparenocase(variables.beansXML,arguments.beansXML) neq 0>
+		<cfif arguments.forceRefresh OR NOT structkeyExists(variables,"beanFactory") OR comparenocase(variables.beansXML,arguments.beansXML) neq 0>
 			<cfset variables.beansXML = arguments.beansXML />
 			<cfset variables.beanFactory = createObject("component" ,"coldspring.beans.DefaultXmlBeanFactory").init(defaultProperties=arguments.params) />
 			<cfset variables.beanFactory.loadBeans(expandPath(arguments.baseBeanPath)) />
