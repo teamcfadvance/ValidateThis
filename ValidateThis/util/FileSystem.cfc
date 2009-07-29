@@ -74,6 +74,15 @@
 		<cfreturn "File_" & dateformat(now(),"mmddyy") & "_" & timeformat(now(),"HHmmss") />
 	</cffunction>
 
+	<cffunction name="getAbsolutePath" access="public" output="false" returntype="string" hint="Turn any system path, either relative or absolute, into a fully qualified one">
+		<cfargument name="path" type="string" required="true" hint="Abstract pathname">
+		<cfif CheckDirectoryExists(arguments.path)>
+			<cfreturn arguments.path />
+		<cfelse>
+			<cfreturn ExpandPath(arguments.path) />
+		</cfif>
+	</cffunction>
+
 	<cffunction name="CheckFileExists" access="public" output="false" returntype="any">
 		<cfargument name="Destination" required="true" type="any" />
 		<cfargument name="FileName" required="true" type="any" />

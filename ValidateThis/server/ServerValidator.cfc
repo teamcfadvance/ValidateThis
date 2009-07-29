@@ -49,7 +49,7 @@
 					<cfset theCondition = v.Condition.ServerTest />
 				<cfelseif StructKeyExists(v.Parameters,"DependentPropertyName")>
 					<cfif StructKeyExists(v.Parameters,"DependentPropertyValue")>
-						<cfset theCondition = "get#v.Parameters.DependentPropertyName#() EQ #v.Parameters.DependentPropertyValue#" />
+						<cfset theCondition = "get#v.Parameters.DependentPropertyName#() EQ '#v.Parameters.DependentPropertyValue#'" />
 					<cfelse>
 						<cfset theCondition = "Len(get#v.Parameters.DependentPropertyName#()) GT 0" />
 					</cfif>

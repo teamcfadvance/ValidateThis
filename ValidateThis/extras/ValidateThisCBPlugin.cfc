@@ -21,7 +21,7 @@
 		<cfset var ValidateThisConfig = StructNew() />
 		<cfset super.Init(arguments.controller) />
 		<cfset setpluginName("ValidateThis Plugin") />
-		<cfset setpluginVersion("0.1") />
+		<cfset setpluginVersion("0.2") />
 		<cfset setpluginDescription("I allow ValidateThis to be accessed easily from within Coldbox.") />
 		<!--- Create a ValidateThisConfig struct from data in the Coldbox settings --->
 		<cfloop list="VT_TranslatorPath,VT_LocaleLoaderPath,VT_BOValidatorPath,VT_DefaultJSLib,VT_JSRoot,VT_defaultFormName,VT_definitionPath,VT_localeMap,VT_defaultLocale" index="key">
@@ -29,9 +29,12 @@
 				<cfset ValidateThisConfig[Replace(key,"VT_","")] = getSetting(key) />
 			</cfif>
 		</cfloop>
-		<!--- If no definitionPath was defined, using the ModelsPath from the ColdBox config --->
+		<!--- If no definitionPath was defined, use the ModelsPath and (optionally) the ModelsExternalLocationPath from the ColdBox config --->
 		<cfif NOT StructKeyExists(ValidateThisConfig,"definitionPath")>
 			<cfset ValidateThisConfig.definitionPath = getSetting("ModelsPath") & "/" />
+			<cfif Len(getSetting("ModelsExternalLocationPath"))>
+				<cfset ValidateThisConfig.definitionPath = ListAppend(ValidateThisConfig.definitionPath, getSetting("ModelsExternalLocationPath")) />
+			</cfif>
 		</cfif>
 		<cfset variables.ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 		<cfreturn this>
@@ -68,6 +71,39 @@
 		<cfargument name="locale" type="Any" required="false" />
 
 		<cfreturn variables.ValidateThis.getInitializationScript(argumentCollection=arguments) />
+	</cffunction>
+
+	<cffunction name="getJSIncludeScript" returntype="any" access="public" output="false" hint="I generate setup Javascript for client-side validations. I am optional.">
+		<cfargument name="theObject" type="any" required="false" />
+		<cfargument name="objectType" type="any" required="false" />
+		<cfargument name="Context" type="any" required="false" />
+		<cfargument name="formName" type="any" required="false" />
+		<cfargument name="JSLib" type="any" required="false" />
+		<cfargument name="locale" type="Any" required="false" />
+
+		<cfreturn variables.ValidateThis.getJSIncludeScript(argumentCollection=arguments) />
+	</cffunction>
+
+	<cffunction name="getJSLocaleIncludeScript" returntype="any" access="public" output="false" hint="I generate setup Javascript for client-side validations. I am optional.">
+		<cfargument name="theObject" type="any" required="false" />
+		<cfargument name="objectType" type="any" required="false" />
+		<cfargument name="Context" type="any" required="false" />
+		<cfargument name="formName" type="any" required="false" />
+		<cfargument name="JSLib" type="any" required="false" />
+		<cfargument name="locale" type="Any" required="false" />
+
+		<cfreturn variables.ValidateThis.getJSLocaleIncludeScript(argumentCollection=arguments) />
+	</cffunction>
+
+	<cffunction name="getSetupScript" returntype="any" access="public" output="false" hint="I generate setup Javascript for client-side validations. I am optional.">
+		<cfargument name="theObject" type="any" required="false" />
+		<cfargument name="objectType" type="any" required="false" />
+		<cfargument name="Context" type="any" required="false" />
+		<cfargument name="formName" type="any" required="false" />
+		<cfargument name="JSLib" type="any" required="false" />
+		<cfargument name="locale" type="Any" required="false" />
+
+		<cfreturn variables.ValidateThis.getSetupScript(argumentCollection=arguments) />
 	</cffunction>
 
 	<cffunction name="getRequiredProperties" access="public" output="false" returntype="any" hint="I return a structure containing the name of all of the required properties for the given context.">

@@ -15,7 +15,7 @@
 --->
 <cfcomponent output="false" name="ClientScriptWriter_jQuery" extends="ValidateThis.client.AbstractClientScriptWriter" hint="I am responsible for generating jQuery Javascript statements to implement validations.">
 
-	<cffunction name="generateInitializationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to initialize the libraries.">
+	<cffunction name="generateJSIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required JS libraries.">
 		<cfargument name="formName" type="any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
@@ -27,13 +27,38 @@
 				<script src="#JSRoot#jquery-1.3.2.min.js" type="text/javascript"></script>
 				<script src="#JSRoot#jquery.field.min.js" type="text/javascript"></script>
 				<script src="#JSRoot#jquery.validate.pack.js" type="text/javascript"></script>
+			</cfoutput>
+		</cfsavecontent>
+		<cfreturn theScript />
+
+	</cffunction>
+
+	<cffunction name="generateJSLocaleIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required locale specific JS libraries.">
+		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfset var theScript = "" />
+		<cfset var JSRoot = getValidateThisConfig().JSRoot />
+
+		<cfsavecontent variable="theScript">
+			<cfoutput>
 				<cfif Len(arguments.locale) and ListFirst(arguments.locale,"_") NEQ "en">
 					<script src="#JSRoot#messages_#ListFirst(arguments.locale,'_')#.js" type="text/javascript"></script>
 				</cfif>
-				
-				<!--- <script src="/cfMgmt/common/UniForm/js/uni-form.jquery.js" type="text/javascript"></script>
-				<script src="/cfMgmt/common/scripts/jQuery/jquery.validate.mod.pack.js" type="text/javascript"></script> --->
-				
+			</cfoutput>
+		</cfsavecontent>
+		<cfreturn theScript />
+
+	</cffunction>
+
+	<cffunction name="generateSetupScript" returntype="any" access="public" output="false" hint="I generate the JS to do some initial setup.">
+		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfset var theScript = "" />
+
+		<cfsavecontent variable="theScript">
+			<cfoutput>
 				<script type="text/javascript">
 					$(document).ready(function() {
 						jQuery.validator.addMethod("regex", function(value, element, param) {
