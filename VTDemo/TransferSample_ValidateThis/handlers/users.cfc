@@ -63,11 +63,18 @@ Modification History:
 		<cfset oUser = instance.transfer.new("users.users")>
 		<!--- Populate it with RC data --->
 		<cfset getPlugin("beanFactory").populateBean(oUser)>
-		<!--- Add new User --->
-		<cfset instance.transfer.save(oUser)>
-		<cfset getPlugin("messagebox").setMessage("info", "User inserted")>
-		<!--- RElocate to listing --->
-		<cfset setNextRoute("users/dspUsers")>
+		<!--- validate the user with VT --->
+		<cfset rc.VTResult = getMyPlugin("ValidateThisCBPlugin").validate(theObject=oUser,objectType="users.users") />
+		<cfif rc.VTResult.getIsSuccess()>
+			<!--- Update User --->
+			<cfset instance.transfer.save(oUser)>
+			<cfset getPlugin("messagebox").setMessage("info", "User inserted")>
+			<!--- RElocate to listing --->
+			<cfset setNextRoute("users/dspUsers")>
+		<cfelse>
+			<cfset rc.oUser = oUser>
+			<cfset Event.setView("vwAdd")>
+		</cfif>
 	</cffunction>
 
 	<cffunction name="dspEditUser" access="public" returntype="void" output="false">

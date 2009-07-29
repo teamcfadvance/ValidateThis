@@ -33,27 +33,90 @@ purpose:		I XMLFileReaderTest.cfc
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfset setBeanFactory() />
 		<cfset XMLFileReader = getBeanFactory().getBean("ValidateThis").getBean("XMLFileReader") />
+		<cfset variables.className = "user.user" />
 	</cffunction>
 
 	<cffunction name="tearDown" access="public" returntype="void">
+	</cffunction>
+
+	<cffunction name="processXMLReturnsCorrectStructWithMappedPathLookingForXMLExtension" access="public" returntype="void">
+		<cfscript>
+			defPath = "/BODemo/Model/";
+			PropertyDescs = XMLFileReader.processXML(variables.className,defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processXMLReturnsCorrectStructWithPhysicalPathLookingForXMLExtension" access="public" returntype="void">
+		<cfscript>
+			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
+			PropertyDescs = XMLFileReader.processXML(variables.className,defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processXMLReturnsCorrectStructWithMappedPathLookingForXMLCFMExtension" access="public" returntype="void">
+		<cfscript>
+			defPath = "/BODemo/Model/";
+			PropertyDescs = XMLFileReader.processXML("user_cfm.user_cfm",defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processXMLReturnsCorrectStructWithPhysicalPathLookingForXMLCFMExtension" access="public" returntype="void">
+		<cfscript>
+			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
+			PropertyDescs = XMLFileReader.processXML("user_cfm.user_cfm",defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processXMLReturnsCorrectStructLookingForXMLExtensionInFolder" access="public" returntype="void">
+		<cfscript>
+			defPath = "/BODemo/Model/";
+			PropertyDescs = XMLFileReader.processXML("user.user_folder",defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processXMLReturnsCorrectStructLookingForXMLCFMExtensionInFolder" access="public" returntype="void">
+		<cfscript>
+			defPath = "/BODemo/Model/";
+			PropertyDescs = XMLFileReader.processXML("user_cfm.user_cfm_folder",defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processXMLReturnsCorrectStructLookingForFileInSecondFolderInList" access="public" returntype="void">
+		<cfscript>
+			defPath = "/BODemo/Model/,/BODemo/Model/aSecondFolderToTest/";
+			PropertyDescs = XMLFileReader.processXML("user.user_secondfolder",defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processXMLThrowsWithBadMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+		<cfscript>
+			defPath = "/BODemo/Model_Doesnt_Exist/";
+			PropertyDescs = XMLFileReader.processXML(variables.className,defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processXMLThrowsWithBadPhysicalPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+		<cfscript>
+			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "Doesnt_Exist/";
+			PropertyDescs = XMLFileReader.processXML(variables.className,defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
 	</cffunction>
 
 	<cffunction name="processXMLReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
 			className = "user.user";
 			definitionPath = ExpandPath("/BODemo/model/");
-			PropertyDescs = XMLFileReader.processXML(className,definitionPath).PropertyDescs;
-			assertEquals(StructCount(PropertyDescs),10);
-			assertEquals(PropertyDescs.AllowCommunication,"Allow Communication");
-			assertEquals(PropertyDescs.CommunicationMethod,"Communication Method");
-			assertEquals(PropertyDescs.FirstName,"First Name");
-			assertEquals(PropertyDescs.HowMuch,"How much money would you like?");
-			assertEquals(PropertyDescs.LastName,"Last Name");
-			assertEquals(PropertyDescs.LikeOther,"What do you like?");
-			assertEquals(PropertyDescs.UserGroup,"User Group");
-			assertEquals(PropertyDescs.UserName,"Email Address");
-			assertEquals(PropertyDescs.UserPass,"Password");
-			assertEquals(PropertyDescs.VerifyPassword,"Verify Password");
+			PropertyDescs = XMLFileReader.processXML(variables.className,definitionPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
@@ -61,7 +124,7 @@ purpose:		I XMLFileReaderTest.cfc
 		<cfscript>
 			className = "user.user";
 			definitionPath = ExpandPath("/BODemo/model/");
-			Validations = XMLFileReader.processXML(className,definitionPath).Validations;
+			Validations = XMLFileReader.processXML(variables.className,definitionPath).Validations;
 			debug(Validations);
 			assertEquals(StructCount(Validations),1);
 			assertEquals(StructCount(Validations.Contexts),3);
@@ -214,6 +277,24 @@ purpose:		I XMLFileReaderTest.cfc
 			assertEquals(Validation.Parameters.DependentPropertyValue,1);
 		</cfscript>  
 	</cffunction>
+
+	<cffunction name="isPropertiesStructCorrect" access="private" returntype="void">
+		<cfargument type="Any" name="PropertyDescs" required="true" />
+		<cfscript>
+			assertEquals(StructCount(arguments.PropertyDescs),10);
+			assertEquals(arguments.PropertyDescs.AllowCommunication,"Allow Communication");
+			assertEquals(arguments.PropertyDescs.CommunicationMethod,"Communication Method");
+			assertEquals(arguments.PropertyDescs.FirstName,"First Name");
+			assertEquals(arguments.PropertyDescs.HowMuch,"How much money would you like?");
+			assertEquals(arguments.PropertyDescs.LastName,"Last Name");
+			assertEquals(arguments.PropertyDescs.LikeOther,"What do you like?");
+			assertEquals(arguments.PropertyDescs.UserGroup,"User Group");
+			assertEquals(arguments.PropertyDescs.UserName,"Email Address");
+			assertEquals(arguments.PropertyDescs.UserPass,"Password");
+			assertEquals(arguments.PropertyDescs.VerifyPassword,"Verify Password");
+		</cfscript>  
+	</cffunction>
+
 
 </cfcomponent>
 
