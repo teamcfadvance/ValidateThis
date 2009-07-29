@@ -53,12 +53,38 @@
 
 	</cffunction>
 	
-	<cffunction name="generateInitializationScript" returntype="any" access="public" output="false" hint="I load the JS script required to initialize the libraries into the <head> tag.">
+	<cffunction name="generateInitializationScript" returntype="any" access="public" output="false" hint="I generate the JS to  load the required JS libraries and do some initial setup.">
+		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfreturn generateJSIncludeScript(argumentCollection=arguments) & generateJSLocaleIncludeScript(argumentCollection=arguments) & generateSetupScript(argumentCollection=arguments) />
+
+	</cffunction>
+
+	<cffunction name="generateJSIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required JS libraries.">
 		<cfargument name="formName" type="any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
-				message="I am an abstract object, hence the generateInitializationScript method must be overriden in a concrete object." />
+				message="I am an abstract object, hence the generateJSIncludeScript method must be overriden in a concrete object." />
+
+	</cffunction>
+
+	<cffunction name="generateJSLocaleIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required locale specific JS libraries.">
+		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
+				message="I am an abstract object, hence the generateJSLocaleIncludeScript method must be overriden in a concrete object." />
+
+	</cffunction>
+
+	<cffunction name="generateSetupScript" returntype="any" access="public" output="false" hint="I generate the JS to do some initial setup.">
+		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
+				message="I am an abstract object, hence the generateSetupScript method must be overriden in a concrete object." />
 
 	</cffunction>
 

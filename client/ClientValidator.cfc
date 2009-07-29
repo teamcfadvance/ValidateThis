@@ -64,6 +64,34 @@
 
 	</cffunction>
 
+	<cffunction name="getJSIncludeScript" returntype="any" access="public" output="false" hint="I get the JS to load the required JS libraries.">
+		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfreturn variables.ScriptWriters[arguments.JSLib].generateJSIncludeScript(arguments.formName,arguments.locale) />
+
+	</cffunction>
+
+	<cffunction name="getJSLocaleIncludeScript" returntype="any" access="public" output="false" hint="I get the JS to load the required locale specific JS libraries.">
+		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfreturn variables.ScriptWriters[arguments.JSLib].generateJSLocaleIncludeScript(arguments.formName,arguments.locale) />
+
+	</cffunction>
+
+	<cffunction name="getSetupScript" returntype="any" access="public" output="false" hint="I get the JS to do some initial setup.">
+		<cfargument name="formName" type="any" required="yes" />
+		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfreturn variables.ScriptWriters[arguments.JSLib].generateSetupScript(arguments.formName,arguments.locale) />
+
+	</cffunction>
+
+
 	<cffunction name="getScriptWriters" access="public" output="false" returntype="any">
 		<cfreturn variables.ScriptWriters />
 	</cffunction>

@@ -36,12 +36,9 @@
 		<cfset variables.onMMHelper = arguments.onMMHelper />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		
+		<!--- If the definitionPath passed in is empty, get it from the ValidateThisConfig --->
 		<cfif NOT Len(arguments.definitionPath)>
-			<cfif variables.FileSystem.CheckDirectoryExists(arguments.ValidateThisConfig.definitionPath)>
-				<cfset arguments.definitionPath = arguments.ValidateThisConfig.definitionPath />
-			<cfelse>
-				<cfset arguments.definitionPath = ExpandPath(arguments.ValidateThisConfig.definitionPath) />
-			</cfif>
+			<cfset arguments.definitionPath = arguments.ValidateThisConfig.definitionPath />
 		</cfif>
 		
 		<cfset processXML(arguments.objectType,arguments.definitionPath) />
@@ -161,6 +158,36 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfreturn variables.ClientValidator.getInitializationScript(arguments.formName,arguments.JSLib,arguments.locale) />
+
+	</cffunction>
+
+	<cffunction name="getJSIncludeScript" returntype="any" access="public" output="false" hint="I get the JS to load the required JS libraries.">
+		<cfargument name="Context" type="any" required="false" default="" />
+		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
+		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfreturn variables.ClientValidator.getJSIncludeScript(arguments.formName,arguments.JSLib,arguments.locale) />
+
+	</cffunction>
+
+	<cffunction name="getJSLocaleIncludeScript" returntype="any" access="public" output="false" hint="I get the JS to load the required locale specific JS libraries.">
+		<cfargument name="Context" type="any" required="false" default="" />
+		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
+		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfreturn variables.ClientValidator.getJSLocaleIncludeScript(arguments.formName,arguments.JSLib,arguments.locale) />
+
+	</cffunction>
+
+	<cffunction name="getSetupScript" returntype="any" access="public" output="false" hint="I get the JS to do some initial setup.">
+		<cfargument name="Context" type="any" required="false" default="" />
+		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
+		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfreturn variables.ClientValidator.getSetupScript(arguments.formName,arguments.JSLib,arguments.locale) />
 
 	</cffunction>
 

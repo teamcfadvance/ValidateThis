@@ -46,10 +46,40 @@
 		<cfset var theParams = 0 />
 		<cfset var theParam = 0 />
 		<cfset var PropertyType = 0 />
-		
-		<cfif variables.FileSystem.CheckFileExists(arguments.definitionPath,arguments.objectType & ".xml")>
+		<cfset var defPath = 0 />
+		<cfset var fileName = 0 />
+		<cfset var aPath = 0 />
 
-			<cfset theXML = XMLParse(arguments.definitionPath & arguments.objectType & ".xml") />
+		<!--- Check for a valid folder in arguments.definitionPath --->		
+		<cfloop list="#arguments.definitionPath#" index="aPath">
+			<cfif variables.FileSystem.CheckDirectoryExists(variables.FileSystem.getAbsolutePath(aPath))>
+				<cfset defPath = aPath />
+				<cfbreak />
+			</cfif>
+		</cfloop>
+		<cfif defPath EQ 0>
+			<cfthrow type="ValidateThis.core.XMLFileReader.definitionPathNotFound" detail="The folder(s) #arguments.definitionPath# can not be found. You must specify either a complete path to a physical folder or a mapping to a physical folder." />
+		</cfif>
+
+		<!--- Try to locate a rules xml file --->		
+		<cfloop list="#arguments.definitionPath#" index="aPath">
+			<cfset defPath = variables.FileSystem.getAbsolutePath(aPath) />
+			<cfif variables.FileSystem.checkFileExists(defPath,arguments.objectType & ".xml")>
+				<cfset fileName = arguments.objectType & ".xml" />
+			<cfelseif variables.FileSystem.checkFileExists(defPath,arguments.objectType & ".xml.cfm")>
+				<cfset fileName = arguments.objectType & ".xml.cfm" />
+			<cfelseif variables.FileSystem.checkFileExists(defPath & arguments.objectType & "/",arguments.objectType & ".xml")>
+				<cfset fileName = arguments.objectType & "/" & arguments.objectType & ".xml" />
+			<cfelseif variables.FileSystem.checkFileExists(defPath & arguments.objectType & "/",arguments.objectType & ".xml.cfm")>
+				<cfset fileName = arguments.objectType & "/" & arguments.objectType & ".xml.cfm" />
+			</cfif>
+			<cfif fileName NEQ 0>
+				<cfbreak />
+			</cfif>
+		</cfloop>
+		
+		<cfif fileName NEQ 0>
+			<cfset theXML = XMLParse(defPath & fileName) />
 			<cfset xmlConditions = XMLSearch(theXML,"//condition") />
 			<cfset xmlContexts = XMLSearch(theXML,"//context") />
 			<cfset xmlProperties = XMLSearch(theXML,"//property") />
@@ -141,7 +171,7 @@
 			<!--- TODO: We're not going to throw an error if the file is not found.  Rather we'll just end up with a BO validator with no rules in it.
 					It would be nice to have a way of notifying the user of this for debugging purposes. trying a throw within a try for now. --->
 			<cftry>
-				<cfthrow type="ValidateThis.core.XMLFileReader.#arguments.objectType#.xml.NotFoundIn.#arguments.definitionPath#" detail="The rule definition file #arguments.objectType#.xml was not found in #arguments.definitionPath#." />
+				<cfthrow type="ValidateThis.core.XMLFileReader.#arguments.objectType#.xml.NotFoundIn.#defPath#" detail="The rule definition file for #arguments.objectType# was not found in #defPath#." />
 				<cfcatch type="any"></cfcatch>
 			</cftry>
 		</cfif>
