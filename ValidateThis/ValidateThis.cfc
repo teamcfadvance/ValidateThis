@@ -30,6 +30,7 @@
 		<cfparam name="variables.ValidateThisConfig.localeMap" default="#StructNew()#" />
 		<cfparam name="variables.ValidateThisConfig.defaultLocale" default="en_US" />
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
+		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
 		
 		<cfreturn this />
 	</cffunction>
@@ -57,6 +58,15 @@
 		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result) />
 		
 		<cfreturn arguments.Result />
+
+	</cffunction>
+	
+	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate JS statements required to setup client-side validations for VT.">
+		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="JSIncludes" type="Any" required="no" default="true" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfreturn variables.CommonScriptGenerator.getInitializationScript(argumentCollection=arguments) />
 
 	</cffunction>
 
@@ -108,7 +118,7 @@
 
 	</cffunction>
 
-	<cffunction name="getBean" access="public" output="false" returntype="any" hint="I am used to aid Unit Testing">
+	<cffunction name="getBean" access="public" output="false" returntype="any" hint="I am used to allow the facade to ask the factory for beans">
 		<cfargument name="BeanName" type="Any" required="false" />
 		
 		<cfreturn variables.ValidationFactory.getBean(arguments.BeanName) />

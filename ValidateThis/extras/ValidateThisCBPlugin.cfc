@@ -62,48 +62,12 @@
 		<cfreturn variables.ValidateThis.getValidationScript(argumentCollection=arguments) />
 	</cffunction>
 	
-	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate setup Javascript for client-side validations. I am optional.">
-		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="any" required="false" />
-		<cfargument name="Context" type="any" required="false" />
-		<cfargument name="formName" type="any" required="false" />
-		<cfargument name="JSLib" type="any" required="false" />
-		<cfargument name="locale" type="Any" required="false" />
+	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate JS statements required to setup client-side validations for VT.">
+		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="JSIncludes" type="Any" required="no" default="true" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfreturn variables.ValidateThis.getInitializationScript(argumentCollection=arguments) />
-	</cffunction>
-
-	<cffunction name="getJSIncludeScript" returntype="any" access="public" output="false" hint="I generate setup Javascript for client-side validations. I am optional.">
-		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="any" required="false" />
-		<cfargument name="Context" type="any" required="false" />
-		<cfargument name="formName" type="any" required="false" />
-		<cfargument name="JSLib" type="any" required="false" />
-		<cfargument name="locale" type="Any" required="false" />
-
-		<cfreturn variables.ValidateThis.getJSIncludeScript(argumentCollection=arguments) />
-	</cffunction>
-
-	<cffunction name="getJSLocaleIncludeScript" returntype="any" access="public" output="false" hint="I generate setup Javascript for client-side validations. I am optional.">
-		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="any" required="false" />
-		<cfargument name="Context" type="any" required="false" />
-		<cfargument name="formName" type="any" required="false" />
-		<cfargument name="JSLib" type="any" required="false" />
-		<cfargument name="locale" type="Any" required="false" />
-
-		<cfreturn variables.ValidateThis.getJSLocaleIncludeScript(argumentCollection=arguments) />
-	</cffunction>
-
-	<cffunction name="getSetupScript" returntype="any" access="public" output="false" hint="I generate setup Javascript for client-side validations. I am optional.">
-		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="any" required="false" />
-		<cfargument name="Context" type="any" required="false" />
-		<cfargument name="formName" type="any" required="false" />
-		<cfargument name="JSLib" type="any" required="false" />
-		<cfargument name="locale" type="Any" required="false" />
-
-		<cfreturn variables.ValidateThis.getSetupScript(argumentCollection=arguments) />
 	</cffunction>
 
 	<cffunction name="getRequiredProperties" access="public" output="false" returntype="any" hint="I return a structure containing the name of all of the required properties for the given context.">

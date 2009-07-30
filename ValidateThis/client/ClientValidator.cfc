@@ -56,20 +56,13 @@
 	</cffunction>
 
 	<cffunction name="getGeneratedJavaScript" returntype="any" access="public" output="false" hint="I ask the appropriate client script writer to generate some JS for me.">
-		<cfargument name="scriptType" type="any" required="true" hint="Current valid values are Initialization, JSInclude, JSLocaleInclude and Setup." />
+		<cfargument name="scriptType" type="any" required="true" hint="Current valid values are JSInclude, Locale and VTSetup." />
 		<cfargument name="JSLib" type="any" required="true" />
-		<cfargument name="formName" type="any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfset var local = {jScript=""} />
-		<cfif arguments.scriptType EQ "Initialization">
-			<cfset arguments.scriptType = "JSInclude,JSLocaleInclude,Setup" />
-		</cfif>
-		<cfloop list="#arguments.scriptType#" index="local.theType">
-			<cfinvoke component="#variables.ScriptWriters[arguments.JSLib]#" method="generate#local.theType#Script" argumentcollection="#arguments#" returnvariable="local.scriptlet" />
-			<cfset local.jScript = local.jScript & local.scriptlet />
-		</cfloop>
-		<cfreturn local.jScript />
+		<cfset var theScript = "" />
+		<cfinvoke component="#variables.ScriptWriters[arguments.JSLib]#" method="generate#arguments.scriptType#Script" locale="#arguments.locale#" returnvariable="theScript" />
+		<cfreturn theScript />
 
 	</cffunction>
 	
