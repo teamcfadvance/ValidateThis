@@ -38,6 +38,7 @@
 		<cfset variables.Beans.TransientFactory.setTranslator(variables.Beans.Translator) />
 		<cfset variables.Beans.ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(variables.Beans.FileSystem,variables.Beans.TransientFactory) />
 		<cfset variables.Beans.ClientValidator = CreateObject("component","ValidateThis.client.ClientValidator").init(variables.Beans.FileSystem,variables.ValidateThisConfig,variables.Beans.Translator) />
+		<cfset variables.Beans.CommonScriptGenerator = CreateObject("component","ValidateThis.client.CommonScriptGenerator").init(variables.Beans.ClientValidator) />
 		
 	</cffunction>
 	
@@ -67,7 +68,7 @@
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 		
-		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),getBean("XMLFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),getBean("onMMHelper"),variables.ValidateThisConfig,arguments.definitionPath) />
+		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),getBean("XMLFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),getBean("onMMHelper"),variables.ValidateThisConfig,arguments.definitionPath,getBean("CommonScriptGenerator")) />
 		
 	</cffunction>
 

@@ -16,8 +16,6 @@
 <cfcomponent output="false" name="ClientScriptWriter_jQuery" extends="ValidateThis.client.AbstractClientScriptWriter" hint="I am responsible for generating jQuery Javascript statements to implement validations.">
 
 	<cffunction name="generateJSIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required JS libraries.">
-		<cfargument name="formName" type="any" required="yes" />
-		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
 		<cfset var JSRoot = getValidateThisConfig().JSRoot />
@@ -33,8 +31,7 @@
 
 	</cffunction>
 
-	<cffunction name="generateJSLocaleIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required locale specific JS libraries.">
-		<cfargument name="formName" type="any" required="yes" />
+	<cffunction name="generateLocaleScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required locale specific JS libraries.">
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
@@ -51,9 +48,7 @@
 
 	</cffunction>
 
-	<cffunction name="generateSetupScript" returntype="any" access="public" output="false" hint="I generate the JS to do some initial setup.">
-		<cfargument name="formName" type="any" required="yes" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+	<cffunction name="generateVTSetupScript" returntype="any" access="public" output="false" hint="I generate the JS to do some initial setup.">
 
 		<cfset var theScript = "" />
 
