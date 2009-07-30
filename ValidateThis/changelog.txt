@@ -60,3 +60,17 @@ Version 0.80
 - changed the signature of the validate() method in the ValidateThis.cfc facade. The order of the first two arguments changed as objectType became an optional argument.
 - created a Coldbox Plugin for ValidateThis!
 
+Version 0.85
+------------
+
+- fixed a bug in ServerValidator.cfc that was causing conditions using non-numeric DependentPropertyValues to throw an error
+- changed the getInitializationScript() method in the ValidateThis.cfc facade to not require an objectType
+- changed the getInitializationScript() method to allow for selectively including or not including script to load the JS libraries
+- xml files are now allowed to be named .xml.cfm 
+- xml files can be contained in a folder under the defined definitionPath folder with the same name as the object type
+- you can specify multiple folders in definitionPath in the ValidateThisConfig structure, and the framework will look in each of those folders, in the order specified, to find your xml files
+- added a method for getFailuresAsString() to the Result.cfc object (thanks Craig)
+
+- updated Coldbox Plugin in the following ways:
+	- if no setting for VT_definitionPath is defined, it will use the setting for ModelsPath and the setting for ModelsExternalLocationPath, in that order, to look for the xml definition files
+	
