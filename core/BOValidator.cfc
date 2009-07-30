@@ -150,6 +150,7 @@
 
 	</cffunction>
 
+	<!--- These are all being replaced by onMM - need to test
 	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" 
 		hint="I generate the JS using the Client Validator script.">
 		<cfargument name="Context" type="any" required="false" default="" />
@@ -190,6 +191,7 @@
 		<cfreturn variables.ClientValidator.getSetupScript(arguments.formName,arguments.JSLib,arguments.locale) />
 
 	</cffunction>
+	--->
 
 	<cffunction name="getValidations" access="public" output="false" returntype="any">
 		<cfargument name="Context" type="any" required="false" default="" />
@@ -279,6 +281,51 @@
 		<cfreturn Hash(argList) />
 	</cffunction>
 	
+	<cffunction name="onMissingMethod" access="public" output="false" returntype="Any" hint="This is used to eliminate the need for duplicate methods which all just pass calls on to the Client Validator.">
+		<cfargument name="missingMethodName" type="any" required="true" />
+		<cfargument name="missingMethodArguments" type="any" required="true" />
+
+		<cfset var scriptType = determineScriptType(arguments.missingMethodName) />
+		<cfif Len(scriptType)>
+			<cfreturn variables.ClientValidator.getGeneratedJavaScript(scriptType=scriptType,JSLib=arguments.missingMethodArguments.JSLib,formName=determineFormName(arguments.missingMethodArguments),locale=determineLocale(arguments.missingMethodArguments)) />
+		<cfelse>
+			<cfthrow type="ValidateThis.core.BOValidator.MethodNotDefined" detail="The method #arguments.missingMethodName# does not exist in the BOValidator object." />
+		</cfif>
+		
+	</cffunction>
+	
+	<cffunction name="determineScriptType" returntype="any" access="public" output="false" hint="I try to determine the script type by looking at the missing method name.">
+		<cfargument name="methodName" type="any" required="true" />
+
+		<cfif Left(arguments.methodName,3) EQ "get" AND Right(arguments.methodName,6) EQ "Script">
+			<cfreturn Mid(arguments.methodName,4,Len(arguments.methodName)-9) />
+		<cfelse>
+			<cfreturn "" />
+		</cfif>
+	</cffunction>
+
+	<cffunction name="determineFormName" returntype="any" access="public" output="false" hint="I try to determine the form name by looking at the missing method arguments.">
+		<cfargument name="theArguments" type="any" required="true" />
+		
+		<cfif StructKeyExists(arguments.theArguments,"formName") AND Len(arguments.theArguments.formName)>
+			<cfreturn arguments.theArguments.formName />
+		<cfelseif StructKeyExists(arguments.theArguments,"Context")>
+			<cfreturn getFormName(arguments.theArguments.Context) />
+		<cfelse>
+			<cfreturn getFormName("") />
+		</cfif>
+	</cffunction>
+
+	<cffunction name="determineLocale" returntype="any" access="public" output="false" hint="I try to determine the locale by looking at the missing method arguments.">
+		<cfargument name="theArguments" type="any" required="true" />
+		
+		<cfif StructKeyExists(arguments.theArguments,"locale")>
+			<cfreturn arguments.theArguments.locale />
+		<cfelse>
+			<cfreturn "" />
+		</cfif>
+	</cffunction>
+
 </cfcomponent>
 	
 
