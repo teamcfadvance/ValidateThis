@@ -53,14 +53,6 @@
 
 	</cffunction>
 	
-	<cffunction name="generateInitializationScript" returntype="any" access="public" output="false" hint="I generate the JS to  load the required JS libraries and do some initial setup.">
-		<cfargument name="formName" type="any" required="yes" />
-		<cfargument name="locale" type="Any" required="no" default="" />
-
-		<cfreturn generateJSIncludeScript(argumentCollection=arguments) & generateJSLocaleIncludeScript(argumentCollection=arguments) & generateSetupScript(argumentCollection=arguments) />
-
-	</cffunction>
-
 	<cffunction name="generateJSIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required JS libraries.">
 		<cfargument name="formName" type="any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />

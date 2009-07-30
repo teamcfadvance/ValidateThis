@@ -55,43 +55,24 @@
 
 	</cffunction>
 
-	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate the JS necessary to initialize the JS libraries.">
-		<cfargument name="formName" type="any" required="true" />
+	<cffunction name="getGeneratedJavaScript" returntype="any" access="public" output="false" hint="I ask the appropriate client script writer to generate some JS for me.">
+		<cfargument name="scriptType" type="any" required="true" hint="Current valid values are Initialization, JSInclude, JSLocaleInclude and Setup." />
 		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="formName" type="any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn variables.ScriptWriters[arguments.JSLib].generateInitializationScript(arguments.formName,arguments.locale) />
+		<cfset var local = {jScript=""} />
+		<cfif arguments.scriptType EQ "Initialization">
+			<cfset arguments.scriptType = "JSInclude,JSLocaleInclude,Setup" />
+		</cfif>
+		<cfloop list="#arguments.scriptType#" index="local.theType">
+			<cfinvoke component="#variables.ScriptWriters[arguments.JSLib]#" method="generate#local.theType#Script" argumentcollection="#arguments#" returnvariable="local.scriptlet" />
+			<cfset local.jScript = local.jScript & local.scriptlet />
+		</cfloop>
+		<cfreturn local.jScript />
 
 	</cffunction>
-
-	<cffunction name="getJSIncludeScript" returntype="any" access="public" output="false" hint="I get the JS to load the required JS libraries.">
-		<cfargument name="formName" type="any" required="yes" />
-		<cfargument name="JSLib" type="any" required="true" />
-		<cfargument name="locale" type="Any" required="no" default="" />
-
-		<cfreturn variables.ScriptWriters[arguments.JSLib].generateJSIncludeScript(arguments.formName,arguments.locale) />
-
-	</cffunction>
-
-	<cffunction name="getJSLocaleIncludeScript" returntype="any" access="public" output="false" hint="I get the JS to load the required locale specific JS libraries.">
-		<cfargument name="formName" type="any" required="yes" />
-		<cfargument name="JSLib" type="any" required="true" />
-		<cfargument name="locale" type="Any" required="no" default="" />
-
-		<cfreturn variables.ScriptWriters[arguments.JSLib].generateJSLocaleIncludeScript(arguments.formName,arguments.locale) />
-
-	</cffunction>
-
-	<cffunction name="getSetupScript" returntype="any" access="public" output="false" hint="I get the JS to do some initial setup.">
-		<cfargument name="formName" type="any" required="yes" />
-		<cfargument name="JSLib" type="any" required="true" />
-		<cfargument name="locale" type="Any" required="no" default="" />
-
-		<cfreturn variables.ScriptWriters[arguments.JSLib].generateSetupScript(arguments.formName,arguments.locale) />
-
-	</cffunction>
-
-
+	
 	<cffunction name="getScriptWriters" access="public" output="false" returntype="any">
 		<cfreturn variables.ScriptWriters />
 	</cffunction>
