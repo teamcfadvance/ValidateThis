@@ -85,7 +85,6 @@ Modification History:
 		<!--- Set the View To Display, after Logic --->
 		<cfset Event.setView("vwEdit")>
 		
-		<!--- attempt to get the ValidateThis plugin --->
 	</cffunction>
 
 	<cffunction name="doUpdate" access="public" returntype="void" output="false">
