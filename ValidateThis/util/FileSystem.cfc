@@ -79,6 +79,9 @@
 		<cfif CheckDirectoryExists(arguments.path)>
 			<cfreturn arguments.path />
 		<cfelse>
+			<cfif Right(arguments.path,1) NEQ "/">
+				<cfset arguments.path = arguments.path & "/" />
+			</cfif>
 			<cfreturn ExpandPath(arguments.path) />
 		</cfif>
 	</cffunction>

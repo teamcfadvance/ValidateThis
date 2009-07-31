@@ -86,3 +86,8 @@ The following may break backwards compatibility:
 	<cfargument name="JSIncludes" type="Any" required="no" default="true" />
 	<cfargument name="locale" type="Any" required="no" default="" />
 
+Version 0.851
+-------------
+
+- a relative path specified in definitionPath may be specified with or without a trailing "/"
+
