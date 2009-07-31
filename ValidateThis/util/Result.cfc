@@ -156,6 +156,20 @@
 
 	</cffunction>
 
+	<cffunction name="getFailuresAsString" access="public" output="false" returntype="any" hint="I return the errors as a string separated with a specified delimiter.">
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="delim" type="string" required="false" default="<br/>" />
+	
+		<cfset var FailureList = "" />
+		<cfset var Failure = 0 />
+		<cfloop array="#getFailures(arguments.locale)#" index="Failure">
+			<cfif Len(Failure.Message)>
+				<cfset FailureList = FailureList & arguments.delim & Failure.Message />
+			</cfif>
+		</cfloop>
+		<cfreturn FailureList />
+	</cffunction>
+
 	<!--- getters and setters --->
 	<cffunction name="getIsSuccess" access="public" output="false" returntype="boolean">
 		<cfreturn variables.instance.IsSuccess />
