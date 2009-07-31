@@ -157,6 +157,7 @@
 	</cffunction>
 
 	<cffunction name="getFailuresAsString" access="public" output="false" returntype="any" hint="I return the errors as a string separated with a specified delimiter.">
+		<!--- Based on code by Craig McDonald --->
 		<cfargument name="locale" type="Any" required="false" default="" />
 		<cfargument name="delim" type="string" required="false" default="<br/>" />
 	
