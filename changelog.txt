@@ -71,6 +71,18 @@ Version 0.85
 - you can specify multiple folders in definitionPath in the ValidateThisConfig structure, and the framework will look in each of those folders, in the order specified, to find your xml files
 - added a method for getFailuresAsString() to the Result.cfc object (thanks Craig)
 
+- changed arguments expected by getInitializationScript() from:
+	<cfargument name="Context" type="any" required="false" default="" />
+	<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
+	<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+	<cfargument name="locale" type="Any" required="no" default="" />
+
+	to:
+	<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+	<cfargument name="JSIncludes" type="Any" required="no" default="true" />
+	<cfargument name="locale" type="Any" required="no" default="" />
+
+
 - updated Coldbox Plugin in the following ways:
 	- if no setting for VT_definitionPath is defined, it will use the setting for ModelsPath and the setting for ModelsExternalLocationPath, in that order, to look for the xml definition files
 	

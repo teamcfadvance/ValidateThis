@@ -51,6 +51,28 @@
 		<cfreturn variables.ValidateThis.validate(argumentCollection=arguments) />
 	</cffunction>
 
+	<cffunction name="setupValidationjQuery" access="public" output="false" returntype="void" hint="Creates the default form setup for jQuery validation using the scriptInclude plugin.">
+		<!--- Based on a Plugin created by Craig McDonald (craig@neuralmotion.com.au) --->
+		<cfargument name="objectlist" type="any" required="true" hint="One or more objects to validate. As a list" />
+		<cfargument name="context" type="any" required="false" default="" hint="The context of the form to validate" />
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="formName" type="Any" required="false" default="" />
+		<cfargument name="loadMainLibrary" type="Any" required="false" default="false" />
+		
+		<cfset var scriptInclude = getMyPlugin("scriptInclude") />
+		<cfset var object = 0 />
+		<cfif arguments.loadMainLibrary>
+			<cfset scriptInclude.addResource(file='jquery.min',type='JS',path='') />
+		</cfif>
+		<cfset scriptInclude.addResource(file='jquery.field.min',type='JS',path='') />
+		<cfset scriptInclude.addResource(file='jquery.validate.pack',type='JS',path='') />
+		<cfset scriptInclude.addScript(getInitializationScript(JSLib="jQuery",JSIncludes=false,locale=arguments.locale)) />
+		<cfloop index="object" list="#arguments.objectlist#">		
+			<cfset scriptInclude.addScript(getValidationScript(JSLib="jQuery",objectType=object,Context=arguments.context,formName=arguments.formName,locale=arguments.locale)) />
+		</cfloop>
+	
+	</cffunction>
+
 	<cffunction name="getValidationScript" returntype="any" access="public" output="false" hint="I generate client-side validations scripts for an object">
 		<cfargument name="theObject" type="any" required="false" />
 		<cfargument name="objectType" type="any" required="false" />
