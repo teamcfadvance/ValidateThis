@@ -58,8 +58,12 @@
 	</Settings>
 
 	<!--Your Settings can go here, if not needed, use <YourSettings />. You can use these for anything you like.-->
-	<YourSettings />
-	
+	<YourSettings>
+   		<!-- Begin ScriptInclude Plugin Configuration -->
+		<Setting name="assetPathJS" value="js"/>
+   		<!-- End ScriptInclude Plugin Configuration -->
+	</YourSettings>
+
 
 	<!--Optional,if blank it will use the CFMX administrator settings.-->
 	<MailServerSettings />
