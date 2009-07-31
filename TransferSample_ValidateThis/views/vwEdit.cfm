@@ -6,7 +6,7 @@
 </script>
 
 <!--- Get the setup and validation scripts from VT --->
-#getMyPlugin("ValidateThisCBPlugin").getInitializationScript(objectType="users.users")#
+#getMyPlugin("ValidateThisCBPlugin").getInitializationScript()#
 #getMyPlugin("ValidateThisCBPlugin").getValidationScript(objectType="users.users",formName="addform")#
 
 <div align="center" class="mainDiv">

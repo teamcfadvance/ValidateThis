@@ -52,7 +52,7 @@
 	</cffunction>
 
 	<cffunction name="setupValidationSI" access="public" output="false" returntype="void" hint="Creates the default form setup for jQuery validation using the scriptInclude plugin.">
-		<!--- Based on a Plugin created by Craig McDonald (craig@neuralmotion.com.au) --->
+		<!--- Based on a Plugin created by Craig McDonald --->
 		<!--- Note: This has not been tested --->
 		<cfargument name="objectList" type="any" required="true" hint="One or more objects to validate. As a list" />
 		<cfargument name="context" type="any" required="false" default="" hint="The context of the form to validate" />

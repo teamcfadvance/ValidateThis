@@ -47,7 +47,7 @@
 
 <!--- If we want JS validations turned on, get the Script block for JavaScript validations, and include it in the <head> --->
 <cfif NOT Form.NoJS>
-	<cfset ValInit = UserTO.getInitializationScript(Form.Context) />
+	<cfset ValInit = UserTO.getInitializationScript() />
 	<cfhtmlhead text="#ValInit#" />
 	<!--- Some formatting rules specific to this form --->
 	<cfsavecontent variable="headJS">
