@@ -14,7 +14,6 @@
 	
 --->
 <cfparam name="SuccessMessage" default="" />
-<cfparam name="locale" default="fr_FR" />
 
 <cfif Form.Context EQ "Profile">
 	<cfset PageHeading = "Editing an existing User" />
@@ -56,7 +55,7 @@
 
 <!--- If we want JS validations turned on, get the Script blocks to initialize the libraries and for the validations themselves, and include them in the <head> --->
 <cfif NOT Form.NoJS>
-	<cfset ValInit = application.ValidateThis.getInitializationScript(objectType="User",Context=Form.Context) />
+	<cfset ValInit = application.ValidateThis.getInitializationScript() />
 	<cfhtmlhead text="#ValInit#" />
 	<!--- Some formatting rules specific to this form --->
 	<cfsavecontent variable="headJS">
@@ -74,10 +73,8 @@
 		</script>
 	</cfsavecontent>	
 	<cfhtmlhead text="#headJS#" />
-	<cfset ValidationScript = application.ValidateThis.getValidationScript(objectType="User",Context=Form.Context,locale="fr_FR") />
+	<cfset ValidationScript = application.ValidateThis.getValidationScript(objectType="User",Context=Form.Context) />
 	<cfhtmlhead text="#ValidationScript#" />
-	<!--- Include localization file for jQuery validate plugin --->
-	<cfhtmlhead text='<script src="/js/messages_fr.js" type="text/javascript"></script>' />
 </cfif>
 
 <cfoutput>
