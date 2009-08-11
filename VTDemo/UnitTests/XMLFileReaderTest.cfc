@@ -111,6 +111,14 @@ purpose:		I XMLFileReaderTest.cfc
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="processXMLReturnsCorrectStructWithMappedPathWithoutTrailingSlash" access="public" returntype="void">
+		<cfscript>
+			defPath = "/BODemo/Model";
+			PropertyDescs = XMLFileReader.processXML(variables.className,defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="processXMLReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
 			className = "user.user";
