@@ -27,7 +27,7 @@ purpose:		I am the unit testing suite
 
 --->
 <cfset testSuite = createObject("component","mxunit.framework.TestSuite").TestSuite() />
-<cfloop list="AbstractDecoratorTest,BOValidatorTest,ServerRuleValidatorTest,FileSystemTest,ClientScriptWriter_jQueryTest,ClientValidatorTest,ResultTest,ServerValidatorTest,TransientFactoryTest,ValidationFactoryTest,ValidationTest,ResourceBundleTest,BaseTranslatorTest,RBTranslatorTest" index="i">
+<cfloop list="AbstractDecoratorTest,BaseLocaleLoaderTest,BaseTranslatorTest,BOValidatorTest,ClientScriptWriter_jQueryTest,ClientValidatorTest,CommonScriptGeneratorTest,FileSystemTest,RBLocaleLoaderTest,RBTranslatorTest,ResourceBundleTest,ResultTest,ServerRuleValidatorTest,ServerValidatorTest,TransientFactoryTest,ValidateThisTest,ValidationTest,ValidationFactoryTest,XMLFileReaderTest" index="i">
 	<cfset testSuite.addAll("UnitTests.#i#") />
 </cfloop>
 <cfset results = testSuite.run() />
