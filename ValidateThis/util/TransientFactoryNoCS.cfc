@@ -21,10 +21,8 @@
 	<!--- public --->
 
 	<cffunction name="init" access="public" output="false" returntype="any" hint="returns a configured transient factory">
-		<cfargument name="onMMHelper" type="any" required="true">
 		<cfset variables.classes = {Result="ValidateThis.util.Result",Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.ResourceBundle"} />
 		<cfset variables.afterCreateMethod = "setup" />
-		<cfset variables.onMMHelper = arguments.onMMHelper />
 		<cfreturn this />
 	</cffunction>
 	
@@ -34,7 +32,7 @@
 		<cfset var local = {} />
 		<cfset local.obj = createObject("component",variables.classes[arguments.transientName])>
 		<cfif StructKeyExists(local.obj,"init")>
-			<cfset variables.onMMHelper.doInvoke("init",arguments.initArgs,local.obj) />
+			<cfinvoke component="#local.obj#" method="init" argumentcollection="#arguments.initArgs#" />
 		</cfif>
 		<!--- Need to do manual injections of singletons as we're not coupled to CS anymore, ugly but it works for now --->
 		<cfif arguments.transientName EQ "Result">

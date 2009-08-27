@@ -21,7 +21,8 @@
 		<cfargument name="defaultLocale" type="any" required="true" />
 
 		<cfset variables.defaultLocale = arguments.defaultLocale />
-		<cfset variables.instance = {locales = arguments.LocaleLoader.loadLocales(arguments.localeMap)} />
+		<cfset variables.instance = StructNew() />
+		<cfset variables.instance.locales = arguments.LocaleLoader.loadLocales(arguments.localeMap) />
 		<cfreturn this />
 	</cffunction>
 	

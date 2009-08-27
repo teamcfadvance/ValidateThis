@@ -91,3 +91,9 @@ Version 0.851
 
 - a relative path specified in definitionPath may be specified with or without a trailing "/"
 
+Version 0.9
+-------------
+
+- removed all the hacky code required to support a bug in cfinvoke in Railo, that has since been fixed
+
+

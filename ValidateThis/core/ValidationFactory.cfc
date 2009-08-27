@@ -28,8 +28,7 @@
 
 	<cffunction name="loadBeans" access="private" output="false" returntype="void" hint="I load the required singletons">
 	
-		<cfset variables.Beans.onMMHelper = createObject("component","ValidateThis.util.onMMHelper").init() />
-		<cfset variables.Beans.TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init(variables.Beans.onMMHelper) />
+		<cfset variables.Beans.TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init() />
 		<cfset variables.Beans.FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(variables.Beans.TransientFactory) />
 		<cfset variables.Beans.XMLFileReader = CreateObject("component","ValidateThis.core.XMLFileReader").init(variables.Beans.FileSystem,variables.ValidateThisConfig) />
 		<cfset variables.Beans.ResourceBundle = createObject("component","ValidateThis.util.ResourceBundle").init() />
@@ -68,7 +67,7 @@
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 		
-		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),getBean("XMLFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),getBean("onMMHelper"),variables.ValidateThisConfig,arguments.definitionPath,getBean("CommonScriptGenerator")) />
+		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),getBean("XMLFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),variables.ValidateThisConfig,arguments.definitionPath,getBean("CommonScriptGenerator")) />
 		
 	</cffunction>
 

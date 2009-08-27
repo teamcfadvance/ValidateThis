@@ -18,9 +18,7 @@
 	<cffunction name="Init" access="Public" returntype="any" output="false" hint="I am the pseudo-constructor">
 
 		<cfargument name="theObject" type="any" required="yes" hint="The Object to be wrapped" />
-		<cfargument name="onMMHelper" type="any" required="true">
 
-		<cfset variables.onMMHelper = arguments.onMMHelper >
 		<cfset variables.instance = StructNew() />
 		<cfset variables.instance.theObject = arguments.theObject />
 		<cfset variables.instance.invalidVars = StructNew() />
@@ -37,7 +35,11 @@
 		<cfif Left(arguments.missingMethodName,3) EQ "get" AND StructKeyExists(variables.instance.invalidVars,local.varName)>
 			<cfreturn variables.instance.invalidVars[local.varName] />
 		<cfelse>
-			<cfreturn variables.onMMHelper.doInvoke(arguments.missingMethodName,arguments.missingMethodArguments,variables.instance.theObject) />
+			<cfinvoke component="#variables.instance.theObject#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="local.returnValue" />
+			<cfif NOT StructKeyExists(local,"returnValue")>
+				<cfset local.returnValue = "" />
+			</cfif>
+			<cfreturn local.returnValue />
 		</cfif>
 		
 	</cffunction>

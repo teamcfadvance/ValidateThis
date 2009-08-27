@@ -22,7 +22,6 @@
 		<cfargument name="ServerValidator" type="any" required="true" />
 		<cfargument name="ClientValidator" type="any" required="true" />
 		<cfargument name="TransientFactory" type="any" required="true" />
-		<cfargument name="onMMHelper" type="any" required="true" />
 		<cfargument name="ValidateThisConfig" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 		<cfargument name="CommonScriptGenerator" type="any" required="true" />
@@ -34,7 +33,6 @@
 		<cfset variables.ServerValidator = arguments.ServerValidator />
 		<cfset variables.ClientValidator = arguments.ClientValidator />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
-		<cfset variables.onMMHelper = arguments.onMMHelper />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<cfset variables.CommonScriptGenerator = arguments.CommonScriptGenerator />
 		
@@ -121,7 +119,7 @@
 	<cffunction name="newBusinessObjectWrapper" returntype="any" access="public" output="false" hint="I create a BusinessObjectWrapper object.">
 		<cfargument name="theObject" type="any" required="yes" />
 
-		<cfreturn variables.TransientFactory.newBusinessObjectWrapper(arguments.theObject,variables.onMMHelper) />
+		<cfreturn variables.TransientFactory.newBusinessObjectWrapper(arguments.theObject) />
 		
 	</cffunction>
 	
