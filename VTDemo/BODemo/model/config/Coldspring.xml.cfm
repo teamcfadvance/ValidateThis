@@ -80,12 +80,4 @@
 		</property>
 	</bean>
 	
-	<!-- Extra components from ValidateThis that the demo uses -->
-	
-	<bean id="CFMLVersion" class="ValidateThis.util.CFMLVersion">
-	</bean>
-
-	<bean id="onMMHelper" class="ValidateThis.util.onMMHelper">
-	</bean>
-
 </beans>

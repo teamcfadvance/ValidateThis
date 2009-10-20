@@ -41,7 +41,11 @@
 			<cfset arguments.missingMethodArguments.theObject = this />
 		</cfif>
 		
-		<cfreturn getOnMMHelper().doInvoke(arguments.missingMethodName,arguments.missingMethodArguments,local.Validator) />
+		<cfinvoke component="#local.Validator#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="local.returnValue" />
+		<cfif NOT StructKeyExists(local,"returnValue")>
+			<cfset local.returnValue = "" />
+		</cfif>
+		<cfreturn local.returnValue />
 		
 	</cffunction>
 
@@ -66,14 +70,6 @@
 	<cffunction name="setValidator" returntype="void" access="public" output="false">
 		<cfargument name="Validator" type="any" required="true" />
 		<cfset variables.Validator = arguments.Validator />
-	</cffunction>
-
-	<cffunction name="getonMMHelper" access="public" output="false" returntype="any">
-		<cfreturn variables.onMMHelper />
-	</cffunction>
-	<cffunction name="setonMMHelper" returntype="void" access="public" output="false">
-		<cfargument name="onMMHelper" type="any" required="true">
-		<cfset variables.onMMHelper = arguments.onMMHelper >
 	</cffunction>
 	
 	<!--- The following three methods are not strictly required by the ValidateThis framework, 

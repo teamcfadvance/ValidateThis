@@ -17,8 +17,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			onMMHelper = createObject("component","ValidateThis.util.onMMHelper").init();
-			TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init(onMMHelper);
+			TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init();
 			FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(TransientFactory);
 			ValidateThisConfig = {JSRoot="/JS"};
 			Translator = createObject('component','MightyMock.MightyMock');
