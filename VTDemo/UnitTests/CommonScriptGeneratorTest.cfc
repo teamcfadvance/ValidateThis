@@ -20,7 +20,7 @@
 			TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init();
 			FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(TransientFactory);
 			ValidateThisConfig = {JSRoot="/JS"};
-			Translator = createObject('component','MightyMock.MightyMock');
+			Translator = mock();
 			ClientValidator = CreateObject("component","ValidateThis.client.ClientValidator").init(FileSystem,ValidateThisConfig,Translator);
 			variables.CSGenerator = CreateObject("component","ValidateThis.client.CommonScriptGenerator").init(ClientValidator);
 			variables.JSLib = "jQuery";

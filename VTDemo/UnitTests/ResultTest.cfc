@@ -32,7 +32,7 @@ purpose:		I ResultTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			MockTranslator = createObject('component','MightyMock.MightyMock');
+			MockTranslator = mock();
 			MockTranslator.translate("{string}","{string}").returns("Translated Text");
 			variables.Result = CreateObject("component","ValidateThis.util.Result").init();
 			variables.Result.setTranslator(MockTranslator);

@@ -30,7 +30,7 @@ purpose:		I RBLocaleLoaderTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			variables.LoaderHelper = createObject('component','MightyMock.MightyMock');
+			variables.LoaderHelper = mock();
 			variables.locales = {valA="A",valB="B"};
 			variables.LoaderHelper.getResourceBundle("A").returns("A");
 			variables.LoaderHelper.getResourceBundle("B").returns("B");

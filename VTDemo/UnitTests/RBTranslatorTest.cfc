@@ -35,7 +35,7 @@ purpose:		I RBTranslatorTest.cfc
 			locales.en_US.NotEmail = "Hey, buddy, you call that an Email Address?";
 			locales.fr_FR.NotEmail = "Hé, mon pote, que vous appelez une adresse de courriel?";
 			locales.fr_FR.The_Email_Address_is_required = "L'adresse e-mail est requis.";
-			MockRBLoader = createObject('component','MightyMock.MightyMock');
+			MockRBLoader = mock();
 			MockRBLoader.loadLocales("{struct}").returns(locales);
 			variables.RBTranslator = CreateObject("component","ValidateThis.core.RBTranslator").init(MockRBLoader,StructNew(),"en_US");
 		</cfscript>

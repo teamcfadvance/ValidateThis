@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<validateThis xsi:noNamespaceSchemaLocation="../../../ValidateThis/core/validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<validateThis xsi:noNamespaceSchemaLocation="validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<conditions>
 		<condition name="MustLikeSomething" 
 			serverTest="getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0"
@@ -9,11 +9,6 @@
 		<context name="Register" formName="frmMain" />
 		<context name="Profile" formName="frmMain" />
 	</contexts>
-	<objectRules>
-		<objectRule contexts="Profile">
-			<param methodname="checkSomething" />
-		</objectRule>
-	</objectRules>
 	<objectProperties>
 		<property name="UserName" desc="Email Address">
 			<rule type="required" contexts="*" />

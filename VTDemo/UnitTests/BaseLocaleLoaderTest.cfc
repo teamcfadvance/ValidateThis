@@ -31,7 +31,7 @@ purpose:		I BaseLocaleLoaderTest.cfc
 	<cfset BaseLocaleLoader = "" />
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset LoaderHelper = createObject('component','MightyMock.MightyMock') />
+		<cfset LoaderHelper = mock() />
 		<cfset BaseLocaleLoader = CreateObject("component","ValidateThis.core.BaseLocaleLoader").init(LoaderHelper) />
 	</cffunction>
 

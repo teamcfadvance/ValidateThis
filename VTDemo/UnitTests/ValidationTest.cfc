@@ -32,9 +32,14 @@ purpose:		I ValidationTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			setBeanFactory();
-			Transfer = getBeanFactory().getBean("Transfer");
-			theObject = Transfer.new("user.user");
+			variables.theObject = mock();
+			/*
+			variables.locales = {valA="A",valB="B"};
+			variables.LoaderHelper.getResourceBundle("A").returns("A");
+			variables.LoaderHelper.getResourceBundle("B").returns("B");
+			variables.RBLocaleLoader = CreateObject("component","ValidateThis.core.RBLocaleLoader").init(variables.LoaderHelper);
+			injectMethod(variables.RBLocaleLoader, this, "findLocaleFileOverride", "findLocaleFile");
+			*/
 		</cfscript>
 	</cffunction>
 	
@@ -43,7 +48,7 @@ purpose:		I ValidationTest.cfc
 	
 	<cffunction name="ValidationShouldLoadFromStruct" access="public" returntype="void">
 		<cfscript>
-			TransientFactory = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory");
+			injectMethod(variables.theObject, this, "getFirstName", "getFirstName");
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
@@ -52,16 +57,56 @@ purpose:		I ValidationTest.cfc
 			valStruct.Parameters = StructNew();
 			valStruct.Parameters.Param1 = 1;
 			theValue = "Bob";
-			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"getter");
 			Validation.load(valStruct);
-			assertEquals(Validation.getValType(),valStruct.ValType);
-			assertEquals(Validation.getPropertyName(),valStruct.PropertyName);
-			assertEquals(Validation.getPropertyDesc(),valStruct.PropertyDesc);
-			assertEquals(Validation.getParameters(),valStruct.Parameters);
+			assertEquals(valStruct.ValType,Validation.getValType());
+			assertEquals(valStruct.PropertyName,Validation.getPropertyName());
+			assertEquals(valStruct.PropertyDesc,Validation.getPropertyDesc());
+			assertEquals(valStruct.Parameters,Validation.getParameters());
 			assertTrue(IsObject(Validation.getTheObject()));
-			assertEquals(Validation.getObjectValue(),theValue);
+			assertEquals(theValue,Validation.getObjectValue());
 			assertTrue(Validation.getIsSuccess());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFirstName">
+		<cfreturn "Bob" />
+	</cffunction>
+	
+	<cffunction name="getObjectValueWithGetterShouldWork" access="public" returntype="void">
+		<cfscript>
+			injectMethod(variables.theObject, this, "getFirstName", "getFirstName");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"getter");
+			Validation.load(valStruct);
+			assertEquals("Bob",Validation.getObjectValue());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getObjectValueWithGetterMissingPropertyShouldFail" access="public" returntype="void" mxunit:expectedException="validatethis.server.validation.propertyNotFound">
+		<cfscript>
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"getter");
+			Validation.load(valStruct);
+			assertEquals("Bob",Validation.getObjectValue());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getObjectValueCFWheelsShouldWork" access="public" returntype="void">
+		<cfscript>
+			props = {FirstName="Bob"};
+			variables.theObject.properties().returns(props);
+			variables.theObject.$propertyvalue("FirstName").returns("Bob");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"cfwheels");
+			Validation.load(valStruct);
+			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
 	</cffunction>
 

@@ -29,7 +29,7 @@ purpose:		I BaseTranslatorTest.cfc
 <cfcomponent displayname="UnitTests.BaseTranslatorTest" extends="UnitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset MockBaseLoader = createObject('component','MightyMock.MightyMock') />
+		<cfset MockBaseLoader = mock() />
 		<cfset MockBaseLoader.loadLocales("{struct}").returns(StructNew()) />
 		<cfset variables.BaseTranslator = CreateObject("component","ValidateThis.core.BaseTranslator").init(MockBaseLoader,StructNew(),"") />
 	</cffunction>
