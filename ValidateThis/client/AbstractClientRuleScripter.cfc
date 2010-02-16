@@ -25,7 +25,7 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfthrow errorcode="validatethis.AbstractClientRuleScripter.methodnotdefined"
+		<cfthrow type="validatethis.client.AbstractClientRuleScripter.methodnotdefined"
 				message="I am an abstract object, hence the generateValidationScript method must be overriden in a concrete object." />
 
 		<!--- <cfreturn JSScript /> --->

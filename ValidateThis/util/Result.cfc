@@ -68,10 +68,12 @@
 		<cfset var Failure = 0 />
 		<cfset var Failures = getFailures(arguments.locale) />
 		<cfloop from="1" to="#ArrayLen(Failures)#" index="Failure">
-			<cfif StructKeyExists(FailureList,Failures[Failure].ClientFieldName)>
-				<cfset FailureList[Failures[Failure].ClientFieldName] =  FailureList[Failures[Failure].ClientFieldName] & "<br />" & Failures[Failure].Message />	
-			<cfelse>			
-				<cfset FailureList[Failures[Failure].ClientFieldName] =  Failures[Failure].Message />	
+			<cfif StructKeyExists(Failures[Failure],"ClientFieldName")>
+				<cfif StructKeyExists(FailureList,Failures[Failure].ClientFieldName)>
+					<cfset FailureList[Failures[Failure].ClientFieldName] =  FailureList[Failures[Failure].ClientFieldName] & "<br />" & Failures[Failure].Message />	
+				<cfelse>			
+					<cfset FailureList[Failures[Failure].ClientFieldName] =  Failures[Failure].Message />	
+				</cfif>
 			</cfif>
 		</cfloop>
 		<cfreturn FailureList />

@@ -29,6 +29,7 @@
 		<cfparam name="variables.ValidateThisConfig.definitionPath" default="/model/" />
 		<cfparam name="variables.ValidateThisConfig.localeMap" default="#StructNew()#" />
 		<cfparam name="variables.ValidateThisConfig.defaultLocale" default="en_US" />
+		<cfparam name="variables.ValidateThisConfig.propertyMode" default="getter" />
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
 		
@@ -48,6 +49,7 @@
 		<cfargument name="objectType" type="any" required="false" default="" />
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
+		<cfargument name="propertyMode" type="any" required="false" default="#variables.ValidateThisConfig.propertyMode#" />
 
 		<cfset var theObjectType = determineObjectType(arguments) />
 		<cfset var BOValidator = getValidator(theObjectType,"") />
@@ -55,7 +57,7 @@
 		<cfif NOT StructKeyExists(arguments.theObject,"testCondition")>
 			<cfset arguments.theObject["testCondition"] = this["testCondition"] />
 		</cfif>
-		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result) />
+		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.propertyMode) />
 		
 		<cfreturn arguments.Result />
 

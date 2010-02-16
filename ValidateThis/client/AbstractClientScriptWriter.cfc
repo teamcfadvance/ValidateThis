@@ -33,7 +33,7 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
+		<cfthrow type="validatethis.client.AbstractClientScriptWriter.methodnotdefined"
 				message="I am an abstract object, hence the generateValidationScript method must be overriden in a concrete object." />
 
 	</cffunction>
@@ -41,21 +41,21 @@
 	<cffunction name="generateScriptHeader" returntype="any" access="public" output="false" hint="I generate the JS script required at the top of the script block.">
 		<cfargument name="formName" type="any" required="yes" />
 
-		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
+		<cfthrow type="validatethis.client.AbstractClientScriptWriter.methodnotdefined"
 				message="I am an abstract object, hence the generateScriptHeader method must be overriden in a concrete object." />
 
 	</cffunction>
 	
 	<cffunction name="generateScriptFooter" returntype="any" access="public" output="false" hint="I generate the JS script required at the top of the script block.">
 
-		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
+		<cfthrow type="validatethis.client.AbstractClientScriptWriter.methodnotdefined"
 				message="I am an abstract object, hence the generateScriptFooter method must be overriden in a concrete object." />
 
 	</cffunction>
 	
 	<cffunction name="generateJSIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required JS libraries.">
 
-		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
+		<cfthrow type="validatethis.client.AbstractClientScriptWriter.methodnotdefined"
 				message="I am an abstract object, hence the generateJSIncludeScript method must be overriden in a concrete object." />
 
 	</cffunction>
@@ -63,14 +63,14 @@
 	<cffunction name="generateLocaleScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required locale specific JS libraries.">
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
+		<cfthrow type="validatethis.client.AbstractClientScriptWriter.methodnotdefined"
 				message="I am an abstract object, hence the generateJSLocaleIncludeScript method must be overriden in a concrete object." />
 
 	</cffunction>
 
 	<cffunction name="generateVTSetupScript" returntype="any" access="public" output="false" hint="I generate the JS to do some initial setup.">
 
-		<cfthrow errorcode="validatethis.AbstractClientScriptWriter.methodnotdefined"
+		<cfthrow type="validatethis.client.AbstractClientScriptWriter.methodnotdefined"
 				message="I am an abstract object, hence the generateSetupScript method must be overriden in a concrete object." />
 
 	</cffunction>

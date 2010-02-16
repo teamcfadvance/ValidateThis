@@ -20,7 +20,13 @@
 
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfset var otherVal = 0 />
-		<cfinvoke component="#arguments.valObject.getTheObject()#" method="get#Parameters.ComparePropertyName#" returnvariable="otherVal" />
+		<cfif arguments.valObject.getPropertyMode() EQ "getter">
+			<cfinvoke component="#arguments.valObject.getTheObject()#" method="get#Parameters.ComparePropertyName#" returnvariable="otherVal" />
+		<cfelseif arguments.valObject.getPropertyMode() EQ "wheels">	
+			<cfset otherVal = arguments.valObject.getTheObject().$propertyvalue(Parameters.ComparePropertyName) />
+		<cfelse>
+			<cfthrow type="ValidateThis.server.ServerRuleValidator_EqualTo.InvalidPropertyMode" message="The propertyMode (#arguments.valObject.getPropertyMode()#) is not valid.">
+		</cfif>
 		<cfif arguments.valObject.getObjectValue() NEQ otherVal>
 			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be the same as the #Parameters.ComparePropertyDesc#.") />
 		</cfif>

@@ -49,16 +49,6 @@
 		<cfset var defPath = 0 />
 		<cfset var fileName = 0 />
 		<cfset var aPath = 0 />
-		
-		<!--- 
-		if a dotted class path has been specified use that first to locate the rules XML file.
-		This is done so that you can call methods passing the class path (from the definitionPath) e.g.
-			validate( theObject=Enquiry, objectType="form.Enquiry" )
-			getRequiredFields( objectType='form.Enquiry' )
-		--->
-		<cfif arguments.objectType contains ".">
-			<cfset arguments.objectType = Replace(arguments.objectType, ".", "/", "all")>
-		</cfif>
 
 		<!--- Check for a valid folder in arguments.definitionPath --->		
 		<cfloop list="#arguments.definitionPath#" index="aPath">

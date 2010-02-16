@@ -23,7 +23,7 @@
 	<cffunction name="validate" returntype="void" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfthrow errorcode="validatethis.AbstractServerRuleValidator.methodnotdefined"
+		<cfthrow type="validatethis.server.AbstractServerRuleValidator.methodnotdefined"
 				message="I am an abstract object, hence the validate method must be overriden in a concrete object." />
 
 		<!---

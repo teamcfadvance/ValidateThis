@@ -32,13 +32,15 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="Context" type="any" required="true" />
 		<cfargument name="Result" type="any" required="true" />
+		<cfargument name="propertyMode" type="any" required="false" default="getter" hint="Defines the way that property values are determined." />
 
 		<cfset var v = "" />
 		<cfset var theCondition = "" />
 		<cfset var theFailure = 0 />
 		<cfset var FailureMessage = 0 />
 		<cfset var Validations = arguments.BOValidator.getValidations(arguments.Context) />
-		<cfset var theVal = variables.TransientFactory.newValidation(arguments.theObject) />
+		<cfset var theVal = variables.TransientFactory.newValidation(arguments.theObject,arguments.propertyMode) />
+		<cfset var dependentPropertyExpression = 0 />
 		
 		<cfif IsArray(Validations) and ArrayLen(Validations)>
 			<!--- Loop through the validations array, creating validation objects and using them --->
@@ -48,10 +50,11 @@
 				<cfif StructKeyExists(v.Condition,"ServerTest")>
 					<cfset theCondition = v.Condition.ServerTest />
 				<cfelseif StructKeyExists(v.Parameters,"DependentPropertyName")>
+					<cfset dependentPropertyExpression = evalDependentProperty(v.Parameters.DependentPropertyName,arguments.propertyMode) />
 					<cfif StructKeyExists(v.Parameters,"DependentPropertyValue")>
-						<cfset theCondition = "get#v.Parameters.DependentPropertyName#() EQ '#v.Parameters.DependentPropertyValue#'" />
+						<cfset theCondition = dependentPropertyExpression & " EQ '#v.Parameters.DependentPropertyValue#'" />
 					<cfelse>
-						<cfset theCondition = "Len(get#v.Parameters.DependentPropertyName#()) GT 0" />
+						<cfset theCondition = "Len(#dependentPropertyExpression#) GT 0" />
 					</cfif>
 				</cfif>
 				<cfif NOT Len(theCondition) OR arguments.theObject.testCondition(theCondition)>
@@ -75,6 +78,19 @@
 			</cfloop>
 		</cfif>
 
+	</cffunction>
+
+	<cffunction name="evalDependentProperty" access="private" returntype="Any" output="false">
+		<cfargument name="DependentPropertyName" type="Any" required="true" />
+		<cfargument name="propertyMode" type="Any" required="true" />
+		
+		<cfif arguments.propertyMode EQ "getter">
+			<cfreturn "get#arguments.DependentPropertyName#()" />
+		<cfelseif arguments.propertyMode EQ "cfwheels">		
+			<cfreturn "$propertyvalue('#arguments.DependentPropertyName#')" />
+		<cfelse>
+			<cfthrow type="ValidateThis.server.ServerValidator.InvalidPropertyMode" message="The propertyMode (#arguments.propertyMode#) is not valid.">
+		</cfif>
 	</cffunction>
 
 	<cffunction name="getRuleValidators" access="public" output="false" returntype="any">

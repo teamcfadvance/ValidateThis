@@ -26,7 +26,7 @@
 		<cfelseif StructKeyExists(Parameters,"regex")>
 			<cfset theRegex = Parameters.regex />
 		<cfelse>			
-			<cfthrow errorcode="validatethis.ServerRuleValidator_Regex.missingParameter"
+			<cfthrow type="validatethis.server.ServerRuleValidator_Regex.missingParameter"
 			message="Either a regex or a serverRegex parameter must be defined for a regex rule type." />
 		</cfif>
 		<cfif Len(theValue) AND REFind(theRegex,theValue) EQ 0>

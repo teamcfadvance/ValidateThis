@@ -28,7 +28,7 @@
 				<cfset fail(arguments.valObject,customResult.FailureMessage) />
 			</cfif>
 		<cfelse>
-			<cfthrow errorcode="validatethis.ServerRuleValidator_Custom.methodNotFound"
+			<cfthrow type="validatethis.server.ServerRuleValidator_Custom.methodNotFound"
 					message="The method #theMethod# was not found in the object passed into the validation object." />
 		</cfif>
 	</cffunction>

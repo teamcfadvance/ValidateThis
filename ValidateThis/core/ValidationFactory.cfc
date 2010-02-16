@@ -35,7 +35,7 @@
 		<cfset variables.Beans.LocaleLoader = CreateObject("component",variables.ValidateThisConfig.LocaleLoaderPath).init(variables.Beans.ResourceBundle) />
 		<cfset variables.Beans.Translator = CreateObject("component",variables.ValidateThisConfig.TranslatorPath).init(variables.Beans.LocaleLoader,variables.ValidateThisConfig.localeMap,variables.ValidateThisConfig.defaultLocale) />
 		<cfset variables.Beans.TransientFactory.setTranslator(variables.Beans.Translator) />
-		<cfset variables.Beans.ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(variables.Beans.FileSystem,variables.Beans.TransientFactory) />
+		<cfset variables.Beans.ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(variables.Beans.FileSystem,variables.Beans.TransientFactory,variables.ValidateThisConfig.propertyMode) />
 		<cfset variables.Beans.ClientValidator = CreateObject("component","ValidateThis.client.ClientValidator").init(variables.Beans.FileSystem,variables.ValidateThisConfig,variables.Beans.Translator) />
 		<cfset variables.Beans.CommonScriptGenerator = CreateObject("component","ValidateThis.client.CommonScriptGenerator").init(variables.Beans.ClientValidator) />
 		
@@ -47,7 +47,7 @@
 		<cfif StructKeyExists(variables.Beans,arguments.BeanName)>
 			<cfreturn variables.Beans[arguments.BeanName] />
 		<cfelse>
-			<cfthrow type="ValidateThis.ValidationFactory.BeanNotFound" detail="No bean called #arguments.BeanName# was found.">
+			<cfthrow type="ValidateThis.core.ValidationFactory.BeanNotFound" detail="No bean called #arguments.BeanName# was found.">
 		</cfif>
 	
 	</cffunction>

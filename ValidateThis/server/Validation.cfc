@@ -18,7 +18,9 @@
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I am the pseudo-constructor">
 
 		<cfargument name="theObject" type="any" required="yes" hint="The object being validated" />
+		<cfargument name="propertyMode" type="any" required="false" default="getter" hint="The method of determining property values" />
 		<cfset variables.theObject = arguments.theObject />
+		<cfset variables.propertyMode = arguments.propertyMode />
 		<cfreturn this />
 
 	</cffunction>
@@ -38,19 +40,30 @@
 		<cfset var theValue = "" />
 		<cfset var propertyName = getPropertyName() />
 		
-		<cfif StructKeyExists(variables.theObject,"get#propertyName#")>
-			<!--- Using try/catch to deal with composed objects that throw an error if they aren't loaded --->
-			<cftry>
-				<cfinvoke component="#variables.theObject#" method="get#propertyName#" returnvariable="theValue" />
-				<cfcatch type="any"></cfcatch>
-			</cftry>
-			<cfif NOT IsDefined("theValue")>
-				<cfset theValue = "" />
+		<cfif variables.propertyMode EQ "getter">
+			<cfif StructKeyExists(variables.theObject,"get#propertyName#")>
+				<!--- Using try/catch to deal with composed objects that throw an error if they aren't loaded --->
+				<cftry>
+					<cfinvoke component="#variables.theObject#" method="get#propertyName#" returnvariable="theValue" />
+					<cfcatch type="any"></cfcatch>
+				</cftry>
+				<cfif NOT IsDefined("theValue")>
+					<cfset theValue = "" />
+				</cfif>
+				<cfreturn theValue />
+			<cfelse>
+				<cfthrow type="validatethis.server.validation.propertyNotFound"
+						message="The property #propertyName# was not found in the object passed into the validation object." />
 			</cfif>
-			<cfreturn theValue />
+		<cfelseif variables.propertyMode EQ "cfwheels">		
+			<cfif StructKeyExists(variables.theObject.properties(),propertyName)>
+				<cfreturn variables.theObject.$propertyvalue(propertyName) />
+			<cfelse>
+				<cfthrow type="validatethis.server.validation.propertyNotFound"
+						message="The property #propertyName# was not found in the object passed into the validation object." />
+			</cfif>
 		<cfelse>
-			<cfthrow errorcode="validatethis.validation.propertyNotFound"
-					message="The property #propertyName# was not found in the object passed into the validation object." />
+			<cfthrow type="ValidateThis.server.validation.InvalidPropertyMode" message="The propertyMode (#variables.propertyMode#) is not valid.">
 		</cfif>
 	</cffunction>
 
@@ -129,6 +142,14 @@
 	</cffunction>
 	<cffunction name="getFailureMessage" access="public" output="false" returntype="any">
 		<cfreturn variables.Instance.FailureMessage />
+	</cffunction>
+
+	<cffunction name="setPropertyMode" returntype="void" access="public" output="false">
+		<cfargument name="propertyMode" type="any" required="true" />
+		<cfset variables.propertyMode = arguments.propertyMode />
+	</cffunction>
+	<cffunction name="getPropertyMode" access="public" output="false" returntype="any">
+		<cfreturn variables.propertyMode />
 	</cffunction>
 
 </cfcomponent>
