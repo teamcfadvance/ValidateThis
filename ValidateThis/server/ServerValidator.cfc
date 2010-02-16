@@ -86,7 +86,7 @@
 		
 		<cfif arguments.propertyMode EQ "getter">
 			<cfreturn "get#arguments.DependentPropertyName#()" />
-		<cfelseif arguments.propertyMode EQ "cfwheels">		
+		<cfelseif arguments.propertyMode EQ "wheels">		
 			<cfreturn "$propertyvalue('#arguments.DependentPropertyName#')" />
 		<cfelse>
 			<cfthrow type="ValidateThis.server.ServerValidator.InvalidPropertyMode" message="The propertyMode (#arguments.propertyMode#) is not valid.">

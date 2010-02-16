@@ -55,7 +55,7 @@
 				<cfthrow type="validatethis.server.validation.propertyNotFound"
 						message="The property #propertyName# was not found in the object passed into the validation object." />
 			</cfif>
-		<cfelseif variables.propertyMode EQ "cfwheels">		
+		<cfelseif variables.propertyMode EQ "wheels">		
 			<cfif StructKeyExists(variables.theObject.properties(),propertyName)>
 				<cfreturn variables.theObject.$propertyvalue(propertyName) />
 			<cfelse>

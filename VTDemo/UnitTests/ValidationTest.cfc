@@ -96,7 +96,7 @@ purpose:		I ValidationTest.cfc
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="getObjectValueCFWheelsShouldWork" access="public" returntype="void">
+	<cffunction name="getObjectValuewheelsShouldWork" access="public" returntype="void">
 		<cfscript>
 			props = {FirstName="Bob"};
 			variables.theObject.properties().returns(props);
@@ -104,7 +104,7 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"cfwheels");
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"wheels");
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  

@@ -1,0 +1,400 @@
+<cffunction name="setLastNameNull" access="public" returntype="void" default="void" hint="Set LastName to its NULL value'" output="false">
+<cfscript>
+getTransferObject().setLastNameNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLikeOtherIsNull" access="public" returntype="boolean" default="boolean" hint="Returns whether or not LikeOther's value matches the set NULL value'" output="false">
+<cfscript>
+return getTransferObject().getLikeOtherIsNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setLikeChocolate" access="public" returntype="void" default="void" hint="Mutator for property LikeChocolate" output="false">
+<cfargument name="LikeChocolate" type="numeric" required="true" hint="The value to set LikeChocolate to">
+<cfscript>
+getTransferObject().setLikeChocolate(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setAllowCommunication" access="public" returntype="void" default="void" hint="Mutator for property AllowCommunication" output="false">
+<cfargument name="AllowCommunication" type="numeric" required="true" hint="The value to set AllowCommunication to">
+<cfscript>
+getTransferObject().setAllowCommunication(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setCommunicationMethodNull" access="public" returntype="void" default="void" hint="Set CommunicationMethod to its NULL value'" output="false">
+<cfscript>
+getTransferObject().setCommunicationMethodNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getPropertyMemento" access="public" returntype="struct" default="struct" hint="returns the memento for properties" output="false">
+<cfscript>
+return getTransferObject().getPropertyMemento(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getUserName" access="public" returntype="string" default="string" hint="Accessor for property UserName" output="false">
+<cfscript>
+return getTransferObject().getUserName(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getClassName" access="public" returntype="string" default="string" hint="The class name of the TransferObject" output="false">
+<cfscript>
+return getTransferObject().getClassName(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setUserName" access="public" returntype="void" default="void" hint="Mutator for property UserName" output="false">
+<cfargument name="UserName" type="string" required="true" hint="The value to set UserName to">
+<cfscript>
+getTransferObject().setUserName(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getIsDirty" access="public" returntype="boolean" default="boolean" hint="If this object's data is differnt from that stored in the DB." output="false">
+<cfscript>
+return getTransferObject().getIsDirty(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLikeOther" access="public" returntype="string" default="string" hint="Accessor for property LikeOther" output="false">
+<cfscript>
+return getTransferObject().getLikeOther(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getUserId" access="public" returntype="numeric" default="numeric" hint="Accessor for property UserId" output="false">
+<cfscript>
+return getTransferObject().getUserId(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getIsClone" access="public" returntype="boolean" default="boolean" hint="If this object is a clone or not" output="false">
+<cfscript>
+return getTransferObject().getIsClone(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getNickname" access="public" returntype="string" default="string" hint="Accessor for property Nickname" output="false">
+<cfscript>
+return getTransferObject().getNickname(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLastNameIsNull" access="public" returntype="boolean" default="boolean" hint="Returns whether or not LastName's value matches the set NULL value'" output="false">
+<cfscript>
+return getTransferObject().getLastNameIsNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setSalutationNull" access="public" returntype="void" default="void" hint="Set Salutation to its NULL value'" output="false">
+<cfscript>
+getTransferObject().setSalutationNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getUserPass" access="public" returntype="string" default="string" hint="Accessor for property UserPass" output="false">
+<cfscript>
+return getTransferObject().getUserPass(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="hasUserGroup" access="public" returntype="boolean" default="boolean" hint="Whether or not this object contains a user.usergroup" output="false">
+<cfscript>
+return getTransferObject().hasUserGroup(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="init" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="Constructor for Transfer class user.user" output="false">
+<cfargument name="transfer" type="transfer.com.Transfer" required="true" hint="The Transfer library">
+<cfargument name="utility" type="transfer.com.util.Utility" required="true" hint="The Utility object">
+<cfargument name="nullable" type="transfer.com.sql.Nullable" required="true" hint="The Nullable lookup object">
+<cfargument name="thisObject" type="transfer.com.TransferObject" required="true" hint="What is determined to be the base 'this' object for this TransferObject">
+<cfscript>
+return getTransferObject().init(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setLikeOther" access="public" returntype="void" default="void" hint="Mutator for property LikeOther" output="false">
+<cfargument name="LikeOther" type="string" required="true" hint="The value to set LikeOther to">
+<cfscript>
+getTransferObject().setLikeOther(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getIsLoaded" access="public" returntype="boolean" default="boolean" hint="easy way to determine if the data is loaded, since this is a TransferObject, it must be loaded, and therefore returns true." output="false">
+<cfscript>
+return getTransferObject().getIsLoaded(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setUserPass" access="public" returntype="void" default="void" hint="Mutator for property UserPass" output="false">
+<cfargument name="UserPass" type="string" required="true" hint="The value to set UserPass to">
+<cfscript>
+getTransferObject().setUserPass(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setFirstName" access="public" returntype="void" default="void" hint="Mutator for property FirstName" output="false">
+<cfargument name="FirstName" type="string" required="true" hint="The value to set FirstName to">
+<cfscript>
+getTransferObject().setFirstName(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getSalutationIsNull" access="public" returntype="boolean" default="boolean" hint="Returns whether or not Salutation's value matches the set NULL value'" output="false">
+<cfscript>
+return getTransferObject().getSalutationIsNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setMemento" access="public" returntype="void" default="void" hint="set the state of this object from a memento" output="false">
+<cfargument name="memento" type="struct" required="true" hint="the memento to set the state with">
+<cfscript>
+getTransferObject().setMemento(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLastUpdateTimestamp" access="public" returntype="date" default="date" hint="Accessor for property LastUpdateTimestamp" output="false">
+<cfscript>
+return getTransferObject().getLastUpdateTimestamp(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setNickname" access="public" returntype="void" default="void" hint="Mutator for property Nickname" output="false">
+<cfargument name="Nickname" type="string" required="true" hint="The value to set Nickname to">
+<cfscript>
+getTransferObject().setNickname(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setUserGroupMemento" access="public" returntype="void" default="void" hint="set the state of composition manytoone 'UserGroup'" output="false">
+<cfargument name="memento" type="struct" required="true" hint="the memento to set the state with">
+<cfscript>
+getTransferObject().setUserGroupMemento(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setHowMuchNull" access="public" returntype="void" default="void" hint="Set HowMuch to its NULL value'" output="false">
+<cfscript>
+getTransferObject().setHowMuchNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setPropertyMemento" access="public" returntype="void" default="void" hint="set the Property state of this object with a memento" output="false">
+<cfargument name="memento" type="struct" required="true" hint="the memento to set the state with">
+<cfscript>
+getTransferObject().setPropertyMemento(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getCommunicationMethodIsNull" access="public" returntype="boolean" default="boolean" hint="Returns whether or not CommunicationMethod's value matches the set NULL value'" output="false">
+<cfscript>
+return getTransferObject().getCommunicationMethodIsNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setAllowCommunicationNull" access="public" returntype="void" default="void" hint="Set AllowCommunication to its NULL value'" output="false">
+<cfscript>
+getTransferObject().setAllowCommunicationNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLikeChocolateIsNull" access="public" returntype="boolean" default="boolean" hint="Returns whether or not LikeChocolate's value matches the set NULL value'" output="false">
+<cfscript>
+return getTransferObject().getLikeChocolateIsNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLastName" access="public" returntype="string" default="string" hint="Accessor for property LastName" output="false">
+<cfscript>
+return getTransferObject().getLastName(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getIsPersisted" access="public" returntype="boolean" default="boolean" hint="If this object is stored in the database" output="false">
+<cfscript>
+return getTransferObject().getIsPersisted(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="sameTransfer" access="public" returntype="boolean" default="boolean" hint="Checks to see if 2 transfer objects are the same" output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="Yes" hint="The transfer object to check if we are equal">
+<cfscript>
+return getTransferObject().sameTransfer(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setLastUpdateTimestamp" access="public" returntype="void" default="void" hint="Mutator for property LastUpdateTimestamp" output="false">
+<cfargument name="LastUpdateTimestamp" type="date" required="true" hint="The value to set LastUpdateTimestamp to">
+<cfscript>
+getTransferObject().setLastUpdateTimestamp(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="actionAfterCreateTransferEvent" access="public" returntype="void" default="void" hint="Observer action method for when creates occur" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true" hint="The Transfer Event Object">
+<cfscript>
+getTransferObject().actionAfterCreateTransferEvent(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getFirstName" access="public" returntype="string" default="string" hint="Accessor for property FirstName" output="false">
+<cfscript>
+return getTransferObject().getFirstName(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getCommunicationMethod" access="public" returntype="string" default="string" hint="Accessor for property CommunicationMethod" output="false">
+<cfscript>
+return getTransferObject().getCommunicationMethod(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getAllowCommunicationIsNull" access="public" returntype="boolean" default="boolean" hint="Returns whether or not AllowCommunication's value matches the set NULL value'" output="false">
+<cfscript>
+return getTransferObject().getAllowCommunicationIsNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLikeCheeseIsNull" access="public" returntype="boolean" default="boolean" hint="Returns whether or not LikeCheese's value matches the set NULL value'" output="false">
+<cfscript>
+return getTransferObject().getLikeCheeseIsNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setLikeCheese" access="public" returntype="void" default="void" hint="Mutator for property LikeCheese" output="false">
+<cfargument name="LikeCheese" type="numeric" required="true" hint="The value to set LikeCheese to">
+<cfscript>
+getTransferObject().setLikeCheese(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="removeUserGroup" access="public" returntype="void" default="void" hint="remove the instance of user.usergroup" output="false">
+<cfscript>
+getTransferObject().removeUserGroup(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setFirstNameNull" access="public" returntype="void" default="void" hint="Set FirstName to its NULL value'" output="false">
+<cfscript>
+getTransferObject().setFirstNameNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setCommunicationMethod" access="public" returntype="void" default="void" hint="Mutator for property CommunicationMethod" output="false">
+<cfargument name="CommunicationMethod" type="string" required="true" hint="The value to set CommunicationMethod to">
+<cfscript>
+getTransferObject().setCommunicationMethod(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getUserGroupMemento" access="public" returntype="struct" default="struct" hint="returns the memento for manytoone UserGroup" output="false">
+<cfscript>
+return getTransferObject().getUserGroupMemento(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setUserGroup" access="public" returntype="void" default="void" hint="Mutator for UserGroup, user.usergroup" output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="true" hint="The user.usergroup to set">
+<cfscript>
+getTransferObject().setUserGroup(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="equalsTransfer" access="public" returntype="boolean" default="boolean" hint="If an object is persisted, returns true if they are of the same class and same id. If not, returns true if they are the same object." output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="true" hint="The TransferObject to test against">
+<cfscript>
+return getTransferObject().equalsTransfer(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setUserId" access="public" returntype="void" default="void" hint="Mutator for property UserId" output="false">
+<cfargument name="UserId" type="numeric" required="true" hint="The value to set UserId to">
+<cfscript>
+getTransferObject().setUserId(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setLastName" access="public" returntype="void" default="void" hint="Mutator for property LastName" output="false">
+<cfargument name="LastName" type="string" required="true" hint="The value to set LastName to">
+<cfscript>
+getTransferObject().setLastName(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getUserGroupisLoaded" access="public" returntype="boolean" default="boolean" hint="Whether or not the composition 'UserGroup' has been loaded yet" output="false">
+<cfscript>
+return getTransferObject().getUserGroupisLoaded(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLikeChocolate" access="public" returntype="numeric" default="numeric" hint="Accessor for property LikeChocolate" output="false">
+<cfscript>
+return getTransferObject().getLikeChocolate(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getHowMuch" access="public" returntype="numeric" default="numeric" hint="Accessor for property HowMuch" output="false">
+<cfscript>
+return getTransferObject().getHowMuch(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setLikeChocolateNull" access="public" returntype="void" default="void" hint="Set LikeChocolate to its NULL value'" output="false">
+<cfscript>
+getTransferObject().setLikeChocolateNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="actionAfterDiscardTransferEvent" access="public" returntype="void" default="void" hint="Observer action method for when discards occur" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true" hint="The Transfer Event Object">
+<cfscript>
+getTransferObject().actionAfterDiscardTransferEvent(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="actionAfterUpdateTransferEvent" access="public" returntype="void" default="void" hint="Observer method action for when updates occur" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true" hint="The Transfer Event Object">
+<cfscript>
+getTransferObject().actionAfterUpdateTransferEvent(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getUserGroup" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="Accessor for UserGroup, user.usergroup" output="false">
+<cfscript>
+return getTransferObject().getUserGroup(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="clone" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="Get a deep clone of this object" output="false">
+<cfscript>
+return getTransferObject().clone(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getAllowCommunication" access="public" returntype="numeric" default="numeric" hint="Accessor for property AllowCommunication" output="false">
+<cfscript>
+return getTransferObject().getAllowCommunication(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getIsProxy" access="public" returntype="boolean" default="boolean" hint="returns whether or not this is a proxy object. Since this is a TrasferObject, it returns false." output="false">
+<cfscript>
+return getTransferObject().getIsProxy(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLikeCheese" access="public" returntype="numeric" default="numeric" hint="Accessor for property LikeCheese" output="false">
+<cfscript>
+return getTransferObject().getLikeCheese(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setHowMuch" access="public" returntype="void" default="void" hint="Mutator for property HowMuch" output="false">
+<cfargument name="HowMuch" type="numeric" required="true" hint="The value to set HowMuch to">
+<cfscript>
+getTransferObject().setHowMuch(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setLikeCheeseNull" access="public" returntype="void" default="void" hint="Set LikeCheese to its NULL value'" output="false">
+<cfscript>
+getTransferObject().setLikeCheeseNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getFirstNameIsNull" access="public" returntype="boolean" default="boolean" hint="Returns whether or not FirstName's value matches the set NULL value'" output="false">
+<cfscript>
+return getTransferObject().getFirstNameIsNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setSalutation" access="public" returntype="void" default="void" hint="Mutator for property Salutation" output="false">
+<cfargument name="Salutation" type="string" required="true" hint="The value to set Salutation to">
+<cfscript>
+getTransferObject().setSalutation(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getMemento" access="public" returntype="struct" default="struct" hint="Returns the memento for all non-lazy members of this object" output="false">
+<cfscript>
+return getTransferObject().getMemento(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getOriginalTransferObject" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="Returns this object" output="false">
+<cfscript>
+return getTransferObject().getOriginalTransferObject(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="setLikeOtherNull" access="public" returntype="void" default="void" hint="Set LikeOther to its NULL value'" output="false">
+<cfscript>
+getTransferObject().setLikeOtherNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getHowMuchIsNull" access="public" returntype="boolean" default="boolean" hint="Returns whether or not HowMuch's value matches the set NULL value'" output="false">
+<cfscript>
+return getTransferObject().getHowMuchIsNull(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getLoadedObject" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="Returns itself, as there is no object to load" output="false">
+<cfscript>
+return getTransferObject().getLoadedObject(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="copyValuesTo" access="public" returntype="void" default="void" hint="Copies the values of this object to one of the same class" output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="true" hint="The object to copy values to">
+<cfscript>
+getTransferObject().copyValuesTo(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="getSalutation" access="public" returntype="string" default="string" hint="Accessor for property Salutation" output="false">
+<cfscript>
+return getTransferObject().getSalutation(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+<cffunction name="actionAfterDeleteTransferEvent" access="public" returntype="void" default="void" hint="Observer action method for when deletes occur" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true" hint="The Transfer Event Object">
+<cfscript>
+getTransferObject().actionAfterDeleteTransferEvent(argumentCollection=arguments);</cfscript>
+</cffunction>
+
+
