@@ -28,14 +28,14 @@
 
 	<cffunction name="loadBeans" access="private" output="false" returntype="void" hint="I load the required singletons">
 	
-		<cfset variables.Beans.TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init() />
-		<cfset variables.Beans.FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(variables.Beans.TransientFactory) />
-		<cfset variables.Beans.XMLFileReader = CreateObject("component","ValidateThis.core.XMLFileReader").init(variables.Beans.FileSystem,variables.ValidateThisConfig) />
+		<cfset variables.Beans.ObjectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init() />
 		<cfset variables.Beans.ResourceBundle = createObject("component","ValidateThis.util.ResourceBundle").init() />
 		<cfset variables.Beans.LocaleLoader = CreateObject("component",variables.ValidateThisConfig.LocaleLoaderPath).init(variables.Beans.ResourceBundle) />
 		<cfset variables.Beans.Translator = CreateObject("component",variables.ValidateThisConfig.TranslatorPath).init(variables.Beans.LocaleLoader,variables.ValidateThisConfig.localeMap,variables.ValidateThisConfig.defaultLocale) />
-		<cfset variables.Beans.TransientFactory.setTranslator(variables.Beans.Translator) />
-		<cfset variables.Beans.ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(variables.Beans.FileSystem,variables.Beans.TransientFactory,variables.ValidateThisConfig.propertyMode) />
+		<cfset variables.Beans.TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init(variables.Beans.Translator,variables.Beans.ObjectChecker) />
+		<cfset variables.Beans.FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(variables.Beans.TransientFactory) />
+		<cfset variables.Beans.XMLFileReader = CreateObject("component","ValidateThis.core.XMLFileReader").init(variables.Beans.FileSystem,variables.ValidateThisConfig) />
+		<cfset variables.Beans.ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(variables.Beans.FileSystem,variables.Beans.TransientFactory,variables.Beans.ObjectChecker,variables.ValidateThisConfig.propertyMode) />
 		<cfset variables.Beans.ClientValidator = CreateObject("component","ValidateThis.client.ClientValidator").init(variables.Beans.FileSystem,variables.ValidateThisConfig,variables.Beans.Translator) />
 		<cfset variables.Beans.CommonScriptGenerator = CreateObject("component","ValidateThis.client.CommonScriptGenerator").init(variables.Beans.ClientValidator) />
 		

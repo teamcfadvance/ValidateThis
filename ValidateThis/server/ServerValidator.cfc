@@ -18,9 +18,13 @@
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ServerValidator">
 		<cfargument name="FileSystem" type="any" required="true" />
 		<cfargument name="TransientFactory" type="any" required="true" />
-
+		<cfargument name="ObjectChecker" type="any" required="true" />
+		<cfargument name="propertyMode" type="any" required="false" default="getter" hint="Defines the way that property values are determined." />
+		
 		<cfset variables.FileSystem = arguments.FileSystem />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
+		<cfset variables.ObjectChecker = arguments.ObjectChecker />
+		<cfset variables.propertyMode = arguments.propertyMode />
 		<cfset variables.RuleValidators = {} />
 
 		<cfset setRuleValidators() />
@@ -32,7 +36,7 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="Context" type="any" required="true" />
 		<cfargument name="Result" type="any" required="true" />
-		<cfargument name="propertyMode" type="any" required="false" default="getter" hint="Defines the way that property values are determined." />
+		<cfargument name="propertyMode" type="any" required="false" default="#variables.propertyMode#" hint="Defines the way that property values are determined." />
 
 		<cfset var v = "" />
 		<cfset var theCondition = "" />
@@ -101,7 +105,7 @@
 		<cfset var RS = 0 />
 		<cfloop list="#RSNames#" index="RS">
 			<cfif ListLast(RS,".") EQ "cfc" AND RS CONTAINS "ServerRuleValidator_">
-				<cfset variables.RuleValidators[ReplaceNoCase(ListLast(RS,"_"),".cfc","")] = CreateObject("component",ReplaceNoCase(RS,".cfc","")).init() />
+				<cfset variables.RuleValidators[ReplaceNoCase(ListLast(RS,"_"),".cfc","")] = CreateObject("component",ReplaceNoCase(RS,".cfc","")).init(variables.ObjectChecker) />
 			</cfif>
 		</cfloop>
 	</cffunction>

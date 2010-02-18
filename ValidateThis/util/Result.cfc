@@ -16,7 +16,8 @@
 <cfcomponent displayname="Result" output="false" hint="I am a transient result object.">
 
 	<cffunction name="Init" access="Public" returntype="any" output="false" hint="I am the pseudo-constructor">
-
+		<cfargument name="Translator" type="any" required="yes" />
+		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.instance = StructNew() />
 		<cfset variables.instance.Failures = ArrayNew(1) />
 		<cfset variables.instance.IsSuccess = true />
@@ -196,14 +197,6 @@
 	<cffunction name="setSuccessMessage" access="public" output="false" returntype="void">
 		<cfargument name="SuccessMessage" type="any" required="yes" />
 		<cfset variables.instance.SuccessMessage = arguments.SuccessMessage />
-	</cffunction>
-
-	<cffunction name="getTranslator" access="public" output="false" returntype="any">
-		<cfreturn variables.Translator />
-	</cffunction>
-	<cffunction name="setTranslator" access="public" output="false" returntype="void">
-		<cfargument name="Translator" type="any" required="yes" />
-		<cfset variables.Translator = arguments.Translator />
 	</cffunction>
 
 	<cffunction name="getMemento" access="public" output="false" returntype="any">

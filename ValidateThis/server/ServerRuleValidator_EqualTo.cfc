@@ -21,7 +21,7 @@
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfset var otherVal = 0 />
 		<cfif arguments.valObject.getPropertyMode() EQ "getter">
-			<cfinvoke component="#arguments.valObject.getTheObject()#" method="get#Parameters.ComparePropertyName#" returnvariable="otherVal" />
+			<cfset otherVal = evaluate("arguments.valObject.getTheObject().get#capFirst(Parameters.ComparePropertyName)#()") />
 		<cfelseif arguments.valObject.getPropertyMode() EQ "wheels">	
 			<cfset otherVal = arguments.valObject.getTheObject().$propertyvalue(Parameters.ComparePropertyName) />
 		<cfelse>
@@ -31,7 +31,7 @@
 			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be the same as the #Parameters.ComparePropertyDesc#.") />
 		</cfif>
 	</cffunction>
-	
+
 </cfcomponent>
 	
 

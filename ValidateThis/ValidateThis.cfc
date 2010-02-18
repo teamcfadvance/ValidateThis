@@ -54,7 +54,12 @@
 		<cfset var theObjectType = determineObjectType(arguments) />
 		<cfset var BOValidator = getValidator(theObjectType,"") />
 		<!--- Inject testCondition if needed --->
-		<cfif NOT StructKeyExists(arguments.theObject,"testCondition")>
+		<!--- Notes for Java/Groovy objects:
+			If you're using Groovy, 
+			you will need to write your own testCondition method into your BOs. You may consider doing this 
+			by adding the method to a base BO class. I am not certain this can even be done in Java, as I do 
+			not believe Java supports runtime evaluation. --->
+		<cfif getBean("ObjectChecker").isCFC(arguments.theObject) AND NOT StructKeyExists(arguments.theObject,"testCondition")>
 			<cfset arguments.theObject["testCondition"] = this["testCondition"] />
 		</cfif>
 		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.propertyMode) />

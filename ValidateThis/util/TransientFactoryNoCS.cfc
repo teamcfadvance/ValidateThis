@@ -21,6 +21,10 @@
 	<!--- public --->
 
 	<cffunction name="init" access="public" output="false" returntype="any" hint="returns a configured transient factory">
+		<cfargument name="Translator" type="any" required="yes" />
+		<cfargument name="ObjectChecker" type="any" required="yes" />
+		<cfset variables.Translator = arguments.Translator />
+		<cfset variables.ObjectChecker = arguments.ObjectChecker />
 		<cfset variables.classes = {Result="ValidateThis.util.Result",Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.ResourceBundle"} />
 		<cfset variables.afterCreateMethod = "setup" />
 		<cfreturn this />
@@ -30,13 +34,15 @@
 		<cfargument name="transientName" type="string" required="true">
 		<cfargument name="initArgs" type="struct" required="false" default="#structNew()#">
 		<cfset var local = {} />
+		<!--- Need to do manual injections of singletons as we're not coupled to CS anymore, ugly but it works for now --->
+		<cfif arguments.transientName EQ "Result">
+			<cfset initArgs.Translator = variables.Translator />
+		<cfelseif arguments.transientName EQ "Validation">
+			<cfset initArgs.ObjectChecker = variables.ObjectChecker />
+		</cfif>
 		<cfset local.obj = createObject("component",variables.classes[arguments.transientName])>
 		<cfif StructKeyExists(local.obj,"init")>
 			<cfinvoke component="#local.obj#" method="init" argumentcollection="#arguments.initArgs#" />
-		</cfif>
-		<!--- Need to do manual injections of singletons as we're not coupled to CS anymore, ugly but it works for now --->
-		<cfif arguments.transientName EQ "Result">
-			<cfset local.obj.setTranslator(variables.Translator) />
 		</cfif>
 		<cfif StructKeyExists(local.obj,variables.afterCreateMethod)>
 			<cfinvoke component="#local.obj#" method="#variables.afterCreateMethod#" />
@@ -50,14 +56,6 @@
 		<cfif (Left(arguments.MissingMethodName,3) eq "new")>
 			<cfreturn create(Right(arguments.MissingMethodName,Len(arguments.MissingMethodName)-3),arguments.MissingMethodArguments)>
 		</cfif>
-	</cffunction>
-
-	<cffunction name="getTranslator" access="public" output="false" returntype="any">
-		<cfreturn variables.Translator />
-	</cffunction>
-	<cffunction name="setTranslator" access="public" output="false" returntype="void">
-		<cfargument name="Translator" type="any" required="yes" />
-		<cfset variables.Translator = arguments.Translator />
 	</cffunction>
 
 </cfcomponent>

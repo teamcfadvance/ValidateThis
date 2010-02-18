@@ -18,8 +18,10 @@
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I am the pseudo-constructor">
 
 		<cfargument name="theObject" type="any" required="yes" hint="The object being validated" />
+		<cfargument name="ObjectChecker" type="any" required="yes" hint="A component used to distinguish object types" />
 		<cfargument name="propertyMode" type="any" required="false" default="getter" hint="The method of determining property values" />
 		<cfset variables.theObject = arguments.theObject />
+		<cfset variables.ObjectChecker = arguments.ObjectChecker />
 		<cfset variables.propertyMode = arguments.propertyMode />
 		<cfreturn this />
 
@@ -39,12 +41,23 @@
 	<cffunction name="getObjectValue" access="public" output="false" returntype="any" hint="I return the value from the stored object that corresponds to the field being validated.">
 		<cfset var theValue = "" />
 		<cfset var propertyName = getPropertyName() />
+		<cfset var methodExists = false />
 		
 		<cfif variables.propertyMode EQ "getter">
-			<cfif StructKeyExists(variables.theObject,"get#propertyName#")>
+			<!--- Note: isInstanceOf() is being used to identify Groovy or Java objects, 
+				the existence of whose methods can not be checked via structKeyExists().
+				The problem with this approach is that if a method does not exist in a Java/Groovy object, 
+				no error will be thrown. The getObjectValue() method will simply return an empty string.
+				This should be addressed in a future version --->
+			<cfif variables.ObjectChecker.isCFC(theObject)>
+				<cfset methodExists = StructKeyExists(theObject,"get" & propertyName)>			
+			<cfelse>
+				<cfset methodExists = true />
+			</cfif>
+			<cfif methodExists>
 				<!--- Using try/catch to deal with composed objects that throw an error if they aren't loaded --->
 				<cftry>
-					<cfinvoke component="#variables.theObject#" method="get#propertyName#" returnvariable="theValue" />
+					<cfset theValue = evaluate("variables.theObject.get#capFirst(propertyName)#()") />
 					<cfcatch type="any"></cfcatch>
 				</cftry>
 				<cfif NOT IsDefined("theValue")>
@@ -150,6 +163,38 @@
 	</cffunction>
 	<cffunction name="getPropertyMode" access="public" output="false" returntype="any">
 		<cfreturn variables.propertyMode />
+	</cffunction>
+
+	<!---
+	
+	This is used to address case sensitivity issues with Java/Groovy method names.
+	Should be in a separate, injected object as it is used elsewhere.
+	
+	Capitalizes the first letter in each word.
+	Made udf use strlen, rkc 3/12/02
+	v2 by Sean Corfield.
+	
+	@param string      String to be modified. (Required)
+	@return Returns a string.
+	@author Raymond Camden (ray@camdenfamily.com)
+	@version 2, March 9, 2007
+	--->
+	<cffunction name="CapFirst" returntype="string" output="false">
+	    <cfargument name="str" type="string" required="true" />
+	    
+	    <cfset var newstr = "" />
+	    <cfset var word = "" />
+	    <cfset var separator = "" />
+	    
+	    <cfloop index="word" list="#arguments.str#" delimiters=" ">
+	        <cfset newstr = newstr & separator & UCase(left(word,1)) />
+	        <cfif len(word) gt 1>
+	            <cfset newstr = newstr & right(word,len(word)-1) />
+	        </cfif>
+	        <cfset separator = " " />
+	    </cfloop>
+	
+	    <cfreturn newstr />
 	</cffunction>
 
 </cfcomponent>
