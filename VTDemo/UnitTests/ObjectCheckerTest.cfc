@@ -15,6 +15,12 @@
 	
 --->
 <cfcomponent extends="UnitTests.BaseTestCase" output="false">
+
+	<!--- ***** NOTE *****
+		These tests, the ones for Wheels objects and Groovy objects anyway, aren't really testing those objects, as we're using fakes.
+		We're just testing the logic that we believe is necessary.
+		It might be nice to set up a test to actually test those objects.
+	--->
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -49,8 +55,7 @@
 	<cffunction name="isWheelsReturnsTrueforWheelsObject" access="public" returntype="void">
 		<cfscript>
 			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
-			debug(getMetadata(obj));
-			assertEquals(true,objectChecker.isCFC(obj));
+			assertEquals(true,objectChecker.isWheels(obj));
 		</cfscript>  
 	</cffunction>
 
@@ -64,8 +69,6 @@
 	<cffunction name="isGroovyReturnsTrueforGroovyObject" access="public" returntype="void">
 		<cfscript>
 			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
-			debug(obj);
-			debug(getMetadata(obj));
 			assertEquals(true,objectChecker.isGroovy(obj));
 		</cfscript>  
 	</cffunction>
@@ -79,7 +82,7 @@
 
 	<cffunction name="isGroovyReturnsFalseforPOJO" access="public" returntype="void">
 		<cfscript>
-			// need to create a java object var obj = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
+			var obj = CreateObject("java","java.lang.Integer");
 			assertEquals(false,objectChecker.isGroovy(obj));
 		</cfscript>  
 	</cffunction>
@@ -100,30 +103,39 @@
 
 	<cffunction name="propertyExistsReturnsTrueForExistingMethodInWheelsObject" access="public" returntype="void">
 		<cfscript>
-			// must create a Wheels object var cfc = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
-			assertEquals(true,objectChecker.propertyExists(obj,"FirstName"));
+			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
+			assertEquals(true,objectChecker.propertyExists(obj,"WheelsName"));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="propertyExistsReturnsFalseForNonExistentMethodInWheelsObject" access="public" returntype="void">
 		<cfscript>
-			// must create a Wheels object var cfc = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
+			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
 			assertEquals(false,objectChecker.propertyExists(obj,"Blah"));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="propertyExistsReturnsTrueForExistingMethodInGroovyObject" access="public" returntype="void">
 		<cfscript>
-			// must create a groovy object var cfc = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
-			assertEquals(true,objectChecker.propertyExists(obj,"FirstName"));
+			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
+			injectMethod(ObjectChecker, this, "isCFCFalse", "isCFC");
+			assertEquals(true,objectChecker.propertyExists(obj,"GroovyName"));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="propertyExistsReturnsFalseForNonExistentMethodInGroovyObject" access="public" returntype="void">
 		<cfscript>
-			// must create a groovy object var cfc = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
+			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
+			injectMethod(ObjectChecker, this, "isCFCFalse", "isCFC");
 			assertEquals(false,objectChecker.propertyExists(obj,"Blah"));
 		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isCFCFalse" access="private" output="false" returntype="any" hint="Used to fake out the object checker as we cannot create a true fake Groovy object.">
+		<cfargument name="theObject" type="any" required="true" />
+		
+		<cfreturn false />
+	
 	</cffunction>
 
 </cfcomponent>

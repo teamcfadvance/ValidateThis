@@ -15,6 +15,6 @@
 	License.
 	
 --->
-<cfcomponent output="false" hint="This exists to allow for fake Groovy objects, which must include an object that is or extends 'groovy.lang.MetaClassImpl' to be created">
+<cfcomponent output="false" hint="This exists to allow for fake Groovy objects, which must be able to return an object of type 'groovy.lang.MetaBeanProperty'">
 	
 </cfcomponent>

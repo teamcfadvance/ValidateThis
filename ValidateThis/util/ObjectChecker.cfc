@@ -28,30 +28,56 @@
 	
 	</cffunction>
 
-	<cffunction name="isWheels" access="public" output="false" returntype="any" hint="Returns true if the object passed in is a cfc.">
+	<cffunction name="isWheels" access="public" output="false" returntype="any" hint="Returns true if the object passed in is a Wheels object.">
 		<cfargument name="theObject" type="any" required="true" />
 		
 		<cfreturn isInstanceOf(arguments.theObject,"models.Wheels") />
 	
 	</cffunction>
 
-	<cffunction name="isGroovy" access="public" output="false" returntype="any" hint="Returns true if the object passed in is a cfc.">
+	<cffunction name="isGroovy" access="public" output="false" returntype="any" hint="Returns true if the object passed in is a Groovy object.">
 		<cfargument name="theObject" type="any" required="true" />
 		
-		<cfreturn structKeyExists(arguments.theObject,"metaclass") AND isInstanceOf(arguments.theObject,"groovy.lang.MetaClassImpl") />
+		<cfreturn structKeyExists(arguments.theObject,"metaclass") AND isInstanceOf(arguments.theObject.metaclass,"groovy.lang.MetaClassImpl") />
 	
 	</cffunction>
 
-	<cffunction name="propertyExists" access="public" output="false" returntype="any" hint="Returns true if the object passed in is a cfc.">
+	<cffunction name="propertyExists" access="public" output="false" returntype="any" hint="Returns true if the object passed has the property passed in.">
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="propertyName" type="any" required="true" />
 		
-		<cfif isCFC(arguments.theObject)>
-			<cfreturn structKeyExists(arguments.theObject,"get" & propertyName) />
+		<cfset var theProp = "" />
+		
+		<cfif isWheels(arguments.theObject)>
+			<cfreturn structKeyExists(arguments.theObject.properties(),arguments.propertyName)>
+		<cfelseif isCFC(arguments.theObject)>
+			<cfreturn structKeyExists(arguments.theObject,"get" & arguments.propertyName) />
+		<cfelseif isGroovy(arguments.theObject)>
+			<cfset theProp = arguments.theObject.metaclass.hasProperty(arguments.theObject,arguments.propertyName) />
+			<cfreturn isDefined("theProp") and isInstanceOf(theProp,"groovy.lang.MetaBeanProperty") />
 		<cfelse>
 			<cfreturn false />
 		</cfif>
-	
+
+	</cffunction>
+
+	<cffunction name="getPropertyValue" access="public" output="false" returntype="any" hint="Returns the value for the requested property.">
+		<cfargument name="theObject" type="any" required="true" />
+		<cfargument name="propertyName" type="any" required="true" />
+		
+		<cfset var theProp = "" />
+		
+		<cfif isWheels(arguments.theObject)>
+			<cfreturn structKeyExists(arguments.theObject.properties(),arguments.propertyName)>
+		<cfelseif isCFC(arguments.theObject)>
+			<cfreturn structKeyExists(arguments.theObject,"get" & arguments.propertyName) />
+		<cfelseif isGroovy(arguments.theObject)>
+			<cfset theProp = arguments.theObject.metaclass.hasProperty(arguments.theObject,arguments.propertyName) />
+			<cfreturn isDefined("theProp") and isInstanceOf(theProp,"groovy.lang.MetaBeanProperty") />
+		<cfelse>
+			<cfreturn false />
+		</cfif>
+
 	</cffunction>
 
 </cfcomponent>

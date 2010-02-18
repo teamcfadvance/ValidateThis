@@ -15,12 +15,14 @@
 	License.
 	
 --->
-<cfcomponent extends="Wheels" output="false">
+<cfcomponent output="false" hint="This exists to allow for fake Groovy objects, which must include an object that is or extends 'groovy.lang.MetaClassImpl' to be created">
 	
-	<cffunction name="init" access="public" returntype="any">
-		<cfargument name="FirstName" required="false" default="Bob" />
-		<cfset this.FirstName = arguments.FirstName />
-		<cfreturn this />
+	<cffunction name="hasProperty" returntype="Any" access="public">
+		<cfargument name="theObject" />
+		<cfargument name="propertyName" />
+		<cfif arguments.propertyName eq "GroovyName">
+			<cfreturn createObject("component","MetaBeanProperty") />
+		</cfif>
+	
 	</cffunction>
-	
 </cfcomponent>

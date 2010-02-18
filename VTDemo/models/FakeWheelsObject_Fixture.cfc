@@ -15,11 +15,17 @@
 	License.
 	
 --->
-<cfcomponent output="false">
+<cfcomponent extends="Wheels" output="false">
 	
 	<cffunction name="init" access="public" returntype="any">
-		<cfset this.MetaClassImpl = createObject("component","MetaClassImpl") />
+		<cfargument name="WheelsName" required="false" default="Bob" />
+		<cfset this.WheelsName = arguments.WheelsName />
 		<cfreturn this />
 	</cffunction>
-	
+
+	<cffunction name="properties" access="public" returntype="any">
+		<cfset var props = {WheelsName=this.WheelsName} />
+		<cfreturn props />
+	</cffunction>
+
 </cfcomponent>
