@@ -29,13 +29,8 @@ purpose:		I ValidateThisTest.cfc
 <cfcomponent displayname="UnitTests.ValidateThisTest" extends="UnitTests.BaseTestCase" output="false">
 	
 	<cfset ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(StructNew()) />
-	<cfset Transfer = "" />
-	<cfset UserTO = "" />
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset setBeanFactory() />
-		<cfset Transfer = getBeanFactory().getBean("Transfer") />
-		<cfset UserTO = Transfer.new("user.user") />
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">

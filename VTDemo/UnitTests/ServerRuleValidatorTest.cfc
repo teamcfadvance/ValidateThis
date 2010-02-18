@@ -34,11 +34,9 @@ purpose:		I ServerRuleValidatorTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			setBeanFactory();
-			Transfer = getBeanFactory().getBean("Transfer");
-			theObject = Transfer.new("user.user");
-			TransientFactory = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory");
-			ServerValidator = getBeanFactory().getBean("ValidateThis").getBean("ServerValidator");
+			theObject = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
+			ObjectChecker = mock();
+			ObjectChecker.isCFC("{*}").returns(true);
 		</cfscript>
 	</cffunction>
 	
@@ -47,74 +45,52 @@ purpose:		I ServerRuleValidatorTest.cfc
 	
 	<cffunction name="SimpleRequiredValidationShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
-			valStruct = StructNew();
-			valStruct.ValType = "required";
-			valStruct.PropertyName = "FirstName";
-			valStruct.PropertyDesc = "First Name";
-			valStruct.Parameters = StructNew(); 
-			valStruct.Condition = StructNew();
 			theValue = "Bob";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("Required").init().validate(Validation);
+			Validation = validate(theObject,"required");
 			assertTrue(Validation.getIsSuccess());
 			assertEquals(Validation.getFailureMessage(),"");
 			theValue = "";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("Required").init().validate(Validation);
+			Validation = validate(theObject,"required");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# is required.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# is required.");
+			// just checking to see if the isInstanceOf thing is going to work
+			debug(isInstanceOf(theObject, 'java.lang.Object'));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="MinLengthValidationShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
 			theLength = 5;
-			valStruct = StructNew();
-			valStruct.ValType = "minlength";
-			valStruct.PropertyName = "FirstName";
-			valStruct.PropertyDesc = "First Name";
-			valStruct.Parameters = StructNew();
-			valStruct.Parameters.minlength = theLength;
-			valStruct.Condition = "";
+			Parameters = {minlength = theLength};
 			theValue = "Bobby";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("MinLength").init().validate(Validation);
+			Validation = validate(theObject,"minlength",Parameters,"");
 			assertTrue(Validation.getIsSuccess());
 			assertEquals(Validation.getFailureMessage(),"");
 			theValue = "";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("MinLength").init().validate(Validation);
+			Validation = validate(theObject,"minlength",Parameters,"");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# must be at least #theLength# characters long.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be at least #theLength# characters long.");
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="MaxLengthValidationShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
 			theLength = 5;
-			valStruct = StructNew();
-			valStruct.ValType = "maxlength";
-			valStruct.PropertyName = "FirstName";
-			valStruct.PropertyDesc = "First Name";
-			valStruct.Parameters = StructNew();
-			valStruct.Parameters.maxlength = theLength;
-			valStruct.Condition = "";
+			Parameters = {maxlength = theLength};
 			theValue = "Bobby";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("MaxLength").init().validate(Validation);
+			Validation = validate(theObject,"maxlength",Parameters,"");
 			assertTrue(Validation.getIsSuccess());
 			assertEquals(Validation.getFailureMessage(),"");
 			theValue = "BobbyS";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("MaxLength").init().validate(Validation);
+			Validation = validate(theObject,"maxlength",Parameters,"");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# must be no more than #theLength# characters long.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be no more than #theLength# characters long.");
 		</cfscript>  
 	</cffunction>
 
@@ -122,82 +98,56 @@ purpose:		I ServerRuleValidatorTest.cfc
 		<cfscript>
 			minLength = 5;
 			maxLength = 10;
-			valStruct = StructNew();
-			valStruct.ValType = "rangelength";
-			valStruct.PropertyName = "FirstName";
-			valStruct.PropertyDesc = "First Name";
-			valStruct.Parameters = StructNew();
-			valStruct.Parameters.minlength = minLength;
-			valStruct.Parameters.maxlength = maxLength;
-			valStruct.Condition = "";
+			Parameters = {minlength = minLength, maxlength = maxLength};
 			theValue = "Bobby";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("RangeLength").init().validate(Validation);
+			Validation = validate(theObject,"rangelength",Parameters,"");
 			assertTrue(Validation.getIsSuccess());
 			assertEquals(Validation.getFailureMessage(),"");
 			theValue = "Bob";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("RangeLength").init().validate(Validation);
+			Validation = validate(theObject,"rangelength",Parameters,"");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# must be between #MinLength# and #MaxLength# characters long.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be between #MinLength# and #MaxLength# characters long.");
 			theValue = "BobbyBobbyX";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("RangeLength").init().validate(Validation);
+			Validation = validate(theObject,"rangelength",Parameters,"");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# must be between #MinLength# and #MaxLength# characters long.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be between #MinLength# and #MaxLength# characters long.");
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="MinValidationShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
 			theVal = 5;
-			valStruct = StructNew();
-			valStruct.ValType = "min";
-			valStruct.PropertyName = "FirstName";
-			valStruct.PropertyDesc = "First Name";
-			valStruct.Parameters = StructNew();
-			valStruct.Parameters.min = theVal;
-			valStruct.Condition = "";
+			Parameters = {min = theVal};
 			theValue = "5";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("Min").init().validate(Validation);
+			Validation = validate(theObject,"min",Parameters,"");
 			assertTrue(Validation.getIsSuccess());
 			assertEquals(Validation.getFailureMessage(),"");
 			theValue = "4";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("Min").init().validate(Validation);
+			Validation = validate(theObject,"min",Parameters,"");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# must be at least #theVal#.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be at least #theVal#.");
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="MaxValidationShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
 			theVal = 5;
-			valStruct = StructNew();
-			valStruct.ValType = "max";
-			valStruct.PropertyName = "FirstName";
-			valStruct.PropertyDesc = "First Name";
-			valStruct.Parameters = StructNew();
-			valStruct.Parameters.max = theVal;
-			valStruct.Condition = "";
+			Parameters = {max = theVal};
 			theValue = "5";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("Max").init().validate(Validation);
+			Validation = validate(theObject,"max",Parameters,"");
 			assertTrue(Validation.getIsSuccess());
 			assertEquals(Validation.getFailureMessage(),"");
 			theValue = "6";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("Max").init().validate(Validation);
+			Validation = validate(theObject,"max",Parameters,"");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# must be no more than #theVal#.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be no more than #theVal#.");
 		</cfscript>  
 	</cffunction>
 
@@ -205,32 +155,22 @@ purpose:		I ServerRuleValidatorTest.cfc
 		<cfscript>
 			min = 5;
 			max = 10;
-			valStruct = StructNew();
-			valStruct.ValType = "range";
-			valStruct.PropertyName = "FirstName";
-			valStruct.PropertyDesc = "First Name";
-			valStruct.Parameters = StructNew();
-			valStruct.Parameters.min = min;
-			valStruct.Parameters.max = max;
-			valStruct.Condition = "";
+			Parameters = {min = min, max = max};
 			theValue = "5";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("Range").init().validate(Validation);
+			Validation = validate(theObject,"range",Parameters,"");
 			assertTrue(Validation.getIsSuccess());
 			assertEquals(Validation.getFailureMessage(),"");
 			theValue = "3";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("Range").init().validate(Validation);
+			Validation = validate(theObject,"range",Parameters,"");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# must be between #Min# and #Max#.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be between #Min# and #Max#.");
 			theValue = "11";
 			theObject.setFirstName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("Range").init().validate(Validation);
+			Validation = validate(theObject,"range",Parameters,"");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# must be between #Min# and #Max#.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be between #Min# and #Max#.");
 		</cfscript>  
 	</cffunction>
 
@@ -238,28 +178,51 @@ purpose:		I ServerRuleValidatorTest.cfc
 		<cfscript>
 			ComparePropertyName = "LastName";
 			ComparePropertyDesc = "Last Name";
-			valStruct = StructNew();
-			valStruct.ValType = "EqualTo";
-			valStruct.PropertyName = "FirstName";
-			valStruct.PropertyDesc = "First Name";
-			valStruct.Parameters = StructNew();
-			valStruct.Parameters.ComparePropertyName = ComparePropertyName;
-			valStruct.Parameters.ComparePropertyDesc = ComparePropertyDesc;
+			Parameters = {ComparePropertyName = ComparePropertyName, ComparePropertyDesc = ComparePropertyDesc};
 			theValue = "Bobby";
 			theObject.setFirstName(theValue);
 			theObject.setLastName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("EqualTo").init().validate(Validation);
+			Validation = validate(theObject,"EqualTo",Parameters,"");
 			assertTrue(Validation.getIsSuccess());
 			assertEquals(Validation.getFailureMessage(),"");
 			theValue = "Bob";
 			theObject.setLastName(theValue);
-			Validation = TransientFactory.newValidation(theObject).load(valStruct);
-			Validator = ServerValidator.getRuleValidator("EqualTo").init().validate(Validation);
+			Validation = validate(theObject,"EqualTo",Parameters,"");
 			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #valStruct.PropertyDesc# must be the same as the #ComparePropertyDesc#.");
+			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be the same as the #ComparePropertyDesc#.");
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="CustomValidationOnCFCShouldWorkAsExpected" access="public" returntype="void">
+		<cfscript>
+			methodName = "customMethod";
+			Parameters = {methodName = methodName};
+			theObject.setCustomReturn(true);
+			Validation = validate(theObject,"Custom",Parameters,"");
+			assertTrue(Validation.getIsSuccess());
+			assertEquals(Validation.getFailureMessage(),"");
+			theObject.setCustomReturn(false);
+			Validation = validate(theObject,"Custom",Parameters,"");
+			assertFalse(Validation.getIsSuccess());
+			assertEquals(Validation.getFailureMessage(),"No!");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validate" access="private" returntype="Any">
+		<cfargument name="theObject" />
+		<cfargument name="ValType" />
+		<cfargument name="Parameters" required="false" default="#StructNew()#" />
+		<cfargument name="Condition" required="false" default="#StructNew()#" />
+		<cfargument name="PropertyName" required="false" default="FirstName" />
+		<cfargument name="PropertyDesc" required="false" default="First Name" />
+		
+		<cfset Validation = CreateObject("component","ValidateThis.server.validation").init(arguments.theObject,ObjectChecker).load(arguments) />
+		<cfset CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker).validate(Validation) />
+		<cfreturn Validation />
+		
+	</cffunction>
+
+
 </cfcomponent>
+
 

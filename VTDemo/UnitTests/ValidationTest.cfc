@@ -33,13 +33,8 @@ purpose:		I ValidationTest.cfc
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			variables.theObject = mock();
-			/*
-			variables.locales = {valA="A",valB="B"};
-			variables.LoaderHelper.getResourceBundle("A").returns("A");
-			variables.LoaderHelper.getResourceBundle("B").returns("B");
-			variables.RBLocaleLoader = CreateObject("component","ValidateThis.core.RBLocaleLoader").init(variables.LoaderHelper);
-			injectMethod(variables.RBLocaleLoader, this, "findLocaleFileOverride", "findLocaleFile");
-			*/
+			ObjectChecker = mock();
+			ObjectChecker.isCFC("{*}").returns(true);
 		</cfscript>
 	</cffunction>
 	
@@ -57,7 +52,7 @@ purpose:		I ValidationTest.cfc
 			valStruct.Parameters = StructNew();
 			valStruct.Parameters.Param1 = 1;
 			theValue = "Bob";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"getter");
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker);
 			Validation.load(valStruct);
 			assertEquals(valStruct.ValType,Validation.getValType());
 			assertEquals(valStruct.PropertyName,Validation.getPropertyName());
@@ -79,7 +74,7 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"getter");
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -90,13 +85,13 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"getter");
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="getObjectValuewheelsShouldWork" access="public" returntype="void">
+	<cffunction name="getObjectValueWheelsShouldWork" access="public" returntype="void">
 		<cfscript>
 			props = {FirstName="Bob"};
 			variables.theObject.properties().returns(props);
@@ -104,8 +99,25 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,"wheels");
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker,"wheels");
 			Validation.load(valStruct);
+			assertEquals("Bob",Validation.getObjectValue());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getObjectValueGroovyShouldWork" access="public" returntype="void">
+		<cfscript>
+			// need to create or mock a groovy object for this
+			/*
+			props = {FirstName="Bob"};
+			variables.theObject.properties().returns(props);
+			variables.theObject.$propertyvalue("FirstName").returns("Bob");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker);
+			Validation.load(valStruct);
+			*/
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
 	</cffunction>

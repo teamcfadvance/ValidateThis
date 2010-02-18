@@ -34,8 +34,8 @@ purpose:		I ResultTest.cfc
 		<cfscript>
 			MockTranslator = mock();
 			MockTranslator.translate("{string}","{string}").returns("Translated Text");
-			variables.Result = CreateObject("component","ValidateThis.util.Result").init();
-			variables.Result.setTranslator(MockTranslator);
+			variables.Result = CreateObject("component","ValidateThis.util.Result").init(MockTranslator);
+			//variables.Result.setTranslator(MockTranslator);
 		</cfscript>
 	</cffunction>
 	

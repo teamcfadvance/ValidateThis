@@ -17,7 +17,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init();
+			TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init(mock(),mock());
 			FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(TransientFactory);
 			ValidateThisConfig = {JSRoot="/JS"};
 			Translator = mock();
