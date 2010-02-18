@@ -38,48 +38,6 @@
 
 	</cffunction>
 
-	<cffunction name="getObjectValue" access="public" output="false" returntype="any" hint="I return the value from the stored object that corresponds to the field being validated.">
-		<cfset var theValue = "" />
-		<cfset var propertyName = getPropertyName() />
-		<cfset var methodExists = false />
-		
-		<cfif variables.propertyMode EQ "getter">
-			<!--- Note: isInstanceOf() is being used to identify Groovy or Java objects, 
-				the existence of whose methods can not be checked via structKeyExists().
-				The problem with this approach is that if a method does not exist in a Java/Groovy object, 
-				no error will be thrown. The getObjectValue() method will simply return an empty string.
-				This should be addressed in a future version --->
-			<cfif variables.ObjectChecker.isCFC(theObject)>
-				<cfset methodExists = StructKeyExists(theObject,"get" & propertyName)>			
-			<cfelse>
-				<cfset methodExists = true />
-			</cfif>
-			<cfif methodExists>
-				<!--- Using try/catch to deal with composed objects that throw an error if they aren't loaded --->
-				<cftry>
-					<cfset theValue = evaluate("variables.theObject.get#capFirst(propertyName)#()") />
-					<cfcatch type="any"></cfcatch>
-				</cftry>
-				<cfif NOT IsDefined("theValue")>
-					<cfset theValue = "" />
-				</cfif>
-				<cfreturn theValue />
-			<cfelse>
-				<cfthrow type="validatethis.server.validation.propertyNotFound"
-						message="The property #propertyName# was not found in the object passed into the validation object." />
-			</cfif>
-		<cfelseif variables.propertyMode EQ "wheels">		
-			<cfif StructKeyExists(variables.theObject.properties(),propertyName)>
-				<cfreturn variables.theObject.$propertyvalue(propertyName) />
-			<cfelse>
-				<cfthrow type="validatethis.server.validation.propertyNotFound"
-						message="The property #propertyName# was not found in the object passed into the validation object." />
-			</cfif>
-		<cfelse>
-			<cfthrow type="ValidateThis.server.validation.InvalidPropertyMode" message="The propertyMode (#variables.propertyMode#) is not valid.">
-		</cfif>
-	</cffunction>
-
 	<cffunction name="getMemento" access="public" output="false" returntype="any">
 		<cfreturn variables.instance />
 	</cffunction>
