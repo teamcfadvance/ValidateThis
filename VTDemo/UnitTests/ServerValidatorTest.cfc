@@ -74,7 +74,6 @@ purpose:		I ServerValidatorTest.cfc
 			ServerValidator.validate(UserTO.getValidator(),UserTO,"Register",Result);
 			AssertFalse(Result.getIsSuccess());
 			Failures = Result.getFailures();
-			debug(Failures);
 			assertEquals(ArrayLen(Failures),6);
 			Failure = Failures[1];
 			assertEquals(Failure.Type,"required");

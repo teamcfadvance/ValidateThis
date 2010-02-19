@@ -36,29 +36,31 @@
 		<cfargument name="Result" type="any" required="true" />
 
 		<cfset var v = "" />
-		<cfset var theCondition = "" />
 		<cfset var theFailure = 0 />
 		<cfset var FailureMessage = 0 />
 		<cfset var Validations = arguments.BOValidator.getValidations(arguments.Context) />
 		<cfset var theVal = variables.TransientFactory.newValidation(arguments.theObject) />
 		<cfset var dependentPropertyExpression = 0 />
+		<cfset var dependentPropertyValue = "" />
+		<cfset var conditionPasses = true />
 		
 		<cfif IsArray(Validations) and ArrayLen(Validations)>
 			<!--- Loop through the validations array, creating validation objects and using them --->
 			<cfloop Array="#Validations#" index="v">
-				<cfset theCondition = "" />
+				<cfset conditionPasses = true />
 				<!--- Deal with various conditions --->
 				<cfif StructKeyExists(v.Condition,"ServerTest")>
-					<cfset theCondition = v.Condition.ServerTest />
+					<cfset conditionPasses = arguments.theObject.testCondition(v.Condition.ServerTest) />
 				<cfelseif StructKeyExists(v.Parameters,"DependentPropertyName")>
 					<cfset dependentPropertyExpression = variables.ObjectChecker.findGetter(arguments.theObject,v.Parameters.DependentPropertyName) />
+					<cfset dependentPropertyValue = evaluate("arguments.theObject.#dependentPropertyExpression#") />
 					<cfif StructKeyExists(v.Parameters,"DependentPropertyValue")>
-						<cfset theCondition = dependentPropertyExpression & " EQ '#v.Parameters.DependentPropertyValue#'" />
+						<cfset conditionPasses = dependentPropertyValue EQ v.Parameters.DependentPropertyValue />
 					<cfelse>
-						<cfset theCondition = "Len(#dependentPropertyExpression#) GT 0" />
+						<cfset conditionPasses = len(dependentPropertyValue) GT 0 />
 					</cfif>
 				</cfif>
-				<cfif NOT Len(theCondition) OR arguments.theObject.testCondition(theCondition)>
+				<cfif conditionPasses>
 					<cfset theVal.load(v) />
 					<cfset variables.RuleValidators[v.ValType].validate(theVal) />
 					<cfif NOT theVal.getIsSuccess()>
