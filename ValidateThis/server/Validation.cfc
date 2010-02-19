@@ -41,8 +41,6 @@
 		<cfset var theValue = "" />
 		<cfset var methodName = variables.ObjectChecker.findGetter(variables.theObject,arguments.propertyName) />
 		
-		<cfset request.debug(methodName) />
-		
 		<cfif len(methodName)>
 			<!--- Using try/catch to deal with composed objects that throw an error if they aren't loaded --->
 			<cftry>
