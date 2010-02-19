@@ -19,14 +19,7 @@
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
 		<cfset var Parameters = arguments.valObject.getParameters() />
-		<cfset var otherVal = 0 />
-		<cfif arguments.valObject.getPropertyMode() EQ "getter">
-			<cfset otherVal = evaluate("arguments.valObject.getTheObject().get#capFirst(Parameters.ComparePropertyName)#()") />
-		<cfelseif arguments.valObject.getPropertyMode() EQ "wheels">	
-			<cfset otherVal = arguments.valObject.getTheObject().$propertyvalue(Parameters.ComparePropertyName) />
-		<cfelse>
-			<cfthrow type="ValidateThis.server.ServerRuleValidator_EqualTo.InvalidPropertyMode" message="The propertyMode (#arguments.valObject.getPropertyMode()#) is not valid.">
-		</cfif>
+		<cfset var otherVal = arguments.valObject.getObjectValue(Parameters.ComparePropertyName) />
 		<cfif arguments.valObject.getObjectValue() NEQ otherVal>
 			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be the same as the #Parameters.ComparePropertyDesc#.") />
 		</cfif>

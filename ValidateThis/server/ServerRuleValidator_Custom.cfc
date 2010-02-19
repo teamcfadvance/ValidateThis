@@ -22,34 +22,13 @@
 		<cfset var theObject = arguments.valObject.getTheObject() />
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfset var theMethod = Parameters.MethodName />
-		<cfset var methodExists = false />
 		
-		
-		<!--- Note: isInstanceOf() is being used to identify Groovy or Java objects, 
-			the existence of whose methods can not be checked via structKeyExists().
-			The problem with this approach is that if a method does not exist in a Java/Groovy object, 
-			no error will be thrown. The validator will simply fail.
-			This should be addressed in a future version --->
-		<cfif variables.ObjectChecker.isCFC(theObject)>
-			<cfset methodExists = StructKeyExists(theObject,theMethod)>			
-		<cfelse>
-			<cfset methodExists = true />
+		<cfset customResult = evaluate("theObject.#theMethod#()") />
+		<cfif NOT IsDefined("customResult")>
+			<cfset customResult = {IsSuccess=false,FailureMessage="A custom validator failed."} />
 		</cfif>
-		<cfif methodExists>
-			<!--- Using try/catch to deal with methods that might not exist in Java/Groovy objects --->
-			<cftry>
-				<cfset customResult = evaluate("theObject.#theMethod#()") />
-				<cfcatch type="any"></cfcatch>
-			</cftry>
-			<cfif NOT IsDefined("customResult")>
-				<cfset customResult = {IsSuccess=false,FailureMessage="A custom validator failed."} />
-			</cfif>
-			<cfif NOT customResult.IsSuccess>
-				<cfset fail(arguments.valObject,customResult.FailureMessage) />
-			</cfif>
-		<cfelse>
-			<cfthrow type="validatethis.server.ServerRuleValidator_Custom.methodNotFound"
-					message="The method #theMethod# was not found in the object passed into the validation object." />
+		<cfif NOT customResult.IsSuccess>
+			<cfset fail(arguments.valObject,customResult.FailureMessage) />
 		</cfif>
 	</cffunction>
 

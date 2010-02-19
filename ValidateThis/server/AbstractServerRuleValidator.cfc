@@ -43,38 +43,6 @@
 		<cfset arguments.valObject.setFailureMessage(arguments.FailureMessage) />
 	</cffunction>
 
-	<!---
-	
-	This is used to address case sensitivity issues with Java/Groovy method names.
-	Should be in a separate, injected object as it is used elsewhere.
-	
-	Capitalizes the first letter in each word.
-	Made udf use strlen, rkc 3/12/02
-	v2 by Sean Corfield.
-	
-	@param string      String to be modified. (Required)
-	@return Returns a string.
-	@author Raymond Camden (ray@camdenfamily.com)
-	@version 2, March 9, 2007
-	--->
-	<cffunction name="CapFirst" returntype="string" output="false">
-	    <cfargument name="str" type="string" required="true" />
-	    
-	    <cfset var newstr = "" />
-	    <cfset var word = "" />
-	    <cfset var separator = "" />
-	    
-	    <cfloop index="word" list="#arguments.str#" delimiters=" ">
-	        <cfset newstr = newstr & separator & UCase(left(word,1)) />
-	        <cfif len(word) gt 1>
-	            <cfset newstr = newstr & right(word,len(word)-1) />
-	        </cfif>
-	        <cfset separator = " " />
-	    </cfloop>
-	
-	    <cfreturn newstr />
-	</cffunction>
-
 </cfcomponent>
 	
 

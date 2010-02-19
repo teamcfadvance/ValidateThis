@@ -87,47 +87,47 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="findPropertyReturnsGetterForExistingMethodInCFC" access="public" returntype="void">
+	<cffunction name="findGetterReturnsGetterForExistingMethodInCFC" access="public" returntype="void">
 		<cfscript>
-			var cfc = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
-			assertEquals(true,objectChecker.findProperty(cfc,"FirstName"));
+			var cfc = CreateObject("component","fixture.APlainCFC_Fixture").init();
+			assertEquals("getFirstName()",objectChecker.findGetter(cfc,"FirstName"));
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="findPropertyReturnsBlankForNonExistentMethodInCFC" access="public" returntype="void">
+	<cffunction name="findGetterReturnsBlankForNonExistentMethodInCFC" access="public" returntype="void">
 		<cfscript>
-			var cfc = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
-			assertEquals(false,objectChecker.findProperty(cfc,"Blah"));
+			var cfc = CreateObject("component","fixture.APlainCFC_Fixture").init();
+			assertEquals("",objectChecker.findGetter(cfc,"Blah"));
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="findPropertyReturnsGetterForExistingMethodInWheelsObject" access="public" returntype="void">
-		<cfscript>
-			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
-			assertEquals(true,objectChecker.findProperty(obj,"WheelsName"));
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="findPropertyReturnsBlankForNonExistentMethodInWheelsObject" access="public" returntype="void">
+	<cffunction name="findGetterReturnsGetterForExistingMethodInWheelsObject" access="public" returntype="void">
 		<cfscript>
 			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
-			assertEquals(false,objectChecker.findProperty(obj,"Blah"));
+			assertEquals("$propertyvalue('WheelsName')",objectChecker.findGetter(obj,"WheelsName"));
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="findPropertyReturnsGetterForExistingMethodInGroovyObject" access="public" returntype="void">
+	<cffunction name="findGetterReturnsBlankForNonExistentMethodInWheelsObject" access="public" returntype="void">
+		<cfscript>
+			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
+			assertEquals("",objectChecker.findGetter(obj,"Blah"));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="findGetterReturnsGetterForExistingMethodInGroovyObject" access="public" returntype="void">
 		<cfscript>
 			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
 			injectMethod(ObjectChecker, this, "isCFCFalse", "isCFC");
-			assertEquals(true,objectChecker.findProperty(obj,"GroovyName"));
+			assertEquals("getGroovyName()",objectChecker.findGetter(obj,"GroovyName"));
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="findPropertyReturnsBlankForNonExistentMethodInGroovyObject" access="public" returntype="void">
+	<cffunction name="findGetterReturnsBlankForNonExistentMethodInGroovyObject" access="public" returntype="void">
 		<cfscript>
 			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
 			injectMethod(ObjectChecker, this, "isCFCFalse", "isCFC");
-			assertEquals(false,objectChecker.findProperty(obj,"Blah"));
+			assertEquals("",objectChecker.findGetter(obj,"Blah"));
 		</cfscript>  
 	</cffunction>
 

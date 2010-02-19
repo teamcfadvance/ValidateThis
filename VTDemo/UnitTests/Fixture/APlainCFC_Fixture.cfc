@@ -20,7 +20,9 @@
 	
 	<cffunction name="init" access="public" returntype="any">
 		<cfargument name="FirstName" required="false" default="Bob" />
+		<cfargument name="LastName" required="false" default="Silverberg" />
 		<cfset variables.FirstName = arguments.FirstName />
+		<cfset variables.LastName = arguments.LastName />
 		<cfreturn this />
 	</cffunction>
 	
@@ -32,6 +34,16 @@
 	
 	<cffunction name="getFirstName" access="public" returntype="any">
 		<cfreturn variables.FirstName />
+	</cffunction>
+	
+	<cffunction name="setLastName" access="public" returntype="any">
+		<cfargument name="LastName" required="false" default="Silverberg" />
+		<cfset variables.LastName = arguments.LastName />
+		<cfreturn this />
+	</cffunction>
+	
+	<cffunction name="getLastName" access="public" returntype="any">
+		<cfreturn variables.LastName />
 	</cffunction>
 	
 </cfcomponent>

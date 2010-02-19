@@ -36,7 +36,9 @@ purpose:		I ServerRuleValidatorTest.cfc
 		<cfscript>
 			theObject = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
 			ObjectChecker = mock();
-			ObjectChecker.isCFC("{*}").returns(true);
+			ObjectChecker.findGetter("{*}").returns("getFirstName()");
+			// ObjectChecker.findGetter("{any}","FirstName").returns("getFirstName()");
+			// ObjectChecker.findGetter("{any}","LastName").returns("getLastName()");
 		</cfscript>
 	</cffunction>
 	
@@ -176,6 +178,8 @@ purpose:		I ServerRuleValidatorTest.cfc
 
 	<cffunction name="EqualToValidationShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
+			// cannot seem to get mock objectChecker to work with call to two getters, so using the real one
+			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init();
 			ComparePropertyName = "LastName";
 			ComparePropertyDesc = "Last Name";
 			Parameters = {ComparePropertyName = ComparePropertyName, ComparePropertyDesc = ComparePropertyDesc};

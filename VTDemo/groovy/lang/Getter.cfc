@@ -15,21 +15,9 @@
 	License.
 	
 --->
-<cfcomponent extends="Wheels" output="false">
+<cfcomponent output="false" hint="This exists to allow for fake Groovy objects, which need a Getter object that can return a name">
 	
-	<cffunction name="init" access="public" returntype="any">
-		<cfargument name="WheelsName" required="false" default="Bob" />
-		<cfset this.WheelsName = arguments.WheelsName />
-		<cfreturn this />
+	<cffunction name="getName" returntype="Any" access="public">
+		<cfreturn "getGroovyName" />
 	</cffunction>
-
-	<cffunction name="properties" access="public" returntype="any">
-		<cfset var props = {WheelsName=this.WheelsName} />
-		<cfreturn props />
-	</cffunction>
-
-	<cffunction name="$propertyvalue" access="public" returntype="any">
-		<cfreturn "Bob" />
-	</cffunction>
-
 </cfcomponent>

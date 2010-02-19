@@ -35,7 +35,7 @@
 		<cfset variables.Beans.TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init(variables.Beans.Translator,variables.Beans.ObjectChecker) />
 		<cfset variables.Beans.FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(variables.Beans.TransientFactory) />
 		<cfset variables.Beans.XMLFileReader = CreateObject("component","ValidateThis.core.XMLFileReader").init(variables.Beans.FileSystem,variables.ValidateThisConfig) />
-		<cfset variables.Beans.ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(variables.Beans.FileSystem,variables.Beans.TransientFactory,variables.Beans.ObjectChecker,variables.ValidateThisConfig.propertyMode) />
+		<cfset variables.Beans.ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(variables.Beans.FileSystem,variables.Beans.TransientFactory,variables.Beans.ObjectChecker) />
 		<cfset variables.Beans.ClientValidator = CreateObject("component","ValidateThis.client.ClientValidator").init(variables.Beans.FileSystem,variables.ValidateThisConfig,variables.Beans.Translator) />
 		<cfset variables.Beans.CommonScriptGenerator = CreateObject("component","ValidateThis.client.CommonScriptGenerator").init(variables.Beans.ClientValidator) />
 		

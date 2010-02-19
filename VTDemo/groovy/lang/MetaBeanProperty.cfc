@@ -17,4 +17,7 @@
 --->
 <cfcomponent output="false" hint="This exists to allow for fake Groovy objects, which must be able to return an object of type 'groovy.lang.MetaBeanProperty'">
 	
+	<cffunction name="getGetter" returntype="Any" access="public">
+		<cfreturn createObject("component","Getter") />
+	</cffunction>
 </cfcomponent>

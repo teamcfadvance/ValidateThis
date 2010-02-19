@@ -128,14 +128,13 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
-		<cfargument name="propertyMode" type="any" required="false" default="#variables.ValidateThisConfig.propertyMode#" />
 
 		<cfif IsSimpleValue(arguments.Result)>
 			<cfset arguments.Result = newResult() />
 		</cfif>
 		<!--- Put the object into the result so it can be retrieved from there --->
 		<cfset arguments.Result.setTheObject(arguments.theObject) />
-		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result,arguments.propertyMode) />
+		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result) />
 		<cfreturn arguments.Result />
 		
 	</cffunction>

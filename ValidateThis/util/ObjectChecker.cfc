@@ -42,7 +42,7 @@
 	
 	</cffunction>
 
-	<cffunction name="findProperty" access="public" output="false" returntype="any" hint="I try to locate a property in an object, returning the name of the getter if needed.">
+	<cffunction name="findGetter" access="public" output="false" returntype="any" hint="I try to locate a property in an object, returning the name of the getter">
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="propertyName" type="any" required="true" />
 		
@@ -51,7 +51,7 @@
 		
 		<cfif isWheels(arguments.theObject)>
 			<cfif structKeyExists(arguments.theObject.properties(),arguments.propertyName)>
-				<cfset theGetter = "$propertyvalue(#arguments.propertyName#)" />
+				<cfset theGetter = "$propertyvalue('#arguments.propertyName#')" />
 			</cfif>
 		<cfelseif isCFC(arguments.theObject)>
 			<cfif structKeyExists(arguments.theObject,"get" & arguments.propertyName)>
@@ -60,7 +60,7 @@
 		<cfelseif isGroovy(arguments.theObject)>
 			<cfset theProp = arguments.theObject.metaclass.hasProperty(arguments.theObject,arguments.propertyName) />
 			<cfif isDefined("theProp")>
-				<cfset theGetter = theProp.getGetter().getName() />
+				<cfset theGetter = theProp.getGetter().getName() & "()" />
 			</cfif>
 		</cfif>
 		

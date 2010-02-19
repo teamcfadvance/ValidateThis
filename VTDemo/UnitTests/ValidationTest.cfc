@@ -32,9 +32,6 @@ purpose:		I ValidationTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			variables.theObject = mock();
-			ObjectChecker = mock();
-			ObjectChecker.isCFC("{*}").returns(true);
 		</cfscript>
 	</cffunction>
 	
@@ -43,7 +40,9 @@ purpose:		I ValidationTest.cfc
 	
 	<cffunction name="ValidationShouldLoadFromStruct" access="public" returntype="void">
 		<cfscript>
-			injectMethod(variables.theObject, this, "getFirstName", "getFirstName");
+			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();
+			var ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("getFirstName()");
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
@@ -52,7 +51,7 @@ purpose:		I ValidationTest.cfc
 			valStruct.Parameters = StructNew();
 			valStruct.Parameters.Param1 = 1;
 			theValue = "Bob";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
 			Validation.load(valStruct);
 			assertEquals(valStruct.ValType,Validation.getValType());
 			assertEquals(valStruct.PropertyName,Validation.getPropertyName());
@@ -64,28 +63,43 @@ purpose:		I ValidationTest.cfc
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="getFirstName">
-		<cfreturn "Bob" />
-	</cffunction>
-	
-	<cffunction name="getObjectValueWithGetterShouldWork" access="public" returntype="void">
+	<cffunction name="getObjectValueCFCNoArgumentShouldWork" access="public" returntype="void">
 		<cfscript>
-			injectMethod(variables.theObject, this, "getFirstName", "getFirstName");
+			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();
+			var ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("getFirstName()");
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="getObjectValueWithGetterMissingPropertyShouldFail" access="public" returntype="void" mxunit:expectedException="validatethis.server.validation.propertyNotFound">
+	<cffunction name="getObjectValueCFCWithPropertyNameArgumentShouldWork" access="public" returntype="void">
 		<cfscript>
+			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();
+			var ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("getLastName()");
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation.load(valStruct);
+			assertEquals("Silverberg",Validation.getObjectValue("LastName"));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getObjectValueMissingPropertyShouldFail" access="public" returntype="void" mxunit:expectedException="validatethis.server.validation.propertyNotFound">
+		<cfscript>
+			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();
+			var ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "Blah";
+			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -93,13 +107,13 @@ purpose:		I ValidationTest.cfc
 
 	<cffunction name="getObjectValueWheelsShouldWork" access="public" returntype="void">
 		<cfscript>
-			props = {FirstName="Bob"};
-			variables.theObject.properties().returns(props);
-			variables.theObject.$propertyvalue("FirstName").returns("Bob");
+			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
+			var ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("$propertyvalue('WheelsName')");
 			valStruct = StructNew();
 			valStruct.ValType = "required";
-			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker,"wheels");
+			valStruct.PropertyName = "WheelsName";
+			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -107,17 +121,14 @@ purpose:		I ValidationTest.cfc
 
 	<cffunction name="getObjectValueGroovyShouldWork" access="public" returntype="void">
 		<cfscript>
-			// need to create or mock a groovy object for this
-			/*
-			props = {FirstName="Bob"};
-			variables.theObject.properties().returns(props);
-			variables.theObject.$propertyvalue("FirstName").returns("Bob");
+			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
+			var ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("getGroovyName()");
 			valStruct = StructNew();
 			valStruct.ValType = "required";
-			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(variables.theObject,ObjectChecker);
+			valStruct.PropertyName = "GroovyName";
+			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
 			Validation.load(valStruct);
-			*/
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
 	</cffunction>

@@ -22,4 +22,8 @@
 		<cfreturn this />
 	</cffunction>
 
+	<cffunction name="getGroovyName" access="public" returntype="any">
+		<cfreturn "Bob" />
+	</cffunction>
+
 </cfcomponent>
