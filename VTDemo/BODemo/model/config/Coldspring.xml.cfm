@@ -20,7 +20,7 @@
 
 	<!-- ValidateThis Service Object -->
 	<bean id="ValidateThis" class="ValidateThis.ValidateThis">
-		<constructor-arg name="datasourcePath"><ref bean="ValidateThisConfig" /></constructor-arg>
+		<constructor-arg name="ValidateThisConfig"><ref bean="ValidateThisConfig" /></constructor-arg>
 	</bean>
 		
 	<!-- ValidateThis! Config Bean -->

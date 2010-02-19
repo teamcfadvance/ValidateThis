@@ -97,3 +97,11 @@ Version 0.9
 - removed all the hacky code required to support a bug in cfinvoke in Railo, that has since been fixed
 
 
+Version 0.91
+-------------
+
+- added support for Groovy objects and ColdFusion on Wheels object via the ObjectChecker object
+- added a getVersion() method available from both the ValidateThis.cfc facade and the BOValidator which reports the current version of the framework
+
+
+

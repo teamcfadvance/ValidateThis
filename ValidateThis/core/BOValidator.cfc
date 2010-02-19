@@ -25,6 +25,7 @@
 		<cfargument name="ValidateThisConfig" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 		<cfargument name="CommonScriptGenerator" type="any" required="true" />
+		<cfargument name="Version" type="any" required="true" />
 
 		<cfset variables.Instance = {objectType = arguments.objectType} />
 		<cfset variables.Instance.newRules = {} />
@@ -35,6 +36,7 @@
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<cfset variables.CommonScriptGenerator = arguments.CommonScriptGenerator />
+		<cfset variables.Version = arguments.Version />
 		
 		<!--- If the definitionPath passed in is empty, get it from the ValidateThisConfig --->
 		<cfif NOT Len(arguments.definitionPath)>
@@ -44,7 +46,7 @@
 		<cfset processXML(arguments.objectType,arguments.definitionPath) />
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="processXML" returnType="void" access="private" output="false" hint="I ask the XMLFileReader to read the validations XML file and reformat it into a struct">
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
@@ -291,6 +293,10 @@
 		<cfelse>
 			<cfreturn "" />
 		</cfif>
+	</cffunction>
+
+	<cffunction name="getVersion" returnType="any" output="false" hint="I report the current version of the framework">
+		<cfreturn variables.Version.getVersion() />
 	</cffunction>
 
 </cfcomponent>

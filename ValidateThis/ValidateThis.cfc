@@ -130,6 +130,12 @@
 	
 	</cffunction>
 	
+	<cffunction name="getVersion" access="public" output="false" returntype="any">
+
+		<cfreturn getBean("Version").getVersion() />
+		
+	</cffunction>
+	
 </cfcomponent>
 	
 

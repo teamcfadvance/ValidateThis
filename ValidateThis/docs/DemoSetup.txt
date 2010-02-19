@@ -1,18 +1,18 @@
-ValidateThis! Demo Setup Guide
+ValidateThis Demo Setup Guide
 
 To run the demo applications you need:
-- ColdFusion 8.0.1 or Railo 3.0.2 or higher
-- A database.  Scripts to create the required database objects for both SQL Server and MySQL can be found in the VTDemo folder, entitled mssql-setup.sql and mysql-setup.sql, respectively.  Although the scripts only exist for SQL server and MySQL, they only create two tables, so it should be simple for anyone to create the required database and tables in any dbms that is supported by Transfer.
-- Note that you値l need either a mapping for Transfer and Coldspring/Reactor, or have them as sub-folders of the demo application.
+- ColdFusion 8.0.1 or Railo 3.1 or higher
+- A database.  Scripts to create the required database objects for both SQL Server and MySQL can be found in the root of the distribution, entitled mssql-setup.sql and mysql-setup.sql, respectively.  Although the scripts only exist for SQL server and MySQL, they only create two tables, so it should be simple for anyone to create the required database and tables in any dbms that is supported by Transfer.
+- Note that you'll need either a mapping for Transfer and Coldspring/Reactor, or have them as sub-folders of the demo application.
 
-For the BODemo, you値l also need:
+For the BODemo, you'll also need:
 - Transfer ORM (http://www.transfer-orm.com) v1.0 or higher
 - Coldspring (http://www.coldspringframework.org) v.1.2
 
-For the ServiceDemo, you値l need:
+For the ServiceDemo, you'll need:
 - Reactor (http://trac.reactorframework.com/)
 
-For the i18nDemo, you値l need:
+For the i18nDemo, you'll need:
 - Reactor (http://trac.reactorframework.com/)
 
 

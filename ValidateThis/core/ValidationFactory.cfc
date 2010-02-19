@@ -28,6 +28,7 @@
 
 	<cffunction name="loadBeans" access="private" output="false" returntype="void" hint="I load the required singletons">
 	
+		<cfset variables.Beans.Version = CreateObject("component","ValidateThis.core.Version").init() />
 		<cfset variables.Beans.ObjectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init() />
 		<cfset variables.Beans.ResourceBundle = createObject("component","ValidateThis.util.ResourceBundle").init() />
 		<cfset variables.Beans.LocaleLoader = CreateObject("component",variables.ValidateThisConfig.LocaleLoaderPath).init(variables.Beans.ResourceBundle) />
@@ -67,7 +68,7 @@
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 		
-		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),getBean("XMLFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),variables.ValidateThisConfig,arguments.definitionPath,getBean("CommonScriptGenerator")) />
+		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),getBean("XMLFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),variables.ValidateThisConfig,arguments.definitionPath,getBean("CommonScriptGenerator"),getBean("Version")) />
 		
 	</cffunction>
 

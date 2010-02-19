@@ -124,6 +124,13 @@ purpose:		I BOValidatorTest.cfc
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
+		<cfscript>
+			createDefaultBOV();
+			assertEquals("0.91",variables.BOValidator.getVersion());
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="createDefaultBOV" access="private" returntype="void">
 		<cfscript>
 			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac

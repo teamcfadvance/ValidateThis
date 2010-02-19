@@ -1,4 +1,4 @@
-ValidateThis! QuickStart Guide
+ValidateThis QuickStart Guide (v 0.91)
 
 1. Unzip the framework files, which are in the /ValidateThis folder, somewhere.
 2. Create a Mapping that points to the framework files, or simply unzip them into your web root.
@@ -22,5 +22,5 @@ getValidationScript()
 
 Please see the demo application in /ServiceDemo for examples of using these methods.
 
-More information is available at http://www.silverwareconsulting.com/index.cfm/ValidateThis and questions may be asked at http://groups.google.ca/group/validatethis.
+More information is available at http://www.validatethis.org/ and questions may be asked at http://groups.google.ca/group/validatethis.
 

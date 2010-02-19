@@ -37,6 +37,12 @@ purpose:		I ValidateThisTest.cfc
 	</cffunction>
 	
 	<!--- No tests have been defined for this component yet --->
+	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
+		<cfscript>
+			assertEquals("0.91",ValidateThis.getVersion());
+		</cfscript>  
+	</cffunction>
+
 
 </cfcomponent>
 
