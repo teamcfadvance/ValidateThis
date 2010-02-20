@@ -96,12 +96,16 @@ Version 0.9
 
 - removed all the hacky code required to support a bug in cfinvoke in Railo, that has since been fixed
 
-
 Version 0.91
 -------------
 
 - added support for Groovy objects and ColdFusion on Wheels object via the ObjectChecker object
 - added a getVersion() method available from both the ValidateThis.cfc facade and the BOValidator which reports the current version of the framework
 
+Version 0.92
+-------------
 
+- a couple of fixes for conditional validations and Groovy objects
+- added the ability to specify external paths for ServerRuleValidators
+- added a config option for abstractGetterMethod to allow for BOs with an abstract getter vs individual getters
 

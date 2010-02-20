@@ -95,9 +95,18 @@
 	</cffunction>
 
 	<cffunction name="findGetterReturnsBlankForNonExistentMethodInCFC" access="public" returntype="void">
+
 		<cfscript>
 			var cfc = CreateObject("component","fixture.APlainCFC_Fixture").init();
 			assertEquals("",objectChecker.findGetter(cfc,"Blah"));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="findGetterReturnsGetterForAbstractGetterCFC" access="public" returntype="void">
+		<cfscript>
+			var cfc = CreateObject("component","fixture.CFCWithAbstractGetter_Fixture").init();
+			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init("getProperty");
+			assertEquals("getProperty('FirstName')",objectChecker.findGetter(cfc,"FirstName"));
 		</cfscript>  
 	</cffunction>
 

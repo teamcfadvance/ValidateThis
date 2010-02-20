@@ -19,13 +19,19 @@
 		<cfargument name="FileSystem" type="any" required="true" />
 		<cfargument name="TransientFactory" type="any" required="true" />
 		<cfargument name="ObjectChecker" type="any" required="true" />
+		<cfargument name="ExtraRuleValidatorComponentPaths" type="any" required="true" />
 		
 		<cfset variables.FileSystem = arguments.FileSystem />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.ObjectChecker = arguments.ObjectChecker />
+		<cfset variables.ExtraRuleValidatorComponentPaths = arguments.ExtraRuleValidatorComponentPaths />
 		<cfset variables.RuleValidators = {} />
 
 		<cfset setRuleValidators() />
+		<cfif len(variables.ExtraRuleValidatorComponentPaths) gt 0>
+			<cfset setRuleValidators(variables.ExtraRuleValidatorComponentPaths)/>
+		</cfif>
+				
 		<cfreturn this />
 	</cffunction>
 
@@ -80,21 +86,35 @@
 				</cfif>
 			</cfloop>
 		</cfif>
-
 	</cffunction>
 
 	<cffunction name="getRuleValidators" access="public" output="false" returntype="any">
 		<cfreturn variables.RuleValidators />
 	</cffunction>
-	<cffunction name="setRuleValidators" returntype="void" access="public" output="false">
-		<cfset var RSNames = variables.FileSystem.listFiles(GetDirectoryFromPath(GetCurrentTemplatePath())) />
+
+	<cffunction name="setRuleValidators" returntype="void" access="public" output="false" hint="I create rule validator objects from a list of component paths">
+		<cfargument name="ValidatorsPaths" type="string" required="false" default="#GetDirectoryFromPath(GetCurrentTemplatePath())#" hint="A comma delimited list of component paths" />
+		<cfset var RSNames = "" />
 		<cfset var RS = 0 />
-		<cfloop list="#RSNames#" index="RS">
-			<cfif ListLast(RS,".") EQ "cfc" AND RS CONTAINS "ServerRuleValidator_">
-				<cfset variables.RuleValidators[ReplaceNoCase(ListLast(RS,"_"),".cfc","")] = CreateObject("component",ReplaceNoCase(RS,".cfc","")).init(variables.ObjectChecker) />
+		<cfset var ValidatorsPath = ""/>
+		<cfset var RulesDestination = ""/>
+		<cfset var ComponentPath = ""/>
+		
+		<cfloop list="#arguments.ValidatorsPaths#" index="ValidatorsPath">
+			<cfset RulesDestination = ValidatorsPath />
+			<cfif RulesDestination neq GetDirectoryFromPath(GetCurrentTemplatePath())>
+				<cfset RulesDestination = variables.FileSystem.getMappingPath(ValidatorsPath)/>
+				<cfset ComponentPath = ValidatorsPath & "."/>
 			</cfif>
+			<cfset RSNames = variables.FileSystem.listFiles(RulesDestination)/>
+			<cfloop list="#RSNames#" index="RS">
+				<cfif ListLast(RS,".") EQ "cfc" AND RS CONTAINS "ServerRuleValidator_">
+					<cfset variables.RuleValidators[replaceNoCase(ListLast(RS,"_"),".cfc","")] = CreateObject("component",ComponentPath & ReplaceNoCase(RS,".cfc","")).init(variables.ObjectChecker) />
+				</cfif>
+			</cfloop>
 		</cfloop>
 	</cffunction>
+	
 	<cffunction name="getRuleValidator" access="public" output="false" returntype="any">
 		<cfargument name="RuleType" type="any" required="true" />
 		<cfreturn variables.RuleValidators[arguments.RuleType] />

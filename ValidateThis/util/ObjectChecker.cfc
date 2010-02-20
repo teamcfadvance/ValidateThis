@@ -16,7 +16,9 @@
 <cfcomponent output="false" hint="I am used to deal with different types of objects: standard CFCs, Wheels objects and Groovy objects.">
 
 	<cffunction name="Init" access="Public" returntype="any" output="false">
-
+		<cfargument name="abstractGetterMethod" type="string" required="false" default="" />
+		
+		<cfset variables.abstractGetterMethod = arguments.abstractGetterMethod />
 		<cfreturn this />
 
 	</cffunction>
@@ -56,6 +58,8 @@
 		<cfelseif isCFC(arguments.theObject)>
 			<cfif structKeyExists(arguments.theObject,"get" & arguments.propertyName)>
 				<cfset theGetter = "get#arguments.propertyName#()" />
+			<cfelseif len(variables.abstractGetterMethod) gt 0 and structKeyExists(arguments.theObject,variables.abstractGetterMethod)>
+				<cfset theGetter = "#variables.abstractGetterMethod#('#arguments.propertyName#')" />
 			</cfif>
 		<cfelseif isGroovy(arguments.theObject)>
 			<cfset theProp = arguments.theObject.metaclass.hasProperty(arguments.theObject,arguments.propertyName) />

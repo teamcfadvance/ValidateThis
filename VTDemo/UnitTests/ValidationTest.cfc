@@ -91,6 +91,20 @@ purpose:		I ValidationTest.cfc
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="getObjectValueCFCWithAbstractGetterShouldWork" access="public" returntype="void">
+		<cfscript>
+			var obj = CreateObject("component","fixture.CFCWithAbstractGetter_Fixture").init();
+			var ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("getProperty('FirstName')");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation.load(valStruct);
+			assertEquals("Bob",Validation.getObjectValue());
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="getObjectValueMissingPropertyShouldFail" access="public" returntype="void" mxunit:expectedException="validatethis.server.validation.propertyNotFound">
 		<cfscript>
 			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();
