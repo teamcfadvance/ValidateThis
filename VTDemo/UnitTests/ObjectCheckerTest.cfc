@@ -104,8 +104,8 @@
 
 	<cffunction name="findGetterReturnsGetterForAbstractGetterCFC" access="public" returntype="void">
 		<cfscript>
-			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init("getProperty");
 			var cfc = CreateObject("component","fixture.CFCWithAbstractGetter_Fixture").init();
+			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init("getProperty");
 			assertEquals("getProperty('FirstName')",objectChecker.findGetter(cfc,"FirstName"));
 		</cfscript>  
 	</cffunction>

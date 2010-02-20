@@ -27,10 +27,10 @@
 		<cfset variables.ExtraRuleValidatorComponentPaths = arguments.ExtraRuleValidatorComponentPaths />
 		<cfset variables.RuleValidators = {} />
 
+		<cfset setRuleValidators() />
 		<cfif len(variables.ExtraRuleValidatorComponentPaths) gt 0>
 			<cfset setRuleValidators(variables.ExtraRuleValidatorComponentPaths)/>
 		</cfif>
-		<cfset setRuleValidators() />
 				
 		<cfreturn this />
 	</cffunction>
@@ -99,7 +99,6 @@
 		<cfset var ValidatorsPath = ""/>
 		<cfset var RulesDestination = ""/>
 		<cfset var ComponentPath = ""/>
-		<cfset var validatorName = ""/>
 		
 		<cfloop list="#arguments.ValidatorsPaths#" index="ValidatorsPath">
 			<cfset RulesDestination = ValidatorsPath />
@@ -109,9 +108,8 @@
 			</cfif>
 			<cfset RSNames = variables.FileSystem.listFiles(RulesDestination)/>
 			<cfloop list="#RSNames#" index="RS">
-				<cfset validatorName = replaceNoCase(ListLast(RS,"_"),".cfc","") />
-				<cfif NOT structKeyExists(variables.RuleValidators,validatorName) AND ListLast(RS,".") EQ "cfc" AND RS CONTAINS "ServerRuleValidator_">
-					<cfset variables.RuleValidators[validatorName] = CreateObject("component",ComponentPath & ReplaceNoCase(RS,".cfc","")).init(variables.ObjectChecker) />
+				<cfif ListLast(RS,".") EQ "cfc" AND RS CONTAINS "ServerRuleValidator_">
+					<cfset variables.RuleValidators[replaceNoCase(ListLast(RS,"_"),".cfc","")] = CreateObject("component",ComponentPath & ReplaceNoCase(RS,".cfc","")).init(variables.ObjectChecker) />
 				</cfif>
 			</cfloop>
 		</cfloop>
