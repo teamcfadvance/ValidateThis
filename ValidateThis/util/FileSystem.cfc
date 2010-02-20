@@ -29,7 +29,7 @@
 
 		<cfset var Result = newResult() />
 		<cfset var FileUpload = 0 />
-		<cfset var theDestination = fixDestination(arguments.Destination) />
+		<cfset var theDestination = fixDestination(arguments.Destination,true) />
 
 		<cftry>
 			<cfif StructKeyExists(arguments,"NewFileName")>
@@ -101,15 +101,18 @@
 
 	<cffunction name="listFiles" access="public" output="false" returntype="any" hint="returns a list of filenames">
 		<cfargument name="Destination" required="true" type="string" />
+		<cfargument name="Filter" required="false" type="string" default=""/>
 		<cfset var qryDir = "">
-		<cfdirectory directory="#arguments.Destination#" name="qryDir" action="list" type="file" />
+		<cfdirectory directory="#arguments.Destination#" filter="#arguments.Filter#" name="qryDir" action="list" type="file" />
 		<cfreturn ValueList(qryDir.name)>
 	</cffunction>
 
 	<cffunction name="listDirs" access="public" output="false" returntype="any" hint="returns a list of directories">
 		<cfargument name="Destination" required="true" type="string" />
+		<cfargument name="Filter" required="false" type="string" default=""/>
+		
 		<cfset var qryDir = "">
-		<cfdirectory directory="#arguments.Destination#" name="qryDir" action="list" type="dir" />
+		<cfdirectory directory="#arguments.Destination#" filter="#arguments.Filter#" name="qryDir" action="list" type="dir" />
 		<cfreturn ValueList(qryDir.name)>
 	</cffunction>
 
@@ -166,20 +169,32 @@
 		</cftry>
 		<cfreturn Result />
 	</cffunction>
-
+	
+	<cffunction name="getMappingPath" access="public" output="false" returntype="any" hint="I convert a dot path notation to full system path.">
+		<cfargument name="Mapping" type="string" required="false" default="" />
+			<cfset var componentPath = replace(arguments.Mapping,".","/","all")/>
+			<!--- add the leading slash if none exists --->
+			<cfif ListFirst(componentPath,"") NEQ "/">
+				<cfset componentPath = "/" & componentPath />
+			</cfif>
+			<cfreturn expandPath(componentPath)/>
+	</cffunction>
+	
+	
 	<cffunction name="fixDestination" access="private" output="false" returntype="any" hint="I ensure that the destination ends with a slash, and I create the destination directory if it doesn't exist">
 		<cfargument name="Destination" type="string" required="false" default="" />
+		<cfargument name="createDir" type="boolean" required="false" default="false" />
 		
 		<cfset var theDestination = arguments.Destination />
 		<!--- add the trailing slash if none exists --->
 		<cfif ListLast(theDestination,"") NEQ "/">
 			<cfset theDestination = theDestination & "/" />
 		</cfif>
-		<cfif not directoryExists(theDestination)>
+		<cfif arguments.createDir and not directoryExists(theDestination)>
 			<cfdirectory action="create" directory="#theDestination#" />
 		</cfif>
 		<cfreturn theDestination />
-	</cffunction>
+	</cffunction>	
 
 	<cffunction name="newResult" access="private" output="false" returntype="any">
 		<cfreturn variables.VTTransientFactory.newResult() />
