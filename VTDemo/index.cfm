@@ -68,6 +68,15 @@
 				<li>There is also a <a href="http://groups.google.com/group/validatethis" target="_blank">Google Group</a> available for questions and discussion.</li>
 			</ul>
 			
+			<h3>Contributors</h3>
+	
+			Contributors to ValidateThis include:
+			<ul class="sidemenu">
+				<li>Adam Drew</li>
+				<li><a href="http://www.aliaspooryorik.com/blog/" target="_blank">John Whish</a></li>
+				<li>TJ Downes</li>
+			</ul>
+			
 			<h3>Demos</h3>
 	
 			<ul class="sidemenu">
