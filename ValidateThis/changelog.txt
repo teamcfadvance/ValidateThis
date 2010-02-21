@@ -108,4 +108,5 @@ Version 0.92
 - a couple of fixes for conditional validations and Groovy objects
 - added the ability to specify external paths for ServerRuleValidators
 - added a config option for abstractGetterMethod to allow for BOs with an abstract getter vs individual getters
+- updated the ValidateThisCBPlugin with changes from John Whish
 

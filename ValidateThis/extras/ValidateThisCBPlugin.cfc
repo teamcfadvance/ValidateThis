@@ -18,21 +18,42 @@
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="controller" type="any" required="true">
 		<cfset var key = 0 />
+		<cfset var setting = 0 />
 		<cfset var ValidateThisConfig = StructNew() />
 		<cfset super.Init(arguments.controller) />
 		<cfset setpluginName("ValidateThis Plugin") />
 		<cfset setpluginVersion("0.2") />
 		<cfset setpluginDescription("I allow ValidateThis to be accessed easily from within Coldbox.") />
+		
+		<!--- 
+		check for ValidateThis setting defined in Coldbox.xml.cfm 
+		this setting should be in the format:
+			<Setting name="ValidateThisConfig" value="{JSRoot:'/js/',defaultFormName:'formToValidate'}" />
+		--->
+		<cfif settingExists("ValidateThisConfig")>
+			<!--- settings found so use them to configure ValidateThis --->
+			<cfset ValidateThisConfig = getSetting("ValidateThisConfig") />
+		</cfif>
+		
 		<!--- Create a ValidateThisConfig struct from data in the Coldbox settings --->
-		<cfloop list="VT_TranslatorPath,VT_LocaleLoaderPath,VT_BOValidatorPath,VT_DefaultJSLib,VT_JSRoot,VT_defaultFormName,VT_definitionPath,VT_localeMap,VT_defaultLocale" index="key">
+		<cfloop list="VT_TranslatorPath,VT_LocaleLoaderPath,VT_BOValidatorPath,VT_DefaultJSLib,VT_JSRoot,VT_defaultFormName,VT_definitionPath,VT_localeMap,VT_defaultLocale,VT_abstractGetterMethod,VT_ExtraRuleValidatorComponentPaths" index="key">
+		
 			<cfif settingExists(key)>
-				<cfset ValidateThisConfig[Replace(key,"VT_","")] = getSetting(key) />
+				<cfset setting = Replace(key,"VT_","")>
+				<!--- throw an error if the setting is already defined --->		
+				<cfif settingExists(key) AND StructKeyExists(ValidateThisConfig, setting)>
+					<cfthrow type="ValidateThisCBPlugin.init.duplicateSetting"
+						message="Duplicate setting in ColdBox.xml.cfm" 
+						detail="The setting '#setting#' is already defined in the 'ValidateThisConfig' setting" />
+				<cfelse>
+					<cfset ValidateThisConfig[setting] = getSetting(key) />
+				</cfif>
 			</cfif>
 		</cfloop>
 		<!--- If no definitionPath was defined, use the ModelsPath and (optionally) the ModelsExternalLocationPath from the ColdBox config --->
 		<cfif NOT StructKeyExists(ValidateThisConfig,"definitionPath")>
 			<cfset ValidateThisConfig.definitionPath = getSetting("ModelsPath") & "/" />
-			<cfif Len(getSetting("ModelsExternalLocationPath"))>
+			<cfif settingExists("ModelsExternalLocationPath") AND Len(getSetting("ModelsExternalLocationPath"))>
 				<cfset ValidateThisConfig.definitionPath = ListAppend(ValidateThisConfig.definitionPath, getSetting("ModelsExternalLocationPath")) />
 			</cfif>
 		</cfif>
