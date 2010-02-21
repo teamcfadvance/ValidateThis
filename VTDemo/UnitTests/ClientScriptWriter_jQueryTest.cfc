@@ -147,11 +147,57 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.Parameters = StructNew(); 
 			valStruct.Condition = StructNew();
 			Script = ScriptWriter.generateValidationScript(valStruct);
-			debug(Script);
 			assertEquals(Script,"$(""##FirstName"").rules('add',{required: true});");
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="DependentPropertyRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
+		<cfscript>
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.ClientFieldName = "FirstName";
+			valStruct.PropertyDesc = "First Name";
+			valStruct.Parameters = {DependentPropertyName="LastName"}; 
+			valStruct.Condition = StructNew();
+			Script = ScriptWriter.generateValidationScript(valStruct);
+			assertTrue(Script CONTAINS "$.validator.addmethod(""firstnamerequired"", $.validator.methods.required);");
+			assertTrue(Script CONTAINS "$.validator.addclassrules(""firstnamerequired"", {firstnamerequired: function(element) { return $(""[name='lastname']"").getvalue().length > 0; }});");
+			assertTrue(Script CONTAINS "$(""##firstname"").addclass('firstnamerequired');");
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="DependentValueRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
+		<cfscript>
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.ClientFieldName = "FirstName";
+			valStruct.PropertyDesc = "First Name";
+			valStruct.Parameters = {DependentPropertyName="LastName",DependentPropertyValue="Silverberg"}; 
+			valStruct.Condition = StructNew();
+			Script = ScriptWriter.generateValidationScript(valStruct);
+			//assertEquals(Script,"$(""##FirstName"").rules('add',{required: true});");
+			assertTrue(Script CONTAINS "$.validator.addmethod(""firstnamerequired"", $.validator.methods.required);");
+			assertTrue(Script CONTAINS "$.validator.addclassrules(""firstnamerequired"", {firstnamerequired: function(element) { return $(""[name='lastname']"").getvalue() == 'silverberg'; }});");
+			assertTrue(Script CONTAINS "$(""##firstname"").addclass('firstnamerequired');");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="DependentFieldRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
+		<cfscript>
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.ClientFieldName = "FirstName";
+			valStruct.PropertyDesc = "First Name";
+			valStruct.Parameters = {DependentPropertyName="LastName",DependentFieldName="User[LastName]"}; 
+			valStruct.Condition = StructNew();
+			Script = ScriptWriter.generateValidationScript(valStruct);
+			debug(Script);
+			assertTrue(Script CONTAINS "$.validator.addmethod(""firstnamerequired"", $.validator.methods.required);");
+			assertTrue(Script CONTAINS "$.validator.addclassrules(""firstnamerequired"", {firstnamerequired: function(element) { return $(""[name='User[LastName]']"").getvalue().length > 0; }});");
+			assertTrue(Script CONTAINS "$(""##firstname"").addclass('firstnamerequired');");
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="MinLengthValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			theLength = 5;

@@ -23,15 +23,23 @@
 		<cfset var ConditionDesc = "" />
 		<cfset var theMessage = "" />
 		<cfset var theScript = "" />
+		<cfset var DependentFieldName = "" />
 
 		<!--- Deal with various conditions --->
 		<cfif StructKeyExists(arguments.validation.Condition,"ClientTest")>
 			<cfset theCondition = "function(element) { return #arguments.validation.Condition.ClientTest# }" />
-		<cfelseif StructKeyExists(arguments.validation.Parameters,"DependentPropertyName")>
+		<cfelse>
+			<cfif StructKeyExists(arguments.validation.Parameters,"DependentFieldName")>
+				<cfset DependentFieldName = arguments.validation.Parameters.DependentFieldName />
+			<cfelseif StructKeyExists(arguments.validation.Parameters,"DependentPropertyName")>
+				<cfset DependentFieldName = arguments.validation.Parameters.DependentPropertyName />
+			</cfif>
+		</cfif>
+		<cfif len(DependentFieldName) GT 0>
 			<cfif StructKeyExists(arguments.validation.Parameters,"DependentPropertyValue")>
-				<cfset theCondition = "function(element) { return $(""[name='#arguments.validation.Parameters.DependentPropertyName#']"").getValue() == #arguments.validation.Parameters.DependentPropertyValue#; }" />
+				<cfset theCondition = "function(element) { return $(""[name='#DependentFieldName#']"").getValue() == '#arguments.validation.Parameters.DependentPropertyValue#'; }" />
 			<cfelse>
-				<cfset theCondition = "function(element) { return $(""[name='#arguments.validation.Parameters.DependentPropertyName#']"").getValue().length > 0; }" />
+				<cfset theCondition = "function(element) { return $(""[name='#DependentFieldName#']"").getValue().length > 0; }" />
 			</cfif>
 		</cfif>
 		<cfif Len(theCondition)>

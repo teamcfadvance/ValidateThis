@@ -51,6 +51,7 @@
 		<cfset var theScript = "" />
 		<cfset var fieldName = arguments.validation.ClientFieldName />
 		<cfset var valType = arguments.validation.ValType />
+		<cfset var messageScript = "" />
 		<cfif Len(arguments.theMessage)>
 			<cfset messageScript = ', "' & variables.Translator.translate(arguments.theMessage,arguments.locale) & '"' />
 		</cfif>
