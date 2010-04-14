@@ -94,7 +94,7 @@
 		<cfif Len(successMessage)>
 			<h3>#successMessage#</h3>
 		<cfelseif isDefined("result")>
-			<cfdump var="#result.getFailures()#">
+			<!---<cfdump var="#result.getFailures()#">--->
 			<cfif not result.getIsSuccess()>
 				<ul>The following errors occurred:
 					<cfloop array="#result.getFailures()#" index="err">
