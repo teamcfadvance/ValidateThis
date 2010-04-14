@@ -144,13 +144,12 @@
 			#isErrorMsg("FirstName")#
 			<label for="FirstName">#isRequired("FirstName")#First Name</label>
 			<input name="FirstName" id="FirstName" value="#user.getFirstName()#" size="35" maxlength="50" type="text" class="textInput" />
-			<p class="formHint">Validations: Required on Update.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("LastName")#
 			<label for="LastName">#isRequired("LastName")#Last Name</label>
 			<input name="LastName" id="LastName" value="#user.getLastName()#" size="35" maxlength="50" type="text" class="textInput" />
-			<p class="formHint">Validations: Required on Update OR if a First Name has been specified during Register.</p>
+			<p class="formHint">Validations: Required if a First Name has been specified.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("LikeCheese")#
