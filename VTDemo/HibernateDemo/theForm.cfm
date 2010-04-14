@@ -38,7 +38,7 @@
 			</cfinvoke>
 		</cfif>
 	</cfloop>
-	<!--- Validate the object using ValidateThis! --->
+	<!--- Validate the object using ValidateThis --->
 	<cfset Result = application.ValidateThis.validate(theObject=user,Context=Form.Context) />
 	<cfset UniFormErrors = Result.getFailuresForUniForm() />
 	<!--- If validations passed, save the record --->
@@ -86,7 +86,7 @@
 </cfif>
 
 <cfoutput>
-<h1>ValidateThis! CF9 ORM - with Facade - Demo</h1>
+<h1>ValidateThis CF9 ORM - with Facade - Demo</h1>
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>)</h3>
 <cfif Len(SuccessMessage)><h3>#SuccessMessage#</h3></cfif>
 <div class="formContainer">

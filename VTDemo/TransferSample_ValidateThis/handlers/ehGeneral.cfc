@@ -17,5 +17,5 @@ Modification History:
 	</cffunction>	<cffunction name="onRequestStart" access="public" returntype="void" output="false">		<cfargument name="Event" type="coldbox.system.beans.requestContext">		<!--- On Request Start Code Here --->
 		<cfset var rc = event.getCollection()>
 		<!--- Set a title for my App--->
-		<cfset rc.title = "Coldbox Transfer Sample Application - with ValidateThis!">
+		<cfset rc.title = "Coldbox Transfer Sample Application - with ValidateThis">
 	</cffunction></cfcomponent>

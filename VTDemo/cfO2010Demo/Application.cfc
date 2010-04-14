@@ -14,12 +14,15 @@
 */
 
 component output="false" {
-	this.name = "ValidateThisHibernateDemo";
+	this.name = "ValidateThiscfO2010Demo";
 	this.ormEnabled = true;
-	this.datasource = "VTDemo";
+	this.datasource = "cfO2010";
 	this.ormSettings = {};
 	this.ormSettings.cfclocation = "model";
 	this.ormSettings.flushatrequestend = false;
+	this.ormSettings.dialect="MySQLwithInnoDB";
+	this.ormSettings.dbcreate="update";
+	this.ormSettings.sqlscript="import.sql";
 	
 	function onError(any exception, string eventName) {
 		writeDump(arguments);

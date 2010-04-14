@@ -23,7 +23,7 @@
 		<constructor-arg name="ValidateThisConfig"><ref bean="ValidateThisConfig" /></constructor-arg>
 	</bean>
 		
-	<!-- ValidateThis! Config Bean -->
+	<!-- ValidateThis Config Bean -->
 	<bean id="ValidateThisConfig" class="coldspring.beans.factory.config.MapFactoryBean">
 		<property name="sourceMap">
 			<map>

@@ -10,7 +10,7 @@
 
 <div id="wrap">
 	<div id="header">			
-		<h1 id="logo-text"><a href="http://www.validatethis.org" title="ValidateThis!">ValidateThis</a></h1>		
+		<h1 id="logo-text"><a href="http://www.validatethis.org" title="ValidateThis">ValidateThis</a></h1>		
 		<p id="slogan">A Validation Framework for ColdFusion Objects</p>
 		<!---
 		<div id="header-links">

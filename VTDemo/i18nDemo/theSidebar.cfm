@@ -19,7 +19,7 @@
 <cfparam name="Form.UserId" default="0" />
 <cfparam name="Form.Locale" default="en_US" />
 <cfset StructAppend(Form,URL,true) />
-<p>Welcome to the <strong>ValidateThis!</strong> i18n Demo Page.
+<p>Welcome to the <strong>ValidateThis</strong> i18n Demo Page.
 	<ul><strong>Demo Options:</strong>
 		<cfoutput>
 		<cfif Form.NoJS>

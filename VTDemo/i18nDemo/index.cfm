@@ -18,7 +18,7 @@
 	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"ValidateThis")>
 		<!--- Reactor First --->
 		<cfset application.Reactor = createObject("component", "reactor.reactorFactory").init("/i18nDemo/model/config/reactor.xml") />
-		<!--- ValidateThis! --->
+		<!--- ValidateThis --->
 		<cfset localeMap = {en_US="/rbs/en_US.properties",fr_FR="/rbs/fr_FR.properties"} />
 		<cfset ValidateThisConfig = {definitionPath="/i18nDemo/model/",JSRoot="/js/",translatorPath="ValidateThis.core.RBTranslator",LocaleLoaderPath="ValidateThis.core.RBLocaleLoader",localeMap=localeMap} />
 		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
@@ -27,7 +27,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title>ValidateThis! Demo Page</title>
+		<title>ValidateThis Demo Page</title>
 		<link href="/css/demostyle.css" type="text/css" rel="stylesheet" />
 		<link href="/css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
 	</head>

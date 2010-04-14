@@ -18,7 +18,7 @@
 <cfparam name="Form.Context" default="Register" />
 <cfparam name="Form.UserId" default="0" />
 <cfset StructAppend(Form,URL,true) />
-<p>Welcome to the <strong>ValidateThis!</strong> Integrated BO <em>with cfUniForm</em> Demo Page.
+<p>Welcome to the <strong>ValidateThis</strong> Integrated BO <em>with cfUniForm</em> Demo Page.
 	<ul><strong>Demo Options:</strong>
 		<cfoutput>
 		<cfif Form.NoJS>

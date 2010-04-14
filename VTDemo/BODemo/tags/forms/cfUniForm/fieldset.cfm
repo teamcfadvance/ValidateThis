@@ -49,7 +49,7 @@ purpose:			I insert an XHTML Strict 1.0 fieldset tag based upon the Uni-Form mar
 	9/22/08			Bug fix: 'inputClass' on textarea									Bob Silverberg
 	
 	11/12/08		Added support for labels passed in via the form tag, 				Bob Silverberg
-						in support of integration with ValidateThis!.
+						in support of integration with ValidateThis.
 						http://validatethis.riaforge.org/
 						http://www.silverwareconsulting.com/index.cfm/ValidateThis
 	

@@ -40,7 +40,7 @@ purpose:			I display an XHTML 1.0 Strict form based upon the Uni-Form markup
 						 datepicker, timeentry, and validation plugins
 	
 	11/12/08		Added support for passing in a struct of field labels,				Bob Silverberg
-						in support of integration with ValidateThis!.
+						in support of integration with ValidateThis.
 						http://validatethis.riaforge.org/
 						http://www.silverwareconsulting.com/index.cfm/ValidateThis
 	

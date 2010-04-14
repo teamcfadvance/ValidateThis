@@ -18,7 +18,7 @@
 	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"ValidateThis")>
 		<!--- Reactor First --->
 		<cfset application.Reactor = createObject("component", "reactor.reactorFactory").init("/ServiceDemo/model/config/reactor.xml") />
-		<!--- ValidateThis! --->
+		<!--- ValidateThis --->
 		<cfset ValidateThisConfig = {definitionPath="/ServiceDemo/model/",JSRoot="/js/"} />
 		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 	</cfif>
@@ -26,7 +26,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title>ValidateThis! Demo Page</title>
+		<title>ValidateThis Demo Page</title>
 		<link href="/css/demostyle.css" type="text/css" rel="stylesheet" />
 		<link href="/css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
 	</head>

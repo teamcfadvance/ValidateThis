@@ -69,7 +69,7 @@
 </cfif>
 
 <cfoutput>
-<h1>ValidateThis! Integrated BO Demo - with Transfer</h1>
+<h1>ValidateThis Integrated BO Demo - with Transfer</h1>
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>)</h3>
 <cfif Len(SuccessMessage)><h3>#SuccessMessage#</h3></cfif>
 <div class="formContainer">

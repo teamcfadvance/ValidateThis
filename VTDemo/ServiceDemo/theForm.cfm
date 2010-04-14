@@ -37,7 +37,7 @@
 			</cfinvoke>
 		</cfif>
 	</cfloop>
-	<!--- Validate the object using ValidateThis! --->
+	<!--- Validate the object using ValidateThis --->
 	<cfset Result = application.ValidateThis.validate(objectType="User",theObject=UserTO,Context=Form.Context) />
 	<cfset UniFormErrors = Result.getFailuresForUniForm(locale="fr_FR") />
 	<!--- If validations passed, save the record --->
@@ -78,7 +78,7 @@
 </cfif>
 
 <cfoutput>
-<h1>ValidateThis! Simple Integration Demo - with Reactor</h1>
+<h1>ValidateThis Simple Integration Demo - with Reactor</h1>
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>)</h3>
 <cfif Len(SuccessMessage)><h3>#SuccessMessage#</h3></cfif>
 <div class="formContainer">

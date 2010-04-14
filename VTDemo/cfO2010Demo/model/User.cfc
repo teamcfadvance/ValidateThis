@@ -27,7 +27,6 @@ component output="false" persistent="true" table="tblUser" {
 	property name="AllowCommunication" type="string" ormtype="int";
 	property name="HowMuch" type="string" ormtype="int";
 	property name="CommunicationMethod" type="string";
-	property name="UserGroup" fieldtype="many-to-one" cfc="UserGroup" fkcolumn="UserGroupId";
 	
 	property name="verifyPassword" type="string" persistent="false";
 	

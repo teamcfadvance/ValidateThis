@@ -24,7 +24,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<title>ValidateThis! Demo Page</title>
+		<title>ValidateThis Demo Page</title>
 		<link href="/css/demostyle.css" type="text/css" rel="stylesheet" />
 		<link href="/css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
 	</head>
