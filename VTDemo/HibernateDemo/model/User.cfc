@@ -20,8 +20,8 @@ component output="false" persistent="true" table="tblUser" {
 	property name="Salutation" type="string";
 	property name="FirstName" type="string";
 	property name="LastName" type="string";
-	property name="LikeCheese" type="string" ormtype="int";
-	property name="LikeChocolate" type="string" ormtype="int";
+	property name="LikeCheese" type="string" ormtype="int" default="1";
+	property name="LikeChocolate" type="string" ormtype="int" default="1";
 	property name="LikeOther" type="string";
 	property name="LastUpdateTimestamp" type="string" ormtype="timestamp";
 	property name="AllowCommunication" type="string" ormtype="int";
