@@ -60,6 +60,9 @@
 				<cfelseif StructKeyExists(v.Parameters,"DependentPropertyName")>
 					<cfset dependentPropertyExpression = variables.ObjectChecker.findGetter(arguments.theObject,v.Parameters.DependentPropertyName) />
 					<cfset dependentPropertyValue = evaluate("arguments.theObject.#dependentPropertyExpression#") />
+					<cfif not isDefined("dependentPropertyValue")>
+						<cfset dependentPropertyValue = "" />
+					</cfif>
 					<cfif StructKeyExists(v.Parameters,"DependentPropertyValue")>
 						<cfset conditionPasses = dependentPropertyValue EQ v.Parameters.DependentPropertyValue />
 					<cfelse>

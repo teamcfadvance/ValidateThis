@@ -97,6 +97,10 @@
 				<cfset theName = theProperty.XmlAttributes.name />
 				<cfif StructKeyExists(theProperty.XmlAttributes,"desc")>
 					<cfset theDesc = theProperty.XmlAttributes.desc />
+				<cfelse>
+					<cfset theDesc = determineLabel(theName) />
+				</cfif>
+				<cfif theDesc NEQ theName>
 					<cfset ReturnStruct.PropertyDescs[theName] = theDesc />
 					<cfif StructKeyExists(theProperty.XmlAttributes,"clientfieldname")>
 						<cfset ReturnStruct.ClientFieldDescs[theProperty.XmlAttributes.clientfieldname] = theDesc />
@@ -113,7 +117,7 @@
 					<cfif StructKeyExists(theProperty.XmlAttributes,"desc")>
 						<cfset theVal.PropertyDesc = theProperty.XmlAttributes.desc />
 					<cfelse>
-						<cfset theVal.PropertyDesc = theVal.PropertyName />
+						<cfset theVal.PropertyDesc = determineLabel(theVal.PropertyName) />
 					</cfif>
 					<cfif StructKeyExists(theProperty.XmlAttributes,"clientfieldname")>
 						<cfset theVal.ClientFieldName = theProperty.XmlAttributes.clientfieldname />
@@ -178,6 +182,32 @@
 		
 		<cfreturn ReturnStruct />
 	</cffunction>
+	
+	<cffunction name="determineLabel" returntype="string" output="false" access="private">
+	<cfargument name="label" type="string" required="true" />
+	
+	<!--- Note: this is a stop-gap measure to put this functionality in place. 
+		The whole metadata population system will be refactored soon. --->
+	
+	<cfset var i = "" />
+	<cfset var char = "" />
+	<cfset var result = "" />
+	
+	<cfloop from="1" to="#len(arguments.label)#" index="i">
+		<cfset char = mid(arguments.label, i, 1) />
+		
+		<cfif i eq 1>
+			<cfset result = result & ucase(char) />
+		<cfelseif asc(lCase(char)) neq asc(char)>
+			<cfset result = result & " " & ucase(char) />
+		<cfelse>
+			<cfset result = result & char />
+		</cfif>
+	</cfloop>
+
+	<cfreturn result />	
+	</cffunction>
+
 
 </cfcomponent>
 	

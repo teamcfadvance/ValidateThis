@@ -64,13 +64,13 @@
 		<cfargument name="propertyName" type="any" required="true" />
 		<cfargument name="valType" type="any" required="true" />
 		<cfargument name="clientFieldName" type="any" required="false" default="#arguments.propertyName#" />
-		<cfargument name="propertyDesc" type="any" required="false" default="" />
+		<cfargument name="propertyDesc" type="any" required="false" default="#determineLabel(arguments.propertyName)#" />
 		<cfargument name="condition" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="parameters" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="contexts" type="any" required="false" default="" />
 		<cfargument name="failureMessage" type="any" required="false" default="" />
 		<cfargument name="formName" type="any" required="false" default="" />
-
+		
 		<cfset var theRule = Duplicate(arguments) />
 		<cfset var theContext = 0 />
 		<cfset var ruleHash = getHashFromStruct(theRule) />
@@ -79,7 +79,7 @@
 			<cflock name="#ruleHash#" type="exclusive" timeout="10" throwontimeout="true">
 				<cfif NOT StructKeyExists(variables.Instance.newRules,ruleHash)>
 					<cfset variables.Instance.newRules[ruleHash] = 1 />
-					<cfif Len(theRule.propertyDesc)>
+					<cfif theRule.propertyDesc neq theRule.propertyName>
 						<cfif NOT StructKeyExists(variables.Instance.PropertyDescs,theRule.propertyName)>
 							<cfset variables.Instance.PropertyDescs[theRule.propertyName] = theRule.propertyDesc />
 						</cfif>
@@ -297,6 +297,31 @@
 
 	<cffunction name="getVersion" returnType="any" output="false" hint="I report the current version of the framework">
 		<cfreturn variables.Version.getVersion() />
+	</cffunction>
+
+	<cffunction name="determineLabel" returntype="string" output="false" access="private">
+	<cfargument name="label" type="string" required="true" />
+	
+	<!--- Note: this is a stop-gap measure to put this functionality in place. 
+		The whole metadata population system will be refactored soon. --->
+	
+	<cfset var i = "" />
+	<cfset var char = "" />
+	<cfset var result = "" />
+	
+	<cfloop from="1" to="#len(arguments.label)#" index="i">
+		<cfset char = mid(arguments.label, i, 1) />
+		
+		<cfif i eq 1>
+			<cfset result = result & ucase(char) />
+		<cfelseif asc(lCase(char)) neq asc(char)>
+			<cfset result = result & " " & ucase(char) />
+		<cfelse>
+			<cfset result = result & char />
+		</cfif>
+	</cfloop>
+
+	<cfreturn result />	
 	</cffunction>
 
 </cfcomponent>

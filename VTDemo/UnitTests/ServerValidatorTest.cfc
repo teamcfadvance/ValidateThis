@@ -32,6 +32,7 @@ purpose:		I ServerValidatorTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfset setBeanFactory() />
+		<cfset ValidationFactory = getBeanFactory().getBean("ValidateThis").getBean("ValidationFactory") />
 		<cfset TransientFactory = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory") />
 		<cfset FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(TransientFactory) />
 		<cfset ObjectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init() />
@@ -43,9 +44,14 @@ purpose:		I ServerValidatorTest.cfc
 	</cffunction>
 
 	<cffunction name="setUpUser" access="private" returntype="any">
+		<cfargument name="useTransfer" type="boolean" required="false" default="true" />
 		<cfscript>
-			Transfer = getBeanFactory().getBean("Transfer");
-			UserTO = Transfer.new("user.user");
+			if (arguments.useTransfer) {
+				Transfer = getBeanFactory().getBean("Transfer");
+				UserTO = Transfer.new("user.user");
+			} else {
+				UserTO = entityNew("User");
+			}
 			UserTO.setUserName("bob.silverberg@gmail.com");
 			UserTO.setUserPass("Bobby");
 			UserTO.setVerifyPassword("Bobby");
@@ -53,7 +59,11 @@ purpose:		I ServerValidatorTest.cfc
 			UserTO.setFirstName("Bob");
 			UserTO.setLastName("Silverberg");
 			UserTO.setLikeCheese(1);
-			UserTO.setUserGroup(Transfer.new("user.usergroup"));
+			if (arguments.useTransfer) {
+				UserTO.setUserGroup(Transfer.new("user.usergroup"));
+			} else {
+				UserTO.setUserGroup(entityNew("UserGroup"));
+			}
 			return UserTO;
 		</cfscript>
 	</cffunction>
@@ -225,6 +235,29 @@ purpose:		I ServerValidatorTest.cfc
 			UserTO.setCommunicationMethod("Email");
 			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
 			ServerValidator.validate(UserTO.getValidator(),UserTO,"Profile",Result);
+			AssertTrue(Result.getIsSuccess());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="DependentPropertyWithValueThatReturnsNullShouldWorkAsExpected" access="public" returntype="void">
+		<cfscript>
+			user = setUpUser(false);
+			validator = ValidationFactory.getValidator("user.user","/BODemo/model/");
+			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
+			ServerValidator.validate(validator,user,"Profile",Result);
+			AssertTrue(Result.getIsSuccess());
+			user.setAllowCommunication(1);
+			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
+			ServerValidator.validate(validator,user,"Profile",Result);
+			AssertFalse(Result.getIsSuccess());
+			Failures = Result.getFailures();
+			Failure = Failures[1];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"CommunicationMethod");
+			assertEquals(Failure.Message,"If you are allowing communication, you must choose a communication method.");
+			user.setCommunicationMethod("Email");
+			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
+			ServerValidator.validate(validator,user,"Profile",Result);
 			AssertTrue(Result.getIsSuccess());
 		</cfscript>  
 	</cffunction>

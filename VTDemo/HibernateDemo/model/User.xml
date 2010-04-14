@@ -60,8 +60,7 @@
 		<property name="HowMuch" desc="How much money would you like?">
 			<rule type="numeric" contexts="*" />
 		</property>
-		<property name="AllowCommunication" />
-		<property name="CommunicationMethod">
+		<property name="CommunicationMethod" desc="Communication Method">
 			<rule type="required" contexts="*"
 				failureMessage="If you are allowing communication, you must choose a communication method.">
 				<param DependentPropertyName="AllowCommunication" />
