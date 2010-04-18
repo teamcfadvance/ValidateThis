@@ -1,8 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <validateThis xsi:noNamespaceSchemaLocation="validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<conditions>
+		<condition name="MustLikeSomething" 
+			serverTest="getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0"
+			clientTest="$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;" />
+	</conditions>
+
 	<objectProperties>
-		<property name="UserName">
+		<property name="UserName" desc="Email Address">
 			<rule type="required" />
+			<rule type="email" failureMessage="You call that an Email Address?" />
 		</property>
+		<property name="UserPass" desc="Password">
+			<rule type="required" />
+			<rule type="rangelength">
+				<param minlength="5" />
+				<param maxlength="10" />
+			</rule>
+		</property>
+<property name="LastName">
+			<rule type="required">
+				<param DependentPropertyName="FirstName" />
+			</rule>
+		</property>
+<property name="CommunicationMethod" desc="Communication Method">
+			<rule type="required"
+				failureMessage="If you are allowing communication, you must choose a communication method.">
+				<param DependentPropertyName="AllowCommunication" />
+				<param DependentPropertyValue="1" />
+			</rule>
+		</property>
+<property name="LikeOther" desc="What do you like?">
+			<rule type="required" condition="MustLikeSomething"
+				failureMessage="If you don't like Cheese and you don't like Chocolate, you must like something!">
+			</rule>
+		</property>
+		<property name="Nickname">
+        			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname.">
+        				<param methodname="CheckDupNickname" />
+        				<param remoteURL="CheckDupNickname.cfm" />
+        			</rule>
+        		</property>
+        
+		
 	</objectProperties>
 </validateThis>

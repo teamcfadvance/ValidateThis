@@ -134,7 +134,7 @@
 								<cfif StructKeyExists(ReturnStruct.PropertyDescs,theParam.XmlAttributes[PropertyType & "Name"])>
 									<cfset theVal.Parameters[PropertyType & "Desc"] = ReturnStruct.PropertyDescs[theParam.XmlAttributes[PropertyType & "Name"]] />
 								<cfelse>
-									<cfset theVal.Parameters[PropertyType & "Desc"] = theParam.XmlAttributes[PropertyType & "Name"] />
+									<cfset theVal.Parameters[PropertyType & "Desc"] = determineLabel(theParam.XmlAttributes[PropertyType & "Name"]) />
 								</cfif>
 							</cfif>
 						</cfloop>
