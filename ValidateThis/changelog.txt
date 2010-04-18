@@ -111,4 +111,13 @@ Version 0.92
 - updated the ValidateThisCBPlugin with changes from John Whish
 - added a new Parameter to the required validation type for conditional client-side validations: DependentFieldName
 
+Version 0.93
+-------------
+
+- descriptions are now auto-created for camelCased properties
+- added a (work-in-progress) demo for CF9 ORM and cf.Objective()
+- fixed a css issue with the demo form
+- fixed a bug with dependentPropertyValue with CF9 ORM objects
+
+
 
