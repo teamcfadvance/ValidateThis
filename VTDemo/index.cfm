@@ -64,6 +64,7 @@
 	
 			<ul class="sidemenu">
 				<li>Near-complete documentation for the framework is now available at <a href="http://www.validatethis.org/docs/">www.validatethis.org/docs/</a>.</li>
+				<li>JavaDoc style API documentation (thanks to <a href="http://colddoc.riaforge.org/" target="_blank">ColdDoc</a>) is now available at <a href="http://www.validatethis.org/docs/api/">www.validatethis.org/docs/api</a>.</li>
 				<li>Numerous postings can be found on <a href="http://www.silverwareconsulting.com/index.cfm/ValidateThis" target="_blank">my blog</a>.</li>
 				<li>There is also a <a href="http://groups.google.com/group/validatethis" target="_blank">Google Group</a> available for questions and discussion.</li>
 			</ul>
