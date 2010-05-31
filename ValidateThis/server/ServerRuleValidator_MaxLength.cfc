@@ -19,7 +19,7 @@
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
 		<cfset var Parameters = arguments.valObject.getParameters() />
-		<cfif Len(arguments.valObject.getObjectValue()) GT Parameters.MaxLength>
+		<cfif shouldTest(arguments.valObject) AND Len(arguments.valObject.getObjectValue()) GT Parameters.MaxLength>
 			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be no more than #Parameters.MaxLength# characters long.") />
 		</cfif>
 	</cffunction>

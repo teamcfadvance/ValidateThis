@@ -26,156 +26,85 @@ purpose:		I ServerRuleValidatorTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="UnitTests.ServerRuleValidatorTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="UnitTests.BaseServerRuleValidatorTest" output="false">
 	
-	<cfset theObject = "" />
-	<cfset TransientFactory = "" />
-	<cfset ServerValidator = ""/>
-	
-	<cffunction name="setUp" access="public" returntype="void">
+	<cffunction name="propertyHasValueShouldReturnTrueIfPropertyPopulated" access="public" returntype="void">
 		<cfscript>
-			theObject = CreateObject("component","fixture.ServerRuleValidatorTest_Fixture").init();
-			ObjectChecker = mock();
-			ObjectChecker.findGetter("{*}").returns("getFirstName()");
-			// ObjectChecker.findGetter("{any}","FirstName").returns("getFirstName()");
-			// ObjectChecker.findGetter("{any}","LastName").returns("getLastName()");
-		</cfscript>
+			SRV = getSRV("required");
+			validation.getObjectValue().returns("Something");
+			makePublic(SRV,"propertyHasValue");
+			assertEquals(true,SRV.propertyHasValue(validation));
+		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="tearDown" access="public" returntype="void">
+	<cffunction name="propertyHasValueShouldReturnFalseIfPropertyNotPopulated" access="public" returntype="void">
+		<cfscript>
+			SRV = getSRV("required");
+			validation.getObjectValue().returns("");
+			makePublic(SRV,"propertyHasValue");
+			assertEquals(false,SRV.propertyHasValue(validation));
+		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="SimpleRequiredValidationShouldWorkAsExpected" access="public" returntype="void">
+	<cffunction name="propertyIsRequiredShouldReturnTrueIfPropertyIsRequired" access="public" returntype="void">
 		<cfscript>
-			theValue = "Bob";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"required");
-			assertTrue(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"");
-			theValue = "";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"required");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# is required.");
-			// just checking to see if the isInstanceOf thing is going to work
-			debug(isInstanceOf(theObject, 'java.lang.Object'));
+			SRV = getSRV("email");
+			validation.getIsRequired().returns(true);
+			makePublic(SRV,"propertyIsRequired");
+			assertEquals(true,SRV.propertyIsRequired(validation));
 		</cfscript>  
 	</cffunction>
-
-	<cffunction name="MinLengthValidationShouldWorkAsExpected" access="public" returntype="void">
+	
+	<cffunction name="propertyIsRequiredShouldReturnFalseIfPropertyIsRequired" access="public" returntype="void">
 		<cfscript>
-			theLength = 5;
-			Parameters = {minlength = theLength};
-			theValue = "Bobby";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"minlength",Parameters,"");
-			assertTrue(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"");
-			theValue = "";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"minlength",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be at least #theLength# characters long.");
+			SRV = getSRV("email");
+			validation.getIsRequired().returns(false);
+			makePublic(SRV,"propertyIsRequired");
+			assertEquals(false,SRV.propertyIsRequired(validation));
 		</cfscript>  
 	</cffunction>
-
-	<cffunction name="MaxLengthValidationShouldWorkAsExpected" access="public" returntype="void">
+	
+	<cffunction name="shouldTestShouldReturnTrueIfPropertyIsRequired" access="public" returntype="void">
 		<cfscript>
-			theLength = 5;
-			Parameters = {maxlength = theLength};
-			theValue = "Bobby";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"maxlength",Parameters,"");
-			assertTrue(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"");
-			theValue = "BobbyS";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"maxlength",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be no more than #theLength# characters long.");
+			SRV = getSRV("email");
+			validation.getIsRequired().returns(true);
+			validation.getObjectValue().returns("");
+			makePublic(SRV,"shouldTest");
+			assertEquals(true,SRV.shouldTest(validation));
 		</cfscript>  
 	</cffunction>
-
-	<cffunction name="RangeLengthValidationShouldWorkAsExpected" access="public" returntype="void">
+	
+	<cffunction name="shouldTestShouldReturnTrueIfPropertyHasValue" access="public" returntype="void">
 		<cfscript>
-			minLength = 5;
-			maxLength = 10;
-			Parameters = {minlength = minLength, maxlength = maxLength};
-			theValue = "Bobby";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"rangelength",Parameters,"");
-			assertTrue(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"");
-			theValue = "Bob";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"rangelength",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be between #MinLength# and #MaxLength# characters long.");
-			theValue = "BobbyBobbyX";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"rangelength",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be between #MinLength# and #MaxLength# characters long.");
+			SRV = getSRV("email");
+			validation.getIsRequired().returns(false);
+			validation.getObjectValue().returns("Something");
+			makePublic(SRV,"shouldTest");
+			assertEquals(true,SRV.shouldTest(validation));
 		</cfscript>  
 	</cffunction>
-
-	<cffunction name="MinValidationShouldWorkAsExpected" access="public" returntype="void">
+	
+	<cffunction name="shouldTestShouldReturnTrueIfPropertyHasValueAndIsRequired" access="public" returntype="void">
 		<cfscript>
-			theVal = 5;
-			Parameters = {min = theVal};
-			theValue = "5";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"min",Parameters,"");
-			assertTrue(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"");
-			theValue = "4";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"min",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be at least #theVal#.");
+			SRV = getSRV("email");
+			validation.getIsRequired().returns(true);
+			validation.getObjectValue().returns("Something");
+			makePublic(SRV,"shouldTest");
+			assertEquals(true,SRV.shouldTest(validation));
 		</cfscript>  
 	</cffunction>
-
-	<cffunction name="MaxValidationShouldWorkAsExpected" access="public" returntype="void">
+	
+	<cffunction name="shouldTestShouldReturnFalseIfPropertyNotPopulatedAndNotRequired" access="public" returntype="void">
 		<cfscript>
-			theVal = 5;
-			Parameters = {max = theVal};
-			theValue = "5";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"max",Parameters,"");
-			assertTrue(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"");
-			theValue = "6";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"max",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be no more than #theVal#.");
+			SRV = getSRV("email");
+			validation.getIsRequired().returns(false);
+			validation.getObjectValue().returns("");
+			makePublic(SRV,"shouldTest");
+			assertEquals(false,SRV.shouldTest(validation));
 		</cfscript>  
 	</cffunction>
-
-	<cffunction name="RangeValidationShouldWorkAsExpected" access="public" returntype="void">
-		<cfscript>
-			min = 5;
-			max = 10;
-			Parameters = {min = min, max = max};
-			theValue = "5";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"range",Parameters,"");
-			assertTrue(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"");
-			theValue = "3";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"range",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be between #Min# and #Max#.");
-			theValue = "11";
-			theObject.setFirstName(theValue);
-			Validation = validate(theObject,"range",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be between #Min# and #Max#.");
-		</cfscript>  
-	</cffunction>
-
+	
+	<!---
 	<cffunction name="EqualToValidationShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
 			// cannot seem to get mock objectChecker to work with call to two getters, so using the real one
@@ -211,6 +140,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 			assertEquals(Validation.getFailureMessage(),"No!");
 		</cfscript>  
 	</cffunction>
+	--->
 
 	<cffunction name="validate" access="private" returntype="Any">
 		<cfargument name="theObject" />
@@ -226,6 +156,12 @@ purpose:		I ServerRuleValidatorTest.cfc
 		
 	</cffunction>
 
+	<cffunction name="getSRV" access="private" returntype="Any">
+		<cfargument name="ValType" />
+		
+		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker) />
+		
+	</cffunction>
 
 </cfcomponent>
 

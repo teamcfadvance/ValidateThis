@@ -57,9 +57,27 @@
 		<cfset variables.Instance.ClientFieldDescs = theStruct.ClientFieldDescs />
 		<cfset variables.Instance.FormContexts = theStruct.FormContexts />
 		<cfset variables.Instance.Validations = theStruct.Validations />
+		<cfset variables.Instance.requiredPropertiesAndFields = determineRequiredPropertiesAndFields() />
 		
 	</cffunction>
 
+	<cffunction name="determineRequiredPropertiesAndFields" access="private" output="false" returntype="any">
+		<cfset var contexts = getAllContexts() />
+		<cfset var context = 0 />
+		<cfset var validation = 0 />
+		<cfset var contextStruct = {} />
+		<cfloop collection="#contexts#" item="context">
+			<cfset contextStruct[context] = {properties=structNew(),fields=structNew()} />
+			<cfloop array="#contexts[context]#" index="validation">
+				<cfif validation.ValType EQ "required" AND StructIsEmpty(validation.Parameters) AND StructIsEmpty(validation.Condition)>
+					<cfset contextStruct[context]["properties"][validation.PropertyName] = "required" />
+					<cfset contextStruct[context]["fields"][validation.ClientFieldName] = "required" />
+				</cfif>
+			</cfloop>
+		</cfloop>
+		<cfreturn contextStruct />
+	</cffunction>
+	
 	<cffunction name="addRule" returnType="void" access="public" output="false" hint="I am used to add a rule via CF code">
 		<cfargument name="propertyName" type="any" required="true" />
 		<cfargument name="valType" type="any" required="true" />
@@ -193,37 +211,18 @@
 		<cfreturn variables.Instance.FormContexts />
 	</cffunction>
 	
+	<cffunction name="getAllContexts" access="public" output="false" returntype="any">
+		<cfreturn variables.Instance.Validations.Contexts />
+	</cffunction>
+
 	<cffunction name="getRequiredProperties" access="public" output="false" returntype="any">
 		<cfargument name="Context" type="any" required="false" default="" />
-		
-		<cfset var theContext = fixDefaultContext(arguments.Context) />
-		<cfset var validation = 0 />
-		<cfset var FieldList = StructNew() />
-		<cfloop array="#variables.Instance.Validations.Contexts[theContext]#" index="validation">
-			<cfif validation.ValType EQ "required" AND StructIsEmpty(validation.Parameters) AND StructIsEmpty(validation.Condition)>
-				<cfset FieldList[validation.PropertyName] = "required" />
-			</cfif>
-		</cfloop>
-		<cfreturn FieldList />
+		<cfreturn variables.Instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].properties />
 	</cffunction>
 	
 	<cffunction name="getRequiredFields" access="public" output="false" returntype="any">
 		<cfargument name="Context" type="any" required="false" default="" />
-		
-		<cfset var theContext = fixDefaultContext(arguments.Context) />
-		<cfset var validation = 0 />
-		<cfset var FieldList = StructNew() />
-		<cfloop array="#variables.Instance.Validations.Contexts[theContext]#" index="validation">
-			<cfif validation.ValType EQ "required" AND StructIsEmpty(validation.Parameters) AND StructIsEmpty(validation.Condition)>
-				<cfset FieldList[validation.ClientFieldName] = "required" />
-			</cfif>
-		</cfloop>
-		<cfreturn FieldList />
-	</cffunction>
-	
-	<cffunction name="getAllContexts" access="public" output="false" returntype="any">
-		
-		<cfreturn variables.Instance.Validations.Contexts />
+		<cfreturn variables.Instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].fields />
 	</cffunction>
 	
 	<cffunction name="fixDefaultContext" access="public" output="false" returntype="any">
@@ -248,19 +247,6 @@
 		</cfloop>		
 
 		<cfreturn Hash(argList) />
-	</cffunction>
-	
-	<cffunction name="onMissingMethod" access="public" output="false" returntype="Any" hint="This is used to eliminate the need for duplicate methods which all just pass calls on to the Client Validator.">
-		<cfargument name="missingMethodName" type="any" required="true" />
-		<cfargument name="missingMethodArguments" type="any" required="true" />
-
-		<cfset var scriptType = determineScriptType(arguments.missingMethodName) />
-		<cfif Len(scriptType)>
-			<cfreturn variables.ClientValidator.getGeneratedJavaScript(scriptType=scriptType,JSLib=arguments.missingMethodArguments.JSLib,formName=determineFormName(arguments.missingMethodArguments),locale=determineLocale(arguments.missingMethodArguments)) />
-		<cfelse>
-			<cfthrow type="ValidateThis.core.BOValidator.MethodNotDefined" detail="The method #arguments.missingMethodName# does not exist in the BOValidator object." />
-		</cfif>
-		
 	</cffunction>
 	
 	<cffunction name="determineScriptType" returntype="any" access="public" output="false" hint="I try to determine the script type by looking at the missing method name.">
@@ -295,10 +281,31 @@
 		</cfif>
 	</cffunction>
 
+	<cffunction name="propertyIsRequired" returntype="boolean" access="public" output="false" hint="I determine whether a property is required.">
+		<cfargument name="propertyName" type="any" required="yes" hint="The name of the property." />
+		<cfargument name="Context" type="any" required="false" default="" />
+
+		<cfreturn structKeyExists(variables.Instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].properties,arguments.propertyName) />
+	
+	</cffunction>
+
 	<cffunction name="getVersion" returnType="any" output="false" hint="I report the current version of the framework">
 		<cfreturn variables.Version.getVersion() />
 	</cffunction>
 
+	<cffunction name="onMissingMethod" access="public" output="false" returntype="Any" hint="This is used to eliminate the need for duplicate methods which all just pass calls on to the Client Validator.">
+		<cfargument name="missingMethodName" type="any" required="true" />
+		<cfargument name="missingMethodArguments" type="any" required="true" />
+
+		<cfset var scriptType = determineScriptType(arguments.missingMethodName) />
+		<cfif Len(scriptType)>
+			<cfreturn variables.ClientValidator.getGeneratedJavaScript(scriptType=scriptType,JSLib=arguments.missingMethodArguments.JSLib,formName=determineFormName(arguments.missingMethodArguments),locale=determineLocale(arguments.missingMethodArguments)) />
+		<cfelse>
+			<cfthrow type="ValidateThis.core.BOValidator.MethodNotDefined" detail="The method #arguments.missingMethodName# does not exist in the BOValidator object." />
+		</cfif>
+		
+	</cffunction>
+	
 	<cffunction name="determineLabel" returntype="string" output="false" access="private">
 	<cfargument name="label" type="string" required="true" />
 	

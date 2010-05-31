@@ -19,7 +19,7 @@
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
 		<cfset var Parameters = arguments.valObject.getParameters() />
-		<cfif Len(arguments.valObject.getObjectValue()) LT Parameters.MinLength>
+		<cfif shouldTest(arguments.valObject) AND Len(arguments.valObject.getObjectValue()) LT Parameters.MinLength>
 			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be at least #Parameters.MinLength# characters long.") />
 		</cfif>
 	</cffunction>

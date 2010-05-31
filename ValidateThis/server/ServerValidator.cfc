@@ -71,6 +71,7 @@
 				</cfif>
 				<cfif conditionPasses>
 					<cfset theVal.load(v) />
+					<cfset theVal.setIsRequired(arguments.BOValidator.propertyIsRequired(v.PropertyName)) />
 					<cfset variables.RuleValidators[v.ValType].validate(theVal) />
 					<cfif NOT theVal.getIsSuccess()>
 						<cfset arguments.Result.setIsSuccess(false) />

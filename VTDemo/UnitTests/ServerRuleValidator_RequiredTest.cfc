@@ -1,0 +1,78 @@
+<!---
+	
+filename:		\VTDemo\UnitTests\ServerRuleValidatorTest.cfc
+date created:	2008-10-22
+author:			Bob Silverberg (http://www.silverwareconsulting.com/)
+purpose:		I ServerRuleValidatorTest.cfc
+				
+	// **************************************** LICENSE INFO **************************************** \\
+	
+	Copyright 2008, Bob Silverberg
+	
+	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
+	compliance with the License.  You may obtain a copy of the License at 
+	
+		http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software distributed under the License is 
+	distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+	implied.  See the License for the specific language governing permissions and limitations under the 
+	License.
+	
+	// ****************************************** REVISIONS ****************************************** \\
+	
+	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
+	===================================================================================================
+	2008-10-22	New																		BS
+
+--->
+<cfcomponent extends="UnitTests.BaseServerRuleValidatorTest" output="false">
+	
+	<cffunction name="setUp" access="public" returntype="void">
+		<cfscript>
+			super.setup();
+			SRV = getSRV("Required");
+		</cfscript>
+	</cffunction>
+	
+	<cffunction name="requiredShouldSucceedWithAValue" access="public" returntype="void">
+		<cfscript>
+			validation.getObjectValue().returns("abc");
+			SRV.validate(validation);
+			validation.verifyTimes(0).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="requiredShouldSucceedWithAnObject" access="public" returntype="void">
+		<cfscript>
+			validation.getObjectValue().returns(mock());
+			SRV.validate(validation);
+			validation.verifyTimes(0).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="requiredShouldFailWithNoValue" access="public" returntype="void">
+		<cfscript>
+			validation.getObjectValue().returns("");
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getSRV" access="private" returntype="Any">
+		<cfargument name="ValType" />
+		
+		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker) />
+		
+	</cffunction>
+
+	<!--- Need to override these as they don't apply to this test case --->
+	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
+	</cffunction>
+	
+	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
+	</cffunction>
+
+</cfcomponent>
+
+

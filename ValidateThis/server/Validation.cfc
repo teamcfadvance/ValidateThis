@@ -134,6 +134,14 @@
 		<cfreturn variables.Instance.FailureMessage />
 	</cffunction>
 
+	<cffunction name="setIsRequired" returntype="void" access="public" output="false">
+		<cfargument name="IsRequired" type="any" required="true" />
+		<cfset variables.Instance.IsRequired = arguments.IsRequired />
+	</cffunction>
+	<cffunction name="getIsRequired" access="public" output="false" returntype="any">
+		<cfreturn variables.Instance.IsRequired />
+	</cffunction>
+
 </cfcomponent>
 	
 

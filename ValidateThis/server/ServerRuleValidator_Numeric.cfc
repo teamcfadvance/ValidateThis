@@ -18,8 +18,7 @@
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var theVal = arguments.valObject.getObjectValue() />
-		<cfif Len(theVal) AND NOT IsValid("Numeric",theVal)>
+		<cfif shouldTest(arguments.valObject) AND NOT IsValid("Numeric",arguments.valObject.getObjectValue())>
 			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be a number.") />
 		</cfif>
 	</cffunction>

@@ -147,5 +147,35 @@ purpose:		I ValidationTest.cfc
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="getIsRequiredShouldReturnTrueIfPropertyIsRequired" access="public" returntype="void">
+		<cfscript>
+			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();
+			var ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "email";
+			valStruct.PropertyName = "FirstName";
+			valStruct.isRequired = true;
+			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation.load(valStruct);
+			assertEquals(true,Validation.getIsRequired());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getIsRequiredShouldReturnFalseIfPropertyIsNotRequired" access="public" returntype="void">
+		<cfscript>
+			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();
+			var ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "email";
+			valStruct.PropertyName = "FirstName";
+			valStruct.isRequired = false;
+			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation.load(valStruct);
+			assertEquals(false,Validation.getIsRequired());
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>
 

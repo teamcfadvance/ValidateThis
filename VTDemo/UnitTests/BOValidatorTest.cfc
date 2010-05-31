@@ -42,30 +42,30 @@ purpose:		I BOValidatorTest.cfc
 	<cffunction name="initReturnsCorrectObjectWithExplicitExpandedPath" access="public" returntype="void">
 		<cfscript>
 			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
-			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
-			isBOVCorrect();
+			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initThrowsWithBadExplicitExpandedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
 		<cfscript>
 			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "_Doesnt_Exist/";
-			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initReturnsCorrectObjectWithExplicitMappedPath" access="public" returntype="void">
 		<cfscript>
 			defPath = "/BODemo/Model/";
-			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
-			isBOVCorrect();
+			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initThrowsWithBadExplicitMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
 		<cfscript>
 			defPath = "/BODemo/Model_Doesnt_Exist/";
-			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
@@ -73,8 +73,8 @@ purpose:		I BOValidatorTest.cfc
 		<cfscript>
 			ValidateThisConfig = {definitionPath="/BODemo/Model/"};
 			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			variables.BOValidator = variables.ValidateThis.getValidator(variables.className);
-			isBOVCorrect();
+			BOValidator = variables.ValidateThis.getValidator(variables.className);
+			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>
 
@@ -82,7 +82,7 @@ purpose:		I BOValidatorTest.cfc
 		<cfscript>
 			ValidateThisConfig = {definitionPath="/BODemo/Model_Doesnt_Exist/"};
 			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			variables.BOValidator = variables.ValidateThis.getValidator(variables.className);
+			BOValidator = variables.ValidateThis.getValidator(variables.className);
 		</cfscript>  
 	</cffunction>
 
@@ -90,8 +90,8 @@ purpose:		I BOValidatorTest.cfc
 		<cfscript>
 			ValidateThisConfig = {definitionPath=ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/")};
 			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			variables.BOValidator = variables.ValidateThis.getValidator(variables.className);
-			isBOVCorrect();
+			BOValidator = variables.ValidateThis.getValidator(variables.className);
+			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>
 
@@ -99,25 +99,62 @@ purpose:		I BOValidatorTest.cfc
 		<cfscript>
 			ValidateThisConfig = {definitionPath=ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "Doesnt_Exist/"};
 			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			variables.BOValidator = variables.ValidateThis.getValidator(variables.className);
+			BOValidator = variables.ValidateThis.getValidator(variables.className);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="getRequiredPropertiesReturnsCorrectStruct" access="public" returntype="void">
 		<cfscript>
-			createDefaultBOV();
-			FieldList = variables.BOValidator.getRequiredProperties("Register");
+			BOValidator = createDefaultBOV();
+			FieldList = BOValidator.getRequiredProperties();
+			assertEquals(4,structCount(FieldList));
 			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserName"));
 			assertTrue(ListFindNoCase(StructKeyList(FieldList),"VerifyPassword"));
 			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserGroup"));
 			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserPass"));
+			FieldList = BOValidator.getRequiredProperties("Register");
+			assertEquals(4,structCount(FieldList));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserName"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"VerifyPassword"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserGroup"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserPass"));
+			FieldList = BOValidator.getRequiredProperties("Profile");
+			assertEquals(7,structCount(FieldList));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserName"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"VerifyPassword"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserGroup"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserPass"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"FirstName"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"LastName"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"Salutation"));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getRequiredFieldsReturnsCorrectStruct" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			FieldList = BOValidator.getRequiredFields("Register");
+			assertEquals(4,structCount(FieldList));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserName"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"VerifyPassword"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserGroupId"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserPass"));
+			FieldList = BOValidator.getRequiredFields("Profile");
+			assertEquals(7,structCount(FieldList));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserName"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"VerifyPassword"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserGroupId"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"UserPass"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"FirstName"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"LastName"));
+			assertTrue(ListFindNoCase(StructKeyList(FieldList),"Salutation"));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="getAllContextsReturnsCorrectStruct" access="public" returntype="void">
 		<cfscript>
-			createDefaultBOV();
-			AllContexts = variables.BOValidator.getAllContexts();
+			BOValidator = createDefaultBOV();
+			AllContexts = BOValidator.getAllContexts();
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Profile"));
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"___Default"));
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Register"));
@@ -126,22 +163,51 @@ purpose:		I BOValidatorTest.cfc
 
 	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
 		<cfscript>
-			createDefaultBOV();
-			assertEquals("0.91",variables.BOValidator.getVersion());
+			BOValidator = createDefaultBOV();
+			assertEquals("0.94",BOValidator.getVersion());
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="propertyIsRequiredWithDefaultContextShouldReturnTrueIfPropertyIsRequired" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals(true,BOValidator.propertyIsRequired("UserName"));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="propertyIsRequiredWithDefaultContextShouldReturnFalseIfPropertyIsNotRequired" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals(false,BOValidator.propertyIsRequired("Nickname"));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="propertyIsRequiredWithSpecificContextShouldReturnTrueIfPropertyIsRequired" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals(true,BOValidator.propertyIsRequired("FirstName","Profile"));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="propertyIsRequiredWithSpecificContextShouldReturnFalseIfPropertyIsNotRequired" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals(false,BOValidator.propertyIsRequired("FirstName","Register"));
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="createDefaultBOV" access="private" returntype="void">
+	<cffunction name="createDefaultBOV" access="private" returntype="any">
 		<cfscript>
 			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac
 			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
-			variables.BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			return variables.ValidateThis.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="isBOVCorrect" access="private" returntype="void">
+		<cfargument name="BOValidator">
 		<cfscript>
-			AllContexts = variables.BOValidator.getAllContexts();
+			AllContexts = arguments.BOValidator.getAllContexts();
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Profile"));
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"___Default"));
 			assertTrue(ListFindNoCase(StructKeyList(AllContexts),"Register"));

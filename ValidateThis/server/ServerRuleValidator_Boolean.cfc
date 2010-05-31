@@ -1,6 +1,6 @@
 <!---
 	
-	Copyright 2008, Bob Silverberg
+	Copyright 2010, Bob Silverberg
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -13,14 +13,13 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ServerRuleValidator_Max" extends="AbstractServerRuleValidator" hint="I am responsible for performing the Max validation.">
+<cfcomponent output="false" name="ServerRuleValidator_Boolean" extends="AbstractServerRuleValidator" hint="I am responsible for performing the Boolean validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var Parameters = arguments.valObject.getParameters() />
-		<cfif shouldTest(arguments.valObject) AND Val(arguments.valObject.getObjectValue()) GT Parameters.Max>
-			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be no more than #Parameters.Max#.") />
+		<cfif shouldTest(arguments.valObject) AND NOT IsValid("Boolean",arguments.valObject.getObjectValue())>
+			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be a valid date.") />
 		</cfif>
 	</cffunction>
 	

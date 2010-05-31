@@ -23,7 +23,7 @@
 	</cffunction>
 	
 	<cffunction name="validate" returntype="void" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="valObject" type="any" required="yes" hint="The validation object being used to perform the validation." />
 
 		<cfthrow type="validatethis.server.AbstractServerRuleValidator.methodnotdefined"
 				message="I am an abstract object, hence the validate method must be overriden in a concrete object." />
@@ -36,11 +36,29 @@
 	</cffunction>
 	
 	<cffunction name="fail" returntype="void" access="private" output="false" hint="I do what needs to be done when a validation fails.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="valObject" type="any" required="yes" hint="The validation object being used to perform the validation." />
 		<cfargument name="FailureMessage" type="any" required="yes" hint="An Failure message to store." />
 	
 		<cfset arguments.valObject.setIsSuccess(false) />
 		<cfset arguments.valObject.setFailureMessage(arguments.FailureMessage) />
+	</cffunction>
+
+	<cffunction name="propertyHasValue" returntype="boolean" access="private" output="false" hint="I determine whether the current property has a value.">
+		<cfargument name="valObject" type="any" required="yes" hint="The validation object being used to perform the validation." />
+	
+		<cfreturn len(arguments.valObject.getObjectValue()) GT 0 />
+	</cffunction>
+
+	<cffunction name="propertyIsRequired" returntype="boolean" access="private" output="false" hint="I determine whether the current property is required.">
+		<cfargument name="valObject" type="any" required="yes" hint="The validation object being used to perform the validation." />
+	
+		<cfreturn arguments.valObject.getIsRequired() />
+	</cffunction>
+
+	<cffunction name="shouldTest" returntype="boolean" access="private" output="false" hint="I determine whether the test should be performed, based on optionality and empty value.">
+		<cfargument name="valObject" type="any" required="yes" hint="The validation object being used to perform the validation." />
+	
+		<cfreturn propertyHasValue(arguments.valObject) OR propertyIsRequired(arguments.valObject) />
 	</cffunction>
 
 </cfcomponent>
