@@ -33,7 +33,6 @@
 	<cffunction name="getInitializationScriptDefaultReturnsCorrectScript" returntype="void" access="public">
 		<cfscript>
 			script = variables.CSGenerator.getInitializationScript(JSLib=variables.JSLib);
-			debug(script);
 			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
 			assertFalse(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
@@ -43,7 +42,6 @@
 	<cffunction name="getInitializationScriptNoIncludesReturnsCorrectScript" returntype="void" access="public">
 		<cfscript>
 			script = variables.CSGenerator.getInitializationScript(JSLib=variables.JSLib,JSIncludes=false);
-			debug(script);
 			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
 			assertFalse(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
@@ -53,7 +51,6 @@
 	<cffunction name="getInitializationScriptWithLocaleReturnsCorrectScript" returntype="void" access="public">
 		<cfscript>
 			script = variables.CSGenerator.getInitializationScript(JSLib=variables.JSLib,locale="fr_FR");
-			debug(script);
 			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
 			assertTrue(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
@@ -63,7 +60,6 @@
 	<cffunction name="getInitializationScriptWithLocaleNoIncludesReturnsCorrectScript" returntype="void" access="public">
 		<cfscript>
 			script = variables.CSGenerator.getInitializationScript(JSLib=variables.JSLib,JSIncludes=false,locale="fr_FR");
-			debug(script);
 			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
 			assertTrue(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);

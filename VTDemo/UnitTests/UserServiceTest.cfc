@@ -65,9 +65,7 @@ purpose:		I UserServiceTest.cfc
 	<cffunction name="getExistingUserReturnsUser" access="public" returntype="void">
 		<cfscript>
 			setUpUser();
-			//debug(getMetaData(UserTO));
 			objUser = UserService.getUser(UserTO.getUserId());
-			debug(objUser.getMemento());
 			AssertEquals(objUser.getUserId(),UserTO.getUserId());
 			AssertTrue(objUser.getIsPersisted());
 			tearDownUser();

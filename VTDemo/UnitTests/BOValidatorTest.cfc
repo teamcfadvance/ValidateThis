@@ -183,6 +183,41 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="initShouldReturnProperObjectWhenXmlRulesFileIsAlongsideCFC" access="public" returntype="void">
+		<cfscript>
+			theObject = createObject("component","Fixture.APlainCFC_Fixture");
+			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidatorShouldReturnProperBOWhenXmlCfmRulesFileIsAlongsideCFC" access="public" returntype="void">
+		<cfscript>
+			theObject = createObject("component","Fixture.APlainCFC_Fixture_cfm");
+			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidatorShouldReturnProperBOWhenXmlFileIsInAConfiguredFolder" access="public" returntype="void">
+		<cfscript>
+			VTConfig = 	{definitionPath=getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+			theObject = createObject("component","Fixture.ObjectWithSeparateRulesFile");
+			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="createDefaultBOV" access="private" returntype="any">
 		<cfscript>
 			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac

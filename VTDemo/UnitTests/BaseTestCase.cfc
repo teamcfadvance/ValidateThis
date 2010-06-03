@@ -40,9 +40,6 @@ purpose:		I BaseTestCase.cfc
 		
 		<cfset var xmlFile = 0 />
 		
-		<!--- Put debug on server - NO LONGER NEEDED!
-		<cfset server.debug = debug /> --->
-		
 		<cfif arguments.forceRefresh OR NOT structkeyExists(variables,"beanFactory") OR comparenocase(variables.beansXML,arguments.beansXML) neq 0>
 			<cfset variables.beansXML = arguments.beansXML />
 			<cfset variables.beanFactory = createObject("component" ,"coldspring.beans.DefaultXmlBeanFactory").init(defaultProperties=arguments.params) />

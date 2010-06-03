@@ -38,9 +38,9 @@
 		<cfset variables.CommonScriptGenerator = arguments.CommonScriptGenerator />
 		<cfset variables.Version = arguments.Version />
 		
-		<!--- If the definitionPath passed in is empty, get it from the ValidateThisConfig --->
-		<cfif NOT Len(arguments.definitionPath)>
-			<cfset arguments.definitionPath = arguments.ValidateThisConfig.definitionPath />
+		<!--- Prepend a specified definitionPath to the paths in the ValidateThisConfig --->
+		<cfif Len(arguments.definitionPath) GT 0>
+			<cfset arguments.definitionPath = listPrepend(arguments.ValidateThisConfig.definitionPath,arguments.definitionPath) />
 		</cfif>
 		
 		<cfset processXML(arguments.objectType,arguments.definitionPath) />

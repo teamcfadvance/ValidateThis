@@ -22,7 +22,7 @@
 		<cfset var ValidateThisConfig = StructNew() />
 		<cfset super.Init(arguments.controller) />
 		<cfset setpluginName("ValidateThis Plugin") />
-		<cfset setpluginVersion("0.2") />
+		<cfset setpluginVersion("0.3") />
 		<cfset setpluginDescription("I allow ValidateThis to be accessed easily from within Coldbox.") />
 		
 		<!--- 
@@ -65,8 +65,8 @@
 
 	<cffunction name="validate" access="public" output="false" returntype="any" hint="I am used to perform server-side validations on an object">
 		<cfargument name="theObject" type="any" required="true" />
-		<cfargument name="objectType" type="any" required="false" />
-		<cfargument name="Context" type="any" required="false" />
+		<cfargument name="objectType" type="string" required="false" />
+		<cfargument name="Context" type="string" required="false" />
 		<cfargument name="Result" type="any" required="false" />
 
 		<cfreturn variables.ValidateThis.validate(argumentCollection=arguments) />
@@ -95,60 +95,64 @@
 	
 	</cffunction>
 
-	<cffunction name="getValidationScript" returntype="any" access="public" output="false" hint="I generate client-side validations scripts for an object">
+	<cffunction name="getValidationScript" returntype="string" access="public" output="false" hint="I generate client-side validations scripts for an object">
 		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="any" required="false" />
-		<cfargument name="Context" type="any" required="false" />
-		<cfargument name="formName" type="any" required="false" />
-		<cfargument name="JSLib" type="any" required="false" />
-		<cfargument name="locale" type="Any" required="false" />
+		<cfargument name="objectType" type="string" required="false" />
+		<cfargument name="Context" type="string" required="false" />
+		<cfargument name="formName" type="string" required="false" />
+		<cfargument name="JSLib" type="string" required="false" />
+		<cfargument name="locale" type="string" required="false" />
 
 		<cfreturn variables.ValidateThis.getValidationScript(argumentCollection=arguments) />
 	</cffunction>
 	
 	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate JS statements required to setup client-side validations for VT.">
-		<cfargument name="JSLib" type="any" required="false" />
-		<cfargument name="JSIncludes" type="Any" required="no" default="true" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="JSLib" type="string" required="false" />
+		<cfargument name="JSIncludes" type="boolean" required="no" default="true" />
+		<cfargument name="locale" type="string" required="no" default="" />
 
 		<cfreturn variables.ValidateThis.getInitializationScript(argumentCollection=arguments) />
 	</cffunction>
 
 	<cffunction name="getRequiredProperties" access="public" output="false" returntype="any" hint="I return a structure containing the name of all of the required properties for the given context.">
 		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="any" required="false" />
-		<cfargument name="Context" type="any" required="false" />
+		<cfargument name="objectType" type="string" required="false" />
+		<cfargument name="Context" type="string" required="false" />
 
 		<cfreturn variables.ValidateThis.getRequiredProperties(argumentCollection=arguments) />
 	</cffunction>
 
 	<cffunction name="getRequiredFields" access="public" output="false" returntype="any" hint="I return a structure containing the name of all of the required fields for the given context.">
 		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="any" required="false" />
-		<cfargument name="Context" type="any" required="false" />
+		<cfargument name="objectType" type="string" required="false" />
+		<cfargument name="Context" type="string" required="false" />
 
 		<cfreturn variables.ValidateThis.getRequiredFields(argumentCollection=arguments) />
 	</cffunction>
 
 	<cffunction name="getAllContexts" access="public" output="false" returntype="any" hint="I return a Struct containing all of the rules defined for the object.">
 		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="any" required="false" />
+		<cfargument name="objectType" type="string" required="false" />
 
 		<cfreturn variables.ValidateThis.getAllContexts(argumentCollection=arguments) />
 	</cffunction>
 
+	<cffunction name="newResult" access="public" output="false" returntype="any" hint="I return a new, empty Result object.">
+		<cfreturn variables.ValidateThis.newResult() />
+	</cffunction>
+
 	<cffunction name="addRule" returnType="void" access="public" output="false" hint="I am used to add a rule via CFML code">
-		<cfargument name="propertyName" type="any" required="true" />
-		<cfargument name="valType" type="any" required="true" />
+		<cfargument name="propertyName" type="string" required="true" />
+		<cfargument name="valType" type="string" required="true" />
 		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="any" required="false" />
-		<cfargument name="clientFieldName" type="any" required="false" />
-		<cfargument name="propertyDesc" type="any" required="false" />
+		<cfargument name="objectType" type="string" required="false" />
+		<cfargument name="clientFieldName" type="string" required="false" />
+		<cfargument name="propertyDesc" type="string" required="false" />
 		<cfargument name="condition" type="Struct" required="false" />
 		<cfargument name="parameters" type="Struct" required="false" />
-		<cfargument name="contexts" type="any" required="false" />
-		<cfargument name="failureMessage" type="any" required="false" />
-		<cfargument name="formName" type="any" required="false" />
+		<cfargument name="contexts" type="string" required="false" />
+		<cfargument name="failureMessage" type="string" required="false" />
+		<cfargument name="formName" type="string" required="false" />
 
 		<cfreturn variables.ValidateThis.addRule(argumentCollection=arguments) />
 	</cffunction>

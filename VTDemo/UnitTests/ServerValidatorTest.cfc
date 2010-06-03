@@ -131,7 +131,6 @@
 			ServerValidator.validate(UserTO.getValidator(),UserTO,"Profile",Result);
 			AssertFalse(Result.getIsSuccess());
 			Failures = Result.getFailures();
-			debug(Failures);
 			assertEquals(10,ArrayLen(Failures));
 			Failure = Failures[1];
 			assertEquals(Failure.Type,"required");
@@ -184,7 +183,6 @@
 			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
 			ServerValidator.validate(UserTO.getValidator(),UserTO,"Register",Result);
 			Failures = Result.getFailures();
-			debug(failures);
 			Failure = Failures[1];
 			AssertEquals(Failure.Message,"Hey, buddy, you call that an Email Address?");
 		</cfscript>  

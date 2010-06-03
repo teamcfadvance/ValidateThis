@@ -39,10 +39,15 @@
 	</cffunction>
 
 	<cffunction name="getValidator" access="public" output="false" returntype="any">
-		<cfargument name="objectType" type="any" required="true" />
+		<cfargument name="objectType" type="any" required="false" default="" />
 		<cfargument name="definitionPath" type="any" required="false" default="" />
+		<cfargument name="theObject" type="any" required="false" default="" />
 
-		<cfreturn variables.ValidationFactory.getValidator(arguments.objectType,arguments.definitionPath) />
+		<cfset var theObjectType = determineObjectType(arguments) />
+		<cfif len(arguments.definitionPath) EQ 0 AND isObject(arguments.theObject)>
+			<cfset arguments.definitionPath = getDirectoryFromPath(getMetadata(arguments.theObject).path) />
+		</cfif>
+		<cfreturn variables.ValidationFactory.getValidator(theObjectType,arguments.definitionPath) />
 		
 	</cffunction>
 	
@@ -52,8 +57,7 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
 
-		<cfset var theObjectType = determineObjectType(arguments) />
-		<cfset var BOValidator = getValidator(theObjectType,"") />
+		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
 		<!--- Inject testCondition if needed --->
 		<!--- Notes for Java/Groovy objects:
 			If you're using Groovy, 
@@ -82,9 +86,8 @@
 		<cfargument name="missingMethodName" type="any" required="true" />
 		<cfargument name="missingMethodArguments" type="any" required="true" />
 
-		<cfset var theObjectType = determineObjectType(arguments.missingMethodArguments) />
 		<cfset var returnValue = "" />
-		<cfset var BOValidator = getValidator(theObjectType,"") />
+		<cfset var BOValidator = getValidator(argumentCollection=arguments.missingMethodArguments) />
 		<cfinvoke component="#BOValidator#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="returnValue" />
 		<cfif NOT IsDefined("returnValue")>
 			<cfset returnValue = "" />

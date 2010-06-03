@@ -26,23 +26,55 @@ purpose:		I ValidateThisTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="UnitTests.ValidateThisTest" extends="UnitTests.BaseTestCase" output="false">
-	
-	<cfset ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(StructNew()) />
+<cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
+		<cfset ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(StructNew()) />
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
-	<!--- No tests have been defined for this component yet --->
 	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
 		<cfscript>
 			assertEquals("0.94",ValidateThis.getVersion());
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="getValidatorShouldReturnProperBOWhenXmlRulesFileIsAlongsideCFC" access="public" returntype="void">
+		<cfscript>
+			theObject = createObject("component","Fixture.APlainCFC_Fixture");
+			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidatorShouldReturnProperBOWhenXmlCfmRulesFileIsAlongsideCFC" access="public" returntype="void">
+		<cfscript>
+			theObject = createObject("component","Fixture.APlainCFC_Fixture_cfm");
+			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidatorShouldReturnProperBOWhenXmlFileIsInAConfiguredFolder" access="public" returntype="void">
+		<cfscript>
+			VTConfig = 	{definitionPath=getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+			theObject = createObject("component","Fixture.ObjectWithSeparateRulesFile");
+			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
 
 </cfcomponent>
 

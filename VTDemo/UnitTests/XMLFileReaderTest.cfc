@@ -133,7 +133,6 @@ purpose:		I XMLFileReaderTest.cfc
 			className = "user.user";
 			definitionPath = ExpandPath("/BODemo/model/");
 			Validations = XMLFileReader.processXML(variables.className,definitionPath).Validations;
-			debug(Validations);
 			assertEquals(StructCount(Validations),1);
 			assertEquals(StructCount(Validations.Contexts),3);
 			Rules = Validations.Contexts.Register;
@@ -207,7 +206,6 @@ purpose:		I XMLFileReaderTest.cfc
 			assertEquals(Validation.Parameters.DependentPropertyName,"AllowCommunication");
 			assertEquals(Validation.Parameters.DependentPropertyValue,1);
 			Rules = Validations.Contexts.Profile;
-			debug(Rules);
 			assertEquals(ArrayLen(Rules),15);
 			Validation = Rules[1];
 			assertEquals(Validation.ValType,"required");

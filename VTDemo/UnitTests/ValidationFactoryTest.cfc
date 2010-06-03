@@ -1,10 +1,4 @@
 <!---
-	
-filename:		\VTDemo\UnitTests\ValidationFactoryTest.cfc
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I ValidationFactoryTest.cfc
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
@@ -19,41 +13,32 @@ purpose:		I ValidationFactoryTest.cfc
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 --->
-<cfcomponent displayname="UnitTests.ValidationFactoryTest" extends="UnitTests.BaseTestCase" output="false">
-	
-	<cfset ValidationFactory = "" />
-	
-	<!--- Need to rewrite without Coldspring
+<cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset setBeanFactory()>
-		<cfset ValidationFactory = getBeanFactory().getBean("ValidateThis").getBean("ValidationFactory") />
-		<!--- Inject debugarray --->
-		<cfset ValidationFactory.debugarray = this.debugarray />
-	</cffunction>
-
-	<cffunction name="tearDown" access="public" returntype="void">
-	</cffunction>
-
-	<cffunction name="GetValidatorReturnsComposedValidator" access="public" returntype="void">
 		<cfscript>
-			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\\]+?)(UnitTests\\)([\w\W]+)","\1Model\");
-			Validator = ValidationFactory.getValidator("user.user",defPath);
-			assertTrue(GetMetadata(Validator).name CONTAINS "BOValidator");
-			assertTrue(GetMetadata(Validator.getXMLFileReader()).name CONTAINS "validatethis.core.XMLFileReader");
-			assertTrue(GetMetadata(Validator.getServerValidator()).name CONTAINS "validatethis.server.ServerValidator");
-			assertTrue(GetMetadata(Validator.getClientValidator()).name CONTAINS "validatethis.client.ClientValidator");
-			assertEquals(Validator.getObjectType(),"user.user");
+			// Deafult values copied from ValidateThis.cfc
+			ValidateThisConfig = {};
+			ValidateThisConfig.TranslatorPath="ValidateThis.core.BaseTranslator";
+			ValidateThisConfig.LocaleLoaderPath="ValidateThis.core.BaseLocaleLoader";
+			ValidateThisConfig.BOValidatorPath="ValidateThis.core.BOValidator";
+			ValidateThisConfig.DefaultJSLib="jQuery";
+			ValidateThisConfig.JSRoot="js/";
+			ValidateThisConfig.defaultFormName="frmMain";
+			ValidateThisConfig.definitionPath="/model/";
+			ValidateThisConfig.localeMap="#StructNew()#";
+			ValidateThisConfig.defaultLocale="en_US";
+			ValidateThisConfig.abstractGetterMethod="";
+			ValidateThisConfig.ExtraRuleValidatorComponentPaths="";
+			ValidationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+		</cfscript>
+	</cffunction>
+	
+	<cffunction name="noTestsDefinedYet" access="public" returntype="void">
+		<cfscript>
 		</cfscript>  
 	</cffunction>
-	--->
 
 </cfcomponent>
 
