@@ -15,7 +15,7 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseServerRuleValidatorTest" output="false">
+<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>

@@ -26,7 +26,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent extends="UnitTests.BaseServerRuleValidatorTest" output="false">
+<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="propertyHasValueShouldReturnTrueIfPropertyPopulated" access="public" returntype="void">
 		<cfscript>

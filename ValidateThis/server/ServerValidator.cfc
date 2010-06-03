@@ -45,7 +45,7 @@
 		<cfset var theFailure = 0 />
 		<cfset var FailureMessage = 0 />
 		<cfset var Validations = arguments.BOValidator.getValidations(arguments.Context) />
-		<cfset var theVal = variables.TransientFactory.newValidation(arguments.theObject) />
+		<cfset var theVal = variables.TransientFactory.newValidation(arguments.theObject,variables.ObjectChecker) />
 		<cfset var dependentPropertyExpression = 0 />
 		<cfset var dependentPropertyValue = "" />
 		<cfset var conditionPasses = true />

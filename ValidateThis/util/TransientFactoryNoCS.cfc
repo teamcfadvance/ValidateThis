@@ -22,9 +22,7 @@
 
 	<cffunction name="init" access="public" output="false" returntype="any" hint="returns a configured transient factory">
 		<cfargument name="Translator" type="any" required="yes" />
-		<cfargument name="ObjectChecker" type="any" required="yes" />
 		<cfset variables.Translator = arguments.Translator />
-		<cfset variables.ObjectChecker = arguments.ObjectChecker />
 		<cfset variables.classes = {Result="ValidateThis.util.Result",Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.ResourceBundle"} />
 		<cfset variables.afterCreateMethod = "setup" />
 		<cfreturn this />
@@ -37,8 +35,6 @@
 		<!--- Need to do manual injections of singletons as we're not coupled to CS anymore, ugly but it works for now --->
 		<cfif arguments.transientName EQ "Result">
 			<cfset initArgs.Translator = variables.Translator />
-		<cfelseif arguments.transientName EQ "Validation">
-			<cfset initArgs.ObjectChecker = variables.ObjectChecker />
 		</cfif>
 		<cfset local.obj = createObject("component",variables.classes[arguments.transientName])>
 		<cfif StructKeyExists(local.obj,"init")>
