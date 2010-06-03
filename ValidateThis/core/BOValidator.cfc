@@ -37,11 +37,9 @@
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<cfset variables.CommonScriptGenerator = arguments.CommonScriptGenerator />
 		<cfset variables.Version = arguments.Version />
-		
+
 		<!--- Prepend a specified definitionPath to the paths in the ValidateThisConfig --->
-		<cfif Len(arguments.definitionPath) GT 0>
-			<cfset arguments.definitionPath = listPrepend(arguments.ValidateThisConfig.definitionPath,arguments.definitionPath) />
-		</cfif>
+		<cfset arguments.definitionPath = listPrepend(arguments.ValidateThisConfig.definitionPath,arguments.definitionPath) />
 		
 		<cfset processXML(arguments.objectType,arguments.definitionPath) />
 		<cfreturn this />

@@ -80,6 +80,18 @@
 		<cfreturn FailureList />
 	</cffunction>
 
+	<cffunction name="getFailureMessages" access="public" output="false" returntype="array" hint="I return all failure messages as an array of strings.">
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfset var FailureList = [] />
+		<cfset var Failure = 0 />
+		<cfloop array="#getFailures(arguments.locale)#" index="Failure">
+			<cfif Len(Failure.Message)>
+				<cfset ArrayAppend(FailureList,Failure.Message) />
+			</cfif>
+		</cfloop>
+		<cfreturn FailureList />
+	</cffunction>
+
 	<cffunction name="getFailuresForUniForm" access="public" output="false" returntype="any">
 		<cfargument name="locale" type="Any" required="false" default="" />
 		<cfreturn getFailuresAsStruct(arguments.locale) />

@@ -81,6 +81,21 @@ purpose:		I ResultTest.cfc
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="getFailureMessagesShouldReturnArrayOfMessages" access="public" returntype="void">
+		<cfscript>
+			Failure = StructNew();
+			Failure.Message = "First Message";
+			variables.Result.addFailure(Failure);
+			Failure = StructNew();
+			Failure.Message = "Second Message";
+			variables.Result.addFailure(Failure);
+			Failures = variables.Result.getFailureMessages();
+			assertEquals(2,arrayLen(Failures));
+			assertEquals("First Message",Failures[1]);
+			assertEquals("Second Message",Failures[2]);
+		</cfscript>  
+	</cffunction>
+
 
 </cfcomponent>
 

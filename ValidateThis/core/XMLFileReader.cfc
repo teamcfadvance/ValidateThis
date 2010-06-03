@@ -49,7 +49,7 @@
 		<cfset var defPath = 0 />
 		<cfset var fileName = 0 />
 		<cfset var aPath = 0 />
-
+		
 		<!--- Check for a valid folder in arguments.definitionPath --->		
 		<cfloop list="#arguments.definitionPath#" index="aPath">
 			<cfif variables.FileSystem.CheckDirectoryExists(variables.FileSystem.getAbsolutePath(aPath))>
