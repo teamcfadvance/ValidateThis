@@ -280,5 +280,89 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="failureMessageReturnedByMethodOnCustomRuleShouldTakePrecedenceOverFailureMessageInXML" access="public" returntype="void">
+		<cfscript>
+			//setBeanFactory(forceRefresh=true);
+			setupServerValidatorWithMocks();
+			customResult = {IsSuccess=false,FailureMessage="The message returned from the method."};
+			customer.customMethod().returns(customResult);
+			ServerValidator.validate(BOValidator,customer,"",Result);
+			failures = Result.getFailuresAsStruct();
+			assertEquals("The message returned from the method.",failures.a);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="determineFailureMessageReturnsFrameworkGeneratedFailureMessageIfNotOverridenInXML" access="public" returntype="void">
+		<cfscript>
+			setupServerValidatorWithMocks();
+			makePublic(ServerValidator,"determineFailureMessage");
+			generatedMessage = "A generated message.";
+			theVal = mock();
+			theVal.getFailureMessage().returns(generatedMessage);
+			theVal.getValType().returns("required");
+			v = {};
+			failureMessage = ServerValidator.determineFailureMessage(v,theVal);
+			assertEquals(generatedMessage,failureMessage);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="determineFailureMessageReturnsCustomFailureMessageIfOverridenInXML" access="public" returntype="void">
+		<cfscript>
+			setupServerValidatorWithMocks();
+			makePublic(ServerValidator,"determineFailureMessage");
+			generatedMessage = "A generated message.";
+			theVal = mock();
+			theVal.getFailureMessage().returns(generatedMessage);
+			theVal.getValType().returns("required");
+			customMessage = "A custom message.";
+			v = {FailureMessage=customMessage};
+			failureMessage = ServerValidator.determineFailureMessage(v,theVal);
+			assertEquals(customMessage,failureMessage);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="determineFailureMessageReturnsGeneratedFailureMessageOnCustomRuleIfOverridenInXMLAndNonBlankGeneratedMessage" access="public" returntype="void">
+		<cfscript>
+			setupServerValidatorWithMocks();
+			makePublic(ServerValidator,"determineFailureMessage");
+			generatedMessage = "A generated message.";
+			theVal = mock();
+			theVal.getFailureMessage().returns(generatedMessage);
+			theVal.getValType().returns("custom");
+			customMessage = "A custom message.";
+			v = {FailureMessage=customMessage};
+			failureMessage = ServerValidator.determineFailureMessage(v,theVal);
+			assertEquals(generatedMessage,failureMessage);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="determineFailureMessageReturnsCustomFailureMessageOnCustomRuleIfOverridenInXMLAndBlankGeneratedMessage" access="public" returntype="void">
+		<cfscript>
+			setupServerValidatorWithMocks();
+			makePublic(ServerValidator,"determineFailureMessage");
+			generatedMessage = "";
+			theVal = mock();
+			theVal.getFailureMessage().returns(generatedMessage);
+			theVal.getValType().returns("custom");
+			customMessage = "A custom message.";
+			v = {FailureMessage=customMessage};
+			failureMessage = ServerValidator.determineFailureMessage(v,theVal);
+			assertEquals(customMessage,failureMessage);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="setupServerValidatorWithMocks" access="private" returntype="void">
+		<cfscript>
+			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/";
+			BOValidator = getBeanFactory().getBean("ValidateThis").getValidator("customRuleTester",defPath);
+			customer = mock();
+			ObjectChecker = mock();
+			ObjectChecker.findGetter("{*}").returns("getA()");
+			ExtraRuleValidatorComponentPaths = "";
+			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(FileSystem,TransientFactory,ObjectChecker,ExtraRuleValidatorComponentPaths);
+			Result = TransientFactory.newResult();
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>
 

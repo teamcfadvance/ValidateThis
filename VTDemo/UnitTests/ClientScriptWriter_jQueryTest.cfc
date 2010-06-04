@@ -302,5 +302,18 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="BooleanValidationGeneratesCorrectScript" access="public" returntype="void">
+		<cfscript>
+			valStruct = StructNew();
+			valStruct.ValType = "boolean";
+			valStruct.ClientFieldName = "FirstName";
+			valStruct.PropertyDesc = "First Name";
+			valStruct.Parameters = StructNew(); 
+			valStruct.Condition = StructNew(); 
+			Script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("$(""##FirstName"").rules('add',{boolean: true});",Script);
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>
 

@@ -60,6 +60,9 @@
 							var re = param;
 							return this.optional(element) || re.test(value);
 						}, jQuery.format("The value entered does not match the specified pattern ({0})"));
+						jQuery.validator.addMethod("boolean", function(value, element) {
+							return this.optional(element) || isCFBoolean(value);
+						}, jQuery.format("The value entered must be a boolean"));
 					});
 				</script>
 			</cfoutput>

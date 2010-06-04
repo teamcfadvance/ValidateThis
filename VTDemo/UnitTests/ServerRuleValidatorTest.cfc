@@ -57,6 +57,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 	
 	<cffunction name="propertyIsRequiredShouldReturnFalseIfPropertyIsRequired" access="public" returntype="void">
 		<cfscript>
+			debug(server.coldfusion);
 			SRV = getSRV("email");
 			validation.getIsRequired().returns(false);
 			makePublic(SRV,"propertyIsRequired");

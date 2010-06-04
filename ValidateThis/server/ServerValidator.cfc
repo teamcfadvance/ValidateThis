@@ -75,21 +75,29 @@
 					<cfset variables.RuleValidators[v.ValType].validate(theVal) />
 					<cfif NOT theVal.getIsSuccess()>
 						<cfset arguments.Result.setIsSuccess(false) />
-						<cfif StructKeyExists(v,"FailureMessage") AND Len(v.FailureMessage)>
-							<cfset FailureMessage = v.FailureMessage />
-						<cfelse>
-							<cfset FailureMessage = theVal.getFailureMessage() />
-						</cfif>
 						<cfset theFailure = StructNew() />
 						<cfset theFailure.PropertyName = v.PropertyName />
 						<cfset theFailure.ClientFieldName = v.ClientFieldName />
 						<cfset theFailure.Type = v.ValType />
-						<cfset theFailure.Message = FailureMessage />
+						<cfset theFailure.Message = determineFailureMessage(v,theVal) />
 						<cfset arguments.Result.addFailure(theFailure) />
 					</cfif>
 				</cfif>
 			</cfloop>
 		</cfif>
+	</cffunction>
+
+	<cffunction name="determineFailureMessage" access="private" output="false" returntype="any">
+		<cfargument name="v" type="struct" required="true" hint="The validation struct stored in the BOValidator" />
+		<cfargument name="theVal" type="any" required="true" hint="The validation object being used to perform the validation" />
+
+		<cfset var failureMessage = arguments.theVal.getFailureMessage() />
+		<cfif StructKeyExists(arguments.v,"FailureMessage") AND Len(arguments.v.FailureMessage)
+			AND (arguments.theVal.getValType() NEQ "custom" OR len(failureMessage) EQ 0)>
+			<cfset failureMessage = v.FailureMessage />
+		</cfif>
+
+		<cfreturn failureMessage />
 	</cffunction>
 
 	<cffunction name="getRuleValidators" access="public" output="false" returntype="any">
