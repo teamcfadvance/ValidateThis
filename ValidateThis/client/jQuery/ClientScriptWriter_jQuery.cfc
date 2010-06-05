@@ -64,6 +64,19 @@
 							return this.optional(element) || isCFBoolean(value);
 						}, jQuery.format("The value entered must be a boolean"));
 					});
+					function isCFBoolean( value )
+					{
+						if ( value==null )
+						{
+							return false
+						}
+						else 
+						{
+							var tocheck = value.toString();
+							var pattern = /^((-){0,1}[0-9]{1,}(\.([0-9]{1,})){0,1}|true|false|yes|no)$/gi;
+							return tocheck.match( pattern ) == null ? false : true;
+						}
+					}
 				</script>
 			</cfoutput>
 		</cfsavecontent>
