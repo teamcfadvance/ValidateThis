@@ -32,7 +32,6 @@
 	<cfset UniFormErrors = Result.getFailuresForUniForm() />
 	<cfset SuccessMessage = Result.getSuccessMessage() />
 	<cfset UserTO = Result.getTheObject() />
-	<cfdump var="#Result.getFailures()#">
 <cfelse>
 	<cfset UserTO = UserService.getUser(theId=Form.UserId) />
 </cfif>
