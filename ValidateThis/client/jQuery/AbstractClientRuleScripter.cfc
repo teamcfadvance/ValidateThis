@@ -25,35 +25,77 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn generateAddRule(validation=arguments.validation,locale=arguments.locale) />
+		<cfset var theScript = "if ($(""###arguments.validation.ClientFieldName#"").length) { " />
+
+		<cfset var customMessage = "" />
+		<cfif StructKeyExists(arguments.validation,"failureMessage")>
+			<cfset customMessage = arguments.validation.failureMessage />
+		</cfif>
+
+		<cfset theScript &= generateRuleScript(argumentCollection=arguments,customMessage=customMessage) />
+
+		<cfset theScript &= "}" />
+
+		<cfreturn theScript />
+		
+	</cffunction>
+
+	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="customMessage" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfreturn generateAddRule(argumentCollection=arguments) />
 		
 	</cffunction>
 
 	<cffunction name="generateAddRule" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="ruleDef" type="any" required="no" default="#arguments.validation.ValType#: true" hint="The JS object that describes a rule to add to the DOM object." />
+		<cfargument name="ruleDef" type="any" required="no" default="" hint="Key-value pair that describes a rule to add to the DOM object." />
+		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfset var customMessage = "" />
-		<cfif StructKeyExists(arguments.validation,"failureMessage")>
-			<cfset customMessage = ", messages: {#ListFirst(arguments.ruleDef,':')#: '#JSStringFormat(variables.Translator.translate(arguments.validation.failureMessage,arguments.locale))#'}" />
+		<cfset var paramName = "" />
+		<cfset var paramList = "" />
+
+		<cfif len(arguments.ruleDef) EQ 0>
+			<cfset arguments.ruleDef = lCase(arguments.validation.ValType) & ": " />
+			<cfif structKeyExists(arguments.validation,"Parameters") AND structCount(arguments.validation.Parameters) GT 0>
+				<cfif structCount(arguments.validation.Parameters) EQ 1>
+					<cfset paramName = structKeyArray(arguments.validation.Parameters)[1] />
+					<cfset arguments.ruleDef &= arguments.validation.Parameters[paramName] />
+				<cfelse>
+					<cfset arguments.ruleDef &= "[" />
+					<cfloop collection="#arguments.validation.Parameters#" item="paramName">
+						<cfset paramList = listAppend(paramList,arguments.validation.Parameters[paramName]) />
+					</cfloop>
+					<cfset arguments.ruleDef &= paramList & "]" />
+				</cfif>
+			<cfelse>
+				<cfset arguments.ruleDef &= "true" />
+			</cfif>
 		</cfif>
-		<cfreturn "$(""###arguments.validation.ClientFieldName#"").rules('add',{#arguments.ruleDef##customMessage#});" />
+
+		<cfif len(arguments.customMessage) GT 0>
+			<cfset arguments.customMessage = ", messages: {#ListFirst(arguments.ruleDef,':')#: '#JSStringFormat(variables.Translator.translate(arguments.customMessage,arguments.locale))#'}" />
+		</cfif>
+
+		<cfreturn "$(""###arguments.validation.ClientFieldName#"").rules('add',{#arguments.ruleDef##arguments.customMessage#});" />
 		
 	</cffunction>
 
 	<cffunction name="generateAddMethod" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="theCondition" type="any" required="yes" hint="The conditon to test." />
-		<cfargument name="theMessage" type="any" required="no" default="" hint="A custom message to display on failure." />
+		<cfargument name="customMessage" type="any" required="no" default="" hint="A custom message to display on failure." />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
 		<cfset var fieldName = arguments.validation.ClientFieldName />
 		<cfset var valType = arguments.validation.ValType />
 		<cfset var messageScript = "" />
-		<cfif Len(arguments.theMessage)>
-			<cfset messageScript = ', "' & variables.Translator.translate(arguments.theMessage,arguments.locale) & '"' />
+		<cfif Len(arguments.customMessage) GT 0>
+			<cfset messageScript = ', "' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
 		</cfif>
 
 		<cfsavecontent variable="theScript">

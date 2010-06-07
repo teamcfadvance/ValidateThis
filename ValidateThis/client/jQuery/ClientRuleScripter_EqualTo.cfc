@@ -15,12 +15,16 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_EqualTo" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the equalTo validation.">
 
-	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
+	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn generateAddMethod(arguments.validation,"'###arguments.validation.Parameters.ComparePropertyName#'","The #arguments.validation.PropertyDesc# must be the same as the #arguments.validation.Parameters.ComparePropertyDesc#.",arguments.locale) />
-		
+		<cfif len(arguments.customMessage) EQ 0>
+			<cfset arguments.customMessage = "The #arguments.validation.PropertyDesc# must be the same as the #arguments.validation.Parameters.ComparePropertyDesc#." />
+		</cfif>
+		<cfreturn generateAddMethod(arguments.validation,"'###arguments.validation.Parameters.ComparePropertyName#'",arguments.customMessage,arguments.locale) />
+
 	</cffunction>
 
 </cfcomponent>

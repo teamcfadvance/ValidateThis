@@ -13,8 +13,14 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ClientRuleScripter_MaxLength" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the maxlength validation.">
+<cfcomponent output="false">
 
+	<cfsetting requesttimeout="200" />
+	<cfset this.name = "ValidateThisTestFixture" />
+	<cfset this.applicationtimeout = "#CreateTimeSpan(10,0,0,0)#" />
+	<cfset this.clientmanagement = false />
+	<cfset this.sessionmanagement = true />
+	<cfset this.setclientcookies = true />
+	<cfset this.sessiontimeout = CreateTimeSpan( 0, 0, 20, 0 ) />
+	
 </cfcomponent>
-
-

@@ -15,14 +15,6 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_MinLength" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the minlength validation.">
 
-	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="locale" type="Any" required="no" default="" />
-
-		<cfreturn generateAddRule(arguments.validation,"minlength: #arguments.validation.Parameters.minlength#",arguments.locale) />
-		
-	</cffunction>
-
 </cfcomponent>
 
 

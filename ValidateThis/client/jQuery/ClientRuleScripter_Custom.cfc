@@ -15,16 +15,17 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_Custom" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the custom validation.">
 
-	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
+	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfif StructKeyExists(arguments.validation.Parameters,"remoteURL")>
-			<cfreturn generateAddRule(arguments.validation,"remote: '#arguments.validation.Parameters.remoteURL#'",arguments.locale) />
+			<cfreturn generateAddRule(arguments.validation,"remote: '#arguments.validation.Parameters.remoteURL#'",arguments.customMessage,arguments.locale) />
 		<cfelse>
 			<cfreturn "" />
 		</cfif>
-		
+
 	</cffunction>
 
 </cfcomponent>

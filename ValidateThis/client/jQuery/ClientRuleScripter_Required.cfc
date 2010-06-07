@@ -15,13 +15,13 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_Required" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the required validation.">
 
-	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
+	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theCondition = "" />
 		<cfset var ConditionDesc = "" />
-		<cfset var theMessage = "" />
 		<cfset var theScript = "" />
 		<cfset var DependentFieldName = "" />
 
@@ -42,24 +42,23 @@
 				<cfset theCondition = "function(element) { return $(""[name='#DependentFieldName#']"").getValue().length > 0; }" />
 			</cfif>
 		</cfif>
+
 		<cfif Len(theCondition)>
-			<cfif StructKeyExists(arguments.validation,"failureMessage")>
-				<cfset theMessage = arguments.validation.failureMessage />
-			<cfelseif StructKeyExists(arguments.validation.Parameters,"DependentPropertyDesc")>
+			<cfif len(arguments.customMessage) EQ 0 AND StructKeyExists(arguments.validation.Parameters,"DependentPropertyDesc")>
 				<cfif StructKeyExists(arguments.validation.Parameters,"DependentPropertyValue")>
 					<cfset ConditionDesc = " based on what you entered for the " & arguments.validation.Parameters.DependentPropertyDesc />
 				<cfelse>
 					<cfset ConditionDesc = " if you specify a value for the " & arguments.validation.Parameters.DependentPropertyDesc />
 				</cfif>
-				<cfset theMessage = "The #arguments.validation.PropertyDesc# is required#ConditionDesc#." />
+				<cfset arguments.customMessage = "The #arguments.validation.PropertyDesc# is required#ConditionDesc#." />
 			</cfif>
-			<cfset theScript = generateAddMethod(arguments.validation,theCondition,theMessage,arguments.locale) />
+			<cfset theScript = generateAddMethod(arguments.validation,theCondition,arguments.customMessage,arguments.locale) />
 		<cfelse>
-			<cfset theScript = generateAddRule(validation=arguments.validation,locale=arguments.locale) />
+			<cfset theScript = generateAddRule(argumentCollection=arguments) />
 		</cfif>
 
 		<cfreturn theScript />
-		
+
 	</cffunction>
 
 </cfcomponent>

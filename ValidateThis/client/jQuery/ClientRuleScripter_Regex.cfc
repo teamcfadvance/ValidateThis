@@ -15,27 +15,25 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_Regex" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the regex validation.">
 
-	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
+	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theRegex = "" />
-		<cfset var theMessage = "" />
 
 		<cfif StructKeyExists(arguments.validation.Parameters,"ServerRegex")>
 			<cfset theRegex = arguments.validation.Parameters.ServerRegex />
 		<cfelseif StructKeyExists(arguments.validation.Parameters,"Regex")>
 			<cfset theRegex = arguments.validation.Parameters.Regex />
 		</cfif>
-		
-		<cfif StructKeyExists(arguments.validation,"failureMessage")>
-			<cfset theMessage = arguments.validation.failureMessage />
-		<cfelse>
-			<cfset theMessage = "The #arguments.validation.PropertyDesc# does not match the specified pattern." />
+
+		<cfif len(arguments.customMessage) EQ 0>
+			<cfset arguments.customMessage = "The #arguments.validation.PropertyDesc# does not match the specified pattern." />
 		</cfif>
-		
-		<cfreturn generateAddMethod(arguments.validation,"/#theRegex#/",theMessage,arguments.locale) />
-		
+
+		<cfreturn generateAddMethod(arguments.validation,"/#theRegex#/",arguments.customMessage,arguments.locale) />
+
 	</cffunction>
 
 </cfcomponent>

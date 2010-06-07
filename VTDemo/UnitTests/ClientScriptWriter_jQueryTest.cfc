@@ -48,14 +48,14 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	
 	<cffunction name="generateScriptHeaderShouldReturnCorrectScript" access="public" returntype="void">
 		<cfscript>
-			Script = ScriptWriter.generateScriptHeader("");
+			script = ScriptWriter.generateScriptHeader("");
 			assertTrue(Trim(Script) CONTAINS "$(document).ready(function() {");
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="generateScriptFooterShouldReturnCorrectScript" access="public" returntype="void">
 		<cfscript>
-			Script = ScriptWriter.generateScriptFooter();
+			script = ScriptWriter.generateScriptFooter();
 			assertEquals(Trim(Script),"});</script>");
 		</cfscript>  
 	</cffunction>
@@ -69,12 +69,12 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = StructNew(); 
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { }",script);
 			valStruct.Parameters = {remoteURL="aURL"}; 
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{remote: 'aURL'});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##FirstName"").rules('add',{remote: 'aURL'});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -86,8 +86,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = StructNew(); 
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{date: true});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##firstname"").rules('add',{date: true});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -99,8 +99,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = StructNew(); 
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{email: true});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##firstname"").rules('add',{email: true});}",Script);
 		</cfscript>  
 	</cffunction>
 
@@ -112,8 +112,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = StructNew(); 
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{digits: true});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##FirstName"").rules('add',{digits: true});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -125,8 +125,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = StructNew(); 
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{number: true});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##FirstName"").rules('add',{number: true});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -138,8 +138,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = StructNew(); 
 			valStruct.Condition = StructNew();
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{required: true});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##FirstName"").rules('add',{required: true});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -151,7 +151,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = {DependentPropertyName="LastName"}; 
 			valStruct.Condition = StructNew();
-			Script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertTrue(Script CONTAINS "if ($(""##firstname"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addmethod(""firstnamerequired"", $.validator.methods.required);");
 			assertTrue(Script CONTAINS "$.validator.addclassrules(""firstnamerequired"", {firstnamerequired: function(element) { return $(""[name='lastname']"").getvalue().length > 0; }});");
 			assertTrue(Script CONTAINS "$(""##firstname"").addclass('firstnamerequired');");
@@ -166,8 +167,9 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = {DependentPropertyName="LastName",DependentPropertyValue="Silverberg"}; 
 			valStruct.Condition = StructNew();
-			Script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct);
 			//assertEquals(Script,"$(""##FirstName"").rules('add',{required: true});");
+			assertTrue(Script CONTAINS "if ($(""##firstname"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addmethod(""firstnamerequired"", $.validator.methods.required);");
 			assertTrue(Script CONTAINS "$.validator.addclassrules(""firstnamerequired"", {firstnamerequired: function(element) { return $(""[name='lastname']"").getvalue() == 'silverberg'; }});");
 			assertTrue(Script CONTAINS "$(""##firstname"").addclass('firstnamerequired');");
@@ -182,7 +184,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = {DependentPropertyName="LastName",DependentFieldName="User[LastName]"}; 
 			valStruct.Condition = StructNew();
-			Script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertTrue(Script CONTAINS "if ($(""##firstname"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addmethod(""firstnamerequired"", $.validator.methods.required);");
 			assertTrue(Script CONTAINS "$.validator.addclassrules(""firstnamerequired"", {firstnamerequired: function(element) { return $(""[name='User[LastName]']"").getvalue().length > 0; }});");
 			assertTrue(Script CONTAINS "$(""##firstname"").addclass('firstnamerequired');");
@@ -199,8 +202,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.Parameters = StructNew();
 			valStruct.Parameters.minlength = theLength;
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{minlength: 5});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##FirstName"").rules('add',{minlength: 5});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -214,8 +217,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.Parameters = StructNew();
 			valStruct.Parameters.maxlength = theLength;
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{maxlength: 5});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##FirstName"").rules('add',{maxlength: 5});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -231,8 +234,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.Parameters.minlength = minLength;
 			valStruct.Parameters.maxlength = maxLength;
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{rangelength: [5,10]});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##FirstName"").rules('add',{rangelength: [5,10]});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -246,8 +249,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.Parameters = StructNew();
 			valStruct.Parameters.min = theVal;
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{min: 5});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##FirstName"").rules('add',{min: 5});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -261,8 +264,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.Parameters = StructNew();
 			valStruct.Parameters.max = theVal;
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{max: 5});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##firstname"").rules('add',{max: 5});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -278,8 +281,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.Parameters.min = min;
 			valStruct.Parameters.max = max;
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals(Script,"$(""##FirstName"").rules('add',{range: [5,10]});");
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##FirstName"").rules('add',{range: [5,10]});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -295,7 +298,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.Parameters.ComparePropertyName = ComparePropertyName;
 			valStruct.Parameters.ComparePropertyDesc = ComparePropertyDesc;
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertTrue(Script CONTAINS "if ($(""##firstname"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addMethod(""FirstNameEqualTo"", $.validator.methods.EqualTo, ""The First Name must be the same as the Last Name."");");
 			assertTrue(Script CONTAINS "$.validator.addClassRules(""FirstNameEqualTo"", {FirstNameEqualTo: '##LastName'});");
 			assertTrue(Script CONTAINS "$(""##FirstName"").addClass('FirstNameEqualTo');");
@@ -310,8 +314,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = StructNew(); 
 			valStruct.Condition = StructNew(); 
-			Script = ScriptWriter.generateValidationScript(valStruct);
-			assertEquals("$(""##FirstName"").rules('add',{boolean: true});",Script);
+			script = ScriptWriter.generateValidationScript(valStruct);
+			assertEquals("if ($(""##firstname"").length) { $(""##firstname"").rules('add',{boolean: true});}",Script);
 		</cfscript>  
 	</cffunction>
 

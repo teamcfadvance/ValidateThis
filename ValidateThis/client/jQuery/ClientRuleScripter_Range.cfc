@@ -15,11 +15,12 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_Range" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the range validation.">
 
-	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
+	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfreturn generateAddRule(arguments.validation,"range: [#arguments.validation.Parameters.min#,#arguments.validation.Parameters.max#]",arguments.locale) />
+		<cfreturn generateAddRule(argumentCollection=arguments,ruleDef="range: [#arguments.validation.Parameters.min#,#arguments.validation.Parameters.max#]") />
 		
 	</cffunction>
 
