@@ -57,8 +57,8 @@
 	<cfsavecontent variable="headJS">
 		<script type="text/javascript">
 		// to allow Selenium to detect errors
-		window.onerror=function(msg, url, linenumber){
-			$("#firstName").attr("test","error");
+		window.onerror=function(msg){
+			$("body").attr("JSError",msg);
 		}
 		 	
 		$(document).ready(function() {

@@ -51,36 +51,45 @@
 
 	<cffunction name="generateAddRule" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="ruleDef" type="any" required="no" default="" hint="Key-value pair that describes a rule to add to the DOM object." />
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var paramName = "" />
 		<cfset var paramList = "" />
-
-		<cfif len(arguments.ruleDef) EQ 0>
-			<cfset arguments.ruleDef = lCase(arguments.validation.ValType) & ": " />
-			<cfif structKeyExists(arguments.validation,"Parameters") AND structCount(arguments.validation.Parameters) GT 0>
-				<cfif structCount(arguments.validation.Parameters) EQ 1>
-					<cfset paramName = structKeyArray(arguments.validation.Parameters)[1] />
-					<cfset arguments.ruleDef &= arguments.validation.Parameters[paramName] />
-				<cfelse>
-					<cfset arguments.ruleDef &= "[" />
-					<cfloop collection="#arguments.validation.Parameters#" item="paramName">
-						<cfset paramList = listAppend(paramList,arguments.validation.Parameters[paramName]) />
-					</cfloop>
-					<cfset arguments.ruleDef &= paramList & "]" />
-				</cfif>
-			<cfelse>
-				<cfset arguments.ruleDef &= "true" />
+		<cfset var ruleDef = getRuleDef(arguments.validation) />
+		
+		<cfif len(ruleDef) GT 0>
+			<cfif len(arguments.customMessage) GT 0>
+				<cfset arguments.customMessage = ", messages: {#ListFirst(ruleDef,':')#: '#JSStringFormat(variables.Translator.translate(arguments.customMessage,arguments.locale))#'}" />
 			</cfif>
+			<cfreturn "$(""###arguments.validation.ClientFieldName#"").rules('add',{#ruleDef##arguments.customMessage#});" />
+		</cfif>
+		
+	</cffunction>
+
+	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+
+		<cfset var paramName = "" />
+		<cfset var paramList = "" />
+		<cfset var ruleDef = lCase(arguments.validation.ValType) & ": " />
+
+		<cfif structKeyExists(arguments.validation,"Parameters") AND structCount(arguments.validation.Parameters) GT 0>
+			<cfif structCount(arguments.validation.Parameters) EQ 1>
+				<cfset paramName = structKeyArray(arguments.validation.Parameters)[1] />
+				<cfset ruleDef &= arguments.validation.Parameters[paramName] />
+			<cfelse>
+				<cfset ruleDef &= "[" />
+				<cfloop collection="#arguments.validation.Parameters#" item="paramName">
+					<cfset paramList = listAppend(paramList,arguments.validation.Parameters[paramName]) />
+				</cfloop>
+				<cfset ruleDef &= paramList & "]" />
+			</cfif>
+		<cfelse>
+			<cfset ruleDef &= "true" />
 		</cfif>
 
-		<cfif len(arguments.customMessage) GT 0>
-			<cfset arguments.customMessage = ", messages: {#ListFirst(arguments.ruleDef,':')#: '#JSStringFormat(variables.Translator.translate(arguments.customMessage,arguments.locale))#'}" />
-		</cfif>
-
-		<cfreturn "$(""###arguments.validation.ClientFieldName#"").rules('add',{#arguments.ruleDef##arguments.customMessage#});" />
+		<cfreturn ruleDef />
 		
 	</cffunction>
 
