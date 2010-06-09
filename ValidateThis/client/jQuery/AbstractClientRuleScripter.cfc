@@ -76,7 +76,8 @@
 
 		<cfif structKeyExists(arguments.validation,"Parameters") AND structCount(arguments.validation.Parameters) GT 0>
 			<cfif structCount(arguments.validation.Parameters) EQ 1>
-				<cfset paramName = structKeyArray(arguments.validation.Parameters)[1] />
+				<cfset paramName = structKeyArray(arguments.validation.Parameters) />
+				<cfset paramName = paramName[1] />
 				<cfset ruleDef &= arguments.validation.Parameters[paramName] />
 			<cfelse>
 				<cfset ruleDef &= "[" />

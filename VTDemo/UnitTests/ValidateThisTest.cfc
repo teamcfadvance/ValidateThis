@@ -44,7 +44,7 @@ purpose:		I ValidateThisTest.cfc
 	<cffunction name="getValidatorShouldReturnProperBOWhenXmlRulesFileIsAlongsideCFC" access="public" returntype="void">
 		<cfscript>
 			theObject = createObject("component","Fixture.APlainCFC_Fixture");
-			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
+			BOValidator = ValidateThis.getValidator(theObject=theObject);
 			allContexts = BOValidator.getAllContexts();
 			assertEquals(true,structKeyExists(allContexts,"___Default"));
 			assertEquals("firstName",allContexts.___Default[1].propertyName);
@@ -55,7 +55,7 @@ purpose:		I ValidateThisTest.cfc
 	<cffunction name="getValidatorShouldReturnProperBOWhenXmlCfmRulesFileIsAlongsideCFC" access="public" returntype="void">
 		<cfscript>
 			theObject = createObject("component","Fixture.APlainCFC_Fixture_cfm");
-			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
+			BOValidator = ValidateThis.getValidator(theObject=theObject);
 			allContexts = BOValidator.getAllContexts();
 			assertEquals(true,structKeyExists(allContexts,"___Default"));
 			assertEquals("firstName",allContexts.___Default[1].propertyName);
@@ -68,12 +68,28 @@ purpose:		I ValidateThisTest.cfc
 			VTConfig = 	{definitionPath=getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 			theObject = createObject("component","Fixture.ObjectWithSeparateRulesFile");
-			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
+			BOValidator = ValidateThis.getValidator(theObject=theObject);
 			allContexts = BOValidator.getAllContexts();
 			assertEquals(true,structKeyExists(allContexts,"___Default"));
 			assertEquals("firstName",allContexts.___Default[1].propertyName);
 			assertEquals("lastName",allContexts.___Default[2].propertyName);
 		</cfscript>  
+	</cffunction>
+
+	<cffunction name="newResultShouldReturnBuiltInResultObjectWithDefaultConfig" access="public" returntype="void">
+		<cfscript>
+			result = ValidateThis.newResult();
+			assertEquals("validatethis.util.Result",GetMetadata(result).name);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="newResultShouldReturnCustomResultObjectWhenspecifiedViaConfig" access="public" returntype="void">
+		<cfscript>
+			vtConfig = {ResultPath="UnitTests.Fixture.APlainCFC_Fixture"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(vtConfig);
+			result = ValidateThis.newResult();
+			assertEquals("UnitTests.Fixture.APlainCFC_Fixture",GetMetadata(result).name);
+		</cfscript>
 	</cffunction>
 
 </cfcomponent>

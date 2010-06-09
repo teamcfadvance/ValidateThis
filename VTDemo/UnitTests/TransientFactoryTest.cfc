@@ -1,10 +1,4 @@
 <!---
-	
-filename:		\VTDemo\UnitTests\TransientFactoryTest.cfc
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I TransientFactoryTest.cfc
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
@@ -19,38 +13,32 @@ purpose:		I TransientFactoryTest.cfc
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 --->
-<cfcomponent displayname="UnitTests.TransientFactoryTest"  extends="UnitTests.BaseTestCase">
+<cfcomponent  extends="UnitTests.BaseTestCase">
 
-	<cfset TransientFactory = "" />
-	<cfset Transfer = "" />
-	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset setBeanFactory()>
-		<cfset TransientFactory = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory") />
-		<cfset Transfer = getBeanFactory().getBean("Transfer") />
-	</cffunction>
-
-	<cffunction name="tearDown" access="public" returntype="void">
-	 <!--- Place tearDown/clean up code here --->
-	</cffunction>
-
-<!--- Begin Specific Test Cases --->
-	
-	<cffunction name="newResultReturnsResult" access="public" returntype="void">
 		<cfscript>
-		Result = variables.TransientFactory.newResult();
-		assertTrue(GetMetadata(Result).name eq "validatethis.util.Result");
+			translator = mock();
+			transientFactory = createObject("component","ValidateThis.util.TransientFactoryNoCS").init(translator,"ValidateThis.util.Result");
 		</cfscript>
 	</cffunction>
 
-	
-<!--- End Specific Test Cases --->
+	<cffunction name="tearDown" access="public" returntype="void">
+	</cffunction>
+
+	<cffunction name="newResultShouldReturnBuiltInResultObject" access="public" returntype="void">
+		<cfscript>
+			result = variables.transientFactory.newResult();
+			assertEquals("validatethis.util.Result",GetMetadata(result).name);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="newResultShouldReturnCustomResultObjectWhenOverrideInPlace" access="public" returntype="void">
+		<cfscript>
+			transientFactory = createObject("component","ValidateThis.util.TransientFactoryNoCS").init(translator,"UnitTests.Fixture.APlainCFC_Fixture");
+			result = variables.transientFactory.newResult();
+			assertEquals("UnitTests.Fixture.APlainCFC_Fixture",GetMetadata(result).name);
+		</cfscript>
+	</cffunction>
 
 </cfcomponent>

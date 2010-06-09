@@ -22,8 +22,9 @@
 
 	<cffunction name="init" access="public" output="false" returntype="any" hint="returns a configured transient factory">
 		<cfargument name="Translator" type="any" required="yes" />
+		<cfargument name="pathToResultObject" type="any" required="yes" />
 		<cfset variables.Translator = arguments.Translator />
-		<cfset variables.classes = {Result="ValidateThis.util.Result",Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.ResourceBundle"} />
+		<cfset variables.classes = {Result=arguments.pathToResultObject,Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.ResourceBundle"} />
 		<cfset variables.afterCreateMethod = "setup" />
 		<cfreturn this />
 	</cffunction>

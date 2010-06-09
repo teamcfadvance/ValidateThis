@@ -31,13 +31,25 @@
 			ValidateThisConfig.defaultLocale="en_US";
 			ValidateThisConfig.abstractGetterMethod="";
 			ValidateThisConfig.ExtraRuleValidatorComponentPaths="";
-			ValidationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			ValidateThisConfig.ResultPath="ValidateThis.util.Result";
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="noTestsDefinedYet" access="public" returntype="void">
+	<cffunction name="newResultShouldReturnBuiltInResultObjectWithDefaultConfig" access="public" returntype="void">
 		<cfscript>
-		</cfscript>  
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			result = validationFactory.newResult();
+			assertEquals("validatethis.util.Result",GetMetadata(result).name);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="newResultShouldReturnCustomResultObjectWhenspecifiedViaConfig" access="public" returntype="void">
+		<cfscript>
+			ValidateThisConfig.ResultPath="UnitTests.Fixture.APlainCFC_Fixture";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			result = validationFactory.newResult();
+			assertEquals("UnitTests.Fixture.APlainCFC_Fixture",GetMetadata(result).name);
+		</cfscript>
 	</cffunction>
 
 </cfcomponent>
