@@ -44,13 +44,18 @@
 	
 	</cffunction>
 	
-	<cffunction name="addFailure" access="public" output="false" returntype="void">
-		<cfargument name="Failure" type="any" required="yes" />
-		<cfset ArrayAppend(variables.instance.Failures,arguments.Failure) />
+	<cffunction name="addFailure" access="public" output="false" returntype="void" hint="adds a Failure to the collection of failures in the object.">
+		<cfargument name="Failure" type="struct" required="yes" hint="a struct with keys describing the failure. It must contain a Message key" />
+		<cfif structKeyExists(arguments.Failure,"Message")>
+			<cfset ArrayAppend(variables.instance.Failures,arguments.Failure) />
+		<cfelse>
+			<cfthrow type="validatethis.util.Result.invalidFailureStruct"
+					message="The struct passed into the addFailure() method must contain a 'Message' key." />
+		</cfif>
 	</cffunction>
 
-	<cffunction name="getFailures" access="public" output="false" returntype="any">
-		<cfargument name="locale" type="Any" required="false" default="" />
+	<cffunction name="getFailures" access="public" output="false" returntype="any" hint="returns all failures as an array of structs">
+		<cfargument name="locale" type="Any" required="false" default="" hint="the locale to use to translate the failure messages" />
 		
 		<cfset var failure = 0 />
 		
@@ -61,23 +66,6 @@
 			</cfloop>
 		</cfif>
 		<cfreturn variables.instance.Failures />
-	</cffunction>
-
-	<cffunction name="getFailuresAsStruct" access="public" output="false" returntype="any">
-		<cfargument name="locale" type="Any" required="false" default="" />
-		<cfset var FailureList = StructNew() />
-		<cfset var Failure = 0 />
-		<cfset var Failures = getFailures(arguments.locale) />
-		<cfloop from="1" to="#ArrayLen(Failures)#" index="Failure">
-			<cfif StructKeyExists(Failures[Failure],"ClientFieldName")>
-				<cfif StructKeyExists(FailureList,Failures[Failure].ClientFieldName)>
-					<cfset FailureList[Failures[Failure].ClientFieldName] =  FailureList[Failures[Failure].ClientFieldName] & "<br />" & Failures[Failure].Message />	
-				<cfelse>			
-					<cfset FailureList[Failures[Failure].ClientFieldName] =  Failures[Failure].Message />	
-				</cfif>
-			</cfif>
-		</cfloop>
-		<cfreturn FailureList />
 	</cffunction>
 
 	<cffunction name="getFailureMessages" access="public" output="false" returntype="array" hint="I return all failure messages as an array of strings.">
@@ -92,22 +80,99 @@
 		<cfreturn FailureList />
 	</cffunction>
 
-	<cffunction name="getFailuresForUniForm" access="public" output="false" returntype="any">
+	<cffunction name="getFailuresAsString" access="public" output="false" returntype="any" hint="I return the errors as a string separated with a specified delimiter.">
+		<!--- Based on code by Craig McDonald --->
+		<cfargument name="delim" type="string" required="false" default="<br />" hint="The delimiter to use to separate messages" />
 		<cfargument name="locale" type="Any" required="false" default="" />
-		<cfreturn getFailuresAsStruct(arguments.locale) />
+	
+		<cfset var failureList = "" />
+		<cfset var failure = 0 />
+		<cfset var failureCount = 0 />
+		<cfloop array="#getFailures(arguments.locale)#" index="failure">
+			<cfif Len(failure.Message)>
+				<cfif failureCount GT 0>
+					<cfset failureList &= arguments.delim />
+				</cfif>
+				<cfset failureList &= failure.Message />
+				<cfset failureCount ++ />
+			</cfif>
+		</cfloop>
+		<cfreturn failureList />
+	</cffunction>
+	
+	<cffunction name="getFailuresByField" access="public" output="false" returntype="struct" hint="Returns a structure containing an array of failures for each clientFieldName.">
+		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per field" />
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfreturn getFailuresByFieldOrProperty("ClientFieldName",false,arguments.limit,arguments.locale) />
 	</cffunction>
 
-	<!--- An example of a custom method that returns failures in a format expected by an existing application --->
-	<cffunction name="getFailuresForCAYA" access="public" output="false" returntype="any">
+	<cffunction name="getFailureMessagesByField" access="public" output="false" returntype="struct" hint="Returns a structure containing a list of failure messages for each clientFieldName.">
+		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of messages to return per field" />
+		<cfargument name="delimiter" type="string" required="false" default="" hint="A delimeter to use to separate messages per field. Blank creates an array instead of a string." />
 		<cfargument name="locale" type="Any" required="false" default="" />
-		<cfset var FailureList = [] />
-		<cfset var Failure = 0 />
-		<cfloop array="#getFailures(arguments.locale)#" index="Failure">
-			<cfif Len(Failure.Message)>
-				<cfset ArrayAppend(FailureList,Failure.Message) />
+		<cfreturn getFailuresByFieldOrProperty("ClientFieldName",true,arguments.limit,arguments.delimiter,arguments.locale) />
+	</cffunction>
+
+	<cffunction name="getFailuresByProperty" access="public" output="false" returntype="struct" hint="Returns a structure containing an array of failures for each propertyName.">
+		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per property" />
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfreturn getFailuresByFieldOrProperty("PropertyName",false,arguments.limit,arguments.locale) />
+	</cffunction>
+
+	<cffunction name="getFailureMessagesByProperty" access="public" output="false" returntype="struct" hint="Returns a structure containing a list of failure messages for each propertyName.">
+		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of messages to return per property" />
+		<cfargument name="delimiter" type="string" required="false" default="" hint="A delimeter to use to separate messages per property. Blank creates an array instead of a string." />
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfreturn getFailuresByFieldOrProperty("PropertyName",true,arguments.limit,arguments.delimiter,arguments.locale) />
+	</cffunction>
+
+	<cffunction name="getFailuresByFieldOrProperty" access="private" output="false" returntype="struct" hint="Returns a structure containing an array of failures for each propertyName.">
+		<cfargument name="keyType" type="Any" required="true" hint="Should be either ClientFieldName or PropertyName" />
+		<cfargument name="messageOnly" type="boolean" required="true" hint="Should only the failure messages be returned, or the complete failure struct?" />
+		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per field or property" />
+		<cfargument name="delimiter" type="string" required="false" default="" hint="A delimeter to use to separate messages per property. Blank creates an array instead of a string." />
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfset var failureList = StructNew() />
+		<cfset var failure = 0 />
+		<cfset var failureToAdd = 0 />
+		<cfset var failureCount = {} />
+		<cfset var keyName = 0 />
+		<cfset var failures = getFailures(arguments.locale) />
+		<cfloop from="1" to="#ArrayLen(Failures)#" index="Failure">
+			<cfif StructKeyExists(failures[failure],arguments.keyType)>
+				<cfset keyName = failures[failure][arguments.keyType] />
+				<cfif NOT StructKeyExists(failureList,keyName)>
+					<cfset failureCount[keyName] = 0 />
+					<cfif len(arguments.delimiter) EQ 0>
+						<cfset failureList[keyName] =  ArrayNew(1) />
+					<cfelse>
+						<cfset failureList[keyName] =  "" />
+					</cfif>
+				</cfif>
+				<cfif val(arguments.limit) EQ 0 OR failureCount[keyName] LT val(arguments.limit)> 
+					<cfif arguments.messageOnly>
+						<cfset failureToAdd = failures[failure].Message />
+					<cfelse>
+						<cfset failureToAdd = failures[failure] />
+					</cfif>
+					<cfif len(arguments.delimiter) EQ 0>
+						<cfset ArrayAppend(failureList[keyName], failureToAdd) />	
+					<cfelse>
+						<cfif failureCount[keyName] GT 0>
+							<cfset failureList[keyName] &= arguments.delimiter />
+						</cfif>
+						<cfset failureList[keyName] &= failureToAdd />
+					</cfif>
+					<cfset failureCount[keyName] ++ />
+				</cfif>
 			</cfif>
 		</cfloop>
 		<cfreturn FailureList />
+	</cffunction>
+
+	<cffunction name="getFailuresForUniForm" access="public" output="false" returntype="any" hint="Returns a structure of failures in a format the cfUniform likes">
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfreturn getFailuresAsStruct(arguments.locale) />
 	</cffunction>
 
 	<!--- These methods implement the interface for ModelGlue.util.ValidationErrorCollection --->
@@ -171,16 +236,31 @@
 
 	</cffunction>
 
-	<cffunction name="getFailuresAsString" access="public" output="false" returntype="any" hint="I return the errors as a string separated with a specified delimiter.">
-		<!--- Based on code by Craig McDonald --->
-		<cfargument name="delim" type="string" required="false" default="<br/>" />
+	<!--- An example of a custom method that returns failures in a format expected by an existing application --->
+	<cffunction name="getFailuresForCAYA" access="public" output="false" returntype="any">
 		<cfargument name="locale" type="Any" required="false" default="" />
-	
-		<cfset var FailureList = "" />
+		<cfset var FailureList = [] />
 		<cfset var Failure = 0 />
 		<cfloop array="#getFailures(arguments.locale)#" index="Failure">
 			<cfif Len(Failure.Message)>
-				<cfset FailureList = FailureList & arguments.delim & Failure.Message />
+				<cfset ArrayAppend(FailureList,Failure.Message) />
+			</cfif>
+		</cfloop>
+		<cfreturn FailureList />
+	</cffunction>
+
+	<cffunction name="getFailuresAsStruct" access="public" output="false" returntype="any" hint="Deprecated. Use getFailuresByProperty() or getFailuresByField().">
+		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfset var FailureList = StructNew() />
+		<cfset var Failure = 0 />
+		<cfset var Failures = getFailures(arguments.locale) />
+		<cfloop from="1" to="#ArrayLen(Failures)#" index="Failure">
+			<cfif StructKeyExists(Failures[Failure],"ClientFieldName")>
+				<cfif StructKeyExists(FailureList,Failures[Failure].ClientFieldName)>
+					<cfset FailureList[Failures[Failure].ClientFieldName] =  FailureList[Failures[Failure].ClientFieldName] & "<br />" & Failures[Failure].Message />	
+				<cfelse>			
+					<cfset FailureList[Failures[Failure].ClientFieldName] =  Failures[Failure].Message />	
+				</cfif>
 			</cfif>
 		</cfloop>
 		<cfreturn FailureList />

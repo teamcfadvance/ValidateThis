@@ -1,10 +1,4 @@
 <!---
-	
-filename:		\VTDemo\UnitTests\ResultTest.cfc
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I ResultTest.cfc
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
@@ -19,14 +13,8 @@ purpose:		I ResultTest.cfc
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 --->
-<cfcomponent displayname="UnitTests.ResultTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	
 	<cfset Result = "" />
 	
@@ -34,66 +22,249 @@ purpose:		I ResultTest.cfc
 		<cfscript>
 			MockTranslator = mock();
 			MockTranslator.translate("{string}","{string}").returns("Translated Text");
-			variables.Result = CreateObject("component","ValidateThis.util.Result").init(MockTranslator);
-			//variables.Result.setTranslator(MockTranslator);
+			result = CreateObject("component","ValidateThis.util.Result").init(MockTranslator);
+			//result.setTranslator(MockTranslator);
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
-	<cffunction name="newResultLooksRight" access="public" returntype="void">
+	<cffunction name="newResultShouldContainDefaultPropertyValues" access="public" returntype="void">
 		<cfscript>
-			assertEquals(variables.Result.getIsSuccess(),true);
-			assertEquals(ArrayLen(variables.Result.getFailures()),0);
-			assertEquals(variables.Result.getDummyValue(),"");
+			assertEquals(result.getIsSuccess(),true);
+			assertEquals(ArrayLen(result.getFailures()),0);
+			assertEquals(result.getDummyValue(),"");
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="setGetMissingPropertyWorks" access="public" returntype="void">
+	<cffunction name="missingPropertyHandlersShouldBeAbleToSetAndGetArbitraryProperties" access="public" returntype="void">
 		<cfscript>
 			DummyValue = "Dummy Value";
-			variables.Result.setDummyValue(DummyValue);
-			assertEquals(variables.Result.getDummyValue(),DummyValue);
+			result.setDummyValue(DummyValue);
+			assertEquals(result.getDummyValue(),DummyValue);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="addFailureAddsAFailure" access="public" returntype="void">
+	<cffunction name="addFailureWithValidStructShouldAddAFailure" access="public" returntype="void">
 		<cfscript>
-			Failure = StructNew();
-			Failure.Code = 999;
-			variables.Result.addFailure(Failure);
-			variables.Result.setIsSuccess(false);
-			assertEquals(variables.Result.getIsSuccess(),false);
-			Failures = variables.Result.getFailures();
-			assertEquals(ArrayLen(Failures),1);
-			assertEquals(Failures[1].Code,999);
+			failure = StructNew();
+			failure.Code = 999;
+			failure.Message = "abc";
+			result.addFailure(failure);
+			result.setIsSuccess(false);
+			assertEquals(result.getIsSuccess(),false);
+			failures = result.getFailures();
+			assertEquals(ArrayLen(failures),1);
+			assertEquals(failures[1].Code,999);
+			assertEquals(failures[1].Message,"abc");
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="getFailuresReturnsTranslatedResult" access="public" returntype="void">
+	<cffunction name="addFailureMissingMessageKeyShouldThrowAnException" access="public" returntype="void"
+	mxunit:expectedException="ValidateThis.util.Result.invalidFailureStruct">
 		<cfscript>
-			Failure = StructNew();
-			Failure.Message = "Any Message";
-			variables.Result.addFailure(Failure);
-			Failures = variables.Result.getFailures("any Locale");
-			assertEquals("Translated Text",Failures[1].Message);
+			failure = StructNew();
+			result.addFailure(failure);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresShouldReturnArrayWithFailures" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailures();
+			assertEquals(3,arrayLen(failures));
+			assertEquals("First Message",failures[1].Message);
+			assertEquals("Second Message",failures[2].Message);
+			assertEquals("Third Message",failures[3].Message);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresForLocaleShouldReturnArrayWithTranslatedMessages" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailures("any Locale");
+			assertEquals(3,arrayLen(failures));
+			assertEquals("Translated Text",failures[1].Message);
+			assertEquals("Translated Text",failures[2].Message);
+			assertEquals("Translated Text",failures[3].Message);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="getFailureMessagesShouldReturnArrayOfMessages" access="public" returntype="void">
 		<cfscript>
-			Failure = StructNew();
-			Failure.Message = "First Message";
-			variables.Result.addFailure(Failure);
-			Failure = StructNew();
-			Failure.Message = "Second Message";
-			variables.Result.addFailure(Failure);
-			Failures = variables.Result.getFailureMessages();
-			assertEquals(2,arrayLen(Failures));
-			assertEquals("First Message",Failures[1]);
-			assertEquals("Second Message",Failures[2]);
+			addMultipleFailures();
+			failures = result.getFailureMessages();
+			assertEquals(3,arrayLen(failures));
+			assertEquals("First Message",failures[1]);
+			assertEquals("Second Message",failures[2]);
+			assertEquals("Third Message",failures[3]);
 		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresAsStringShouldReturnListOfMessagesWithABRDelimiter" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailuresAsString();
+			assertEquals("First Message<br />Second Message<br />Third Message",failures);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresAsStringShouldReturnListOfMessagesWithCustomDelimiter" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailuresAsString("|");
+			assertEquals("First Message|Second Message|Third Message",failures);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresByFieldShouldReturnArraysOfFailuresPerClientFieldName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailuresByField();
+			assertEquals(2,structCount(failures));
+			assertEquals("First Message",failures.fieldA[1].message);
+			assertEquals("Second Message",failures.fieldA[2].message);
+			assertEquals("Third Message",failures.fieldB[1].message);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresByPropertyShouldReturnArraysOfFailuresPerPropertyName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailuresByProperty();
+			assertEquals(2,structCount(failures));
+			assertEquals("First Message",failures.propertyA[1].message);
+			assertEquals("Second Message",failures.propertyA[2].message);
+			assertEquals("Third Message",failures.propertyB[1].message);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailureMessagesByFieldShouldReturnArraysOfMessagesPerClientFieldName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailureMessagesByField();
+			assertEquals(2,structCount(failures));
+			assertEquals("First Message",failures.fieldA[1]);
+			assertEquals("Second Message",failures.fieldA[2]);
+			assertEquals("Third Message",failures.fieldB[1]);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailureMessagesByPropertyShouldReturnArraysOfMessagesPerPropertyName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailureMessagesByProperty();
+			assertEquals(2,structCount(failures));
+			assertEquals("First Message",failures.propertyA[1]);
+			assertEquals("Second Message",failures.propertyA[2]);
+			assertEquals("Third Message",failures.propertyB[1]);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailureMessagesByFieldWithDelimeterShouldReturnStringsOfMessagesPerClientFieldName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailureMessagesByField(delimiter="<br />");
+			assertEquals(2,structCount(failures));
+			assertEquals("First Message<br />Second Message",failures.fieldA);
+			assertEquals("Third Message",failures.fieldB);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailureMessagesByPropertyWithDelimeterShouldReturnStringsOfMessagesPerPropertyName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailureMessagesByProperty(delimiter="<br />");
+			assertEquals(2,structCount(failures));
+			assertEquals("First Message<br />Second Message",failures.propertyA);
+			assertEquals("Third Message",failures.propertyB);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresByFieldWithLimitOf1ShouldReturnLimitedArraysOfFailuresPerClientFieldName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			addMultipleFailures();
+			failures = result.getFailuresByField(limit=1);
+			assertEquals(2,structCount(failures));
+			assertEquals(1,arrayLen(failures.fieldA));
+			assertEquals(1,arrayLen(failures.fieldB));
+			assertEquals("First Message",failures.fieldA[1].message);
+			assertEquals("Third Message",failures.fieldB[1].message);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresByFieldWithLimitOf2ShouldReturnLimitedArraysOfFailuresPerClientFieldName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			addMultipleFailures();
+			failures = result.getFailuresByField(limit=2);
+			debug(failures);
+			assertEquals(2,structCount(failures));
+			assertEquals(2,arrayLen(failures.fieldA));
+			assertEquals(2,arrayLen(failures.fieldB));
+			assertEquals("First Message",failures.fieldA[1].message);
+			assertEquals("Second Message",failures.fieldA[2].message);
+			assertEquals("Third Message",failures.fieldB[1].message);
+			assertEquals("Third Message",failures.fieldB[2].message);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailureMessagesByFieldWithLimitOf2ShouldReturnLimitedArraysOfMessagesPerClientFieldName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			addMultipleFailures();
+			failures = result.getFailureMessagesByField(limit=2);
+			assertEquals(2,structCount(failures));
+			assertEquals(2,arrayLen(failures.fieldA));
+			assertEquals(2,arrayLen(failures.fieldB));
+			assertEquals("First Message",failures.fieldA[1]);
+			assertEquals("Second Message",failures.fieldA[2]);
+			assertEquals("Third Message",failures.fieldB[1]);
+			assertEquals("Third Message",failures.fieldB[2]);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailureMessagesByFieldWithLimitOf2AndDelimiterShouldReturnLimitedStringsOfMessagesPerClientFieldName" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			addMultipleFailures();
+			failures = result.getFailureMessagesByField(limit=2,delimiter="<br />");
+			assertEquals(2,structCount(failures));
+			assertEquals("First Message<br />Second Message",failures.fieldA);
+			assertEquals("Third Message<br />Third Message",failures.fieldB);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresAsStructShouldReturnStructWithKeysPerFieldAndBRDelimiters" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailuresAsStruct();
+			assertEquals(2,structCount(failures));
+			assertEquals("First Message<br />Second Message",failures.fieldA);
+			assertEquals("Third Message",failures.fieldB);
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="addMultipleFailures" access="private" returntype="void">
+		<cfscript>
+			failure = StructNew();
+			failure.Message = "First Message";
+			failure.PropertyName = "propertyA";
+			failure.ClientFieldName = "fieldA";
+			result.addFailure(failure);
+			failure = StructNew();
+			failure.Message = "Second Message";
+			failure.PropertyName = "propertyA";
+			failure.ClientFieldName = "fieldA";
+			result.addFailure(failure);
+			failure = StructNew();
+			failure.Message = "Third Message";
+			failure.PropertyName = "propertyB";
+			failure.ClientFieldName = "fieldB";
+			result.addFailure(failure);
+		</cfscript>
 	</cffunction>
 
 
