@@ -17,11 +17,13 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			ValidateThisConfig = getVTConfig();
+			ValidateThisConfig.JSRoot="/JS";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init(mock(),mock());
 			FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(TransientFactory);
-			ValidateThisConfig = {JSRoot="/JS"};
 			Translator = mock();
-			ClientValidator = CreateObject("component","ValidateThis.client.ClientValidator").init(FileSystem,ValidateThisConfig,Translator);
+			ClientValidator = CreateObject("component","ValidateThis.client.ClientValidator").init(validationFactory,ValidateThisConfig,Translator,FileSystem);
 			variables.CSGenerator = CreateObject("component","ValidateThis.client.CommonScriptGenerator").init(ClientValidator);
 			variables.JSLib = "jQuery";
 			variables.ExpectedInJSIncludes = '<script src="/JSjquery-1.3.2.min.js" type="text/javascript">';

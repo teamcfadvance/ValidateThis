@@ -32,6 +32,7 @@
 		<cfparam name="variables.ValidateThisConfig.defaultLocale" default="en_US" />
 		<cfparam name="variables.ValidateThisConfig.abstractGetterMethod" default="" />
 		<cfparam name="variables.ValidateThisConfig.ExtraRuleValidatorComponentPaths" default="" />
+		<cfparam name="variables.ValidateThisConfig.ExtraClientScriptWriterComponentPaths" default="" />
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
@@ -48,7 +49,7 @@
 		<cfif len(arguments.definitionPath) EQ 0 AND isObject(arguments.theObject)>
 			<cfset arguments.definitionPath = getDirectoryFromPath(getMetadata(arguments.theObject).path) />
 		</cfif>
-		<cfreturn variables.ValidationFactory.getValidator(theObjectType,arguments.definitionPath) />
+		<cfreturn variables.ValidationFactory.getValidator(theObjectType,arguments.definitionPath,arguments.theObject) />
 		
 	</cffunction>
 	

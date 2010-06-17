@@ -1,10 +1,4 @@
 <!---
-	
-filename:		\VTDemo\UnitTests\BaseTestCase.cfc
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I BaseTestCase.cfc
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
@@ -18,15 +12,8 @@ purpose:		I BaseTestCase.cfc
 	distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
-	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 --->
-<cfcomponent displayname="UnitTests.BaseTestCase"  extends="mxunit.framework.TestCase">
+<cfcomponent extends="mxunit.framework.TestCase">
 	
 	<cfset variables.beansXML = "">
 	
@@ -81,6 +68,27 @@ purpose:		I BaseTestCase.cfc
 	<cffunction name="getBeanFactory" access="private" output="false" returntype="any">
 		<cfreturn variables.beanFactory>
 	</cffunction>
-	
+
+	<cffunction name="getVTConfig" access="private" returntype="struct">
+		<cfscript>
+			// Deafult values copied from ValidateThis.cfc
+			ValidateThisConfig = {};
+			ValidateThisConfig.TranslatorPath="ValidateThis.core.BaseTranslator";
+			ValidateThisConfig.LocaleLoaderPath="ValidateThis.core.BaseLocaleLoader";
+			ValidateThisConfig.BOValidatorPath="ValidateThis.core.BOValidator";
+			ValidateThisConfig.DefaultJSLib="jQuery";
+			ValidateThisConfig.JSRoot="js/";
+			ValidateThisConfig.defaultFormName="frmMain";
+			ValidateThisConfig.definitionPath="/model/";
+			ValidateThisConfig.localeMap="#StructNew()#";
+			ValidateThisConfig.defaultLocale="en_US";
+			ValidateThisConfig.abstractGetterMethod="";
+			ValidateThisConfig.ExtraRuleValidatorComponentPaths="";
+			ValidateThisConfig.extraClientScriptWriterComponentPaths="";
+			ValidateThisConfig.ResultPath="ValidateThis.util.Result";
+			return ValidateThisConfig;
+		</cfscript>
+	</cffunction>
+
 </cfcomponent>
 

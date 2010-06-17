@@ -18,7 +18,7 @@
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new BOValidator">
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="FileSystem" type="any" required="true" />
-		<cfargument name="XMLFileReader" type="any" required="true" />
+		<cfargument name="externalFileReader" type="any" required="true" />
 		<cfargument name="ServerValidator" type="any" required="true" />
 		<cfargument name="ClientValidator" type="any" required="true" />
 		<cfargument name="TransientFactory" type="any" required="true" />
@@ -26,11 +26,12 @@
 		<cfargument name="definitionPath" type="any" required="true" />
 		<cfargument name="CommonScriptGenerator" type="any" required="true" />
 		<cfargument name="Version" type="any" required="true" />
+		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
 
 		<cfset variables.Instance = {objectType = arguments.objectType} />
 		<cfset variables.Instance.newRules = {} />
 		<cfset variables.FileSystem = arguments.FileSystem />
-		<cfset variables.XMLFileReader = arguments.XMLFileReader />
+		<cfset variables.externalFileReader = arguments.externalFileReader />
 		<cfset variables.ServerValidator = arguments.ServerValidator />
 		<cfset variables.ClientValidator = arguments.ClientValidator />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
@@ -45,11 +46,11 @@
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="processXML" returnType="void" access="private" output="false" hint="I ask the XMLFileReader to read the validations XML file and reformat it into a struct">
+	<cffunction name="processXML" returnType="void" access="private" output="false" hint="I ask the externalFileReader to read the validations XML file and reformat it into a struct">
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 
-		<cfset var theStruct = variables.XMLFileReader.processXML(arguments.objectType,arguments.definitionPath) />
+		<cfset var theStruct = variables.externalFileReader.processXML(arguments.objectType,arguments.definitionPath) />
 
 		<cfset variables.Instance.PropertyDescs = theStruct.PropertyDescs />
 		<cfset variables.Instance.ClientFieldDescs = theStruct.ClientFieldDescs />

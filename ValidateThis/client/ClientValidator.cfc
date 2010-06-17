@@ -16,13 +16,16 @@
 <cfcomponent displayname="ClientValidator" output="false" hint="I generate client side validations from Business Object validations.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientValidator">
-		<cfargument name="FileSystem" type="any" required="true" />
-		<cfargument name="ValidateThisConfig" type="any" required="true" />
-		<cfargument name="Translator" type="any" required="true" />
-		<cfset variables.FileSystem = arguments.FileSystem />
-		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
-		<cfset variables.Translator = arguments.Translator />
-		<cfset variables.ScriptWriters = {} />
+		<cfargument name="validationFactory" type="any" required="true" />
+		<cfargument name="validateThisConfig" type="any" required="true" />
+		<cfargument name="translator" type="any" required="true" />
+		<cfargument name="fileSystem" type="any" required="true" />
+
+		<cfset variables.validationFactory = arguments.validationFactory />
+		<cfset variables.validateThisConfig = arguments.validateThisConfig />
+		<cfset variables.translator = arguments.translator />
+		<cfset variables.fileSystem = arguments.fileSystem />
+		<cfset variables.extraClientScriptWriterComponentPaths = variables.validateThisConfig.extraClientScriptWriterComponentPaths />
 
 		<cfset setScriptWriters() />
 		<cfreturn this />
@@ -70,23 +73,19 @@
 		<cfreturn variables.ScriptWriters />
 	</cffunction>
 	
-	<cffunction name="setScriptWriters" returntype="void" access="public" output="false">
-		<cfset var theMeta = GetMetadata(this) />
-		<cfset var thisName = ListLast(theMeta.Name,".") />
-		<cfset var basePath = GetDirectoryFromPath(theMeta.Path) />
-		<cfset var SWDirs = variables.FileSystem.listDirs(basePath) />
-		<cfset var SWDir = 0 />
-		<cfset var SWNames = 0 />
-		<cfset var SW = 0 />
-		<cfloop list="#SWDirs#" index="SWDir">
-			<cfset SWNames = variables.FileSystem.listFiles(basePath & SWDir) />
-			<cfloop list="#SWNames#" index="SW">
-				<cfif ListLast(SW,".") EQ "cfc" AND SW CONTAINS "ClientScriptWriter_">
-					<cfset variables.ScriptWriters[ReplaceNoCase(ListLast(SW,"_"),".cfc","")] = CreateObject("component",ReplaceNoCase(theMeta.Name,thisName,"") & "." & SWDir & "." & ReplaceNoCase(SW,".cfc","")).init(variables.FileSystem,variables.ValidateThisConfig,variables.Translator) />
-				</cfif>
-			</cfloop>
+	<cffunction name="setScriptWriters" returntype="void" access="private" output="false" hint="I create script writer objects from a list of component paths">
+		
+		<cfset var initArgs = {validationFactory=variables.validationFactory,validateThisConfig=variables.validateThisConfig,translator=variables.translator} />
+		<cfset var swDirs = variables.fileSystem.listDirs(GetDirectoryFromPath(getCurrentTemplatePath())) />
+		<cfset var swDir = 0 />
+		<cfset var swPaths = "" />
+		<cfloop list="#swDirs#" index="swDir">
+			<cfset swPaths = listAppend(swPaths,"ValidateThis.client." & swDir) />
 		</cfloop>
+		<cfset variables.ScriptWriters = variables.validationFactory.loadChildObjects(swPaths & "," & variables.extraClientScriptWriterComponentPaths,"ClientScriptWriter_",structNew(),initArgs) />
+
 	</cffunction>
+	
 	<cffunction name="getScriptWriter" access="public" output="false" returntype="any">
 		<cfargument name="JSLib" type="any" required="true" />
 		<cfreturn variables.ScriptWriters[arguments.JSLib] />

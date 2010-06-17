@@ -18,26 +18,67 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			// Deafult values copied from ValidateThis.cfc
-			ValidateThisConfig = {};
-			ValidateThisConfig.TranslatorPath="ValidateThis.core.BaseTranslator";
-			ValidateThisConfig.LocaleLoaderPath="ValidateThis.core.BaseLocaleLoader";
-			ValidateThisConfig.BOValidatorPath="ValidateThis.core.BOValidator";
-			ValidateThisConfig.DefaultJSLib="jQuery";
-			ValidateThisConfig.JSRoot="js/";
-			ValidateThisConfig.defaultFormName="frmMain";
-			ValidateThisConfig.definitionPath="/model/";
-			ValidateThisConfig.localeMap="#StructNew()#";
-			ValidateThisConfig.defaultLocale="en_US";
-			ValidateThisConfig.abstractGetterMethod="";
-			ValidateThisConfig.ExtraRuleValidatorComponentPaths="";
-			ValidateThisConfig.ResultPath="ValidateThis.util.Result";
+			ValidateThisConfig = getVTConfig();
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 		</cfscript>
 	</cffunction>
 	
+	<cffunction name="loadChildObjectsShouldReturnCollectionOfBuiltInServerRuleValidators" access="public" returntype="void">
+		<cfscript>
+			initargs={objectChecker=mock()};
+			SRVs = validationFactory.loadChildObjects("ValidateThis.server","ServerRuleValidator_",StructNew(),initargs);
+			assertEquals(true,structKeyExists(SRVs,"Boolean"));
+			assertEquals("ValidateThis.server.serverrulevalidator_boolean",GetMetadata(SRVs.Boolean).name);
+			assertTrue(StructKeyExists(SRVs.Boolean,"validate"));
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="loadChildObjectsShouldReturnCollectionOfServerRuleValidatorsFromTwoPaths" access="public" returntype="void">
+		<cfscript>
+			initargs={objectChecker=mock()};
+			SRVs = validationFactory.loadChildObjects("ValidateThis.server,VTDemo.UnitTests.Fixture.ServerRuleValidators","ServerRuleValidator_",StructNew(),initargs);
+			assertEquals(true,structKeyExists(SRVs,"Boolean"));
+			assertEquals("ValidateThis.server.serverrulevalidator_boolean",GetMetadata(SRVs.Boolean).name);
+			assertTrue(StructKeyExists(SRVs.Boolean,"validate"));
+			assertEquals(true,structKeyExists(SRVs,"Extra"));
+			assertEquals("vtdemo.unittests.fixture.serverrulevalidators.serverrulevalidator_extra",GetMetadata(SRVs.Extra).name);
+			assertTrue(StructKeyExists(SRVs.Extra,"validate"));
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="loadChildObjectsShouldReturnCollectionOfServerRuleValidatorsWithOverrides" access="public" returntype="void">
+		<cfscript>
+			initargs={objectChecker=mock()};
+			SRVs = validationFactory.loadChildObjects("ValidateThis.server,VTDemo.UnitTests.Fixture.OverrideServerRuleValidators","ServerRuleValidator_",StructNew(),initargs);
+			assertEquals(true,structKeyExists(SRVs,"Boolean"));
+			assertEquals("ValidateThis.server.serverrulevalidator_boolean",GetMetadata(SRVs.Boolean).name);
+			assertTrue(StructKeyExists(SRVs.Boolean,"validate"));
+			assertEquals(true,structKeyExists(SRVs,"Custom"));
+			assertEquals(true,structKeyExists(SRVs,"Extra"));
+			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_custom",GetMetadata(SRVs.Custom).name);
+			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_extra",GetMetadata(SRVs.Extra).name);
+			assertTrue(StructKeyExists(SRVs.Custom,"validate"));
+			assertTrue(StructKeyExists(SRVs.Extra,"validate"));
+		</cfscript>
+	</cffunction>
+
+	<!---
+
+	<cffunction name="OverrideRuleValidatorsShouldBeLoaded" access="public" returntype="void">
+		<cfscript>
+			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(FileSystem,TransientFactory,ObjectChecker,"VTDemo.UnitTests.Fixture.OverrideServerRuleValidators");
+			RuleValidators = ServerValidator.getRuleValidators();
+			assertEquals(true,structKeyExists(RuleValidators,"Custom"));
+			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
+			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_custom",GetMetadata(RuleValidators.Custom).name);
+			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
+			assertTrue(StructKeyExists(RuleValidators.Custom,"validate"));
+		</cfscript>  
+	</cffunction>
+	--->
+	
 	<cffunction name="newResultShouldReturnBuiltInResultObjectWithDefaultConfig" access="public" returntype="void">
 		<cfscript>
-			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			result = validationFactory.newResult();
 			assertEquals("validatethis.util.Result",GetMetadata(result).name);
 		</cfscript>
@@ -50,6 +91,52 @@
 			result = validationFactory.newResult();
 			assertEquals("UnitTests.Fixture.APlainCFC_Fixture",GetMetadata(result).name);
 		</cfscript>
+	</cffunction>
+
+	<cffunction name="getValidatorShouldReturnProperBOWhenXmlRulesFileIsAlongsideCFC" access="public" returntype="void">
+		<cfscript>
+			theObject = createObject("component","Fixture.APlainCFC_Fixture");
+			BOValidator = validationFactory.getValidator(objectType=ListLast(getMetaData(theObject).Name,"."),definitionPath=getDirectoryFromPath(getMetadata(theObject).path));
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidatorShouldReturnProperBOWhenXmlCfmRulesFileIsAlongsideCFC" access="public" returntype="void">
+		<cfscript>
+			theObject = createObject("component","Fixture.APlainCFC_Fixture_cfm");
+			BOValidator = validationFactory.getValidator(objectType=ListLast(getMetaData(theObject).Name,"."),definitionPath=getDirectoryFromPath(getMetadata(theObject).path));
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidatorShouldReturnProperBOWhenXmlFileIsInAConfiguredFolder" access="public" returntype="void">
+		<cfscript>
+			ValidateThisConfig.definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			theObject = createObject("component","Fixture.ObjectWithSeparateRulesFile");
+			BOValidator = validationFactory.getValidator(objectType=ListLast(getMetaData(theObject).Name,"."),definitionPath=getDirectoryFromPath(getMetadata(theObject).path));
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidatorShouldReturnProperBOWithoutAnnotationsWhenXmlRulesFileIsAlongsideCFCAndActualObjectIsPassedIn" access="public" returntype="void">
+		<cfscript>
+			theObject = createObject("component","Fixture.APlainCFC_Fixture");
+			BOValidator = validationFactory.getValidator(objectType=ListLast(getMetaData(theObject).Name,"."),definitionPath=getDirectoryFromPath(getMetadata(theObject).path),theObject=theObject);
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
 	</cffunction>
 
 </cfcomponent>

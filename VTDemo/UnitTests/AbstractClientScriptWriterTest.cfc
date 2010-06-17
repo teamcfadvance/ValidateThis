@@ -15,7 +15,7 @@
 --->
 <cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	
-	<cfset ClientValidator = "" />
+	<cfset ScriptWriter = "" />
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -26,42 +26,41 @@
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 
-	<cffunction name="ClientScriptWritersShouldBeLoadedCorrectly" access="public" returntype="void">
+	<cffunction name="ClientRuleScriptersShouldBeLoadedCorrectly" access="public" returntype="void">
 		<cfscript>
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ClientValidator = validationFactory.getBean("ClientValidator");
-			ClientScriptWriters = ClientValidator.getScriptWriters();
-			assertTrue(IsStruct(ClientScriptWriters));
-			assertTrue(GetMetadata(ClientScriptWriters.jQuery).name CONTAINS "ClientScriptWriter_jQuery");
-			assertTrue(StructKeyExists(ClientScriptWriters.jQuery,"generateValidationScript"));
+			CRSs = ClientValidator.getScriptWriter("jQuery").getRuleScripters();
+			assertTrue(IsStruct(CRSs));
+			assertTrue(GetMetadata(CRSs.Boolean).name CONTAINS "ClientRuleScripter_Boolean");
+			assertTrue(GetMetadata(CRSs.Boolean).name CONTAINS "ValidateThis");
+			assertTrue(StructKeyExists(CRSs.Boolean,"generateValidationScript"));
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="ExtraClientScriptWriterShouldBeLoaded" access="public" returntype="void">
+	<cffunction name="ExtraClientRuleScriptersShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig.extraClientScriptWriterComponentPaths="VTDemo.UnitTests.Fixture.ClientScriptWriters.newCSW";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ClientValidator = validationFactory.getBean("ClientValidator");
-			ClientScriptWriters = ClientValidator.getScriptWriters();
-			debug(ClientScriptWriters);
-			assertTrue(IsStruct(ClientScriptWriters));
-			assertTrue(GetMetadata(ClientScriptWriters.newCSW).name CONTAINS "ClientScriptWriter_newCSW");
-			assertTrue(StructKeyExists(ClientScriptWriters.newCSW,"generateValidationScript"));
+			CRSs = ClientValidator.getScriptWriter("newCSW").getRuleScripters();
+			assertTrue(IsStruct(CRSs));
+			assertTrue(GetMetadata(CRSs.Boolean).name CONTAINS "ClientRuleScripter_Boolean");
+			assertTrue(GetMetadata(CRSs.Boolean).name CONTAINS "Fixture");
+			assertTrue(StructKeyExists(CRSs.Boolean,"generateValidationScript"));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="OverrideClientScriptWritersShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig.extraClientScriptWriterComponentPaths="VTDemo.UnitTests.Fixture.ClientScriptWriters.newCSW,VTDemo.UnitTests.Fixture.ClientScriptWriters.jQuery";
+			ValidateThisConfig.extraClientScriptWriterComponentPaths="VTDemo.UnitTests.Fixture.ClientScriptWriters.jQuery";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ClientValidator = validationFactory.getBean("ClientValidator");
-			ClientScriptWriters = ClientValidator.getScriptWriters();
-			debug(ClientScriptWriters);
-			assertTrue(IsStruct(ClientScriptWriters));
-			assertTrue(GetMetadata(ClientScriptWriters.jQuery).name CONTAINS "Fixture");
-			assertTrue(StructKeyExists(ClientScriptWriters.jQuery,"generateValidationScript"));
-			assertTrue(GetMetadata(ClientScriptWriters.newCSW).name CONTAINS "ClientScriptWriter_newCSW");
-			assertTrue(StructKeyExists(ClientScriptWriters.newCSW,"generateValidationScript"));
+			CRSs = ClientValidator.getScriptWriter("jQuery").getRuleScripters();
+			assertTrue(IsStruct(CRSs));
+			assertTrue(GetMetadata(CRSs.Boolean).name CONTAINS "ClientRuleScripter_Boolean");
+			assertTrue(GetMetadata(CRSs.Boolean).name CONTAINS "Fixture");
+			assertTrue(StructKeyExists(CRSs.Boolean,"generateValidationScript"));
 		</cfscript>  
 	</cffunction>
 

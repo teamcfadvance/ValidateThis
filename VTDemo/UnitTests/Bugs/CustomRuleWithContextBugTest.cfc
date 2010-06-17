@@ -52,7 +52,7 @@
 			ObjectChecker = mock();
 			ObjectChecker.findGetter("{*}").returns("getFirstName()");
 			ExtraRuleValidatorComponentPaths = "";
-			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(FileSystem,TransientFactory,ObjectChecker,ExtraRuleValidatorComponentPaths);
+			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(ValidationFactory,TransientFactory,ObjectChecker,ExtraRuleValidatorComponentPaths);
 			Result = TransientFactory.newResult();
 			ServerValidator.validate(BOValidator,customer,"registerInterest",Result);
 			failures = Result.getFailuresAsStruct();

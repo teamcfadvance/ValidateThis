@@ -34,7 +34,7 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="initThrowsWithBadExplicitExpandedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+	<cffunction name="initThrowsWithBadExplicitExpandedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
 			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "_Doesnt_Exist/";
 			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
@@ -49,7 +49,7 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="initThrowsWithBadExplicitMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+	<cffunction name="initThrowsWithBadExplicitMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
 			defPath = "/BODemo/Model_Doesnt_Exist/";
 			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
@@ -65,7 +65,7 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="initThrowsWithBadMappingInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+	<cffunction name="initThrowsWithBadMappingInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
 			ValidateThisConfig = {definitionPath="/BODemo/Model_Doesnt_Exist/"};
 			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
@@ -82,7 +82,7 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="initThrowsWithBadPhysicalPathInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.XMLFileReader.definitionPathNotFound">
+	<cffunction name="initThrowsWithBadPhysicalPathInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
 			ValidateThisConfig = {definitionPath=ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "Doesnt_Exist/"};
 			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);

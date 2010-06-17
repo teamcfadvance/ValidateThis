@@ -16,14 +16,13 @@
 <cfcomponent output="false" name="AbstractClientScriptWriter" hint="I am an abstract class responsible for generating script for a particular JS implementation (e.g., qForms, jQuery, etc.).">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ClientScriptWriter">
-		<!--- TODO: remove getters and setters in favour of variables. --->
-		<cfargument name="VTFileSystem" type="any" required="true" />
+		<cfargument name="validationFactory" type="any" required="true" />
 		<cfargument name="ValidateThisConfig" type="any" required="true" />
 		<cfargument name="Translator" type="any" required="true" />
-		<cfset setVTFileSystem(arguments.VTFileSystem) />
-		<cfset setValidateThisConfig(arguments.ValidateThisConfig) />
+		<cfset variables.validationFactory = arguments.validationFactory />
+		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<cfset variables.Translator = arguments.Translator />
-		<cfset variables.RuleScripters = {} />
+		<cfset variables.extraClientScriptWriterComponentPaths = variables.validateThisConfig.extraClientScriptWriterComponentPaths />
 
 		<cfset setRuleScripters() />
 		<cfreturn this />
@@ -78,32 +77,10 @@
 	<cffunction name="getRuleScripters" access="public" output="false" returntype="any">
 		<cfreturn variables.RuleScripters />
 	</cffunction>
-	<cffunction name="setRuleScripters" returntype="void" access="public" output="false">
-		<cfset var theMeta = GetMetadata(this) />
-		<cfset var thisName = ListLast(theMeta.Name,".") />
-		<cfset var RSNames = getVTFileSystem().listFiles(GetDirectoryFromPath(theMeta.Path)) />
-		<cfset var RS = 0 />
-		<cfloop list="#RSNames#" index="RS">
-			<cfif ListLast(RS,".") EQ "cfc" AND NOT ListFindNoCase("AbstractClientRuleScripter.cfc,#thisName#.cfc",RS)>
-				<cfset variables.RuleScripters[ReplaceNoCase(ListLast(RS,"_"),".cfc","")] = CreateObject("component",ReplaceNoCase(theMeta.Name,thisName,ReplaceNoCase(RS,".cfc",""))).init(variables.Translator) />
-			</cfif>
-		</cfloop>
-	</cffunction>
-	
-	<cffunction name="getVTFileSystem" access="public" output="false" returntype="any">
-		<cfreturn variables.VTFileSystem />
-	</cffunction>
-	<cffunction name="setVTFileSystem" returntype="void" access="public" output="false">
-		<cfargument name="VTFileSystem" type="any" required="true" />
-		<cfset variables.VTFileSystem = arguments.VTFileSystem />
-	</cffunction>
-
-	<cffunction name="getValidateThisConfig" access="public" output="false" returntype="any">
-		<cfreturn variables.ValidateThisConfig />
-	</cffunction>
-	<cffunction name="setValidateThisConfig" returntype="void" access="public" output="false">
-		<cfargument name="ValidateThisConfig" type="any" required="true" />
-		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
+	<cffunction name="setRuleScripters" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
+		<cfset var dirName = listLast(listLast(getMetadata(this).Name,"."),"_") />
+		<cfset var initArgs = {translator=variables.translator} />
+		<cfset variables.RuleScripters = variables.validationFactory.loadChildObjects("ValidateThis.client.#dirName#" & "," & variables.extraClientScriptWriterComponentPaths,"ClientRuleScripter_",structNew(),initArgs) />
 	</cffunction>
 
 </cfcomponent>

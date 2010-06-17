@@ -22,10 +22,9 @@
 		<cfset setBeanFactory() />
 		<cfset ValidationFactory = getBeanFactory().getBean("ValidateThis").getBean("ValidationFactory") />
 		<cfset TransientFactory = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory") />
-		<cfset FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(TransientFactory) />
 		<cfset ObjectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init() />
 		<cfset ExtraRuleValidatorComponentPaths = "" />
-		<cfset ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(FileSystem,TransientFactory,ObjectChecker,ExtraRuleValidatorComponentPaths) />
+		<cfset ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(ValidationFactory,TransientFactory,ObjectChecker,ExtraRuleValidatorComponentPaths) />
 	</cffunction>
 
 	<cffunction name="tearDown" access="public" returntype="void">
@@ -69,7 +68,7 @@
 
 	<cffunction name="ExtraRuleValidatorShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
-			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(FileSystem,TransientFactory,ObjectChecker,"VTDemo.UnitTests.Fixture.ServerRuleValidators");
+			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(ValidationFactory,TransientFactory,ObjectChecker,"VTDemo.UnitTests.Fixture.ServerRuleValidators");
 			RuleValidators = ServerValidator.getRuleValidators();
 			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
 			assertEquals("vtdemo.unittests.fixture.serverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
@@ -79,7 +78,7 @@
 
 	<cffunction name="OverrideRuleValidatorsShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
-			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(FileSystem,TransientFactory,ObjectChecker,"VTDemo.UnitTests.Fixture.OverrideServerRuleValidators");
+			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(ValidationFactory,TransientFactory,ObjectChecker,"VTDemo.UnitTests.Fixture.OverrideServerRuleValidators");
 			RuleValidators = ServerValidator.getRuleValidators();
 			assertEquals(true,structKeyExists(RuleValidators,"Custom"));
 			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
@@ -359,7 +358,7 @@
 			ObjectChecker = mock();
 			ObjectChecker.findGetter("{*}").returns("getA()");
 			ExtraRuleValidatorComponentPaths = "";
-			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(FileSystem,TransientFactory,ObjectChecker,ExtraRuleValidatorComponentPaths);
+			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(ValidationFactory,TransientFactory,ObjectChecker,ExtraRuleValidatorComponentPaths);
 			Result = TransientFactory.newResult();
 		</cfscript>  
 	</cffunction>
