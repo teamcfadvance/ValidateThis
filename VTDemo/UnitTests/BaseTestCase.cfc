@@ -85,6 +85,7 @@
 			ValidateThisConfig.abstractGetterMethod="";
 			ValidateThisConfig.ExtraRuleValidatorComponentPaths="";
 			ValidateThisConfig.extraClientScriptWriterComponentPaths="";
+			ValidateThisConfig.extraFileReaderComponentPaths="";
 			ValidateThisConfig.ResultPath="ValidateThis.util.Result";
 			return ValidateThisConfig;
 		</cfscript>

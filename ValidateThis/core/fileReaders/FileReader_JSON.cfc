@@ -13,7 +13,7 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="XMLFileReader" hint="I am a responsible for reading and processing an XML file.">
+<cfcomponent output="false" hint="I am a responsible for reading and processing an JSON file.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new XMLFileReader">
 		<cfargument name="FileSystem" type="any" required="true" />

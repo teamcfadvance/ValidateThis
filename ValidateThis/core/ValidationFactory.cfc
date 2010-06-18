@@ -36,7 +36,7 @@
 		<cfset variables.Beans.Translator = CreateObject("component",variables.ValidateThisConfig.TranslatorPath).init(variables.Beans.LocaleLoader,variables.ValidateThisConfig.localeMap,variables.ValidateThisConfig.defaultLocale) />
 		<cfset variables.Beans.TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init(variables.Beans.Translator,variables.ValidateThisConfig.ResultPath) />
 		<cfset variables.Beans.FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(variables.Beans.TransientFactory) />
-		<cfset variables.Beans.externalFileReader = CreateObject("component","ValidateThis.core.externalFileReader").init(variables.Beans.FileSystem,variables.ValidateThisConfig) />
+		<cfset variables.Beans.externalFileReader = CreateObject("component","ValidateThis.core.externalFileReader").init(variables.Beans.FileSystem,this,variables.ValidateThisConfig) />
 		<cfset variables.Beans.ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(this,variables.Beans.TransientFactory,variables.Beans.ObjectChecker,variables.ValidateThisConfig.ExtraRuleValidatorComponentPaths) />
 		<cfset variables.Beans.ClientValidator = CreateObject("component","ValidateThis.client.ClientValidator").init(this,variables.ValidateThisConfig,variables.Beans.Translator,variables.Beans.FileSystem) />
 		<cfset variables.Beans.CommonScriptGenerator = CreateObject("component","ValidateThis.client.CommonScriptGenerator").init(variables.Beans.ClientValidator) />

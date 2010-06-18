@@ -33,6 +33,7 @@
 		<cfparam name="variables.ValidateThisConfig.abstractGetterMethod" default="" />
 		<cfparam name="variables.ValidateThisConfig.ExtraRuleValidatorComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.ExtraClientScriptWriterComponentPaths" default="" />
+		<cfparam name="variables.ValidateThisConfig.extraFileReaderComponentPaths" default="" />
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />

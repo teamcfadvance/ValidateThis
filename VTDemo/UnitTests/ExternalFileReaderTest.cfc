@@ -21,9 +21,6 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
-			ValidateThisConfig.ResultPath="ValidateThis.util.Result";
-			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
-			externalFileReader = validationFactory.getBean("externalFileReader");
 			className = "user.user";
 		</cfscript>
 	</cffunction>
@@ -33,8 +30,48 @@
 
 	<cffunction name="localFileReadersShouldLoadOnInit" access="public" returntype="void">
 		<cfscript>
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			externalFileReader = validationFactory.getBean("externalFileReader");
 			makePublic(externalFileReader,"getFileReaders");
-			assertEquals(2,arrayLen(externalFileReader.getFileReaders()));
+			FRs = externalFileReader.getFileReaders();
+			assertEquals(true,structKeyExists(FRs,"XML"));
+			assertTrue(GetMetadata(FRs.XML).name CONTAINS "FileReader_XML");
+			assertTrue(GetMetadata(FRs.XML).name CONTAINS "ValidateThis");
+			assertEquals(true,structKeyExists(FRs,"JSON"));
+			assertTrue(GetMetadata(FRs.JSON).name CONTAINS "FileReader_JSON");
+			assertTrue(GetMetadata(FRs.JSON).name CONTAINS "ValidateThis");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="ExtraFileReadersShouldBeLoaded" access="public" returntype="void">
+		<cfscript>
+			ValidateThisConfig.extraFileReaderComponentPaths="VTDemo.UnitTests.Fixture.FileReaders";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			externalFileReader = validationFactory.getBean("externalFileReader");
+			makePublic(externalFileReader,"getFileReaders");
+			FRs = externalFileReader.getFileReaders();
+			assertEquals(true,structKeyExists(FRs,"XML"));
+			assertTrue(GetMetadata(FRs.XML).name CONTAINS "FileReader_XML");
+			assertTrue(GetMetadata(FRs.XML).name CONTAINS "ValidateThis");
+			assertEquals(true,structKeyExists(FRs,"Extra"));
+			assertTrue(GetMetadata(FRs.Extra).name CONTAINS "FileReader_Extra");
+			assertTrue(GetMetadata(FRs.Extra).name CONTAINS "Fixture");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="OverrideFileReadersShouldBeLoaded" access="public" returntype="void">
+		<cfscript>
+			ValidateThisConfig.extraFileReaderComponentPaths="VTDemo.UnitTests.Fixture.OverrideFileReaders";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			externalFileReader = validationFactory.getBean("externalFileReader");
+			makePublic(externalFileReader,"getFileReaders");
+			FRs = externalFileReader.getFileReaders();
+			assertEquals(true,structKeyExists(FRs,"XML"));
+			assertTrue(GetMetadata(FRs.XML).name CONTAINS "FileReader_XML");
+			assertTrue(GetMetadata(FRs.XML).name CONTAINS "Fixture");
+			assertEquals(true,structKeyExists(FRs,"Extra"));
+			assertTrue(GetMetadata(FRs.Extra).name CONTAINS "FileReader_Extra");
+			assertTrue(GetMetadata(FRs.Extra).name CONTAINS "Fixture");
 		</cfscript>  
 	</cffunction>
 

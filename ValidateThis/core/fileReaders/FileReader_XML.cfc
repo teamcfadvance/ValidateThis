@@ -13,32 +13,17 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="externalFileReader" hint="I am a responsible for reading and processing an external rules file.">
+<cfcomponent output="false" hint="I am a responsible for reading and processing an XML file.">
 
-	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new externalFileReader">
-		<cfargument name="fileSystem" type="any" required="true" />
-		<cfargument name="validationFactory" type="any" required="true" />
-		<cfargument name="validateThisConfig" type="any" required="true" />
+	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new XMLFileReader">
+		<cfargument name="FileSystem" type="any" required="true" />
+		<cfargument name="ValidateThisConfig" type="any" required="true" />
 
-		<cfset variables.fileSystem = arguments.fileSystem />
-		<cfset variables.validationFactory = arguments.validationFactory />
-		<cfset variables.validateThisConfig = arguments.validateThisConfig />
-		<cfset variables.extraFileReaderComponentPaths = variables.validateThisConfig.extraFileReaderComponentPaths />
-		<cfset setFileReaders() />
+		<cfset variables.FileSystem = arguments.FileSystem />
+		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<cfreturn this />
 	</cffunction>
 	
-	<cffunction name="getFileReaders" returnType="any" access="private" output="false">
-		<cfreturn variables.fileReaders />
-	</cffunction>
-
-	<cffunction name="setFileReaders" returntype="void" access="private" output="false" hint="I create file reader objects from a list of component paths">
-		
-		<cfset var initArgs = {fileSystem=variables.fileSystem,validateThisConfig=variables.validateThisConfig} />
-		<cfset variables.fileReaders = variables.validationFactory.loadChildObjects("ValidateThis.core.fileReaders,#variables.extraFileReaderComponentPaths#","FileReader_",structNew(),initArgs) />
-
-	</cffunction>
-
 	<cffunction name="processXML" returnType="any" access="public" output="false" hint="I read the validations XML file and reformat it into a struct">
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
@@ -67,25 +52,25 @@
 		
 		<!--- Check for a valid folder in arguments.definitionPath --->		
 		<cfloop list="#arguments.definitionPath#" index="aPath">
-			<cfif variables.fileSystem.CheckDirectoryExists(variables.fileSystem.getAbsolutePath(aPath))>
+			<cfif variables.FileSystem.CheckDirectoryExists(variables.FileSystem.getAbsolutePath(aPath))>
 				<cfset defPath = aPath />
 				<cfbreak />
 			</cfif>
 		</cfloop>
 		<cfif defPath EQ 0>
-			<cfthrow type="ValidateThis.core.externalFileReader.definitionPathNotFound" detail="The folder(s) #arguments.definitionPath# can not be found. You must specify either a complete path to a physical folder or a mapping to a physical folder." />
+			<cfthrow type="ValidateThis.core.XMLFileReader.definitionPathNotFound" detail="The folder(s) #arguments.definitionPath# can not be found. You must specify either a complete path to a physical folder or a mapping to a physical folder." />
 		</cfif>
 
 		<!--- Try to locate a rules xml file --->		
 		<cfloop list="#arguments.definitionPath#" index="aPath">
-			<cfset defPath = variables.fileSystem.getAbsolutePath(aPath) />
-			<cfif variables.fileSystem.checkFileExists(defPath,arguments.objectType & ".xml")>
+			<cfset defPath = variables.FileSystem.getAbsolutePath(aPath) />
+			<cfif variables.FileSystem.checkFileExists(defPath,arguments.objectType & ".xml")>
 				<cfset fileName = arguments.objectType & ".xml" />
-			<cfelseif variables.fileSystem.checkFileExists(defPath,arguments.objectType & ".xml.cfm")>
+			<cfelseif variables.FileSystem.checkFileExists(defPath,arguments.objectType & ".xml.cfm")>
 				<cfset fileName = arguments.objectType & ".xml.cfm" />
-			<cfelseif variables.fileSystem.checkFileExists(defPath & arguments.objectType & "/",arguments.objectType & ".xml")>
+			<cfelseif variables.FileSystem.checkFileExists(defPath & arguments.objectType & "/",arguments.objectType & ".xml")>
 				<cfset fileName = arguments.objectType & "/" & arguments.objectType & ".xml" />
-			<cfelseif variables.fileSystem.checkFileExists(defPath & arguments.objectType & "/",arguments.objectType & ".xml.cfm")>
+			<cfelseif variables.FileSystem.checkFileExists(defPath & arguments.objectType & "/",arguments.objectType & ".xml.cfm")>
 				<cfset fileName = arguments.objectType & "/" & arguments.objectType & ".xml.cfm" />
 			</cfif>
 			<cfif fileName NEQ 0>
@@ -174,7 +159,7 @@
 						</cfloop>
 					<cfelse>
 						<cfset ArrayAppend(ReturnStruct.Validations.Contexts["___Default"],theVal) />
-						<cfset theVal.FormName = variables.validateThisConfig.defaultFormName />
+						<cfset theVal.FormName = variables.ValidateThisConfig.defaultFormName />
 					</cfif>
 				</cfloop>
 			</cfloop>
@@ -190,7 +175,7 @@
 			<!--- TODO: We're not going to throw an error if the file is not found.  Rather we'll just end up with a BO validator with no rules in it.
 					It would be nice to have a way of notifying the user of this for debugging purposes. trying a throw within a try for now. --->
 			<cftry>
-				<cfthrow type="ValidateThis.core.externalFileReader.#arguments.objectType#.xml.NotFoundIn.#defPath#" detail="The rule definition file for #arguments.objectType# was not found in #defPath#." />
+				<cfthrow type="ValidateThis.core.XMLFileReader.#arguments.objectType#.xml.NotFoundIn.#defPath#" detail="The rule definition file for #arguments.objectType# was not found in #defPath#." />
 				<cfcatch type="any"></cfcatch>
 			</cftry>
 		</cfif>
