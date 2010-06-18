@@ -76,12 +76,12 @@
 
 	<cffunction name="getAbsolutePath" access="public" output="false" returntype="string" hint="Turn any system path, either relative or absolute, into a fully qualified one">
 		<cfargument name="path" type="string" required="true" hint="Abstract pathname">
-		<cfif CheckDirectoryExists(arguments.path)>
+		<cfif Right(arguments.path,1) NEQ "/">
+			<cfset arguments.path = arguments.path & "/" />
+		</cfif>
+		<cfif DirectoryExists(arguments.path)>
 			<cfreturn arguments.path />
 		<cfelse>
-			<cfif Right(arguments.path,1) NEQ "/">
-				<cfset arguments.path = arguments.path & "/" />
-			</cfif>
 			<cfreturn ExpandPath(arguments.path) />
 		</cfif>
 	</cffunction>
@@ -94,9 +94,17 @@
 	</cffunction>
 
 	<cffunction name="CheckDirectoryExists" access="public" output="false" returntype="any">
-		<cfargument name="Destination" required="true" type="any" />
+		<cfargument name="Destination" required="true" type="string" hint="A comma delimited list of relative or absolute paths" />
 		
-		<cfreturn DirectoryExists(arguments.Destination) />
+		<cfset var aPath = "" />
+		<cfset var exists = false />
+		<cfloop list="#arguments.Destination#" index="aPath">
+			<cfif DirectoryExists(getAbsolutePath(aPath))>
+				<cfset exists = true />
+				<cfbreak />
+			</cfif>
+		</cfloop>
+		<cfreturn exists />
 	</cffunction>
 
 	<cffunction name="listFiles" access="public" output="false" returntype="any" hint="returns a list of filenames">
@@ -138,7 +146,7 @@
 
 	<cffunction name="read" access="public" output="false" returntype="any">
 		<cfargument name="Destination" required="true" type="string" />
-		<cfargument name="FileName" required="true" type="string" />
+		<cfargument name="FileName" required="false" type="string" default="" />
 
 		<cfset var Result = newResult() />
 		<cfset var Content = 0 />

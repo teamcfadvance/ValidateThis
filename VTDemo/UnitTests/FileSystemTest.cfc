@@ -1,10 +1,4 @@
 <!---
-	
-filename:		\VTDemo\UnitTests\FileSystemTest.cfc
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I FileSystemTest.cfc
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
@@ -18,15 +12,8 @@ purpose:		I FileSystemTest.cfc
 	distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
-	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 --->
-<cfcomponent displayname="UnitTests.FileSystemTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	
 	<cfset FileSystem = "" />
 	<cfset Destination = "" />
@@ -45,13 +32,7 @@ purpose:		I FileSystemTest.cfc
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
-	<cffunction name="testInit" access="public" returntype="void">
-		<cfscript>
-			assertTrue(isObject(FileSystem));
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="testcheckFileExists" access="public" returntype="void">
+	<cffunction name="checkFileExistsShouldWork" access="public" returntype="void">
 		<cfscript>
 			Result = FileSystem.checkFileExists(Destination,ListLast(GetCurrentTemplatePath(),"/"));
 			assertTrue(Result);
@@ -60,16 +41,63 @@ purpose:		I FileSystemTest.cfc
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="testCheckDirectoryExists" access="public" returntype="void">
+	<cffunction name="checkDirectoryExistsWithSingleExistingDirectoryShouldReturnTrue" access="public" returntype="void">
 		<cfscript>
 			Result = FileSystem.CheckDirectoryExists(GetDirectoryFromPath(GetCurrentTemplatePath()));
 			assertTrue(Result);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="checkDirectoryExistsWithSingleExistingMappedDirectoryNoTrailingSlashShouldReturnTrue" access="public" returntype="void">
+		<cfscript>
+			Result = FileSystem.CheckDirectoryExists("/ValidateThis/core");
+			assertTrue(Result);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="checkDirectoryExistsWithSingleExistingMappedDirectoryWithTrailingSlashShouldReturnTrue" access="public" returntype="void">
+		<cfscript>
+			Result = FileSystem.CheckDirectoryExists("/ValidateThis/core/");
+			assertTrue(Result);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="checkDirectoryExistsWithSingleNonExistentDirectoryShouldReturnFalse" access="public" returntype="void">
+		<cfscript>
 			Result = FileSystem.CheckDirectoryExists(GetDirectoryFromPath(GetCurrentTemplatePath()) & "NotADirectory");
 			assertFalse(Result);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="testCreateFileReadDelete" access="public" returntype="void">
+	<cffunction name="checkDirectoryExistsWithSingleNonExistentMappedDirectoryShouldReturnFalse" access="public" returntype="void">
+		<cfscript>
+			Result = FileSystem.CheckDirectoryExists("/ValidateThis/core/NotADirectory");
+			assertFalse(Result);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="checkDirectoryExistsWithListOfPathsWithOneExistingShouldReturnTrue" access="public" returntype="void">
+		<cfscript>
+			Result = FileSystem.CheckDirectoryExists(GetDirectoryFromPath(GetCurrentTemplatePath()) & "," & GetDirectoryFromPath(GetCurrentTemplatePath()) & "NotADirectory");
+			assertTrue(Result);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="checkDirectoryExistsWithListOfPathsWithOneExistingMappingShouldReturnTrue" access="public" returntype="void">
+		<cfscript>
+			Result = FileSystem.CheckDirectoryExists("/ValidateThis/core" & "," & GetDirectoryFromPath(GetCurrentTemplatePath()) & "NotADirectory");
+			assertTrue(Result);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="checkDirectoryExistsWithListOfPathsWithNoExistingShouldReturnFalse" access="public" returntype="void">
+		<cfscript>
+			Result = FileSystem.CheckDirectoryExists(GetDirectoryFromPath(GetCurrentTemplatePath()) & "NotADirectory," & GetDirectoryFromPath(GetCurrentTemplatePath()) & "NotADirectoryEither");
+			assertFalse(Result);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="createFileReadDeleteShouldWork" access="public" returntype="void">
 		<cfscript>
 			FileName = CreateUUID() & ".txt";
 			Content = "The file content.";
