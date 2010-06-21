@@ -18,7 +18,7 @@
 	<cffunction name="generateJSIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required JS libraries.">
 
 		<cfset var theScript = "" />
-		<cfset var JSRoot = variables.validateThisConfig.JSRoot />
+		<cfset var JSRoot = variables.JSRoot />
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>
@@ -35,7 +35,7 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
-		<cfset var JSRoot = variables.validateThisConfig.JSRoot />
+		<cfset var JSRoot = variables.JSRoot />
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>

@@ -17,14 +17,16 @@
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new externalFileReader">
 		<cfargument name="fileSystem" type="any" required="true" />
-		<cfargument name="validationFactory" type="any" required="true" />
-		<cfargument name="validateThisConfig" type="any" required="true" />
+		<cfargument name="childObjectFactory" type="any" required="true" />
+		<cfargument name="extraFileReaderComponentPaths" type="string" required="true" />
+		<cfargument name="defaultFormName" type="string" required="true" />
+		<cfargument name="externalFileTypes" type="string" required="true" />
 
 		<cfset variables.fileSystem = arguments.fileSystem />
-		<cfset variables.validationFactory = arguments.validationFactory />
-		<cfset variables.validateThisConfig = arguments.validateThisConfig />
-		<cfset variables.extraFileReaderComponentPaths = variables.validateThisConfig.extraFileReaderComponentPaths />
-		<cfset variables.fileReaderSequence = variables.validateThisConfig.fileReaderSequence />
+		<cfset variables.childObjectFactory = arguments.childObjectFactory />
+		<cfset variables.extraFileReaderComponentPaths = arguments.extraFileReaderComponentPaths />
+		<cfset variables.defaultFormName = arguments.defaultFormName />
+		<cfset variables.externalFileTypes = arguments.externalFileTypes />
 		<cfset setFileReaders() />
 		<cfreturn this />
 	</cffunction>
@@ -40,8 +42,8 @@
 
 	<cffunction name="setFileReaders" returntype="void" access="private" output="false" hint="I create file reader objects from a list of component paths">
 		
-		<cfset var initArgs = {fileSystem=variables.fileSystem,validateThisConfig=variables.validateThisConfig} />
-		<cfset variables.fileReaders = variables.validationFactory.loadChildObjects("ValidateThis.core.fileReaders,#variables.extraFileReaderComponentPaths#","FileReader_",structNew(),initArgs) />
+		<cfset var initArgs = {fileSystem=variables.fileSystem,defaultFormName=variables.defaultFormName} />
+		<cfset variables.fileReaders = variables.childObjectFactory.loadChildObjects("ValidateThis.core.fileReaders,#variables.extraFileReaderComponentPaths#","FileReader_",structNew(),initArgs) />
 
 	</cffunction>
 
@@ -98,7 +100,7 @@
 
 		<cfset verifyAtLeastOnePathIsValid(arguments.definitionPath) />
 		
-		<cfloop list="#variables.fileReaderSequence#" index="fileType">
+		<cfloop list="#variables.externalFileTypes#" index="fileType">
 			<cfset fileName = locateRulesFile(arguments.objectType,arguments.definitionPath,fileType) />
 			<cfif len(fileName) NEQ 0>
 				<cfset arrayAppend(filesFound,fileName) />
@@ -115,7 +117,6 @@
 			</cftry>
 		</cfif>
 		
-			<cfset request.debug(filesFound) />
 		<cfreturn rulesStruct />
 	</cffunction>
 	

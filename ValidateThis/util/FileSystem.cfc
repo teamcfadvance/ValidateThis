@@ -16,9 +16,9 @@
 <cfcomponent name="FileSystem" output="false" hint="I am responsible for all file system access.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new Filesystem Object">
-		<cfargument name="VTTransientFactory" type="any" required="true" />
+		<cfargument name="transientFactory" type="any" required="true" />
 
-		<cfset variables.VTTransientFactory = arguments.VTTransientFactory />
+		<cfset variables.transientFactory = arguments.transientFactory />
 		<cfreturn this />
 	</cffunction>
 	
@@ -76,14 +76,16 @@
 
 	<cffunction name="getAbsolutePath" access="public" output="false" returntype="string" hint="Turn any system path, either relative or absolute, into a fully qualified one">
 		<cfargument name="path" type="string" required="true" hint="Abstract pathname">
+		<cfif not DirectoryExists(arguments.path)>
+			<cfif Right(arguments.path,1) EQ "/">
+				<cfset arguments.path = left(arguments.path,len(arguments.path)-1) />
+			</cfif>
+			<cfset arguments.path = expandPath(arguments.path) />
+		</cfif>
 		<cfif Right(arguments.path,1) NEQ "/">
 			<cfset arguments.path = arguments.path & "/" />
 		</cfif>
-		<cfif DirectoryExists(arguments.path)>
-			<cfreturn arguments.path />
-		<cfelse>
-			<cfreturn ExpandPath(arguments.path) />
-		</cfif>
+		<cfreturn arguments.path />
 	</cffunction>
 
 	<cffunction name="CheckFileExists" access="public" output="false" returntype="any">
@@ -205,7 +207,7 @@
 	</cffunction>	
 
 	<cffunction name="newResult" access="private" output="false" returntype="any">
-		<cfreturn variables.VTTransientFactory.newResult() />
+		<cfreturn variables.transientFactory.newResult() />
 	</cffunction>
 
 </cfcomponent>

@@ -17,9 +17,10 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			setBeanFactory(forceRefresh=true);
+			ValidateThisConfig = getVTConfig();
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/";
-			BOValidator = getBeanFactory().getBean("ValidateThis").getValidator("customer",defPath);
+			BOValidator = validationFactory.getValidator("customer",defPath);
 			customer = mock();
 			customResult = {IsSuccess=false,FailureMessage="A custom validator failed."};
 			customer.isUsernameAvailable().returns(customResult);
@@ -44,6 +45,7 @@
 		</cfscript>  
 	</cffunction>
 	
+	<!---
 	<cffunction name="customRuleShouldBeEnforcedWhenValidatingWithAppropriateContext" access="public" returntype="void">
 		<cfscript>
 			ValidationFactory = getBeanFactory().getBean("ValidateThis").getBean("ValidationFactory");
@@ -59,6 +61,7 @@
 			assertEquals("Your chosen username is required.<br />A custom validator failed.",failures.username);
 		</cfscript>  
 	</cffunction>
+	--->
 	
 </cfcomponent>
 

@@ -37,7 +37,7 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
-		<cfset var JSRoot = variables.validateThisConfig.JSRoot />
+		<cfset var JSRoot = variables.JSRoot />
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>
@@ -56,7 +56,7 @@
 	<cffunction name="generateScriptHeader" returntype="any" access="public" output="false" hint="I generate the JS script required at the top of the script block.">
 		<cfargument name="formName" type="any" required="yes" />
 		<cfset var theScript = "" />
-		<cfset var JSRoot = variables.validateThisConfig.JSRoot />
+		<cfset var JSRoot = variables.JSRoot />
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 				<script type="text/javascript">

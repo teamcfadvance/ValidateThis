@@ -1,33 +1,105 @@
-{
-	"USERNAME":
-	[
-		{
-			"CONTEXTS":"register,profile",
-			"FAILUREMESSAGE":"You must provide a user name",
-			"TYPE":"required"
-		}
-		,
-		{
-			"CONTEXTS":"profile",
-			"FAILUREMESSAGE":"Your user name must be at least 5 letters long",
-			"TYPE":"minLength",
-			"PARAMS":{"MINLENGTH":5.0}
-		}
-	]
-	,
-	"PASSWORD":
-	[
-		{
-			"CONTEXTS":"register",
-			"FAILUREMESSAGE":"You must provide a user name",
-			"TYPE":"required"
-		}
-		,
-		{
-			"CONTEXTS":"register",
-			"FAILUREMESSAGE":"Your password must be at least 5 letters long",
-			"TYPE":"minLength",
-			"PARAMS":{"MINLENGTH":5.0}
-		}
-	]
+{"validateThis" : {
+	    "conditions" : [
+	       {"name":"MustLikeSomething",
+	       "serverTest":"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0",
+	       "clientTest":"$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;"
+	       }
+	    ],
+
+	    "contexts" : [
+	       {"name":"Register","formName":"frmRegister"},
+	       {"name":"Profile","formName":"frmProfile"}
+	    ],
+
+	    "objectProperties" : [
+	        {"name":"UserName","desc":"Email Address",
+	            "rules": [
+	                {"type":"required","formName":"FormRegister"},
+	                {"type":"email","contexts":"*","failureMessage":"Hey, buddy, you call that an Email Address?"}
+	            ]
+	        },
+	        {"name":"Nickname",
+	             "rules" : [
+	                 {"type":"custom","failureMessage":"That Nickname is already taken. Please try another",
+	                    "params":[
+	                        {"methodName":"CheckDupNickname"},
+	                        {"remoteURL":"CheckDupNickname.cfm"}
+	                    ]
+	                 }
+	             ]
+	        },
+	        {"name":"UserPass","desc":"Password",
+	            "rules" : [
+	             {"type":"required","contexts":"*"},
+	             {"type":"rangelength","contexts":"*",
+	                 "params" : [
+	                     {"minlength":"5"},
+	                     {"maxlength":"10"}
+	                 ]
+	             }
+	            ]
+	        },
+	        {"name":"VerifyPassword","desc":"Verify Password",
+	          "rules" : [
+	              {"type":"required","contexts":"*"},
+	              {"type":"equalTo","contexts":"*",
+	                  "params" : [
+	                      {"ComparePropertyName":"UserPass"}
+	                  ]
+	              }
+	          ]
+	        },
+	        {"name":"UserGroup","desc":"User Group","clientFieldName":"UserGroupID",
+	          "rules" : [
+	              {"type":"required","contexts":"*"}
+	          ]
+	        },
+	        {"name":"Salutation",
+	          "rules" : [
+	              {"type":"required","contexts":"Profile"},
+	              {"type":"regex","contexts":"*","failureMessage":"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.",
+	                "params" : [
+	                   {"Regex":"^(Dr|Prof|Mr|Mrs|Ms|Miss)?$"}
+	                ]
+	              }
+	          ]
+	        },
+	        {"name":"FirstName","desc":"First Name",
+	          "rules" : [
+	              {"type":"required","contexts":"Profile"}
+	          ]
+	        },
+	        {"name":"LastName","desc":"Last Name",
+	            "rules" : [
+	                {"type":"required","contexts":"Profile"},
+	                {"type":"required","contexts":"Register",
+	                    "params" : [
+	                       {"DependentPropertyName":"FirstName"}
+	                    ]
+	                }
+	            ]
+	        },
+	        {"name":"LikeOther","desc":"What do you like?",
+	            "rules" : [
+	               {"type":"required","contexts":"*","condition":"MustLikeSomething","failureMessage":"If you don't like cheese or chocolate, you must like something!"}
+	            ]
+	        },
+	        {"name":"HowMuch","desc":"How much money would you like?",
+	            "rules" : [
+	                {"type":"numeric", "contexts":"*"}
+	            ]
+	        },
+
+	        {"name":"AllowCommunication","desc":"Allow Communication",
+	            "rules" : [
+	               {"type":"required","contexts":"*","failureMessage":"if you are allowing communication, you must choose a method",
+	                   "params" : [
+	                       {"DependentPropertyName":"AllowCommunication"},
+	                       {"DependentPropertyValue":"1"}
+	                   ]
+	               }
+	            ]
+	        }
+		]
+	}
 }

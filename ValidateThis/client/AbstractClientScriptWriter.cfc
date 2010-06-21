@@ -16,13 +16,14 @@
 <cfcomponent output="false" name="AbstractClientScriptWriter" hint="I am an abstract class responsible for generating script for a particular JS implementation (e.g., qForms, jQuery, etc.).">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ClientScriptWriter">
-		<cfargument name="validationFactory" type="any" required="true" />
-		<cfargument name="ValidateThisConfig" type="any" required="true" />
+		<cfargument name="childObjectFactory" type="any" required="true" />
 		<cfargument name="Translator" type="any" required="true" />
-		<cfset variables.validationFactory = arguments.validationFactory />
-		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
+		<cfargument name="JSRoot" type="string" required="true" />
+		<cfargument name="extraClientScriptWriterComponentPaths" type="string" required="true" />
+		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.Translator = arguments.Translator />
-		<cfset variables.extraClientScriptWriterComponentPaths = variables.validateThisConfig.extraClientScriptWriterComponentPaths />
+		<cfset variables.JSRoot = arguments.JSRoot />
+		<cfset variables.extraClientScriptWriterComponentPaths = arguments.extraClientScriptWriterComponentPaths />
 
 		<cfset setRuleScripters() />
 		<cfreturn this />
@@ -80,7 +81,7 @@
 	<cffunction name="setRuleScripters" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		<cfset var dirName = listLast(listLast(getMetadata(this).Name,"."),"_") />
 		<cfset var initArgs = {translator=variables.translator} />
-		<cfset variables.RuleScripters = variables.validationFactory.loadChildObjects("ValidateThis.client.#dirName#" & "," & variables.extraClientScriptWriterComponentPaths,"ClientRuleScripter_",structNew(),initArgs) />
+		<cfset variables.RuleScripters = variables.childObjectFactory.loadChildObjects("ValidateThis.client.#dirName#" & "," & variables.extraClientScriptWriterComponentPaths,"ClientRuleScripter_",structNew(),initArgs) />
 	</cffunction>
 
 </cfcomponent>

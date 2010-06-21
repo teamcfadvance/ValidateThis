@@ -117,7 +117,7 @@
 					</cfloop>
 				<cfelse>
 					<cfset ArrayAppend(ReturnStruct.Validations.Contexts["___Default"],theVal) />
-					<cfset theVal.FormName = variables.ValidateThisConfig.defaultFormName />
+					<cfset theVal.FormName = variables.defaultFormName />
 				</cfif>
 			</cfloop>
 		</cfloop>

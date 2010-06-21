@@ -87,7 +87,7 @@
 			ValidateThisConfig.extraClientScriptWriterComponentPaths="";
 			ValidateThisConfig.extraFileReaderComponentPaths="";
 			ValidateThisConfig.ResultPath="ValidateThis.util.Result";
-			ValidateThisConfig.fileReaderSequence="json,xml";
+			ValidateThisConfig.externalFileTypes="xml,json";
 			return ValidateThisConfig;
 		</cfscript>
 	</cffunction>

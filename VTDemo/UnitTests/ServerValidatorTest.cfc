@@ -19,46 +19,54 @@
 	<cfset ServerValidator = "" />
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset setBeanFactory() />
-		<cfset ValidationFactory = getBeanFactory().getBean("ValidateThis").getBean("ValidationFactory") />
-		<cfset TransientFactory = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory") />
-		<cfset ObjectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init() />
-		<cfset ExtraRuleValidatorComponentPaths = "" />
-		<cfset ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(ValidationFactory,TransientFactory,ObjectChecker,ExtraRuleValidatorComponentPaths) />
+		<cfscript>
+		</cfscript>
 	</cffunction>
 
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 
-	<cffunction name="setUpUser" access="private" returntype="any">
-		<cfargument name="useTransfer" type="boolean" required="false" default="true" />
+	<cffunction name="createServerValidator" access="private" returntype="any">
+		<cfargument name="addToConfig" type="struct" required="false" default="#structNew()#" />
 		<cfscript>
-			if (arguments.useTransfer) {
-				Transfer = getBeanFactory().getBean("Transfer");
-				UserTO = Transfer.new("user.user");
-			} else {
-				UserTO = entityNew("User");
-			}
-			UserTO.setUserName("bob.silverberg@gmail.com");
-			UserTO.setUserPass("Bobby");
-			UserTO.setVerifyPassword("Bobby");
-			UserTO.setSalutation("Mr.");
-			UserTO.setFirstName("Bob");
-			UserTO.setLastName("Silverberg");
-			UserTO.setLikeCheese(1);
-			if (arguments.useTransfer) {
-				UserTO.setUserGroup(Transfer.new("user.usergroup"));
-			} else {
-				UserTO.setUserGroup(entityNew("UserGroup"));
-			}
-			return UserTO;
+			ValidateThisConfig = getVTConfig();
+			structAppend(ValidateThisConfig,arguments.addToConfig,true);
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			serverValidator = validationFactory.getBean("ServerValidator");
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="setUpUser" access="private" returntype="any">
+		<cfargument name="emptyUser" type="boolean" required="false" default="false" />
+		<cfscript>
+			// TODO: Address the use of entitynew
+			user = createObject("component","VTDemo.UnitTests.Fixture.User").init();
+			if (not arguments.emptyUser) {
+				user.setUserName("bob.silverberg@gmail.com");
+				user.setUserPass("Bobby");
+				user.setVerifyPassword("Bobby");
+				user.setSalutation("Mr.");
+				user.setFirstName("Bob");
+				user.setLastName("Silverberg");
+				user.setLikeCheese(1);
+				user.setUserGroup("Something");
+			}
+			BOValidator = validationFactory.getValidator("User",getDirectoryFromPath(getMetadata(user).path),user);
+			return user;
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="setupCustomRuleTester" access="private" returntype="void">
+		<cfscript>
+			customRuleTester = createObject("component","VTDemo.UnitTests.Fixture.CustomRuleTester").init();
+			BOValidator = validationFactory.getValidator("CustomRuleTester",getDirectoryFromPath(getMetadata(customRuleTester).path),customRuleTester);
+		</cfscript>  
+	</cffunction>
 
 	<cffunction name="RuleValidatorsShouldBeLoadedCorrectly" access="public" returntype="void">
 		<cfscript>
-			RuleValidators = ServerValidator.getRuleValidators();
+			createServerValidator();
+			RuleValidators = serverValidator.getRuleValidators();
 			assertTrue(IsStruct(RuleValidators));
 			assertTrue(GetMetadata(RuleValidators.Custom).name CONTAINS "ServerRuleValidator_Custom");
 			assertTrue(GetMetadata(RuleValidators.Required).name CONTAINS "ServerRuleValidator_Required");
@@ -68,8 +76,9 @@
 
 	<cffunction name="ExtraRuleValidatorShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
-			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(ValidationFactory,TransientFactory,ObjectChecker,"VTDemo.UnitTests.Fixture.ServerRuleValidators");
-			RuleValidators = ServerValidator.getRuleValidators();
+			extra = {ExtraRuleValidatorComponentPaths="VTDemo.UnitTests.Fixture.ServerRuleValidators"};
+			createServerValidator(extra);
+			RuleValidators = serverValidator.getRuleValidators();
 			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
 			assertEquals("vtdemo.unittests.fixture.serverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
 			assertTrue(StructKeyExists(RuleValidators.Extra,"validate"));
@@ -78,8 +87,9 @@
 
 	<cffunction name="OverrideRuleValidatorsShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
-			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(ValidationFactory,TransientFactory,ObjectChecker,"VTDemo.UnitTests.Fixture.OverrideServerRuleValidators");
-			RuleValidators = ServerValidator.getRuleValidators();
+			extra = {ExtraRuleValidatorComponentPaths="VTDemo.UnitTests.Fixture.OverrideServerRuleValidators"};
+			createServerValidator(extra);
+			RuleValidators = serverValidator.getRuleValidators();
 			assertEquals(true,structKeyExists(RuleValidators,"Custom"));
 			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
 			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_custom",GetMetadata(RuleValidators.Custom).name);
@@ -90,13 +100,14 @@
 
 	<cffunction name="ValidateFailsWithCorrectMessages" access="public" returntype="void">
 		<cfscript>
-			Transfer = getBeanFactory().getBean("Transfer");
-			UserTO = Transfer.new("user.user");
-			UserTO.setVerifyPassword("Something that won't match");
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Register",Result);
-			AssertFalse(Result.getIsSuccess());
-			Failures = Result.getFailures();
+			createServerValidator();
+			user = setUpUser(true);
+			result = validationFactory.newResult();
+			user.setVerifyPassword("Something that won't match");
+			serverValidator.validate(BOValidator,user,"Register",result);
+			AssertFalse(result.getIsSuccess());
+			Failures = result.getFailures();
+			debug(Failures);
 			assertEquals(7,ArrayLen(Failures));
 			Failure = Failures[1];
 			assertEquals(Failure.Type,"required");
@@ -126,10 +137,10 @@
 			assertEquals(Failure.Type,"required");
 			assertEquals(Failure.PropertyName,"LikeOther");
 			assertEquals(Failure.Message,"If you don't like Cheese and you don't like Chocolate, you must like something!");
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Profile",Result);
-			AssertFalse(Result.getIsSuccess());
-			Failures = Result.getFailures();
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",result);
+			AssertFalse(result.getIsSuccess());
+			Failures = result.getFailures();
 			assertEquals(10,ArrayLen(Failures));
 			Failure = Failures[1];
 			assertEquals(Failure.Type,"required");
@@ -174,13 +185,13 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="OverrideMessageShouldGeneratesCorrectMessage" access="public" returntype="void">
+	<cffunction name="OverrideMessageShouldGenerateCorrectMessage" access="public" returntype="void">
 		<cfscript>
-			Transfer = getBeanFactory().getBean("Transfer");
-			UserTO = Transfer.new("user.user");
-			UserTO.setUserName("AnInvalidEmailAddress");
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Register",Result);
+			createServerValidator();
+			user = setUpUser();
+			user.setUserName("AnInvalidEmailAddress");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",Result);
 			Failures = Result.getFailures();
 			Failure = Failures[1];
 			AssertEquals(Failure.Message,"Hey, buddy, you call that an Email Address?");
@@ -189,19 +200,21 @@
 
 	<cffunction name="DependentPropertyWithoutValueShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
-			UserTO = setUpUser();
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Register",Result);
+			createServerValidator();
+			user = setUpUser();
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",Result);
+			debug(result.getFailures());
 			AssertTrue(Result.getIsSuccess());
-			UserTO.setFirstName("");
-			UserTO.setLastName("");
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Register",Result);
+			user.setFirstName("");
+			user.setLastName("");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",Result);
 			AssertTrue(Result.getIsSuccess());
-			UserTO.setFirstName("Bob");
-			UserTO.setLastName("");
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Register",Result);
+			user.setFirstName("Bob");
+			user.setLastName("");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",Result);
 			AssertFalse(Result.getIsSuccess());
 			Failures = Result.getFailures();
 			Failure = Failures[1];
@@ -213,36 +226,14 @@
 
 	<cffunction name="DependentPropertyWithValueShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
-			UserTO = setUpUser();
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Profile",Result);
-			AssertTrue(Result.getIsSuccess());
-			UserTO.setAllowCommunication(1);
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Profile",Result);
-			AssertFalse(Result.getIsSuccess());
-			Failures = Result.getFailures();
-			Failure = Failures[1];
-			assertEquals(Failure.Type,"required");
-			assertEquals(Failure.PropertyName,"CommunicationMethod");
-			assertEquals(Failure.Message,"If you are allowing communication, you must choose a communication method.");
-			UserTO.setCommunicationMethod("Email");
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Profile",Result);
-			AssertTrue(Result.getIsSuccess());
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="DependentPropertyWithValueThatReturnsNullShouldWorkAsExpected" access="public" returntype="void">
-		<cfscript>
-			user = setUpUser(false);
-			validator = ValidationFactory.getValidator("user.user","/BODemo/model/");
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(validator,user,"Profile",Result);
+			createServerValidator();
+			user = setUpUser();
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
 			AssertTrue(Result.getIsSuccess());
 			user.setAllowCommunication(1);
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(validator,user,"Profile",Result);
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
 			AssertFalse(Result.getIsSuccess());
 			Failures = Result.getFailures();
 			Failure = Failures[1];
@@ -250,42 +241,68 @@
 			assertEquals(Failure.PropertyName,"CommunicationMethod");
 			assertEquals(Failure.Message,"If you are allowing communication, you must choose a communication method.");
 			user.setCommunicationMethod("Email");
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(validator,user,"Profile",Result);
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
 			AssertTrue(Result.getIsSuccess());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="DependentPropertyWithValueThatReturnsNullShouldWorkAsExpected" access="public" returntype="void">
+		<cfscript>
+			// TODO: This needs to be tested with CF9 only
+			/*
+			createServerValidator();
+			user = setUpUser(createNull=true);
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
+			AssertTrue(Result.getIsSuccess());
+			user.setAllowCommunication(1);
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
+			AssertFalse(Result.getIsSuccess());
+			Failures = Result.getFailures();
+			Failure = Failures[1];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"CommunicationMethod");
+			assertEquals(Failure.Message,"If you are allowing communication, you must choose a communication method.");
+			user.setCommunicationMethod("Email");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
+			AssertTrue(Result.getIsSuccess());
+			*/
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="ServerConditionShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
-			UserTO = setUpUser();
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Profile",Result);
+			createServerValidator();
+			user = setUpUser();
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
 			AssertTrue(Result.getIsSuccess());
-			UserTO.setLikeCheese(0);
-			UserTO.setLikeChocolate(0);
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Profile",Result);
+			user.setLikeCheese(0);
+			user.setLikeChocolate(0);
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
 			AssertFalse(Result.getIsSuccess());
 			Failures = Result.getFailures();
 			Failure = Failures[1];
 			assertEquals(Failure.Type,"required");
 			assertEquals(Failure.PropertyName,"LikeOther");
 			assertEquals(Failure.Message,"If you don't like Cheese and you don't like Chocolate, you must like something!");
-			UserTO.setLikeOther("Cake");
-			Result = getBeanFactory().getBean("ValidateThis").getBean("TransientFactory").newResult();
-			ServerValidator.validate(UserTO.getValidator(),UserTO,"Profile",Result);
+			user.setLikeOther("Cake");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
 			AssertTrue(Result.getIsSuccess());
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="failureMessageReturnedByMethodOnCustomRuleShouldTakePrecedenceOverFailureMessageInXML" access="public" returntype="void">
 		<cfscript>
-			//setBeanFactory(forceRefresh=true);
-			setupServerValidatorWithMocks();
-			customResult = {IsSuccess=false,FailureMessage="The message returned from the method."};
-			customer.customMethod().returns(customResult);
-			ServerValidator.validate(BOValidator,customer,"",Result);
+			createServerValidator();
+			setupCustomRuleTester();
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,customRuleTester,"",Result);
 			failures = Result.getFailuresAsStruct();
 			assertEquals("The message returned from the method.",failures.a);
 		</cfscript>  
@@ -293,74 +310,61 @@
 
 	<cffunction name="determineFailureMessageReturnsFrameworkGeneratedFailureMessageIfNotOverridenInXML" access="public" returntype="void">
 		<cfscript>
-			setupServerValidatorWithMocks();
-			makePublic(ServerValidator,"determineFailureMessage");
+			createServerValidator();
+			makePublic(serverValidator,"determineFailureMessage");
 			generatedMessage = "A generated message.";
 			theVal = mock();
 			theVal.getFailureMessage().returns(generatedMessage);
 			theVal.getValType().returns("required");
 			v = {};
-			failureMessage = ServerValidator.determineFailureMessage(v,theVal);
+			failureMessage = serverValidator.determineFailureMessage(v,theVal);
 			assertEquals(generatedMessage,failureMessage);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="determineFailureMessageReturnsCustomFailureMessageIfOverridenInXML" access="public" returntype="void">
 		<cfscript>
-			setupServerValidatorWithMocks();
-			makePublic(ServerValidator,"determineFailureMessage");
+			createServerValidator();
+			makePublic(serverValidator,"determineFailureMessage");
 			generatedMessage = "A generated message.";
 			theVal = mock();
 			theVal.getFailureMessage().returns(generatedMessage);
 			theVal.getValType().returns("required");
 			customMessage = "A custom message.";
 			v = {FailureMessage=customMessage};
-			failureMessage = ServerValidator.determineFailureMessage(v,theVal);
+			failureMessage = serverValidator.determineFailureMessage(v,theVal);
 			assertEquals(customMessage,failureMessage);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="determineFailureMessageReturnsGeneratedFailureMessageOnCustomRuleIfOverridenInXMLAndNonBlankGeneratedMessage" access="public" returntype="void">
 		<cfscript>
-			setupServerValidatorWithMocks();
-			makePublic(ServerValidator,"determineFailureMessage");
+			createServerValidator();
+			makePublic(serverValidator,"determineFailureMessage");
 			generatedMessage = "A generated message.";
 			theVal = mock();
 			theVal.getFailureMessage().returns(generatedMessage);
 			theVal.getValType().returns("custom");
 			customMessage = "A custom message.";
 			v = {FailureMessage=customMessage};
-			failureMessage = ServerValidator.determineFailureMessage(v,theVal);
+			failureMessage = serverValidator.determineFailureMessage(v,theVal);
 			assertEquals(generatedMessage,failureMessage);
 		</cfscript>
 	</cffunction>
 
 	<cffunction name="determineFailureMessageReturnsCustomFailureMessageOnCustomRuleIfOverridenInXMLAndBlankGeneratedMessage" access="public" returntype="void">
 		<cfscript>
-			setupServerValidatorWithMocks();
-			makePublic(ServerValidator,"determineFailureMessage");
+			createServerValidator();
+			makePublic(serverValidator,"determineFailureMessage");
 			generatedMessage = "";
 			theVal = mock();
 			theVal.getFailureMessage().returns(generatedMessage);
 			theVal.getValType().returns("custom");
 			customMessage = "A custom message.";
 			v = {FailureMessage=customMessage};
-			failureMessage = ServerValidator.determineFailureMessage(v,theVal);
+			failureMessage = serverValidator.determineFailureMessage(v,theVal);
 			assertEquals(customMessage,failureMessage);
 		</cfscript>
-	</cffunction>
-
-	<cffunction name="setupServerValidatorWithMocks" access="private" returntype="void">
-		<cfscript>
-			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/";
-			BOValidator = getBeanFactory().getBean("ValidateThis").getValidator("customRuleTester",defPath);
-			customer = mock();
-			ObjectChecker = mock();
-			ObjectChecker.findGetter("{*}").returns("getA()");
-			ExtraRuleValidatorComponentPaths = "";
-			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(ValidationFactory,TransientFactory,ObjectChecker,ExtraRuleValidatorComponentPaths);
-			Result = TransientFactory.newResult();
-		</cfscript>  
 	</cffunction>
 
 </cfcomponent>

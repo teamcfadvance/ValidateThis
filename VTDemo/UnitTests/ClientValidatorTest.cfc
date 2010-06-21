@@ -43,7 +43,6 @@
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ClientValidator = validationFactory.getBean("ClientValidator");
 			ClientScriptWriters = ClientValidator.getScriptWriters();
-			debug(ClientScriptWriters);
 			assertTrue(IsStruct(ClientScriptWriters));
 			assertTrue(GetMetadata(ClientScriptWriters.newCSW).name CONTAINS "ClientScriptWriter_newCSW");
 			assertTrue(StructKeyExists(ClientScriptWriters.newCSW,"generateValidationScript"));
@@ -56,7 +55,6 @@
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ClientValidator = validationFactory.getBean("ClientValidator");
 			ClientScriptWriters = ClientValidator.getScriptWriters();
-			debug(ClientScriptWriters);
 			assertTrue(IsStruct(ClientScriptWriters));
 			assertTrue(GetMetadata(ClientScriptWriters.jQuery).name CONTAINS "Fixture");
 			assertTrue(StructKeyExists(ClientScriptWriters.jQuery,"generateValidationScript"));

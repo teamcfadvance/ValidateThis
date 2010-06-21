@@ -17,9 +17,9 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			setBeanFactory(forceRefresh=true);
-			variables.ValidateThis = getBeanFactory().getBean("ValidateThis");
-			variables.className = "user.user";
+			ValidateThisConfig = getVTConfig();
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			variables.className = "user";
 		</cfscript>  
 	</cffunction>
 
@@ -28,65 +28,65 @@
 
 	<cffunction name="initReturnsCorrectObjectWithExplicitExpandedPath" access="public" returntype="void">
 		<cfscript>
-			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
-			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
+			BOValidator = validationFactory.getValidator(variables.className,defPath);
 			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initThrowsWithBadExplicitExpandedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "_Doesnt_Exist/";
-			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture" & "_Doesnt_Exist/";
+			BOValidator = validationFactory.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initReturnsCorrectObjectWithExplicitMappedPath" access="public" returntype="void">
 		<cfscript>
-			defPath = "/BODemo/Model/";
-			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			defPath = "/UnitTests/Fixture";
+			BOValidator = validationFactory.getValidator(variables.className,defPath);
 			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initThrowsWithBadExplicitMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			defPath = "/BODemo/Model_Doesnt_Exist/";
-			BOValidator = variables.ValidateThis.getValidator(variables.className,defPath);
+			defPath = "/VTDemo/UnitTests/Fixture/_Doesnt_Exist/";
+			BOValidator = validationFactory.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initReturnsCorrectObjectWithMappingInValidateThisConfig" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig = {definitionPath="/BODemo/Model/"};
-			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			BOValidator = variables.ValidateThis.getValidator(variables.className);
+			ValidateThisConfig.definitionPath = "/UnitTests/Fixture";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			BOValidator = validationFactory.getValidator(variables.className);
 			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initThrowsWithBadMappingInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			ValidateThisConfig = {definitionPath="/BODemo/Model_Doesnt_Exist/"};
-			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			BOValidator = variables.ValidateThis.getValidator(variables.className);
+			ValidateThisConfig.definitionPath = "/VTDemo/UnitTests/Fixture/_DoesntExist";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			BOValidator = validationFactory.getValidator(variables.className);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initReturnsCorrectObjectWithPhysicalPathInValidateThisConfig" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig = {definitionPath=ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/")};
-			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			BOValidator = variables.ValidateThis.getValidator(variables.className);
+			ValidateThisConfig.definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			BOValidator = validationFactory.getValidator(variables.className);
 			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initThrowsWithBadPhysicalPathInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			ValidateThisConfig = {definitionPath=ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "Doesnt_Exist/"};
-			variables.ValidateThis = getBeanFactory().getBean("ValidateThis").init(ValidateThisConfig);
-			BOValidator = variables.ValidateThis.getValidator(variables.className);
+			ValidateThisConfig.definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture" & "DoesntExist";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			BOValidator = validationFactory.getValidator(variables.className);
 		</cfscript>  
 	</cffunction>
 
@@ -183,46 +183,11 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="initShouldReturnProperObjectWhenXmlRulesFileIsAlongsideCFC" access="public" returntype="void">
-		<cfscript>
-			theObject = createObject("component","Fixture.APlainCFC_Fixture");
-			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
-			allContexts = BOValidator.getAllContexts();
-			assertEquals(true,structKeyExists(allContexts,"___Default"));
-			assertEquals("firstName",allContexts.___Default[1].propertyName);
-			assertEquals("lastName",allContexts.___Default[2].propertyName);
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="getValidatorShouldReturnProperBOWhenXmlCfmRulesFileIsAlongsideCFC" access="public" returntype="void">
-		<cfscript>
-			theObject = createObject("component","Fixture.APlainCFC_Fixture_cfm");
-			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
-			allContexts = BOValidator.getAllContexts();
-			assertEquals(true,structKeyExists(allContexts,"___Default"));
-			assertEquals("firstName",allContexts.___Default[1].propertyName);
-			assertEquals("lastName",allContexts.___Default[2].propertyName);
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="getValidatorShouldReturnProperBOWhenXmlFileIsInAConfiguredFolder" access="public" returntype="void">
-		<cfscript>
-			VTConfig = 	{definitionPath=getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/"};
-			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
-			theObject = createObject("component","Fixture.ObjectWithSeparateRulesFile");
-			BOValidator = variables.ValidateThis.getValidator(theObject=theObject);
-			allContexts = BOValidator.getAllContexts();
-			assertEquals(true,structKeyExists(allContexts,"___Default"));
-			assertEquals("firstName",allContexts.___Default[1].propertyName);
-			assertEquals("lastName",allContexts.___Default[2].propertyName);
-		</cfscript>  
-	</cffunction>
-
 	<cffunction name="createDefaultBOV" access="private" returntype="any">
 		<cfscript>
 			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac
-			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
-			return variables.ValidateThis.getValidator(variables.className,defPath);
+			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
+			return validationFactory.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 

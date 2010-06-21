@@ -16,12 +16,12 @@
 <cfcomponent displayname="ServerValidator" output="false" hint="I orchestrate server side validations.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ServerValidator">
-		<cfargument name="validationFactory" type="any" required="true" />
+		<cfargument name="childObjectFactory" type="any" required="true" />
 		<cfargument name="TransientFactory" type="any" required="true" />
 		<cfargument name="ObjectChecker" type="any" required="true" />
-		<cfargument name="ExtraRuleValidatorComponentPaths" type="any" required="true" />
+		<cfargument name="ExtraRuleValidatorComponentPaths" type="string" required="true" />
 		
-		<cfset variables.validationFactory = arguments.validationFactory />
+		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.ObjectChecker = arguments.ObjectChecker />
 		<cfset variables.ExtraRuleValidatorComponentPaths = arguments.ExtraRuleValidatorComponentPaths />
@@ -103,7 +103,7 @@
 	<cffunction name="setRuleValidators" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		
 		<cfset var initArgs = {objectChecker=variables.objectChecker} />
-		<cfset variables.RuleValidators = variables.validationFactory.loadChildObjects("ValidateThis.server,#variables.ExtraRuleValidatorComponentPaths#","ServerRuleValidator_",structNew(),initArgs) />
+		<cfset variables.RuleValidators = variables.childObjectFactory.loadChildObjects("ValidateThis.server,#variables.ExtraRuleValidatorComponentPaths#","ServerRuleValidator_",structNew(),initArgs) />
 
 	</cffunction>
 	

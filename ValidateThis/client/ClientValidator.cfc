@@ -16,16 +16,17 @@
 <cfcomponent displayname="ClientValidator" output="false" hint="I generate client side validations from Business Object validations.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientValidator">
-		<cfargument name="validationFactory" type="any" required="true" />
-		<cfargument name="validateThisConfig" type="any" required="true" />
+		<cfargument name="childObjectFactory" type="any" required="true" />
 		<cfargument name="translator" type="any" required="true" />
 		<cfargument name="fileSystem" type="any" required="true" />
+		<cfargument name="JSRoot" type="string" required="true" />
+		<cfargument name="extraClientScriptWriterComponentPaths" type="string" required="true" />
 
-		<cfset variables.validationFactory = arguments.validationFactory />
-		<cfset variables.validateThisConfig = arguments.validateThisConfig />
+		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.translator = arguments.translator />
 		<cfset variables.fileSystem = arguments.fileSystem />
-		<cfset variables.extraClientScriptWriterComponentPaths = variables.validateThisConfig.extraClientScriptWriterComponentPaths />
+		<cfset variables.JSRoot = arguments.JSRoot />
+		<cfset variables.extraClientScriptWriterComponentPaths = arguments.extraClientScriptWriterComponentPaths />
 
 		<cfset setScriptWriters() />
 		<cfreturn this />
@@ -75,14 +76,14 @@
 	
 	<cffunction name="setScriptWriters" returntype="void" access="private" output="false" hint="I create script writer objects from a list of component paths">
 		
-		<cfset var initArgs = {validationFactory=variables.validationFactory,validateThisConfig=variables.validateThisConfig,translator=variables.translator} />
+		<cfset var initArgs = {childObjectFactory=variables.childObjectFactory,translator=variables.translator,JSRoot=variables.JSRoot,extraClientScriptWriterComponentPaths=variables.extraClientScriptWriterComponentPaths} />
 		<cfset var swDirs = variables.fileSystem.listDirs(GetDirectoryFromPath(getCurrentTemplatePath())) />
 		<cfset var swDir = 0 />
 		<cfset var swPaths = "" />
 		<cfloop list="#swDirs#" index="swDir">
 			<cfset swPaths = listAppend(swPaths,"ValidateThis.client." & swDir) />
 		</cfloop>
-		<cfset variables.ScriptWriters = variables.validationFactory.loadChildObjects(swPaths & "," & variables.extraClientScriptWriterComponentPaths,"ClientScriptWriter_",structNew(),initArgs) />
+		<cfset variables.ScriptWriters = variables.childObjectFactory.loadChildObjects(swPaths & "," & variables.extraClientScriptWriterComponentPaths,"ClientScriptWriter_",structNew(),initArgs) />
 
 	</cffunction>
 	

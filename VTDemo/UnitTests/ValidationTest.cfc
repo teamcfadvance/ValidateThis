@@ -51,7 +51,8 @@ purpose:		I ValidationTest.cfc
 			valStruct.Parameters = StructNew();
 			valStruct.Parameters.Param1 = 1;
 			theValue = "Bob";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(ObjectChecker);
+			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals(valStruct.ValType,Validation.getValType());
 			assertEquals(valStruct.PropertyName,Validation.getPropertyName());
@@ -71,7 +72,8 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(ObjectChecker);
+			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -85,7 +87,8 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(ObjectChecker);
+			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals("Silverberg",Validation.getObjectValue("LastName"));
 		</cfscript>  
@@ -99,7 +102,8 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(ObjectChecker);
+			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -113,7 +117,8 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "Blah";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(ObjectChecker);
+			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -127,7 +132,8 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "WheelsName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(ObjectChecker);
+			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -141,7 +147,8 @@ purpose:		I ValidationTest.cfc
 			valStruct = StructNew();
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "GroovyName";
-			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(ObjectChecker);
+			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -156,7 +163,8 @@ purpose:		I ValidationTest.cfc
 			valStruct.ValType = "email";
 			valStruct.PropertyName = "FirstName";
 			valStruct.isRequired = true;
-			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(ObjectChecker);
+			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals(true,Validation.getIsRequired());
 		</cfscript>  
@@ -171,7 +179,8 @@ purpose:		I ValidationTest.cfc
 			valStruct.ValType = "email";
 			valStruct.PropertyName = "FirstName";
 			valStruct.isRequired = false;
-			Validation = CreateObject("component","ValidateThis.server.validation").init(obj,ObjectChecker);
+			Validation = CreateObject("component","ValidateThis.server.validation").init(ObjectChecker);
+			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals(false,Validation.getIsRequired());
 		</cfscript>  

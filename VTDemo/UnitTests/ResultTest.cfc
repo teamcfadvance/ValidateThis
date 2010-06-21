@@ -200,7 +200,6 @@
 			addMultipleFailures();
 			addMultipleFailures();
 			failures = result.getFailuresByField(limit=2);
-			debug(failures);
 			assertEquals(2,structCount(failures));
 			assertEquals(2,arrayLen(failures.fieldA));
 			assertEquals(2,arrayLen(failures.fieldB));

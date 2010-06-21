@@ -34,7 +34,7 @@
 		<cfparam name="variables.ValidateThisConfig.ExtraRuleValidatorComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.ExtraClientScriptWriterComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.extraFileReaderComponentPaths" default="" />
-		<cfparam name="variables.ValidateThisConfig.fileReaderSequence" default="json,xml" />
+		<cfparam name="variables.ValidateThisConfig.externalFileTypes" default="xml,json" />
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />

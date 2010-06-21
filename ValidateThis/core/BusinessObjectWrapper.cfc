@@ -15,13 +15,19 @@
 --->
 <cfcomponent displayname="BusinessObjectWrapper" output="false" hint="I wrap a Business Object to allow for 'shadow' properties.">
 
-	<cffunction name="Init" access="Public" returntype="any" output="false" hint="I am the pseudo-constructor">
+	<cffunction name="Init" access="Public" returntype="any" output="false" hint="I am the constructor">
 
-		<cfargument name="theObject" type="any" required="yes" hint="The Object to be wrapped" />
+		<!---<cfargument name="theObject" type="any" required="yes" hint="The Object to be wrapped" />--->
 
 		<cfset variables.instance = StructNew() />
-		<cfset variables.instance.theObject = arguments.theObject />
+		<!---<cfset variables.instance.theObject = arguments.theObject />--->
 		<cfset variables.instance.invalidVars = StructNew() />
+		<cfreturn this />
+	</cffunction>
+
+	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
+		<cfargument name="theObject" type="any" required="yes" hint="The Object to be wrapped" />
+		<cfset variables.instance.theObject = arguments.theObject />
 		<cfreturn this />
 	</cffunction>
 

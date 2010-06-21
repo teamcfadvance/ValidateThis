@@ -15,7 +15,7 @@
 --->
 <cfcomponent displayname="Result" output="false" hint="I am a transient result object.">
 
-	<cffunction name="Init" access="Public" returntype="any" output="false" hint="I am the pseudo-constructor">
+	<cffunction name="Init" access="Public" returntype="any" output="false" hint="I am the constructor">
 		<cfargument name="Translator" type="any" required="yes" />
 		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.instance = StructNew() />

@@ -85,10 +85,10 @@ purpose:		I ValidateThisTest.cfc
 
 	<cffunction name="newResultShouldReturnCustomResultObjectWhenspecifiedViaConfig" access="public" returntype="void">
 		<cfscript>
-			vtConfig = {ResultPath="UnitTests.Fixture.APlainCFC_Fixture"};
+			vtConfig = {ResultPath="UnitTests.Fixture.CustomResult"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(vtConfig);
 			result = ValidateThis.newResult();
-			assertEquals("UnitTests.Fixture.APlainCFC_Fixture",GetMetadata(result).name);
+			assertEquals("UnitTests.Fixture.CustomResult",GetMetadata(result).name);
 		</cfscript>
 	</cffunction>
 

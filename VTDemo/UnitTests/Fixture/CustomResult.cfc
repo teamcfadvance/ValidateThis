@@ -1,4 +1,6 @@
 <!---
+				
+	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
 	
@@ -13,17 +15,8 @@
 	License.
 	
 --->
-<cfcomponent output="false" hint="I am a fixture emulating an extra file reader.">
+<cfcomponent output="false" extends="ValidateThis.util.Result">
 
-	<cffunction name="init" returnType="any" access="public" output="false">
-		<cfargument name="FileSystem" type="any" required="true" />
-		<cfargument name="defaultFormName" type="string" required="true" />
-
-		<cfset variables.FileSystem = arguments.FileSystem />
-		<cfset variables.defaultFormName = arguments.defaultFormName />
-		<cfreturn this />
-	</cffunction>
-	
 </cfcomponent>
-	
+
 

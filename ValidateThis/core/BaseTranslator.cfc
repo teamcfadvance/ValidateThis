@@ -17,8 +17,8 @@
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new Translator">
 		<cfargument name="LocaleLoader" type="any" required="true" />
-		<cfargument name="localeMap" type="any" required="true" />
-		<cfargument name="defaultLocale" type="any" required="true" />
+		<cfargument name="localeMap" type="struct" required="true" />
+		<cfargument name="defaultLocale" type="string" required="true" />
 
 		<cfset variables.defaultLocale = arguments.defaultLocale />
 		<cfset variables.instance = StructNew() />

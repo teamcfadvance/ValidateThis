@@ -13,44 +13,23 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ValidationFactory" hint="I create BO Validators to inject into Business Objects.">
+<cfcomponent output="false" hint="I am _the_ factory object for ValidateThis, I also create BO Validators for the framework.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ValidationFactory">
-		<cfargument name="ValidateThisConfig" type="any" required="true" />
+		<cfargument name="ValidateThisConfig" type="struct" required="true" />
 
-		<cfset variables.Beans = StructNew() />
-		<cfset variables.Validators = StructNew() />
+		<cfset var lwConfig = createObject("component","ValidateThis.util.BeanConfig").init(arguments.ValidateThisConfig) />
+		<cfset variables.lwFactory = createObject("component","ValidateThis.util.LightWire").init(lwConfig) />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
-		<cfset loadBeans() />
-				
+		<cfset variables.Validators = StructNew() />
+
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="loadBeans" access="private" output="false" returntype="void" hint="I load the required singletons">
-	
-		<cfset variables.Beans.ValidationFactory = this />
-		<cfset variables.Beans.Version = CreateObject("component","ValidateThis.core.Version").init() />
-		<cfset variables.Beans.ObjectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init(variables.ValidateThisConfig.abstractGetterMethod) />
-		<cfset variables.Beans.ResourceBundle = createObject("component","ValidateThis.util.ResourceBundle").init() />
-		<cfset variables.Beans.LocaleLoader = CreateObject("component",variables.ValidateThisConfig.LocaleLoaderPath).init(variables.Beans.ResourceBundle) />
-		<cfset variables.Beans.Translator = CreateObject("component",variables.ValidateThisConfig.TranslatorPath).init(variables.Beans.LocaleLoader,variables.ValidateThisConfig.localeMap,variables.ValidateThisConfig.defaultLocale) />
-		<cfset variables.Beans.TransientFactory = CreateObject("component","ValidateThis.util.TransientFactoryNoCS").init(variables.Beans.Translator,variables.ValidateThisConfig.ResultPath) />
-		<cfset variables.Beans.FileSystem = CreateObject("component","ValidateThis.util.FileSystem").init(variables.Beans.TransientFactory) />
-		<cfset variables.Beans.externalFileReader = CreateObject("component","ValidateThis.core.externalFileReader").init(variables.Beans.FileSystem,this,variables.ValidateThisConfig) />
-		<cfset variables.Beans.ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(this,variables.Beans.TransientFactory,variables.Beans.ObjectChecker,variables.ValidateThisConfig.ExtraRuleValidatorComponentPaths) />
-		<cfset variables.Beans.ClientValidator = CreateObject("component","ValidateThis.client.ClientValidator").init(this,variables.ValidateThisConfig,variables.Beans.Translator,variables.Beans.FileSystem) />
-		<cfset variables.Beans.CommonScriptGenerator = CreateObject("component","ValidateThis.client.CommonScriptGenerator").init(variables.Beans.ClientValidator) />
-		
-	</cffunction>
-	
 	<cffunction name="getBean" access="public" output="false" returntype="any" hint="I return a singleton">
 		<cfargument name="BeanName" type="Any" required="false" />
 		
-		<cfif StructKeyExists(variables.Beans,arguments.BeanName)>
-			<cfreturn variables.Beans[arguments.BeanName] />
-		<cfelse>
-			<cfthrow type="ValidateThis.core.ValidationFactory.BeanNotFound" detail="No bean called #arguments.BeanName# was found.">
-		</cfif>
+		<cfreturn variables.lwFactory.getSingleton(arguments.BeanName) />
 	
 	</cffunction>
 	
@@ -71,8 +50,12 @@
 		<cfargument name="definitionPath" type="any" required="true" />
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
 		
-		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),getBean("externalFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),variables.ValidateThisConfig,arguments.definitionPath,getBean("CommonScriptGenerator"),getBean("Version"),arguments.theObject) />
-		
+		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),
+			getBean("externalFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),
+			getBean("CommonScriptGenerator"),getBean("Version"),
+			variables.ValidateThisConfig.defaultFormName,variables.ValidateThisConfig.defaultJSLib,variables.ValidateThisConfig.definitionPath,
+			arguments.definitionPath,arguments.theObject) />
+
 	</cffunction>
 
 	<cffunction name="loadChildObjects" returntype="struct" access="public" output="false" hint="I am a utility function used to create groups of child objects, such as SRVs, CRSs and fileReaders.">

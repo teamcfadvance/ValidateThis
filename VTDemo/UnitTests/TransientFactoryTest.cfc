@@ -18,16 +18,26 @@
 
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			translator = mock();
-			transientFactory = createObject("component","ValidateThis.util.TransientFactoryNoCS").init(translator,"ValidateThis.util.Result");
 		</cfscript>
 	</cffunction>
 
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 
+	<cffunction name="createTransientFactory" access="private" returntype="any">
+		<cfargument name="addToConfig" type="struct" required="false" default="#structNew()#" />
+		<cfscript>
+			ValidateThisConfig = getVTConfig();
+			structAppend(ValidateThisConfig,arguments.addToConfig,true);
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			transientFactory = validationFactory.getBean("transientFactory");
+		</cfscript>
+	</cffunction>
+
+
 	<cffunction name="newResultShouldReturnBuiltInResultObject" access="public" returntype="void">
 		<cfscript>
+			createTransientFactory();
 			result = variables.transientFactory.newResult();
 			assertEquals("validatethis.util.Result",GetMetadata(result).name);
 		</cfscript>
@@ -35,9 +45,10 @@
 
 	<cffunction name="newResultShouldReturnCustomResultObjectWhenOverrideInPlace" access="public" returntype="void">
 		<cfscript>
-			transientFactory = createObject("component","ValidateThis.util.TransientFactoryNoCS").init(translator,"UnitTests.Fixture.APlainCFC_Fixture");
+			extra = {ResultPath="UnitTests.Fixture.CustomResult"};
+			createTransientFactory(extra);
 			result = variables.transientFactory.newResult();
-			assertEquals("UnitTests.Fixture.APlainCFC_Fixture",GetMetadata(result).name);
+			assertEquals("UnitTests.Fixture.CustomResult",GetMetadata(result).name);
 		</cfscript>
 	</cffunction>
 

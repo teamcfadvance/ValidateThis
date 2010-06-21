@@ -21,7 +21,7 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
-			className = "user.user";
+			className = "user";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			externalFileReader = validationFactory.getBean("externalFileReader");
 		</cfscript>
@@ -45,7 +45,7 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="ExtraFileReadersShouldBeLoaded" access="public" returntype="void">
+	<cffunction name="ExtraFileReadersShouldLoadOnInit" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig.extraFileReaderComponentPaths="VTDemo.UnitTests.Fixture.FileReaders";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
@@ -61,7 +61,7 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="OverrideFileReadersShouldBeLoaded" access="public" returntype="void">
+	<cffunction name="OverrideFileReadersShouldLoadOnInit" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig.extraFileReaderComponentPaths="VTDemo.UnitTests.Fixture.OverrideFileReaders";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
@@ -79,7 +79,6 @@
 
 	<cffunction name="processFilesReturnsCorrectStructForJSONFile" access="public" returntype="void">
 		<cfscript>
-			defPath = "/BODemo/Model/";
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/json";
 			debug(externalFileReader.processFiles(className,defPath));
 			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
@@ -89,7 +88,7 @@
 
 	<cffunction name="processFilesReturnsCorrectStructWithMappedPathLookingForXMLExtension" access="public" returntype="void">
 		<cfscript>
-			defPath = "/BODemo/Model/";
+			defPath = "/UnitTests/Fixture";
 			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -97,7 +96,7 @@
 
 	<cffunction name="processFilesReturnsCorrectStructWithPhysicalPathLookingForXMLExtension" access="public" returntype="void">
 		<cfscript>
-			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
+			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
 			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -105,23 +104,23 @@
 
 	<cffunction name="processFilesReturnsCorrectStructWithMappedPathLookingForXMLCFMExtension" access="public" returntype="void">
 		<cfscript>
-			defPath = "/BODemo/Model/";
-			PropertyDescs = externalFileReader.processFiles("user_cfm.user_cfm",defPath).PropertyDescs;
+			defPath = "/UnitTests/Fixture";
+			PropertyDescs = externalFileReader.processFiles("user_cfm",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="processFilesReturnsCorrectStructWithPhysicalPathLookingForXMLCFMExtension" access="public" returntype="void">
 		<cfscript>
-			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/");
-			PropertyDescs = externalFileReader.processFiles("user_cfm.user_cfm",defPath).PropertyDescs;
+			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
+			PropertyDescs = externalFileReader.processFiles("user_cfm",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="processFilesReturnsCorrectStructLookingForXMLExtensionInFolder" access="public" returntype="void">
 		<cfscript>
-			defPath = "/BODemo/Model/";
+			defPath = "/UnitTests/Fixture";
 			PropertyDescs = externalFileReader.processFiles("user.user_folder",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -129,7 +128,7 @@
 
 	<cffunction name="processFilesReturnsCorrectStructLookingForXMLCFMExtensionInFolder" access="public" returntype="void">
 		<cfscript>
-			defPath = "/BODemo/Model/";
+			defPath = "/UnitTests/Fixture";
 			PropertyDescs = externalFileReader.processFiles("user_cfm.user_cfm_folder",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -137,7 +136,7 @@
 
 	<cffunction name="processFilesReturnsCorrectStructLookingForFileInSecondFolderInList" access="public" returntype="void">
 		<cfscript>
-			defPath = "/BODemo/Model/,/BODemo/Model/aSecondFolderToTest/";
+			defPath = "/UnitTests/Fixture,/UnitTests/Fixture/aSecondFolderToTest";
 			PropertyDescs = externalFileReader.processFiles("user.user_secondfolder",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -145,7 +144,7 @@
 
 	<cffunction name="processFilesThrowsWithBadMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			defPath = "/BODemo/Model_Doesnt_Exist/";
+			defPath = "/UnitTests/Fixture/Model_Doesnt_Exist/";
 			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -153,7 +152,7 @@
 
 	<cffunction name="processFilesThrowsWithBadPhysicalPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			defPath = ReReplaceNoCase(getCurrentTemplatePath(),"([\w\/]+?)(UnitTests\/)([\w\W]+)","\1BODemo/Model/") & "Doesnt_Exist/";
+			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture" & "Doesnt_Exist/";
 			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -161,7 +160,15 @@
 
 	<cffunction name="processFilesReturnsCorrectStructWithMappedPathWithoutTrailingSlash" access="public" returntype="void">
 		<cfscript>
-			defPath = "/BODemo/Model";
+			defPath = "/UnitTests/Fixture";
+			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
+			isPropertiesStructCorrect(PropertyDescs);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processFilesReturnsCorrectStructWithMappedPathWithTrailingSlash" access="public" returntype="void">
+		<cfscript>
+			defPath = "/UnitTests/Fixture/";
 			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -169,8 +176,8 @@
 
 	<cffunction name="processFilesReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
-			className = "user.user";
-			definitionPath = ExpandPath("/BODemo/model/");
+			className = "user";
+			definitionPath = ExpandPath("/UnitTests/Fixture");
 			PropertyDescs = externalFileReader.processFiles(className,definitionPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -178,8 +185,8 @@
 
 	<cffunction name="processFilesReturnsCorrectValidations" access="public" returntype="void">
 		<cfscript>
-			className = "user.user";
-			definitionPath = ExpandPath("/BODemo/model/");
+			className = "user";
+			definitionPath = ExpandPath("/UnitTests/Fixture");
 			Validations = externalFileReader.processFiles(className,definitionPath).Validations;
 			assertEquals(StructCount(Validations),1);
 			assertEquals(StructCount(Validations.Contexts),3);

@@ -86,10 +86,10 @@
 
 	<cffunction name="newResultShouldReturnCustomResultObjectWhenspecifiedViaConfig" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig.ResultPath="UnitTests.Fixture.APlainCFC_Fixture";
+			ValidateThisConfig.ResultPath="UnitTests.Fixture.CustomResult";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			result = validationFactory.newResult();
-			assertEquals("UnitTests.Fixture.APlainCFC_Fixture",GetMetadata(result).name);
+			assertEquals("UnitTests.Fixture.CustomResult",GetMetadata(result).name);
 		</cfscript>
 	</cffunction>
 

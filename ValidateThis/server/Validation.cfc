@@ -15,14 +15,18 @@
 --->
 <cfcomponent displayname="Validation" output="false" hint="I am a transient validation object.">
 
-	<cffunction name="init" access="Public" returntype="any" output="false" hint="I am the pseudo-constructor">
+	<cffunction name="init" access="Public" returntype="any" output="false" hint="I am the constructor">
 
-		<cfargument name="theObject" type="any" required="yes" hint="The object being validated" />
 		<cfargument name="ObjectChecker" type="any" required="yes" hint="A component used to distinguish object types" />
-		<cfset variables.theObject = arguments.theObject />
 		<cfset variables.ObjectChecker = arguments.ObjectChecker />
 		<cfreturn this />
 
+	</cffunction>
+
+	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
+		<cfargument name="theObject" type="any" required="yes" hint="The object being validated" />
+		<cfset variables.theObject = arguments.theObject />
+		<cfreturn this />
 	</cffunction>
 
 	<cffunction name="load" access="Public" returntype="any" output="false" hint="I load a fresh validation rule into the validation object, which allows it to be reused">

@@ -16,35 +16,37 @@
    TransientFactory.cfc (.1)
    [2009-09-25]	Initial Release.				
  --->
-<cfcomponent displayname="TransientFactoryNoCS" output="false" hint="I create Transient objects.">
+<cfcomponent output="false" hint="I create Transient objects.">
 
 	<!--- public --->
 
 	<cffunction name="init" access="public" output="false" returntype="any" hint="returns a configured transient factory">
-		<cfargument name="Translator" type="any" required="yes" />
-		<cfargument name="pathToResultObject" type="any" required="yes" />
-		<cfset variables.Translator = arguments.Translator />
-		<cfset variables.classes = {Result=arguments.pathToResultObject,Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.ResourceBundle"} />
+		<cfargument name="lightWire" type="any" required="yes" />
+		<cfset variables.lightWire = arguments.lightWire />
+		<!---<cfargument name="pathToResultObject" type="string" required="yes" />
+		<cfset variables.classes = {Result=arguments.pathToResultObject,Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.ResourceBundle"} />--->
 		<cfset variables.afterCreateMethod = "setup" />
 		<cfreturn this />
 	</cffunction>
 	
 	<cffunction name="create" access="public" output="false" returntype="any" hint="returns a configured, autowired transient">
 		<cfargument name="transientName" type="string" required="true">
-		<cfargument name="initArgs" type="struct" required="false" default="#structNew()#">
-		<cfset var local = {} />
-		<!--- Need to do manual injections of singletons as we're not coupled to CS anymore, ugly but it works for now --->
+		<cfargument name="afterCreateArgs" type="struct" required="false" default="#structNew()#">
+		
+		
+		<cfset var obj = variables.lightWire.getTransient(arguments.transientName) />
+		<!--- Need to do manual injections of singletons as we're not coupled to CS anymore, ugly but it works for now 
 		<cfif arguments.transientName EQ "Result">
 			<cfset initArgs.Translator = variables.Translator />
 		</cfif>
 		<cfset local.obj = createObject("component",variables.classes[arguments.transientName])>
 		<cfif StructKeyExists(local.obj,"init")>
 			<cfinvoke component="#local.obj#" method="init" argumentcollection="#arguments.initArgs#" />
+		</cfif>--->
+		<cfif StructKeyExists(obj,variables.afterCreateMethod)>
+			<cfinvoke component="#obj#" method="#variables.afterCreateMethod#" argumentcollection="#arguments.afterCreateArgs#" />
 		</cfif>
-		<cfif StructKeyExists(local.obj,variables.afterCreateMethod)>
-			<cfinvoke component="#local.obj#" method="#variables.afterCreateMethod#" />
-		</cfif>
-		<cfreturn local.obj>
+		<cfreturn obj>
 	</cffunction>
 
 	<cffunction name="onMissingMethod" access="public" output="false" returntype="any" hint="provides virtual api [new{transientName}] for any registered transient.">

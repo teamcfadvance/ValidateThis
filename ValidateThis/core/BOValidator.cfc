@@ -16,16 +16,18 @@
 <cfcomponent output="false" name="BOValidator" hint="I am a validator responsible for holding validation rules for a business object.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new BOValidator">
-		<cfargument name="objectType" type="any" required="true" />
+		<cfargument name="objectType" type="string" required="true" />
 		<cfargument name="FileSystem" type="any" required="true" />
 		<cfargument name="externalFileReader" type="any" required="true" />
 		<cfargument name="ServerValidator" type="any" required="true" />
 		<cfargument name="ClientValidator" type="any" required="true" />
 		<cfargument name="TransientFactory" type="any" required="true" />
-		<cfargument name="ValidateThisConfig" type="any" required="true" />
-		<cfargument name="definitionPath" type="any" required="true" />
 		<cfargument name="CommonScriptGenerator" type="any" required="true" />
 		<cfargument name="Version" type="any" required="true" />
+		<cfargument name="defaultFormName" type="string" required="true" />
+		<cfargument name="defaultJSLib" type="string" required="true" />
+		<cfargument name="definitionPath" type="string" required="true" />
+		<cfargument name="specificDefinitionPath" type="string" required="true" />
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
 
 		<cfset variables.Instance = {objectType = arguments.objectType} />
@@ -35,14 +37,15 @@
 		<cfset variables.ServerValidator = arguments.ServerValidator />
 		<cfset variables.ClientValidator = arguments.ClientValidator />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
-		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
+		<cfset variables.defaultFormName = arguments.defaultFormName />
+		<cfset variables.defaultJSLib = arguments.defaultJSLib />
 		<cfset variables.CommonScriptGenerator = arguments.CommonScriptGenerator />
 		<cfset variables.Version = arguments.Version />
 
 		<!--- Prepend a specified definitionPath to the paths in the ValidateThisConfig --->
-		<cfset arguments.definitionPath = listPrepend(arguments.ValidateThisConfig.definitionPath,arguments.definitionPath) />
+		<cfset variables.definitionPath = listPrepend(arguments.definitionPath,arguments.specificDefinitionPath) />
 		
-		<cfset processExternalFiles(arguments.objectType,arguments.definitionPath) />
+		<cfset processExternalFiles(arguments.objectType,variables.definitionPath) />
 		<cfreturn this />
 	</cffunction>
 
@@ -52,8 +55,6 @@
 
 		<cfset var theStruct = variables.externalFileReader.processFiles(arguments.objectType,arguments.definitionPath) />
 		
-		<cfset request.debug(theStruct) />
-
 		<cfset variables.Instance.PropertyDescs = theStruct.PropertyDescs />
 		<cfset variables.Instance.ClientFieldDescs = theStruct.ClientFieldDescs />
 		<cfset variables.Instance.FormContexts = theStruct.FormContexts />
@@ -164,7 +165,7 @@
 		hint="I generate the JS using the Client Validator script.">
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
-		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+		<cfargument name="JSLib" type="any" required="false" default="#variables.defaultJSLib#" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfreturn variables.ClientValidator.getValidationScript(getValidations(arguments.Context),arguments.formName,arguments.JSLib,arguments.locale) />
@@ -173,7 +174,7 @@
 
 	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate JS statements required to setup client-side validations for VT.">
 
-		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
+		<cfargument name="JSLib" type="any" required="false" default="#variables.defaultJSLib#" />
 		<cfargument name="JSIncludes" type="Any" required="no" default="true" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
@@ -193,7 +194,7 @@
 		<cfargument name="Context" type="any" required="true" />
 		
 		<cfset var theContext = fixDefaultContext(arguments.Context) />
-		<cfset var formName = variables.ValidateThisConfig.defaultFormName />
+		<cfset var formName = variables.defaultFormName />
 		<cfif StructKeyExists(variables.Instance.FormContexts,theContext)>
 			<cfset formName = variables.Instance.FormContexts[theContext] />
 		</cfif>

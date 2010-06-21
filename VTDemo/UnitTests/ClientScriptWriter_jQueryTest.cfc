@@ -32,8 +32,9 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			setBeanFactory();
-			ScriptWriter = getBeanFactory().getBean("ValidateThis").getBean("ClientValidator").getScriptWriter("jQuery");
+			ValidateThisConfig = getVTConfig();
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
 		</cfscript>
 	</cffunction>
 	
