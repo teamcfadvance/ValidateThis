@@ -63,6 +63,39 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="ResultShouldBeInjectedIntoBOWithInjectResultIntoBOTrue" access="public" returntype="void">
+		<cfscript>
+			extra = {injectResultIntoBO=true};
+			createServerValidator(extra);
+			user = setUpUser(true);
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",result);
+			AssertFalse(user.getVTResult().getIsSuccess());
+			debug(user.getVTResult());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="ResultShouldNotBeInjectedIntoBOWithInjectResultIntoBOFalse" access="public" returntype="void" mxunit:expectedException="Application">
+		<cfscript>
+			extra = {injectResultIntoBO=false};
+			createServerValidator(extra);
+			user = setUpUser(true);
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",result);
+			user.getVTResult();
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="ResultShouldNotBeInjectedIntoBOWithDefaultConfig" access="public" returntype="void" mxunit:expectedException="Application">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser(true);
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",result);
+			user.getVTResult();
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="RuleValidatorsShouldBeLoadedCorrectly" access="public" returntype="void">
 		<cfscript>
 			createServerValidator();

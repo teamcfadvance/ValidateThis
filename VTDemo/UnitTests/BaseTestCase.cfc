@@ -88,6 +88,7 @@
 			ValidateThisConfig.extraFileReaderComponentPaths="";
 			ValidateThisConfig.ResultPath="ValidateThis.util.Result";
 			ValidateThisConfig.externalFileTypes="xml,json";
+			ValidateThisConfig.injectResultIntoBO=false;
 			return ValidateThisConfig;
 		</cfscript>
 	</cffunction>

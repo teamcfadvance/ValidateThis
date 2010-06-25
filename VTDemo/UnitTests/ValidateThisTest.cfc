@@ -1,10 +1,4 @@
 <!---
-	
-filename:		\VTDemo\UnitTests\ValidateThisTest.cfc
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I ValidateThisTest.cfc
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
@@ -19,12 +13,6 @@ purpose:		I ValidateThisTest.cfc
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 --->
 <cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	

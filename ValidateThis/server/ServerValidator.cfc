@@ -20,11 +20,13 @@
 		<cfargument name="TransientFactory" type="any" required="true" />
 		<cfargument name="ObjectChecker" type="any" required="true" />
 		<cfargument name="ExtraRuleValidatorComponentPaths" type="string" required="true" />
+		<cfargument name="injectResultIntoBO" type="string" required="true" />
 		
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.ObjectChecker = arguments.ObjectChecker />
 		<cfset variables.ExtraRuleValidatorComponentPaths = arguments.ExtraRuleValidatorComponentPaths />
+		<cfset variables.injectResultIntoBO = arguments.injectResultIntoBO />
 
 		<cfset setRuleValidators() />
 				
@@ -80,6 +82,12 @@
 					</cfif>
 				</cfif>
 			</cfloop>
+			<!--- inject the Result object into the BO if configured to do so --->
+			<cfif variables.injectResultIntoBO and variables.ObjectChecker.isCFC(arguments.theObject)>
+				<cfset arguments.theObject["setVTResult"] = this["setVTResult"] />
+				<cfset arguments.theObject["getVTResult"] = this["getVTResult"] />
+				<cfset arguments.theObject.setVTResult(arguments.Result) />
+			</cfif>
 		</cfif>
 	</cffunction>
 
@@ -110,6 +118,14 @@
 	<cffunction name="getRuleValidator" access="public" output="false" returntype="any">
 		<cfargument name="RuleType" type="any" required="true" />
 		<cfreturn variables.RuleValidators[arguments.RuleType] />
+	</cffunction>
+	
+	<cffunction name="setVTResult" access="Public" returntype="void" output="false" hint="I set the VT Result object. I am injected into the BO if configured to do so.">
+		<cfargument name="result" type="any" required="true" />
+		<cfset variables.VTResult = arguments.result />
+	</cffunction>
+	<cffunction name="getVTResult" access="Public" returntype="any" output="false" hint="I get the VT Result object. I am injected into the BO if configured to do so.">
+		<cfreturn variables.VTResult />
 	</cffunction>
 
 </cfcomponent>
