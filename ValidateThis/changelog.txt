@@ -134,7 +134,7 @@ Version 0.95
 - changed jQuery validations so that missing form fields will not generate a JavaScript error
 - added the ResultPath config option to override the built-in Result object with a custom Result object
 - fixed an issue with how delimiters were being added via the getFailuresAsString() method in the Result object
-- added four new methods to the Result object: getFailuresByField(), getFailureMessagesByField(), getFailuresByProperty(), getFailureMessagesByField()
+- added four new methods to the Result object: getFailuresByField(), getFailureMessagesByField(), getFailuresByProperty(), getFailureMessagesByProperty()
 - the byField methods return a struct consisting of clientFieldNames, the byProperty methods return a struct consisting of propertyNames
 - the getFailures methods return complete failure structs, the getFailureMessages methods return just the failure messages
 - the getFailureMessages methods return an array of strings by default, but can return a string concatenated using a custom delimiter
