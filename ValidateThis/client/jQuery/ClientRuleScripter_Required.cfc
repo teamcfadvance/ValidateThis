@@ -37,12 +37,12 @@
 		</cfif>
 		<cfif len(DependentFieldName) GT 0>
 			<cfif StructKeyExists(arguments.validation.Parameters,"DependentPropertyValue")>
-				<cfset theCondition = "function(element) { return $(""[name='#DependentFieldName#']"").getValue() == '#arguments.validation.Parameters.DependentPropertyValue#'; }" />
+				<cfset theCondition = "function(element) { return $form_#arguments.validation.formName#.find("":input[name='#DependentFieldName#']"").getValue() == '#arguments.validation.Parameters.DependentPropertyValue#'; }" />
 			<cfelse>
-				<cfset theCondition = "function(element) { return $(""[name='#DependentFieldName#']"").getValue().length > 0; }" />
+				<cfset theCondition = "function(element) { return $form_#arguments.validation.formName#.find("":input[name='#DependentFieldName#']"").getValue().length > 0; }" />
 			</cfif>
 		</cfif>
-
+		
 		<cfif Len(theCondition)>
 			<cfif len(arguments.customMessage) EQ 0 AND StructKeyExists(arguments.validation.Parameters,"DependentPropertyDesc")>
 				<cfif StructKeyExists(arguments.validation.Parameters,"DependentPropertyValue")>

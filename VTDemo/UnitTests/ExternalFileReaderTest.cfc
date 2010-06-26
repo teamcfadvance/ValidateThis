@@ -30,21 +30,7 @@
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 
-	<cffunction name="localFileReadersShouldLoadOnInit" access="public" returntype="void">
-		<cfscript>
-			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
-			externalFileReader = validationFactory.getBean("externalFileReader");
-			makePublic(externalFileReader,"getFileReaders");
-			FRs = externalFileReader.getFileReaders();
-			assertEquals(true,structKeyExists(FRs,"XML"));
-			assertTrue(GetMetadata(FRs.XML).name CONTAINS "FileReader_XML");
-			assertTrue(GetMetadata(FRs.XML).name CONTAINS "ValidateThis");
-			assertEquals(true,structKeyExists(FRs,"JSON"));
-			assertTrue(GetMetadata(FRs.JSON).name CONTAINS "FileReader_JSON");
-			assertTrue(GetMetadata(FRs.JSON).name CONTAINS "ValidateThis");
-		</cfscript>  
-	</cffunction>
-
+	<!--- need to address extra and override file readers
 	<cffunction name="ExtraFileReadersShouldLoadOnInit" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig.extraFileReaderComponentPaths="VTDemo.UnitTests.Fixture.FileReaders";
@@ -76,118 +62,281 @@
 			assertTrue(GetMetadata(FRs.Extra).name CONTAINS "Fixture");
 		</cfscript>  
 	</cffunction>
+	--->
 
-	<cffunction name="processFilesReturnsCorrectStructForJSONFile" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectPropertyDescsForJSON" access="public" returntype="void">
 		<cfscript>
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/json";
-			debug(externalFileReader.processFiles(className,defPath));
-			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
-			isPropertiesStructCorrect(PropertyDescs);
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
+			debug(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectStructWithMappedPathLookingForXMLExtension" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectValidationsForJSON" access="public" returntype="void">
+		<cfscript>
+			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/json";
+			Validations = externalFileReader.loadRulesFromExternalFile(className,defPath).Validations;
+			assertEquals(StructCount(Validations),1);
+			assertEquals(StructCount(Validations.Contexts),3);
+			Rules = Validations.Contexts.Register;
+			assertEquals(ArrayLen(Rules),13);
+			Validation = Rules[1];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"LastName");
+			assertEquals(Validation.PropertyDesc,"Last Name");
+			assertEquals(Validation.Parameters.DependentPropertyName,"FirstName");
+			assertEquals(Validation.Parameters.DependentPropertyDesc,"First Name");
+			Validation = Rules[2];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"UserName");
+			assertEquals(Validation.PropertyDesc,"Email Address");
+			Validation = Rules[3];
+			assertEquals(Validation.ValType,"email");
+			assertEquals(Validation.PropertyName,"UserName");
+			assertEquals(Validation.PropertyDesc,"Email Address");
+			assertEquals(Validation.FailureMessage,"Hey, buddy, you call that an Email Address?");
+			Validation = Rules[4];
+			assertEquals(Validation.ValType,"custom");
+			assertEquals(Validation.PropertyName,"Nickname");
+			assertEquals(Validation.PropertyDesc,"Nickname");
+			assertEquals(Validation.Parameters.MethodName,"CheckDupNickname");
+			Validation = Rules[5];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"UserPass");
+			assertEquals(Validation.PropertyDesc,"Password");
+			Validation = Rules[6];
+			assertEquals(Validation.ValType,"rangelength");
+			assertEquals(Validation.PropertyName,"UserPass");
+			assertEquals(Validation.PropertyDesc,"Password");
+			assertEquals(Validation.Parameters.MinLength,5);
+			assertEquals(Validation.Parameters.MaxLength,10);
+			Validation = Rules[7];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"VerifyPassword");
+			assertEquals(Validation.PropertyDesc,"Verify Password");
+			Validation = Rules[8];
+			assertEquals(Validation.ValType,"equalTo");
+			assertEquals(Validation.PropertyName,"VerifyPassword");
+			assertEquals(Validation.PropertyDesc,"Verify Password");
+			assertEquals(Validation.Parameters.ComparePropertyName,"UserPass");
+			assertEquals(Validation.Parameters.ComparePropertyDesc,"Password");
+			Validation = Rules[9];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"UserGroup");
+			assertEquals(Validation.PropertyDesc,"User Group");
+			Validation = Rules[10];
+			assertEquals(Validation.ValType,"regex");
+			assertEquals(Validation.PropertyName,"Salutation");
+			assertEquals(Validation.PropertyDesc,"Salutation");
+			assertEquals(Validation.Parameters.Regex,"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$");
+			assertEquals(Validation.FailureMessage,"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.");
+			Validation = Rules[11];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"LikeOther");
+			assertEquals(Validation.PropertyDesc,"What do you like?");
+			assertEquals(Validation.FailureMessage,"If you don't like Cheese and you don't like Chocolate, you must like something!");
+			assertEquals(Validation.Condition.ClientTest,"$(&quot;[name='likecheese']&quot;).getvalue() == 0 &amp;&amp; $(&quot;[name='likechocolate']&quot;).getvalue() == 0;");
+			assertEquals(Validation.Condition.ServerTest,"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0");
+			Validation = Rules[12];
+			assertEquals(Validation.ValType,"numeric");
+			assertEquals(Validation.PropertyName,"HowMuch");
+			assertEquals(Validation.PropertyDesc,"How much money would you like?");
+			Validation = Rules[13];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"CommunicationMethod");
+			assertEquals(Validation.PropertyDesc,"Communication Method");
+			assertEquals(Validation.Parameters.DependentPropertyDesc,"Allow Communication");
+			assertEquals(Validation.Parameters.DependentPropertyName,"AllowCommunication");
+			assertEquals(Validation.Parameters.DependentPropertyValue,1);
+			Rules = Validations.Contexts.Profile;
+			assertEquals(ArrayLen(Rules),15);
+			Validation = Rules[1];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"Salutation");
+			assertEquals(Validation.PropertyDesc,"Salutation");
+			Validation = Rules[2];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"FirstName");
+			assertEquals(Validation.PropertyDesc,"First Name");
+			Validation = Rules[3];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"LastName");
+			assertEquals(Validation.PropertyDesc,"Last Name");
+			Validation = Rules[4];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"UserName");
+			assertEquals(Validation.PropertyDesc,"Email Address");
+			Validation = Rules[5];
+			assertEquals(Validation.ValType,"email");
+			assertEquals(Validation.PropertyName,"UserName");
+			assertEquals(Validation.PropertyDesc,"Email Address");
+			assertEquals(Validation.FailureMessage,"Hey, buddy, you call that an Email Address?");
+			Validation = Rules[6];
+			assertEquals(Validation.ValType,"custom");
+			assertEquals(Validation.PropertyName,"Nickname");
+			assertEquals(Validation.PropertyDesc,"Nickname");
+			assertEquals(Validation.Parameters.MethodName,"CheckDupNickname");
+			Validation = Rules[7];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"UserPass");
+			assertEquals(Validation.PropertyDesc,"Password");
+			Validation = Rules[8];
+			assertEquals(Validation.ValType,"rangelength");
+			assertEquals(Validation.PropertyName,"UserPass");
+			assertEquals(Validation.PropertyDesc,"Password");
+			assertEquals(Validation.Parameters.MinLength,5);
+			assertEquals(Validation.Parameters.MaxLength,10);
+			Validation = Rules[9];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"VerifyPassword");
+			assertEquals(Validation.PropertyDesc,"Verify Password");
+			Validation = Rules[10];
+			assertEquals(Validation.ValType,"equalTo");
+			assertEquals(Validation.PropertyName,"VerifyPassword");
+			assertEquals(Validation.PropertyDesc,"Verify Password");
+			assertEquals(Validation.Parameters.ComparePropertyName,"UserPass");
+			assertEquals(Validation.Parameters.ComparePropertyDesc,"Password");
+			Validation = Rules[11];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"UserGroup");
+			assertEquals(Validation.PropertyDesc,"User Group");
+			Validation = Rules[12];
+			assertEquals(Validation.ValType,"regex");
+			assertEquals(Validation.PropertyName,"Salutation");
+			assertEquals(Validation.PropertyDesc,"Salutation");
+			assertEquals(Validation.Parameters.Regex,"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$");
+			assertEquals(Validation.FailureMessage,"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.");
+			Validation = Rules[13];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"LikeOther");
+			assertEquals(Validation.PropertyDesc,"What do you like?");
+			assertEquals(Validation.FailureMessage,"If you don't like Cheese and you don't like Chocolate, you must like something!");
+			assertEquals(Validation.Condition.ClientTest,"$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;");
+			assertEquals(Validation.Condition.ServerTest,"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0");
+			Validation = Rules[14];
+			assertEquals(Validation.ValType,"numeric");
+			assertEquals(Validation.PropertyName,"HowMuch");
+			assertEquals(Validation.PropertyDesc,"How much money would you like?");
+			Validation = Rules[15];
+			assertEquals(Validation.ValType,"required");
+			assertEquals(Validation.PropertyName,"CommunicationMethod");
+			assertEquals(Validation.PropertyDesc,"Communication Method");
+			assertEquals(Validation.Parameters.DependentPropertyDesc,"Allow Communication");
+			assertEquals(Validation.Parameters.DependentPropertyName,"AllowCommunication");
+			assertEquals(Validation.Parameters.DependentPropertyValue,1);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="loadRulesFromExternalFileThrowsWithInvalidJSONInFile" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.fileReaders.Filereader_JSON.invalidJSON">
+		<cfscript>
+			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/json";
+			externalFileReader.loadRulesFromExternalFile("invalid",defPath);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithMappedPathLookingForXMLExtension" access="public" returntype="void">
 		<cfscript>
 			defPath = "/UnitTests/Fixture";
-			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectStructWithPhysicalPathLookingForXMLExtension" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithPhysicalPathLookingForXMLExtension" access="public" returntype="void">
 		<cfscript>
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
-			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectStructWithMappedPathLookingForXMLCFMExtension" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithMappedPathLookingForXMLCFMExtension" access="public" returntype="void">
 		<cfscript>
 			defPath = "/UnitTests/Fixture";
-			PropertyDescs = externalFileReader.processFiles("user_cfm",defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile("user_cfm",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectStructWithPhysicalPathLookingForXMLCFMExtension" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithPhysicalPathLookingForXMLCFMExtension" access="public" returntype="void">
 		<cfscript>
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
-			PropertyDescs = externalFileReader.processFiles("user_cfm",defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile("user_cfm",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectStructLookingForXMLExtensionInFolder" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructLookingForXMLExtensionInFolder" access="public" returntype="void">
 		<cfscript>
 			defPath = "/UnitTests/Fixture";
-			PropertyDescs = externalFileReader.processFiles("user.user_folder",defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile("user.user_folder",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectStructLookingForXMLCFMExtensionInFolder" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructLookingForXMLCFMExtensionInFolder" access="public" returntype="void">
 		<cfscript>
 			defPath = "/UnitTests/Fixture";
-			PropertyDescs = externalFileReader.processFiles("user_cfm.user_cfm_folder",defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile("user_cfm.user_cfm_folder",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectStructLookingForFileInSecondFolderInList" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructLookingForFileInSecondFolderInList" access="public" returntype="void">
 		<cfscript>
 			defPath = "/UnitTests/Fixture,/UnitTests/Fixture/aSecondFolderToTest";
-			PropertyDescs = externalFileReader.processFiles("user.user_secondfolder",defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile("user.user_secondfolder",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesThrowsWithBadMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
+	<cffunction name="loadRulesFromExternalFileThrowsWithBadMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
 			defPath = "/UnitTests/Fixture/Model_Doesnt_Exist/";
-			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesThrowsWithBadPhysicalPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
+	<cffunction name="loadRulesFromExternalFileThrowsWithBadPhysicalPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture" & "Doesnt_Exist/";
-			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectStructWithMappedPathWithoutTrailingSlash" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithMappedPathWithoutTrailingSlash" access="public" returntype="void">
 		<cfscript>
 			defPath = "/UnitTests/Fixture";
-			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectStructWithMappedPathWithTrailingSlash" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithMappedPathWithTrailingSlash" access="public" returntype="void">
 		<cfscript>
 			defPath = "/UnitTests/Fixture/";
-			PropertyDescs = externalFileReader.processFiles(className,defPath).PropertyDescs;
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectPropertyDescs" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
 			className = "user";
-			definitionPath = ExpandPath("/UnitTests/Fixture");
-			PropertyDescs = externalFileReader.processFiles(className,definitionPath).PropertyDescs;
+			definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
+			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,definitionPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="processFilesReturnsCorrectValidations" access="public" returntype="void">
+	<cffunction name="loadRulesFromExternalFileReturnsCorrectValidations" access="public" returntype="void">
 		<cfscript>
 			className = "user";
-			definitionPath = ExpandPath("/UnitTests/Fixture");
-			Validations = externalFileReader.processFiles(className,definitionPath).Validations;
+			definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
+			Validations = externalFileReader.loadRulesFromExternalFile(className,definitionPath).Validations;
+			debug(Validations);
 			assertEquals(StructCount(Validations),1);
 			assertEquals(StructCount(Validations.Contexts),3);
 			Rules = Validations.Contexts.Register;

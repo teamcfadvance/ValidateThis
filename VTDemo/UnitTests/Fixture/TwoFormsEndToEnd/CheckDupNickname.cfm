@@ -13,14 +13,13 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="Version" hint="I am used to report the current version of the framework.">
+<cfsetting enablecfoutputonly="true" />
+<cfsetting showDebugOutput="false" />
 
-	<cffunction name="init" returnType="any" access="public" output="false" hint="Constructor">
-		<cfreturn this />
-	</cffunction>
-	
-	<cffunction name="getVersion" returnType="any" access="public" output="false" hint="I return the current version of the framework">
-		<cfreturn "0.96" />
-	</cffunction>
+<cfparam name="url.Nickname" default="" />
 
-</cfcomponent>
+<cfif url.Nickname EQ "BobRules">
+	<cfoutput>false</cfoutput>
+<cfelse>
+	<cfoutput>true</cfoutput>
+</cfif>

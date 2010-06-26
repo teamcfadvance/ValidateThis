@@ -93,6 +93,8 @@ Adds a constructor property to a bean.
 		addTransient("ValidateThis.server.Validation");
 		addTransient("ValidateThis.core.BusinessObjectWrapper");
 		addTransient("ValidateThis.util.ResourceBundle"); //??? do we need this?
+		addTransient("ValidateThis.core.fileReaders.FileReader_JSON");
+		addTransient("ValidateThis.core.fileReaders.FileReader_XML");
 		addTransient(variables.ValidateThisConfig.ResultPath,"Result");
 		/*
 		addSingleton("ValidateThis.util.TransientFactoryNoCS");

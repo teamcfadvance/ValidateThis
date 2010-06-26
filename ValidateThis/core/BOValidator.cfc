@@ -45,15 +45,15 @@
 		<!--- Prepend a specified definitionPath to the paths in the ValidateThisConfig --->
 		<cfset variables.definitionPath = listPrepend(arguments.definitionPath,arguments.specificDefinitionPath) />
 		
-		<cfset processExternalFiles(arguments.objectType,variables.definitionPath) />
+		<cfset loadRulesFromExternalFile(arguments.objectType,variables.definitionPath) />
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="processExternalFiles" returnType="void" access="private" output="false" hint="I ask the externalFileReader to read the validations XML file and reformat it into a struct">
+	<cffunction name="loadRulesFromExternalFile" returnType="void" access="private" output="false" hint="I ask the externalFileReader to read the validations XML file and reformat it into a struct">
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 
-		<cfset var theStruct = variables.externalFileReader.processFiles(arguments.objectType,arguments.definitionPath) />
+		<cfset var theStruct = variables.externalFileReader.loadRulesFromExternalFile(arguments.objectType,arguments.definitionPath) />
 		
 		<cfset variables.Instance.PropertyDescs = theStruct.PropertyDescs />
 		<cfset variables.Instance.ClientFieldDescs = theStruct.ClientFieldDescs />

@@ -17,36 +17,19 @@
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new externalFileReader">
 		<cfargument name="fileSystem" type="any" required="true" />
-		<cfargument name="childObjectFactory" type="any" required="true" />
+		<cfargument name="transientFactory" type="any" required="true" />
 		<cfargument name="extraFileReaderComponentPaths" type="string" required="true" />
 		<cfargument name="defaultFormName" type="string" required="true" />
 		<cfargument name="externalFileTypes" type="string" required="true" />
 
 		<cfset variables.fileSystem = arguments.fileSystem />
-		<cfset variables.childObjectFactory = arguments.childObjectFactory />
+		<cfset variables.transientFactory = arguments.transientFactory />
 		<cfset variables.extraFileReaderComponentPaths = arguments.extraFileReaderComponentPaths />
 		<cfset variables.defaultFormName = arguments.defaultFormName />
 		<cfset variables.externalFileTypes = arguments.externalFileTypes />
-		<cfset setFileReaders() />
 		<cfreturn this />
 	</cffunction>
 	
-	<cffunction name="getFileReaders" returnType="any" access="private" output="false">
-		<cfreturn variables.fileReaders />
-	</cffunction>
-
-	<cffunction name="getFileReader" returnType="any" access="private" output="false">
-		<cfargument name="fileType" type="string" required="true" />
-		<cfreturn variables.fileReaders[arguments.fileType] />
-	</cffunction>
-
-	<cffunction name="setFileReaders" returntype="void" access="private" output="false" hint="I create file reader objects from a list of component paths">
-		
-		<cfset var initArgs = {fileSystem=variables.fileSystem,defaultFormName=variables.defaultFormName} />
-		<cfset variables.fileReaders = variables.childObjectFactory.loadChildObjects("ValidateThis.core.fileReaders,#variables.extraFileReaderComponentPaths#","FileReader_",structNew(),initArgs) />
-
-	</cffunction>
-
 	<cffunction name="verifyAtLeastOnePathIsValid" returnType="void" access="private" output="false" hint="I check to ensure that at least one path can be found">
 		<cfargument name="definitionPath" type="any" required="true" />
 		
@@ -89,13 +72,16 @@
 		
 	</cffunction>
 
-	<cffunction name="processFiles" returnType="any" access="public" output="false" hint="I read the validation metadata from external files and reformat it into a struct">
+	<cffunction name="loadRulesFromExternalFile" returnType="any" access="public" output="false" hint="I read the validation metadata from external files and reformat it into a struct">
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 
-		<cfset var fileType = 0 />
-		<cfset var fileName = 0 />
-		<cfset var filesFound = [] />
+		<!--- NOTE: Right now this will only process one file per object - the first one found.
+			That won't allow for rule inheritance. Is that something that was meant to be in place?
+		--->
+		<cfset var fileType = "" />
+		<cfset var fileName = "" />
+		<cfset var fileReader = "" />
 		<cfset var rulesStruct = {PropertyDescs = StructNew(), ClientFieldDescs = StructNew(), FormContexts = StructNew(), Validations = {Contexts = {___Default = ArrayNew(1)}}} />
 
 		<cfset verifyAtLeastOnePathIsValid(arguments.definitionPath) />
@@ -103,12 +89,13 @@
 		<cfloop list="#variables.externalFileTypes#" index="fileType">
 			<cfset fileName = locateRulesFile(arguments.objectType,arguments.definitionPath,fileType) />
 			<cfif len(fileName) NEQ 0>
-				<cfset arrayAppend(filesFound,fileName) />
-				<cfset rulesStruct = getFileReader(fileType).processFile(fileName) />
+				<cfset fileReader = variables.transientFactory.create("FileReader_" & fileType) />
+				<cfset rulesStruct = fileReader.getValidations(fileName) />
+				<cfbreak />
 			</cfif>
 		</cfloop>
 		
-		<cfif arrayLen(filesFound) eq 0>
+		<cfif len(fileName) eq 0>
 			<!--- TODO: We're not going to throw an error if no file is found.  Rather we'll just end up with a BO validator with no rules in it.
 					It would be nice to have a way of notifying the user of this for debugging purposes. trying a throw within a try for now. --->
 			<cftry>

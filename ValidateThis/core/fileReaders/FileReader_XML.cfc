@@ -15,18 +15,15 @@
 --->
 <cfcomponent output="false" extends="BaseFileReader" hint="I am a responsible for reading and processing an XML file.">
 
-	<cffunction name="processFile" returnType="any" access="public" output="false" hint="I read the validations XML file and reformat it into a struct">
+	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I read the validations XML file and reformat it into a struct">
 		<cfargument name="fileName" type="any" required="true" />
 
-		<cfset var ReturnStruct = {PropertyDescs = StructNew(), ClientFieldDescs = StructNew(), FormContexts = StructNew(), Validations = {Contexts = {___Default = ArrayNew(1)}}} />
-		<cfset var theXML = 0 />
 		<cfset var xmlConditions = 0 />
 		<cfset var theConditions = {} />
 		<cfset var theCondition = 0 />
 		<cfset var xmlContexts = 0 />
 		<cfset var theContexts = {} />
 		<cfset var theContext = 0 />
-		<cfset var xmlProperties = 0 />
 		<cfset var theProperty = 0 />
 		<cfset var theName = 0 />
 		<cfset var theDesc = 0 />
@@ -37,20 +34,15 @@
 		<cfset var theParam = 0 />
 		<cfset var PropertyType = 0 />
 		
-		<cfset theXML = XMLParse(arguments.fileName) />
-		<cfset xmlConditions = XMLSearch(theXML,"//condition") />
-		<cfset xmlContexts = XMLSearch(theXML,"//context") />
-		<cfset xmlProperties = XMLSearch(theXML,"//property") />
+		<cfset var theXML = XMLParse(arguments.fileName) />
+		<cfset var theProperties = convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//property")) />
 
-		<cfloop array="#xmlConditions#" index="theCondition">
-			<cfset theConditions[theCondition.XmlAttributes.name] = theCondition.XmlAttributes />
-		</cfloop>
+		<cfset processConditions(convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//condition"))) />
+		<cfset processContexts(convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//context"))) />
+		<cfset processPropertyDescs(theProperties) />
+		<cfset processPropertyRules(theProperties) />
 
-		<cfloop array="#xmlContexts#" index="theContext">
-			<cfset theContexts[theContext.XmlAttributes.name] = theContext.XmlAttributes />
-			<cfset ReturnStruct.FormContexts[theContext.XmlAttributes.name] = theContext.XmlAttributes.formName />
-		</cfloop>
-
+		<!---
 		<cfloop array="#xmlProperties#" index="theProperty">
 			<cfset theName = theProperty.XmlAttributes.name />
 			<cfif StructKeyExists(theProperty.XmlAttributes,"desc")>
@@ -125,14 +117,35 @@
 		<cfloop collection="#ReturnStruct.Validations.Contexts#" item="theContext">
 			<cfif theContext NEQ "___Default">
 				<cfloop array="#ReturnStruct.Validations.Contexts.___Default#" index="theVal">
+					<cfif StructKeyExists(theContexts,theContext)>
+						<cfset theVal = duplicate(theVal) />
+						<cfset theVal.FormName = theContexts[theContext].formName />
+					</cfif>
 					<cfset ArrayAppend(ReturnStruct.Validations.Contexts[theContext],theVal) />
 				</cfloop>
 			</cfif>
 		</cfloop>
 		
 		<cfreturn ReturnStruct />
+		--->
 	</cffunction>
-	
+
+	<cffunction name="convertXmlCollectionToArrayOfStructs" returnType="any" access="private" output="false" hint="I take data from an XML document and convert it into a standard array of structs">
+		<cfargument name="xmlCollection" type="any" required="true" />
+		<cfset var newArray = [] />
+		<cfset var newStruct = 0 />
+		<cfset var element = 0 />
+		<cfloop array="#arguments.xmlCollection#" index="element">
+			<cfset newStruct = {} />
+			<cfset structAppend(newStruct,element.XmlAttributes) />
+			<cfif structKeyExists(element,"XMLChildren") and isArray(element.XMLChildren) and arraylen(element.XMLChildren) gt 0>
+				<cfset newStruct[element.XMLChildren[1].XmlName & "s"] = convertXmlCollectionToArrayOfStructs(element.XMLChildren) />
+			</cfif>
+			<cfset arrayAppend(newArray,newStruct) />
+		</cfloop>
+		<cfreturn newArray />
+	</cffunction>
+
 </cfcomponent>
 	
 

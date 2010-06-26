@@ -23,8 +23,12 @@
 		<cfif len(arguments.customMessage) EQ 0>
 			<cfset arguments.customMessage = "The #arguments.validation.PropertyDesc# must be the same as the #arguments.validation.Parameters.ComparePropertyDesc#." />
 		</cfif>
+		<!--- Cannot figure out how to write this one:
 		<cfreturn generateAddMethod(arguments.validation,"'###arguments.validation.Parameters.ComparePropertyName#'",arguments.customMessage,arguments.locale) />
-
+		<cfreturn generateAddMethod(arguments.validation,"'"":input[name='#arguments.validation.Parameters.ComparePropertyName#']"",$form_#arguments.validation.formName#'",arguments.customMessage,arguments.locale) />
+		<cfreturn generateAddMethod(arguments.validation,"'$form_#arguments.validation.formName#.selector :input[name=""#arguments.validation.Parameters.ComparePropertyName#""]'",arguments.customMessage,arguments.locale) />
+		--->
+		<cfreturn generateAddMethod(arguments.validation,"'###arguments.validation.formName# :input[name=""#arguments.validation.Parameters.ComparePropertyName#""]'",arguments.customMessage,arguments.locale) />
 	</cffunction>
 
 </cfcomponent>

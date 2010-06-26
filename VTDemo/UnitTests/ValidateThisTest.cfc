@@ -25,7 +25,7 @@
 	
 	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
 		<cfscript>
-			assertEquals("0.95",ValidateThis.getVersion());
+			assertEquals("0.96",ValidateThis.getVersion());
 		</cfscript>  
 	</cffunction>
 

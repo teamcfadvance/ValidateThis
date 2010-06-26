@@ -59,7 +59,7 @@
 	              {"type":"required","contexts":"Profile"},
 	              {"type":"regex","contexts":"*","failureMessage":"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.",
 	                "params" : [
-	                   {"Regex":"^(Dr|Prof|Mr|Mrs|Ms|Miss)?$"}
+	                   {"Regex":"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\\.)?$"}
 	                ]
 	              }
 	          ]
@@ -81,7 +81,7 @@
 	        },
 	        {"name":"LikeOther","desc":"What do you like?",
 	            "rules" : [
-	               {"type":"required","contexts":"*","condition":"MustLikeSomething","failureMessage":"If you don't like cheese or chocolate, you must like something!"}
+	               {"type":"required","contexts":"*","condition":"MustLikeSomething","failureMessage":"If you don't like cheese and you don't like chocolate, you must like something!"}
 	            ]
 	        },
 	        {"name":"HowMuch","desc":"How much money would you like?",
@@ -90,7 +90,7 @@
 	            ]
 	        },
 
-	        {"name":"AllowCommunication","desc":"Allow Communication",
+	        {"name":"CommunicationMethod","desc":"Communication Method",
 	            "rules" : [
 	               {"type":"required","contexts":"*","failureMessage":"if you are allowing communication, you must choose a method",
 	                   "params" : [

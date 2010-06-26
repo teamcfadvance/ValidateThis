@@ -18,13 +18,13 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
-			ValidateThisConfig.JSRoot="/JS";
+			ValidateThisConfig.JSRoot="/JS/";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			variables.CSGenerator = validationFactory.getBean("CommonScriptGenerator");
 			variables.JSLib = "jQuery";
-			variables.ExpectedInJSIncludes = '<script src="/JSjquery-1.3.2.min.js" type="text/javascript">';
-			variables.ExpectedInLocale = '<script src="/JSmessages_fr.js" type="text/javascript"></script>';
-			variables.ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
+			variables.ExpectedInJSIncludes = '<script src="/JS/jquery-1.4.2.min.js" type="text/javascript">';
+			variables.ExpectedInLocale = '<script src="/JS/messages_fr.js" type="text/javascript"></script>';
+			variables.ExpectedInVTSetup = '$.validator.addMethod("regex", function(value, element, param)';
 		</cfscript>
 	</cffunction>
 

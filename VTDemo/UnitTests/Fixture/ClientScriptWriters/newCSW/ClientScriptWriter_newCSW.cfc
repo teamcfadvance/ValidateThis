@@ -55,7 +55,7 @@
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 				<script type="text/javascript">
-					$(document).ready(function() {
+					jQuery(document).ready(function($) {
 						jQuery.validator.addMethod("regex", function(value, element, param) {
 							var re = param;
 							return this.optional(element) || re.test(value);
@@ -106,7 +106,7 @@
 		<cfset var theScript = "" />
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<script type="text/javascript">$(document).ready(function() {
+				<script type="text/javascript">jQuery(document).ready(function($) {
 					$("###arguments.formName#").validate();
 			</cfoutput>
 		</cfsavecontent>

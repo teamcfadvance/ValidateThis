@@ -14,11 +14,8 @@
 	
 --->
 <cfsilent>
-	<!--- Reload ORM and ValidateThis, if needed --->
-	<cfparam name="url.defPath" default="/HibernateDemo/model/xml/" />
 	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"ValidateThis")>
-		<cfset ormReload() />
-		<cfset ValidateThisConfig = {definitionPath=url.defPath,JSRoot="/js/"} />
+		<cfset ValidateThisConfig = {JSRoot="/js/"} />
 		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 	</cfif>
 </cfsilent>
@@ -35,7 +32,7 @@
 			<cfinclude template="theSidebar.cfm" />
 		</div>		
 		<div id="content">
-			<cfinclude template="theForm.cfm" />
+			<cfinclude template="bothForms.cfm" />
 		</div>
 	</div>
 	</body>

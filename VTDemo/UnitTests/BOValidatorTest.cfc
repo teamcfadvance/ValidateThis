@@ -148,13 +148,6 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
-		<cfscript>
-			BOValidator = createDefaultBOV();
-			assertEquals("0.94",BOValidator.getVersion());
-		</cfscript>  
-	</cffunction>
-	
 	<cffunction name="propertyIsRequiredWithDefaultContextShouldReturnTrueIfPropertyIsRequired" access="public" returntype="void">
 		<cfscript>
 			BOValidator = createDefaultBOV();

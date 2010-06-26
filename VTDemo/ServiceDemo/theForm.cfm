@@ -60,7 +60,7 @@
 	<!--- Some formatting rules specific to this form --->
 	<cfsavecontent variable="headJS">
 		<script type="text/javascript">
-		$(document).ready(function() {
+		jQuery(document).ready(function($) {
 			jQuery.validator.setDefaults({ 
 				errorClass: 'errorField', 
 				errorElement: 'p', 

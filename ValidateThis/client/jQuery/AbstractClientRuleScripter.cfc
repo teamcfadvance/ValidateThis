@@ -25,9 +25,10 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfset var theScript = "if ($(""###arguments.validation.ClientFieldName#"").length) { " />
+		<cfset var theScript = "if ($form_#arguments.validation.formName#.find("":input[name='#arguments.validation.ClientFieldName#']"").length) { " />
 
 		<cfset var customMessage = "" />
+		
 		<cfif StructKeyExists(arguments.validation,"failureMessage")>
 			<cfset customMessage = arguments.validation.failureMessage />
 		</cfif>
@@ -62,7 +63,16 @@
 			<cfif len(arguments.customMessage) GT 0>
 				<cfset arguments.customMessage = ", messages: {#ListFirst(ruleDef,':')#: '#JSStringFormat(variables.Translator.translate(arguments.customMessage,arguments.locale))#'}" />
 			</cfif>
-			<cfreturn "$(""###arguments.validation.ClientFieldName#"").rules('add',{#ruleDef##arguments.customMessage#});" />
+			
+			<!--- 
+				i would use #validation.formName# instead of $form_#arguments.validation.formName#, but my testing showed that the form name would interate through
+				all the form names specified in the <contexts> in the config for the object.  so, if an object had 3 contexts, and one particular 
+				context had 3 validations, validateThis will write out the three validations but change the context form name on each validation write.
+				when this is fixed, i would use #validation.formName#.
+				
+				$form_#arguments.validation.formName# gets written in the getValidationScript() in the ClientValidator.cfc.
+			 --->
+			<cfreturn "$form_#arguments.validation.formName#.find("":input[name='#arguments.validation.ClientFieldName#']"").rules('add',{#ruleDef##arguments.customMessage#});" />
 		</cfif>
 		
 	</cffunction>
@@ -101,18 +111,21 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
-		<cfset var fieldName = arguments.validation.ClientFieldName />
+		<cfset var fieldName = arguments.validation.formName & arguments.validation.ClientFieldName />
+		<cfset var fieldSelector = "$form_#arguments.validation.formName#.find("":input[name='#arguments.validation.ClientFieldName#']"")" />
 		<cfset var valType = arguments.validation.ValType />
 		<cfset var messageScript = "" />
 		<cfif Len(arguments.customMessage) GT 0>
 			<cfset messageScript = ', "' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
 		</cfif>
 
+		<!--- TODO: Deal with multiple forms per page issue here as well: I think the fieldName|valType thing needs to have a form name attached as well --->
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 				$.validator.addMethod("#fieldName##valType#", $.validator.methods.#valType##messageScript#);
 				$.validator.addClassRules("#fieldName##valType#", {#fieldName##valType#: #arguments.theCondition#});
-				$("###fieldName#").addClass('#fieldName##valType#');
+				<!--- $("###fieldName#").addClass('#fieldName##valType#'); --->
+				#fieldSelector#.addClass('#fieldName##valType#');
 			</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />

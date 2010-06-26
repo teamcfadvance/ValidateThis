@@ -41,6 +41,7 @@
 		<cfset var validation = "" />
 		<cfset var theScript = "" />
 		<cfset var theScriptWriter = variables.ScriptWriters[arguments.JSLib] />
+
 		<cfsetting enableCFoutputOnly = "true">
 		
 		<cfif IsArray(arguments.Validations) and ArrayLen(arguments.Validations)>

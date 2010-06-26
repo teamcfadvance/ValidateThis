@@ -61,7 +61,7 @@
 			$("body").attr("JSError",msg);
 		}
 		 	
-		$(document).ready(function() {
+		jQuery(document).ready(function($) {
 			jQuery.validator.setDefaults({ 
 				errorClass: 'errorField', 
 				errorElement: 'p', 
