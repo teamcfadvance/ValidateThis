@@ -193,10 +193,9 @@
 	<cffunction name="getFormName" access="public" output="false" returntype="any">
 		<cfargument name="Context" type="any" required="true" />
 		
-		<cfset var theContext = fixDefaultContext(arguments.Context) />
 		<cfset var formName = variables.defaultFormName />
-		<cfif StructKeyExists(variables.Instance.FormContexts,theContext)>
-			<cfset formName = variables.Instance.FormContexts[theContext] />
+		<cfif StructKeyExists(variables.Instance.FormContexts,arguments.Context)>
+			<cfset formName = variables.Instance.FormContexts[arguments.Context] />
 		</cfif>
 		<cfreturn formName />
 	</cffunction>
