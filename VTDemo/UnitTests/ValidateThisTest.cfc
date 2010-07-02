@@ -17,7 +17,10 @@
 <cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
-		<cfset ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(StructNew()) />
+		<cfscript>
+			VTConfig = {definitionPath="/UnitTests/Fixture"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+		</cfscript>
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">
@@ -26,6 +29,127 @@
 	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
 		<cfscript>
 			assertEquals("0.96",ValidateThis.getVersion());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateShouldBeAbleToCallValidateOnAStruct" access="public" returntype="void">
+		<cfscript>
+			theStruct = setUpUserStruct(true);
+			result = ValidateThis.validate(theStruct);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="validateStructFailsWithCorrectMessages" access="public" returntype="void">
+		<cfscript>
+			theStruct = setUpUserStruct(true);
+			theStruct.VerifyPassword="Something that won't match";
+			result = ValidateThis.validate(theObject=theStruct,context="Register");
+			AssertFalse(result.getIsSuccess());
+			Failures = result.getFailures();
+			debug(Failures);
+			assertEquals(7,ArrayLen(Failures));
+			Failure = Failures[1];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"UserName");
+			assertEquals(Failure.Message,"The Email Address is required.");
+			Failure = Failures[2];
+			assertEquals(Failure.Type,"email");
+			assertEquals(Failure.PropertyName,"UserName");
+			assertEquals(Failure.Message,"Hey, buddy, you call that an Email Address?");
+			Failure = Failures[3];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"UserPass");
+			assertEquals(Failure.Message,"The Password is required.");
+			Failure = Failures[4];
+			assertEquals(Failure.Type,"rangelength");
+			assertEquals(Failure.PropertyName,"UserPass");
+			assertEquals(Failure.Message,"The Password must be between 5 and 10 characters long.");
+			Failure = Failures[5];
+			assertEquals(Failure.Type,"equalTo");
+			assertEquals(Failure.PropertyName,"VerifyPassword");
+			assertEquals(Failure.Message,"The Verify Password must be the same as the Password.");
+			Failure = Failures[6];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"UserGroup");
+			assertEquals(Failure.Message,"The User Group is required.");
+			Failure = Failures[7];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"LikeOther");
+			assertEquals(Failure.Message,"If you don't like Cheese and you don't like Chocolate, you must like something!");
+			result = ValidateThis.validate(theObject=theStruct,context="Profile");
+			AssertFalse(result.getIsSuccess());
+			Failures = result.getFailures();
+			assertEquals(10,ArrayLen(Failures));
+			Failure = Failures[1];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"Salutation");
+			assertEquals(Failure.Message,"The Salutation is required.");
+			Failure = Failures[2];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"FirstName");
+			assertEquals(Failure.Message,"The First Name is required.");
+			Failure = Failures[3];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"LastName");
+			assertEquals(Failure.Message,"The Last Name is required.");
+			Failure = Failures[4];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"UserName");
+			assertEquals(Failure.Message,"The Email Address is required.");
+			Failure = Failures[5];
+			assertEquals(Failure.Type,"email");
+			assertEquals(Failure.PropertyName,"UserName");
+			assertEquals(Failure.Message,"Hey, buddy, you call that an Email Address?");
+			Failure = Failures[6];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"UserPass");
+			assertEquals(Failure.Message,"The Password is required.");
+			Failure = Failures[7];
+			assertEquals(Failure.Type,"rangelength");
+			assertEquals(Failure.PropertyName,"UserPass");
+			assertEquals(Failure.Message,"The Password must be between 5 and 10 characters long.");
+			Failure = Failures[8];
+			assertEquals(Failure.Type,"equalTo");
+			assertEquals(Failure.PropertyName,"VerifyPassword");
+			assertEquals(Failure.Message,"The Verify Password must be the same as the Password.");
+			Failure = Failures[9];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"UserGroup");
+			assertEquals(Failure.Message,"The User Group is required.");
+			Failure = Failures[10];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"LikeOther");
+			assertEquals(Failure.Message,"If you don't like Cheese and you don't like Chocolate, you must like something!");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateStructPassesWithCorrectData" access="public" returntype="void">
+		<cfscript>
+			theStruct = setUpUserStruct();
+			result = ValidateThis.validate(theObject=theStruct,context="Register");
+			AssertTrue(result.getIsSuccess());
+			Failures = result.getFailures();
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="determineObjectTypeShouldReturnObjectNameFromStructWithObjectTypeKey" access="public" returntype="void">
+		<cfscript>
+			theStruct = {objectType="user"};
+			assertEquals("user",ValidateThis.determineObjectType(theObject=theStruct));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="determineObjectTypeShouldReturnObjectTypeIfOneExplicitlyPassedIn" access="public" returntype="void">
+		<cfscript>
+			theStruct = {};
+			assertEquals("user",ValidateThis.determineObjectType(theObject=theStruct,objectType="user"));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="determineObjectTypeShouldThrowWithStructWithNoObjectTypeKey" access="public" returntype="void" mxunit:expectedException="ValidateThis.ValidateThis.ObjectTypeRequired">
+		<cfscript>
+			theStruct = {};
+			assertEquals("user",ValidateThis.determineObjectType(theObject=theStruct));
 		</cfscript>  
 	</cffunction>
 
@@ -77,6 +201,26 @@
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(vtConfig);
 			result = ValidateThis.newResult();
 			assertEquals("UnitTests.Fixture.CustomResult",GetMetadata(result).name);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="setUpUserStruct" access="private" returntype="any">
+		<cfargument name="emptyUser" type="boolean" required="false" default="false" />
+		<cfscript>
+			userStruct = {objectType="user_struct"};
+			userStruct.LikeCheese=0;
+			userStruct.LikeChocolate=0;
+			if (not arguments.emptyUser) {
+				userStruct.UserName="bob.silverberg@gmail.com";
+				userStruct.UserPass="Bobby";
+				userStruct.VerifyPassword="Bobby";
+				userStruct.Salutation="Mr.";
+				userStruct.FirstName="Bob";
+				userStruct.LastName="Silverberg";
+				userStruct.LikeCheese=1;
+				userStruct.UserGroup="Something";
+			}
+			return userStruct;
 		</cfscript>
 	</cffunction>
 

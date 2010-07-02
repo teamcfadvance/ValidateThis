@@ -96,6 +96,7 @@ Adds a constructor property to a bean.
 		addTransient("ValidateThis.core.fileReaders.FileReader_JSON");
 		addTransient("ValidateThis.core.fileReaders.FileReader_XML");
 		addTransient(variables.ValidateThisConfig.ResultPath,"Result");
+		addTransient("ValidateThis.core.StructWrapper");
 		/*
 		addSingleton("ValidateThis.util.TransientFactoryNoCS");
 		addSingleton("ValidateThis.util.FileSystem");

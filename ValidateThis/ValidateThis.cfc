@@ -30,7 +30,7 @@
 		<cfparam name="variables.ValidateThisConfig.definitionPath" default="/model/" />
 		<cfparam name="variables.ValidateThisConfig.localeMap" default="#StructNew()#" />
 		<cfparam name="variables.ValidateThisConfig.defaultLocale" default="en_US" />
-		<cfparam name="variables.ValidateThisConfig.abstractGetterMethod" default="" />
+		<cfparam name="variables.ValidateThisConfig.abstractGetterMethod" default="getValue" />
 		<cfparam name="variables.ValidateThisConfig.ExtraRuleValidatorComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.ExtraClientScriptWriterComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.extraFileReaderComponentPaths" default="" />
@@ -39,6 +39,7 @@
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
+		<cfset variables.TransientFactory = getBean("TransientFactory") />
 		
 		<cfreturn this />
 	</cffunction>
@@ -48,7 +49,7 @@
 		<cfargument name="definitionPath" type="any" required="false" default="" />
 		<cfargument name="theObject" type="any" required="false" default="" />
 
-		<cfset var theObjectType = determineObjectType(arguments) />
+		<cfset var theObjectType = determineObjectType(argumentCollection=arguments) />
 		<cfif len(arguments.definitionPath) EQ 0 AND isObject(arguments.theObject)>
 			<cfset arguments.definitionPath = getDirectoryFromPath(getMetadata(arguments.theObject).path) />
 		</cfif>
@@ -69,6 +70,9 @@
 			you will need to write your own testCondition method into your BOs. You may consider doing this 
 			by adding the method to a base BO class. I am not certain this can even be done in Java, as I do 
 			not believe Java supports runtime evaluation. --->
+		<cfif isStruct(arguments.theObject)>
+			<cfset arguments.theObject = variables.TransientFactory.newStructWrapper(arguments.theObject) />
+		</cfif>
 		<cfif getBean("ObjectChecker").isCFC(arguments.theObject) AND NOT StructKeyExists(arguments.theObject,"testCondition")>
 			<cfset arguments.theObject["testCondition"] = this["testCondition"] />
 		</cfif>
@@ -103,16 +107,19 @@
 	</cffunction>
 
 	<cffunction name="determineObjectType" returntype="any" access="public" output="false" hint="I try to determine the object type by looking at objectType and theObject arguments.">
-		<cfargument name="theArguments" type="any" required="true" />
 
 		<cfset var theObjectType = "" />
-		<cfif StructKeyExists(arguments.theArguments,"objectType") AND Len(arguments.theArguments.objectType)>
-			<cfreturn arguments.theArguments.objectType />
-		<cfelseif StructKeyExists(arguments.theArguments,"theObject") AND IsObject(arguments.theArguments.theObject)>
-			<cfif StructKeyExists(arguments.theArguments.theObject,"getobjectType")>
-				<cfinvoke component="#arguments.theArguments.theObject#" method="getobjectType" returnvariable="theObjectType" />
-			<cfelse>
-				<cfset theObjectType = ListLast(getMetaData(arguments.theArguments.theObject).Name,".") />
+		<cfif StructKeyExists(arguments,"objectType") AND Len(arguments.objectType)>
+			<cfreturn arguments.objectType />
+		<cfelseif StructKeyExists(arguments,"theObject")>
+			<cfif IsObject(arguments.theObject)>
+				<cfif StructKeyExists(arguments.theObject,"getobjectType")>
+					<cfinvoke component="#arguments.theObject#" method="getobjectType" returnvariable="theObjectType" />
+				<cfelse>
+					<cfset theObjectType = ListLast(getMetaData(arguments.theObject).Name,".") />
+				</cfif>
+			<cfelseif isStruct(arguments.theObject) and structKeyExists(arguments.theObject,"objectType")>
+				<cfset theObjectType = arguments.theObject.objectType />
 			</cfif>
 		</cfif>
 		<cfif NOT IsDefined("theObjectType") OR NOT Len(theObjectType)>

@@ -24,7 +24,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init();
+			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init("getValue");
 		</cfscript>
 	</cffunction>
 	
