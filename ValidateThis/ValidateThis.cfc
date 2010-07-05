@@ -36,6 +36,7 @@
 		<cfparam name="variables.ValidateThisConfig.extraFileReaderComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.externalFileTypes" default="xml,json" />
 		<cfparam name="variables.ValidateThisConfig.injectResultIntoBO" default="false" />
+		<cfparam name="variables.ValidateThisConfig.JSIncludes" default="true" />
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
@@ -84,7 +85,7 @@
 	
 	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate JS statements required to setup client-side validations for VT.">
 		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
-		<cfargument name="JSIncludes" type="Any" required="no" default="true" />
+		<cfargument name="JSIncludes" type="Any" required="no" default="#variables.ValidateThisConfig.JSIncludes#" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfreturn variables.CommonScriptGenerator.getInitializationScript(argumentCollection=arguments) />

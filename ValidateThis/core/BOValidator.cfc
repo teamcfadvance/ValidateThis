@@ -26,6 +26,7 @@
 		<cfargument name="Version" type="any" required="true" />
 		<cfargument name="defaultFormName" type="string" required="true" />
 		<cfargument name="defaultJSLib" type="string" required="true" />
+		<cfargument name="JSIncludes" type="string" required="true" />
 		<cfargument name="definitionPath" type="string" required="true" />
 		<cfargument name="specificDefinitionPath" type="string" required="true" />
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
@@ -39,6 +40,7 @@
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.defaultFormName = arguments.defaultFormName />
 		<cfset variables.defaultJSLib = arguments.defaultJSLib />
+		<cfset variables.JSIncludes = arguments.JSIncludes />
 		<cfset variables.CommonScriptGenerator = arguments.CommonScriptGenerator />
 		<cfset variables.Version = arguments.Version />
 
@@ -175,7 +177,7 @@
 	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate JS statements required to setup client-side validations for VT.">
 
 		<cfargument name="JSLib" type="any" required="false" default="#variables.defaultJSLib#" />
-		<cfargument name="JSIncludes" type="Any" required="no" default="true" />
+		<cfargument name="JSIncludes" type="Any" required="no" default="#variables.JSIncludes#" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfreturn variables.CommonScriptGenerator.getInitializationScript(argumentCollection=arguments) />

@@ -20,6 +20,10 @@
 		<cfscript>
 			VTConfig = {definitionPath="/UnitTests/Fixture"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+			JSLib = "jQuery";
+			ExpectedInJSIncludes = '<script src="JS/jquery-1.4.2.min.js" type="text/javascript">';
+			ExpectedInLocale = '<script src="JS/messages_fr.js" type="text/javascript"></script>';
+			ExpectedInVTSetup = '$.validator.addMethod("regex", function(value, element, param)';
 		</cfscript>
 	</cffunction>
 	
@@ -30,6 +34,26 @@
 		<cfscript>
 			assertEquals("0.96",ValidateThis.getVersion());
 		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getInitializationScriptWithDefaultVTConfigReturnsCorrectScript" returntype="void" access="public">
+		<cfscript>
+			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
+			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
+			assertFalse(script CONTAINS variables.ExpectedInLocale);
+			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="getInitializationScriptWithNoIncludesInVTConfigReturnsCorrectScript" returntype="void" access="public">
+		<cfscript>
+			VTConfig.JSIncludes=false;
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
+			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
+			assertFalse(script CONTAINS variables.ExpectedInLocale);
+			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
+		</cfscript>
 	</cffunction>
 
 	<cffunction name="validateShouldBeAbleToCallValidateOnAStruct" access="public" returntype="void">

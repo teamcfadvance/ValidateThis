@@ -147,3 +147,15 @@ Version 0.95
 - added the ability to automatically inject the Result object into the BO during validate()
 - added a config option "injectResultIntoBO" for the above
 
+Version 0.96
+-------------
+- upgraded bundled version of jQuery to 1.4.2
+- upgraded bundled version of jQuery Validate plugin to 1.7
+- added the jQuery noConflict option to attempt to prevent JS framework conflicts
+- added support for multiple forms for the same object with different contexts on a single page
+- added support for metadata in JSON format, in addition to XML format
+- fixed a bug with getFormName() in BOValidator
+- added support for validating a structure
+- added a demo for validating a structure
+- added a configuration option for specifying JSIncludes at a global level
+

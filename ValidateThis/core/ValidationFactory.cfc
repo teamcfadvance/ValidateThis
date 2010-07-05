@@ -53,7 +53,7 @@
 		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),
 			getBean("externalFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),
 			getBean("CommonScriptGenerator"),getBean("Version"),
-			variables.ValidateThisConfig.defaultFormName,variables.ValidateThisConfig.defaultJSLib,variables.ValidateThisConfig.definitionPath,
+			variables.ValidateThisConfig.defaultFormName,variables.ValidateThisConfig.defaultJSLib,variables.ValidateThisConfig.JSIncludes,variables.ValidateThisConfig.definitionPath,
 			arguments.definitionPath,arguments.theObject) />
 
 	</cffunction>

@@ -89,6 +89,7 @@
 			ValidateThisConfig.ResultPath="ValidateThis.util.Result";
 			ValidateThisConfig.externalFileTypes="xml,json";
 			ValidateThisConfig.injectResultIntoBO=false;
+			ValidateThisConfig.JSIncludes=true;
 			return ValidateThisConfig;
 		</cfscript>
 	</cffunction>

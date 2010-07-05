@@ -46,6 +46,28 @@
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="getInitializationScriptOnFacadeWithNoIncludesInVTConfigReturnsCorrectScript" returntype="void" access="public">
+		<cfscript>
+			ValidateThisConfig.JSIncludes=false;
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
+			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
+			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
+			assertFalse(script CONTAINS variables.ExpectedInLocale);
+			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="getInitializationScriptOnBOVWithNoIncludesInVTConfigReturnsCorrectScript" returntype="void" access="public">
+		<cfscript>
+			ValidateThisConfig.JSIncludes=false;
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
+			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
+			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
+			assertFalse(script CONTAINS variables.ExpectedInLocale);
+			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
+		</cfscript>
+	</cffunction>
+
 	<cffunction name="getInitializationScriptWithLocaleReturnsCorrectScript" returntype="void" access="public">
 		<cfscript>
 			script = variables.CSGenerator.getInitializationScript(JSLib=variables.JSLib,locale="fr_FR");
