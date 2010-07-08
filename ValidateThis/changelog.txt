@@ -159,3 +159,6 @@ Version 0.96
 - added a demo for validating a structure
 - added a configuration option for specifying JSIncludes at a global level
 
+Version 0.96.1
+--------------
+- fixed a bug introduced when adding the support for validating a struct

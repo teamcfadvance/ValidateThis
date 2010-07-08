@@ -71,7 +71,7 @@
 			you will need to write your own testCondition method into your BOs. You may consider doing this 
 			by adding the method to a base BO class. I am not certain this can even be done in Java, as I do 
 			not believe Java supports runtime evaluation. --->
-		<cfif isStruct(arguments.theObject)>
+		<cfif not isObject(arguments.theObject) and isStruct(arguments.theObject)>
 			<cfset arguments.theObject = variables.TransientFactory.newStructWrapper(arguments.theObject) />
 		</cfif>
 		<cfif getBean("ObjectChecker").isCFC(arguments.theObject) AND NOT StructKeyExists(arguments.theObject,"testCondition")>
