@@ -102,14 +102,10 @@
 						<cfif NOT StructKeyExists(ReturnStruct.Validations.Contexts,theContext)>
 							<cfset ReturnStruct.Validations.Contexts[theContext] = ArrayNew(1) />
 						</cfif>
-						<cfif StructKeyExists(theContexts,theContext)>
-							<cfset theVal.FormName = theContexts[theContext].formName />
-						</cfif>
 						<cfset ArrayAppend(ReturnStruct.Validations.Contexts[theContext],theVal) />
 					</cfloop>
 				<cfelse>
 					<cfset ArrayAppend(ReturnStruct.Validations.Contexts["___Default"],theVal) />
-					<cfset theVal.FormName = variables.defaultFormName />
 				</cfif>
 			</cfloop>
 		</cfloop>
@@ -119,7 +115,6 @@
 				<cfloop array="#ReturnStruct.Validations.Contexts.___Default#" index="theVal">
 					<cfif StructKeyExists(theContexts,theContext)>
 						<cfset theVal = duplicate(theVal) />
-						<cfset theVal.FormName = theContexts[theContext].formName />
 					</cfif>
 					<cfset ArrayAppend(ReturnStruct.Validations.Contexts[theContext],theVal) />
 				</cfloop>

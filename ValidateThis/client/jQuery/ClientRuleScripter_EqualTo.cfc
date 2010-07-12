@@ -17,18 +17,14 @@
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfif len(arguments.customMessage) EQ 0>
 			<cfset arguments.customMessage = "The #arguments.validation.PropertyDesc# must be the same as the #arguments.validation.Parameters.ComparePropertyDesc#." />
 		</cfif>
-		<!--- Cannot figure out how to write this one:
-		<cfreturn generateAddMethod(arguments.validation,"'###arguments.validation.Parameters.ComparePropertyName#'",arguments.customMessage,arguments.locale) />
-		<cfreturn generateAddMethod(arguments.validation,"'"":input[name='#arguments.validation.Parameters.ComparePropertyName#']"",$form_#arguments.validation.formName#'",arguments.customMessage,arguments.locale) />
-		<cfreturn generateAddMethod(arguments.validation,"'$form_#arguments.validation.formName#.selector :input[name=""#arguments.validation.Parameters.ComparePropertyName#""]'",arguments.customMessage,arguments.locale) />
-		--->
-		<cfreturn generateAddMethod(arguments.validation,"'###arguments.validation.formName# :input[name=""#arguments.validation.Parameters.ComparePropertyName#""]'",arguments.customMessage,arguments.locale) />
+		<cfreturn generateAddMethod(arguments.validation,arguments.formName,"'###arguments.formName# :input[name=""#arguments.validation.Parameters.ComparePropertyName#""]'",arguments.customMessage,arguments.locale) />
 	</cffunction>
 
 </cfcomponent>

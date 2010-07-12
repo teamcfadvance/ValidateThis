@@ -147,9 +147,6 @@
 							<cfif NOT structKeyExists(variables.validations.contexts,theContext)>
 								<cfset variables.validations.contexts[theContext] = ArrayNew(1) />
 							</cfif>
-							<cfif structKeyExists(variables.contexts,theContext)>
-								<cfset theVal.formName = variables.contexts[theContext].formName />
-							</cfif>
 							<cfset arrayAppend(variables.validations.contexts[theContext],theVal) />
 						</cfloop>
 					<cfelse>
@@ -165,7 +162,6 @@
 				<cfloop array="#variables.validations.contexts.___Default#" index="theVal">
 					<cfif StructKeyExists(variables.contexts,theContext)>
 						<cfset theVal = duplicate(theVal) />
-						<cfset theVal.FormName = variables.contexts[theContext].formName />
 					</cfif>
 					<cfset ArrayAppend(variables.validations.contexts[theContext],theVal) />
 				</cfloop>

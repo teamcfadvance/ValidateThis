@@ -20,6 +20,8 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
+			validation = {clientFieldName="clientFieldName",condition=structNew(),formName="formName",parameters=structNew(),propertyDesc="propertyDesc",propertyName="propertyName",valType="required"};
+			validations = [validation];
 		</cfscript>
 	</cffunction>
 	
@@ -60,6 +62,19 @@
 			assertTrue(StructKeyExists(ClientScriptWriters.jQuery,"generateValidationScript"));
 			assertTrue(GetMetadata(ClientScriptWriters.newCSW).name CONTAINS "ClientScriptWriter_newCSW");
 			assertTrue(StructKeyExists(ClientScriptWriters.newCSW,"generateValidationScript"));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidationScriptShouldHonourPassedInFormName" access="public" returntype="void">
+		<cfscript>
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			ClientValidator = validationFactory.getBean("ClientValidator");
+			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
+			debug(script);
+			assertTrue(script contains "$form_testFormName = $(""##testFormName"");");
+			assertTrue(script contains "$form_testFormName.validate();");
+			assertTrue(script contains "if ($form_testFormName.find("":input[name='clientFieldName']"").length)");
+			assertTrue(script contains "$form_testFormName.find("":input[name='clientFieldName']"").rules");
 		</cfscript>  
 	</cffunction>
 

@@ -23,16 +23,18 @@
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfset var theScript = "objForm#arguments.validation.formName#.#arguments.validation.clientFieldName#.description = '#JSStringFormat(arguments.validation.PropertyDesc)#';" />
-		<cfset theScript = theScript & generateSpecificValidationScript(arguments.validation) />
+		<cfset var theScript = "objForm#arguments.formName#.#arguments.validation.clientFieldName#.description = '#JSStringFormat(arguments.validation.PropertyDesc)#';" />
+		<cfset theScript = theScript & generateSpecificValidationScript(argumentCollection=arguments) />
 		<cfreturn theScript />
 		
 	</cffunction>
 
 	<cffunction name="generateSpecificValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfreturn "" />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<validateThis xsi:noNamespaceSchemaLocation="validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<validateThis xsi:noNamespaceSchemaLocation="http://www.validatethis.org/validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<conditions>
 		<condition name="MustLikeSomething" 
 			serverTest="getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0"

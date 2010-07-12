@@ -36,15 +36,6 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="newTest" access="public" returntype="void">
-		<cfscript>
-			bigNumber = createObject("component","VTDemo.UnitTests.Fixture.BigNumberTest.BigNumber").init();
-			script = ValidateThis.getValidationScript(bigNumber);
-			debug(script);
-			assertEquals(true,script CONTAINS "rules('add',{min: 1000});");
-		</cfscript>  
-	</cffunction>
-
 	<cffunction name="additionalRuleShouldBeAvailableToServerSideValidations" access="public" returntype="void">
 		<cfscript>
 			bigNumber = createObject("component","VTDemo.UnitTests.Fixture.BigNumberTest.BigNumber").init();

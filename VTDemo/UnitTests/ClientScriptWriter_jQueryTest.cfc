@@ -73,10 +73,10 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	<cffunction name="CustomValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "custom";
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { }",script);
 			valStruct.Parameters = {remoteURL="aURL"}; 
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{remote: 'aURL'});}",script);
 		</cfscript>  
 	</cffunction>
@@ -84,7 +84,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	<cffunction name="DateValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "date";
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{date: true});}",script);
 		</cfscript>  
 	</cffunction>
@@ -92,7 +92,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	<cffunction name="EmailValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "email";
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{email: true});}",Script);
 		</cfscript>  
 	</cffunction>
@@ -100,7 +100,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	<cffunction name="IntegerValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "integer";
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{digits: true});}",script);
 		</cfscript>  
 	</cffunction>
@@ -108,7 +108,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	<cffunction name="NumericValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "numeric";
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{number: true});}",script);
 		</cfscript>  
 	</cffunction>
@@ -116,7 +116,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	<cffunction name="SimpleRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{required: true});}",script);
 		</cfscript>  
 	</cffunction>
@@ -125,7 +125,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 		<cfscript>
 			valStruct.ValType = "required";
 			valStruct.Parameters = {DependentPropertyName="LastName"}; 
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNamerequired"", $.validator.methods.required);");
 			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMainFirstNamerequired"", {frmMainFirstNamerequired: function(element) { return $form_frmMain.find("":input[name='lastname']"").getvalue().length > 0; }});");
@@ -137,7 +137,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 		<cfscript>
 			valStruct.ValType = "required";
 			valStruct.Parameters = {DependentPropertyName="LastName",DependentPropertyValue="Silverberg"}; 
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			//assertEquals(Script,"$form_frmmain.find("":input[name='firstname']"").rules('add',{required: true});");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNamerequired"", $.validator.methods.required);");
@@ -150,7 +150,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 		<cfscript>
 			valStruct.ValType = "required";
 			valStruct.Parameters = {DependentPropertyName="LastName",DependentFieldName="User[LastName]"}; 
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNamerequired"", $.validator.methods.required);");
 			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMainFirstNamerequired"", {frmMainFirstNamerequired: function(element) { return $form_frmMain.find("":input[name='User[LastName]']"").getvalue().length > 0; }});");
@@ -163,7 +163,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			theLength = 5;
 			valStruct.ValType = "minlength";
 			valStruct.Parameters.minlength = theLength;
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{minlength: 5});}",script);
 		</cfscript>  
 	</cffunction>
@@ -173,7 +173,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			theLength = 5;
 			valStruct.ValType = "maxlength";
 			valStruct.Parameters.maxlength = theLength;
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{maxlength: 5});}",script);
 		</cfscript>  
 	</cffunction>
@@ -185,7 +185,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.ValType = "rangelength";
 			valStruct.Parameters.minlength = minLength;
 			valStruct.Parameters.maxlength = maxLength;
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{rangelength: [5,10]});}",script);
 		</cfscript>  
 	</cffunction>
@@ -195,7 +195,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			theVal = 5;
 			valStruct.ValType = "min";
 			valStruct.Parameters.min = theVal;
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{min: 5});}",script);
 		</cfscript>  
 	</cffunction>
@@ -205,7 +205,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			theVal = 5;
 			valStruct.ValType = "max";
 			valStruct.Parameters.max = theVal;
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{max: 5});}",script);
 		</cfscript>  
 	</cffunction>
@@ -217,7 +217,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.ValType = "range";
 			valStruct.Parameters.min = min;
 			valStruct.Parameters.max = max;
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{range: [5,10]});}",script);
 		</cfscript>  
 	</cffunction>
@@ -229,7 +229,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			valStruct.ValType = "EqualTo";
 			valStruct.Parameters.ComparePropertyName = ComparePropertyName;
 			valStruct.Parameters.ComparePropertyDesc = ComparePropertyDesc;
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNameEqualTo"", $.validator.methods.EqualTo, ""The First Name must be the same as the Last Name."");");
 			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMainFirstNameEqualTo"", {frmMainFirstNameEqualTo: '##frmMain :input[name=""LastName""]'});");
@@ -240,7 +240,7 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	<cffunction name="BooleanValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "boolean";
-			script = ScriptWriter.generateValidationScript(valStruct);
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{boolean: true});}",Script);
 			
 		</cfscript>  

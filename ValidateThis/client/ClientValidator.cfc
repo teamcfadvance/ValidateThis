@@ -50,7 +50,7 @@
 				<cfoutput>#Trim(theScriptWriter.generateScriptHeader(arguments.formName))#</cfoutput>
 				<cfloop Array="#arguments.Validations#" index="validation">
 					<!--- Generate the JS validation statements  --->
-					<cfoutput>#Trim(theScriptWriter.generateValidationScript(validation,arguments.locale))#</cfoutput>
+					<cfoutput>#Trim(theScriptWriter.generateValidationScript(validation,arguments.formName,arguments.locale))#</cfoutput>
 				</cfloop>
 				<cfoutput>#Trim(theScriptWriter.generateScriptFooter())#</cfoutput>
 			</cfsavecontent>
@@ -63,10 +63,11 @@
 	<cffunction name="getGeneratedJavaScript" returntype="any" access="public" output="false" hint="I ask the appropriate client script writer to generate some JS for me.">
 		<cfargument name="scriptType" type="any" required="true" hint="Current valid values are JSInclude, Locale and VTSetup." />
 		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="formName" type="any" required="false" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
-		<cfinvoke component="#variables.ScriptWriters[arguments.JSLib]#" method="generate#arguments.scriptType#Script" locale="#arguments.locale#" returnvariable="theScript" />
+		<cfinvoke component="#variables.ScriptWriters[arguments.JSLib]#" method="generate#arguments.scriptType#Script" locale="#arguments.locale#" formName="#arguments.formName#" returnvariable="theScript" />
 		<cfreturn theScript />
 
 	</cffunction>

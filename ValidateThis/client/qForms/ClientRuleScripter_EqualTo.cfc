@@ -17,9 +17,10 @@
 
 	<cffunction name="generateSpecificValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
 		
 		<!--- Not working yet
-		<cfreturn "objForm#arguments.validation.formName#.#arguments.validation.clientFieldName#.validateSame(objForm#arguments.validation.formName#.#arguments.validation.Parameters.ComparePropertyName#.obj);" />
+		<cfreturn "objForm#arguments.formName#.#arguments.validation.clientFieldName#.validateSame(objForm#arguments.formName#.#arguments.validation.Parameters.ComparePropertyName#.obj);" />
 		 --->
 		 <cfreturn "" />
 

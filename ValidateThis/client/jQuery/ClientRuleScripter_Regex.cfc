@@ -17,6 +17,7 @@
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
@@ -32,7 +33,7 @@
 			<cfset arguments.customMessage = "The #arguments.validation.PropertyDesc# does not match the specified pattern." />
 		</cfif>
 
-		<cfreturn generateAddMethod(arguments.validation,"/#theRegex#/",arguments.customMessage,arguments.locale) />
+		<cfreturn generateAddMethod(arguments.validation,arguments.formName,"/#theRegex#/",arguments.customMessage,arguments.locale) />
 
 	</cffunction>
 

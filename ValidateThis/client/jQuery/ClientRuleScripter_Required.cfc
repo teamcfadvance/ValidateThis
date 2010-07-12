@@ -17,6 +17,7 @@
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
@@ -37,9 +38,9 @@
 		</cfif>
 		<cfif len(DependentFieldName) GT 0>
 			<cfif StructKeyExists(arguments.validation.Parameters,"DependentPropertyValue")>
-				<cfset theCondition = "function(element) { return $form_#arguments.validation.formName#.find("":input[name='#DependentFieldName#']"").getValue() == '#arguments.validation.Parameters.DependentPropertyValue#'; }" />
+				<cfset theCondition = "function(element) { return $form_#arguments.formName#.find("":input[name='#DependentFieldName#']"").getValue() == '#arguments.validation.Parameters.DependentPropertyValue#'; }" />
 			<cfelse>
-				<cfset theCondition = "function(element) { return $form_#arguments.validation.formName#.find("":input[name='#DependentFieldName#']"").getValue().length > 0; }" />
+				<cfset theCondition = "function(element) { return $form_#arguments.formName#.find("":input[name='#DependentFieldName#']"").getValue().length > 0; }" />
 			</cfif>
 		</cfif>
 		
@@ -52,7 +53,7 @@
 				</cfif>
 				<cfset arguments.customMessage = "The #arguments.validation.PropertyDesc# is required#ConditionDesc#." />
 			</cfif>
-			<cfset theScript = generateAddMethod(arguments.validation,theCondition,arguments.customMessage,arguments.locale) />
+			<cfset theScript = generateAddMethod(arguments.validation,arguments.formName,theCondition,arguments.customMessage,arguments.locale) />
 		<cfelse>
 			<cfset theScript = generateAddRule(argumentCollection=arguments) />
 		</cfif>

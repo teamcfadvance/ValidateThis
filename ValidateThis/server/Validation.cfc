@@ -89,15 +89,6 @@
 		<cfset variables.instance.PropertyDesc = arguments.PropertyDesc />
 	</cffunction>
 
-	<!--- TODO: Look at how this will work now --->
-	<cffunction name="getFormName" access="public" output="false" returntype="any">
-		<cfreturn variables.instance.FormName />
-	</cffunction>
-	<cffunction name="setFormName" access="public" output="false" returntype="void">
-		<cfargument name="FormName" type="any" required="yes" />
-		<cfset variables.instance.FormName = arguments.FormName />
-	</cffunction>
-
 	<cffunction name="setParameters" returntype="void" access="private" output="false">
 		<cfargument name="Parameters" type="any" required="true" />
 		<cfset variables.instance.Parameters = arguments.Parameters />

@@ -17,6 +17,7 @@
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
@@ -25,7 +26,7 @@
 		<cfif (NOT (StructCount(arguments.validation.Condition) GT 0 OR
 			StructKeyExists(arguments.validation.Parameters,"DependentPropertyName")) OR arguments.validation.ValType EQ "required")
 			AND StructKeyExists(variables.RuleScripters,arguments.validation.ValType)>
-			<cfset theScript = variables.RuleScripters[arguments.validation.ValType].generateValidationScript(arguments.validation,arguments.locale) />
+			<cfset theScript = variables.RuleScripters[arguments.validation.ValType].generateValidationScript(arguments.validation,arguments.formName,arguments.locale) />
 		</cfif>
 		
 		<cfreturn theScript />
