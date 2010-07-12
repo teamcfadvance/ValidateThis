@@ -16,9 +16,6 @@
 <cfcomponent output="false" name="AbstractServerRuleValidator" hint="I am an abstract validator responsible for performing one specific type of validation.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ServerRuleValidator">
-		<cfargument name="ObjectChecker" type="any" required="true" />
-		
-		<cfset variables.ObjectChecker = arguments.ObjectChecker />
 		<cfreturn this />
 	</cffunction>
 	

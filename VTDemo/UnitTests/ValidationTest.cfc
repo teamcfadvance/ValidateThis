@@ -1,10 +1,4 @@
 <!---
-	
-filename:		\VTDemo\UnitTests\ValidationTest.cfc
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I ValidationTest.cfc
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
@@ -18,15 +12,8 @@ purpose:		I ValidationTest.cfc
 	distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
-	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 --->
-<cfcomponent displayname="UnitTests.ValidationTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	
 	<cfset theObject = "" />
 	

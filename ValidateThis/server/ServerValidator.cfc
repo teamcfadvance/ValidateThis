@@ -110,8 +110,7 @@
 
 	<cffunction name="setRuleValidators" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		
-		<cfset var initArgs = {objectChecker=variables.objectChecker} />
-		<cfset variables.RuleValidators = variables.childObjectFactory.loadChildObjects("ValidateThis.server,#variables.ExtraRuleValidatorComponentPaths#","ServerRuleValidator_",structNew(),initArgs) />
+		<cfset variables.RuleValidators = variables.childObjectFactory.loadChildObjects("ValidateThis.server,#variables.ExtraRuleValidatorComponentPaths#","ServerRuleValidator_",structNew(),structNew()) />
 
 	</cffunction>
 	
