@@ -21,7 +21,7 @@
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfset var theValue =  Val(arguments.valObject.getObjectValue()) />
 		<cfif shouldTest(arguments.valObject) AND theValue LT Parameters.Min OR theValue GT Parameters.Max>
-			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be between #Parameters.Min# and #Parameters.Max#.") />
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be between #Parameters.Min# and #Parameters.Max#.")) />
 		</cfif>
 	</cffunction>
 	

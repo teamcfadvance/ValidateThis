@@ -18,6 +18,7 @@
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
+		<cfargument name="defaultFailureMessagePrefix" type="Any" required="yes" />
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
@@ -52,7 +53,7 @@
 				<cfelse>
 					<cfset ConditionDesc = " if you specify a value for the " & arguments.validation.Parameters.DependentPropertyDesc />
 				</cfif>
-				<cfset arguments.customMessage = "The #arguments.validation.PropertyDesc# is required#ConditionDesc#." />
+				<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.PropertyDesc# is required#ConditionDesc#." />
 			</cfif>
 			<cfset theScript = generateAddMethod(arguments.validation,arguments.formName,theCondition,arguments.customMessage,arguments.locale) />
 		<cfelse>

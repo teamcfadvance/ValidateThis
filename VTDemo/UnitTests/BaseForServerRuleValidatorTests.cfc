@@ -23,7 +23,7 @@
 			ObjectChecker.findGetter("{*}").returns("getFirstName()");
 			validation = mock();
 			validation.setIsSuccess(false).returns();
-			validation.getPropertyDesc().returns("Something");
+			validation.getPropertyDesc().returns("PropertyDesc");
 		</cfscript>
 	</cffunction>
 	
@@ -52,8 +52,9 @@
 	
 	<cffunction name="getSRV" access="private" returntype="Any">
 		<cfargument name="ValType" />
+		<cfargument name="defaultFailureMessagePrefix" required="false" default="The " />
 		
-		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker) />
+		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(arguments.defaultFailureMessagePrefix) />
 		
 	</cffunction>
 

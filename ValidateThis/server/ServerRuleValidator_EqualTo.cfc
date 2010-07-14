@@ -21,7 +21,7 @@
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfset var otherVal = arguments.valObject.getObjectValue(Parameters.ComparePropertyName) />
 		<cfif arguments.valObject.getObjectValue() NEQ otherVal>
-			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be the same as the #Parameters.ComparePropertyDesc#.") />
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be the same as the #Parameters.ComparePropertyDesc#.")) />
 		</cfif>
 	</cffunction>
 

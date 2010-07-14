@@ -22,7 +22,7 @@
 	<cffunction name="getSRV" access="private" returntype="Any">
 		<cfargument name="ValType" />
 		
-		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker) />
+		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init("The ") />
 		
 	</cffunction>
 

@@ -37,6 +37,7 @@
 		<cfparam name="variables.ValidateThisConfig.externalFileTypes" default="xml,json" />
 		<cfparam name="variables.ValidateThisConfig.injectResultIntoBO" default="false" />
 		<cfparam name="variables.ValidateThisConfig.JSIncludes" default="true" />
+		<cfparam name="variables.ValidateThisConfig.defaultFailureMessagePrefix" default="The " />
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />

@@ -20,7 +20,7 @@
 
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfif shouldTest(arguments.valObject) AND Val(arguments.valObject.getObjectValue()) LT Parameters.Min>
-			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be at least #Parameters.Min#.") />
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be at least #Parameters.Min#.")) />
 		</cfif>
 	</cffunction>
 	

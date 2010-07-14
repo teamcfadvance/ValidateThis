@@ -16,6 +16,8 @@
 <cfcomponent output="false" name="AbstractServerRuleValidator" hint="I am an abstract validator responsible for performing one specific type of validation.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ServerRuleValidator">
+		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
+		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
 		<cfreturn this />
 	</cffunction>
 	
@@ -34,10 +36,15 @@
 	
 	<cffunction name="fail" returntype="void" access="private" output="false" hint="I do what needs to be done when a validation fails.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object being used to perform the validation." />
-		<cfargument name="FailureMessage" type="any" required="yes" hint="An Failure message to store." />
+		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to store." />
 	
 		<cfset arguments.valObject.setIsSuccess(false) />
 		<cfset arguments.valObject.setFailureMessage(arguments.FailureMessage) />
+	</cffunction>
+
+	<cffunction name="createDefaultFailureMessage" returntype="string" access="private" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">
+		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to add to." />
+		<cfreturn variables.defaultFailureMessagePrefix & arguments.FailureMessage />
 	</cffunction>
 
 	<cffunction name="propertyHasValue" returntype="boolean" access="private" output="false" hint="I determine whether the current property has a value.">

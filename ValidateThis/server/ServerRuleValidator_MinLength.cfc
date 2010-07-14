@@ -20,7 +20,7 @@
 
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfif shouldTest(arguments.valObject) AND Len(arguments.valObject.getObjectValue()) LT Parameters.MinLength>
-			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be at least #Parameters.MinLength# characters long.") />
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be at least #Parameters.MinLength# characters long.")) />
 		</cfif>
 	</cffunction>
 	

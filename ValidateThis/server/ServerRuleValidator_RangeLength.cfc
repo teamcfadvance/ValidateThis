@@ -21,7 +21,7 @@
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfset var theLength =  Len(arguments.valObject.getObjectValue()) />
 		<cfif shouldTest(arguments.valObject) AND theLength LT Parameters.MinLength OR theLength GT Parameters.MaxLength>
-			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be between #Parameters.MinLength# and #Parameters.MaxLength# characters long.") />
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be between #Parameters.MinLength# and #Parameters.MaxLength# characters long.")) />
 		</cfif>
 	</cffunction>
 	

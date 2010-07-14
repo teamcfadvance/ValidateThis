@@ -90,6 +90,7 @@
 			ValidateThisConfig.externalFileTypes="xml,json";
 			ValidateThisConfig.injectResultIntoBO=false;
 			ValidateThisConfig.JSIncludes=true;
+			ValidateThisConfig.defaultFailureMessagePrefix="The ";
 			return ValidateThisConfig;
 		</cfscript>
 	</cffunction>

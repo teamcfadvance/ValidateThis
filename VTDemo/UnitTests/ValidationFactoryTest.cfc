@@ -25,7 +25,7 @@
 	
 	<cffunction name="loadChildObjectsShouldReturnCollectionOfBuiltInServerRuleValidators" access="public" returntype="void">
 		<cfscript>
-			initargs={objectChecker=mock()};
+			initargs={defaultFailureMessagePrefix="The "};
 			SRVs = validationFactory.loadChildObjects("ValidateThis.server","ServerRuleValidator_",StructNew(),initargs);
 			assertEquals(true,structKeyExists(SRVs,"Boolean"));
 			assertEquals("ValidateThis.server.serverrulevalidator_boolean",GetMetadata(SRVs.Boolean).name);
@@ -35,7 +35,7 @@
 
 	<cffunction name="loadChildObjectsShouldReturnCollectionOfServerRuleValidatorsFromTwoPaths" access="public" returntype="void">
 		<cfscript>
-			initargs={objectChecker=mock()};
+			initargs={defaultFailureMessagePrefix="The "};
 			SRVs = validationFactory.loadChildObjects("ValidateThis.server,VTDemo.UnitTests.Fixture.ServerRuleValidators","ServerRuleValidator_",StructNew(),initargs);
 			assertEquals(true,structKeyExists(SRVs,"Boolean"));
 			assertEquals("ValidateThis.server.serverrulevalidator_boolean",GetMetadata(SRVs.Boolean).name);
@@ -48,7 +48,7 @@
 
 	<cffunction name="loadChildObjectsShouldReturnCollectionOfServerRuleValidatorsWithOverrides" access="public" returntype="void">
 		<cfscript>
-			initargs={objectChecker=mock()};
+			initargs={defaultFailureMessagePrefix="The "};
 			SRVs = validationFactory.loadChildObjects("ValidateThis.server,VTDemo.UnitTests.Fixture.OverrideServerRuleValidators","ServerRuleValidator_",StructNew(),initargs);
 			assertEquals(true,structKeyExists(SRVs,"Boolean"));
 			assertEquals("ValidateThis.server.serverrulevalidator_boolean",GetMetadata(SRVs.Boolean).name);

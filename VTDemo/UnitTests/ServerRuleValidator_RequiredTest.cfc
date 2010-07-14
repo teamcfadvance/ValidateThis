@@ -59,13 +59,6 @@ purpose:		I ServerRuleValidatorTest.cfc
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="getSRV" access="private" returntype="Any">
-		<cfargument name="ValType" />
-		
-		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker) />
-		
-	</cffunction>
-
 	<!--- Need to override these as they don't apply to this test case --->
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 	</cffunction>

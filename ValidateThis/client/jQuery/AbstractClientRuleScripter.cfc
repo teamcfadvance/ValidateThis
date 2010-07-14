@@ -18,8 +18,10 @@
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
 		<cfargument name="Translator" type="Any" required="yes" />
 		<cfargument name="getSafeFormName" type="Any" required="yes" />
+		<cfargument name="defaultFailureMessagePrefix" type="string" required="yes" />
 		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.getSafeFormName = arguments.getSafeFormName />
+		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
 		<cfreturn this />
 	</cffunction>
 
@@ -37,7 +39,7 @@
 			<cfset customMessage = arguments.validation.failureMessage />
 		</cfif>
 
-		<cfset theScript &= generateRuleScript(argumentCollection=arguments,customMessage=customMessage) />
+		<cfset theScript &= generateRuleScript(argumentCollection=arguments,customMessage=customMessage,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix) />
 
 		<cfset theScript &= "}" />
 
@@ -48,6 +50,7 @@
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
+		<cfargument name="defaultFailureMessagePrefix" type="Any" required="yes" />
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 

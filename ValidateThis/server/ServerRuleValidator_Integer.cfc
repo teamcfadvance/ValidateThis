@@ -19,7 +19,7 @@
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
 		<cfif shouldTest(arguments.valObject) AND NOT IsValid("Integer",arguments.valObject.getObjectValue())>
-			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must be an integer.") />
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be an integer.")) />
 		</cfif>
 	</cffunction>
 	

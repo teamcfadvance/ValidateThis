@@ -1,10 +1,4 @@
 <!---
-	
-filename:		\VTDemo\UnitTests\ServerRuleValidatorTest.cfc
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I ServerRuleValidatorTest.cfc
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
@@ -18,15 +12,28 @@ purpose:		I ServerRuleValidatorTest.cfc
 	distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
-	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 --->
 <cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+	
+	<cffunction name="defaultFailureMessagesShouldBePrependedWithTheDefaultPrefix" access="public" returntype="void">
+		<cfscript>
+			SRV = getSRV("required");
+			validation.getObjectValue().returns("");
+			validation.setFailureMessage("The PropertyDesc is required.").returns();
+			SRV.validate(validation);
+			validation.verifyTimes(1).setFailureMessage("The PropertyDesc is required."); 
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="defaultFailureMessagesShouldBePrependedWithTheOverriddenPrefix" access="public" returntype="void">
+		<cfscript>
+			SRV = getSRV("required","");
+			validation.getObjectValue().returns("");
+			validation.setFailureMessage("PropertyDesc is required.").returns();
+			SRV.validate(validation);
+			validation.verifyTimes(1).setFailureMessage("PropertyDesc is required."); 
+		</cfscript>  
+	</cffunction>
 	
 	<cffunction name="propertyHasValueShouldReturnTrueIfPropertyPopulated" access="public" returntype="void">
 		<cfscript>
@@ -153,13 +160,6 @@ purpose:		I ServerRuleValidatorTest.cfc
 		<cfset Validation = CreateObject("component","ValidateThis.server.validation").init(arguments.theObject,ObjectChecker).load(arguments) />
 		<cfset CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker).validate(Validation) />
 		<cfreturn Validation />
-		
-	</cffunction>
-
-	<cffunction name="getSRV" access="private" returntype="Any">
-		<cfargument name="ValType" />
-		
-		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker) />
 		
 	</cffunction>
 

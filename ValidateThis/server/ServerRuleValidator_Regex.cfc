@@ -30,7 +30,7 @@
 			message="Either a regex or a serverRegex parameter must be defined for a regex rule type." />
 		</cfif>
 		<cfif shouldTest(arguments.valObject) AND REFind(theRegex,theValue) EQ 0>
-			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# must match the specified pattern.") />
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must match the specified pattern.")) />
 		</cfif>
 	</cffunction>
 	

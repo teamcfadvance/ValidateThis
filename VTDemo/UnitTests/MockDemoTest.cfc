@@ -2,7 +2,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			srv = createObject("component","ValidateThis.server.ServerRuleValidator_Integer").init();
+			srv = createObject("component","ValidateThis.server.ServerRuleValidator_Integer").init("The ");
 			validation = mock();
 			validation.setIsSuccess(false).returns();
 			validation.getPropertyDesc().returns("Something");

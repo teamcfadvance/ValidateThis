@@ -129,6 +129,35 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="RegexValidationGeneratesCorrectScript" access="public" returntype="void">
+		<cfscript>
+			valStruct.ValType = "regex";
+			valStruct.Parameters = {Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"}; 
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			debug(script);
+			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
+			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNameregex"", $.validator.methods.regex, ""The First Name does not match the specified pattern."");");
+			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMainFirstNameregex"", {frmMainFirstNameregex: /^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$/});");
+			assertTrue(Script CONTAINS "$form_frmMain.find("":input[name='FirstName']"").addClass('frmMainFirstNameregex');");
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="RegexValidationWithOverriddenPrefixGeneratesCorrectScript" access="public" returntype="void">
+		<cfscript>
+			valStruct.ValType = "regex";
+			valStruct.Parameters = {Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"}; 
+			ValidateThisConfig.defaultFailureMessagePrefix = "";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			debug(script);
+			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
+			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNameregex"", $.validator.methods.regex, ""First Name does not match the specified pattern."");");
+			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMainFirstNameregex"", {frmMainFirstNameregex: /^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$/});");
+			assertTrue(Script CONTAINS "$form_frmMain.find("":input[name='FirstName']"").addClass('frmMainFirstNameregex');");
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="SimpleRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
@@ -300,6 +329,24 @@
 			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
 			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMain2FirstNameEqualTo"", $.validator.methods.EqualTo, ""The First Name must be the same as the Last Name."");");
+			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMain2FirstNameEqualTo"", {frmMain2FirstNameEqualTo: '##frm-Main2 :input[name=""LastName""]'});");
+			assertTrue(Script CONTAINS "$form_frmMain2.find("":input[name='FirstName']"").addClass('frmMain2FirstNameEqualTo');");
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="EqualToValidationGeneratesCorrectScriptWithOverriddenPrefix" access="public" returntype="void">
+		<cfscript>
+			ComparePropertyName = "LastName";
+			ComparePropertyDesc = "Last Name";
+			valStruct.ValType = "EqualTo";
+			valStruct.Parameters.ComparePropertyName = ComparePropertyName;
+			valStruct.Parameters.ComparePropertyDesc = ComparePropertyDesc;
+			ValidateThisConfig.defaultFailureMessagePrefix = "";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
+			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
+			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMain2FirstNameEqualTo"", $.validator.methods.EqualTo, ""First Name must be the same as the Last Name."");");
 			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMain2FirstNameEqualTo"", {frmMain2FirstNameEqualTo: '##frm-Main2 :input[name=""LastName""]'});");
 			assertTrue(Script CONTAINS "$form_frmMain2.find("":input[name='FirstName']"").addClass('frmMain2FirstNameEqualTo');");
 		</cfscript>

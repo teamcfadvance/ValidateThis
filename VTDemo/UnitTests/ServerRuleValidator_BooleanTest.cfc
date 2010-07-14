@@ -40,4 +40,24 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			validation.getObjectValue().returns("abc");
+			validation.setFailureMessage("The PropertyDesc must be a valid boolean.").returns();
+			SRV.validate(validation);
+			validation.verifyTimes(1).setFailureMessage("The PropertyDesc must be a valid boolean."); 
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="failureMessageIsPrefixedByOverridenPrefix" access="public" returntype="void">
+		<cfscript>
+			SRV = getSRV("Boolean","");
+			validation.getObjectValue().returns("abc");
+			validation.setFailureMessage("PropertyDesc must be a valid boolean.").returns();
+			SRV.validate(validation);
+			debug(validation.debugmock());
+			validation.verifyTimes(1).setFailureMessage("PropertyDesc must be a valid boolean."); 
+		</cfscript>  
+	</cffunction>
+	
 </cfcomponent>

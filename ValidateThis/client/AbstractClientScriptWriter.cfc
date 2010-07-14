@@ -20,10 +20,12 @@
 		<cfargument name="Translator" type="any" required="true" />
 		<cfargument name="JSRoot" type="string" required="true" />
 		<cfargument name="extraClientScriptWriterComponentPaths" type="string" required="true" />
+		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.JSRoot = arguments.JSRoot />
 		<cfset variables.extraClientScriptWriterComponentPaths = arguments.extraClientScriptWriterComponentPaths />
+		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
 
 		<cfset setRuleScripters() />
 		<cfreturn this />
@@ -88,7 +90,7 @@
 	</cffunction>
 	<cffunction name="setRuleScripters" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		<cfset var dirName = listLast(listLast(getMetadata(this).Name,"."),"_") />
-		<cfset var initArgs = {translator=variables.translator,getSafeFormName=variables.getSafeFormName} />
+		<cfset var initArgs = {translator=variables.translator,getSafeFormName=variables.getSafeFormName,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix} />
 		<cfset variables.RuleScripters = variables.childObjectFactory.loadChildObjects("ValidateThis.client.#dirName#" & "," & variables.extraClientScriptWriterComponentPaths,"ClientRuleScripter_",structNew(),initArgs) />
 	</cffunction>
 

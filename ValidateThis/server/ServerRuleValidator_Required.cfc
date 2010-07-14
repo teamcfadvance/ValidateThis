@@ -33,7 +33,7 @@
 					<cfset ConditionDesc = " if you specify a value for the " & Parameters.DependentPropertyDesc />
 				</cfif>
 			</cfif>
-			<cfset fail(arguments.valObject,"The #arguments.valObject.getPropertyDesc()# is required#ConditionDesc#.") />
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# is required#ConditionDesc#.")) />
 		</cfif>
 	</cffunction>
 	
