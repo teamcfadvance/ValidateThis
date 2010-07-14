@@ -76,12 +76,19 @@
 
 	</cffunction>
 
+	<cffunction name="getSafeFormName" returntype="any" access="public" output="false" hint="I generate a form name that is safe to use as part of a JS variable.">
+		<cfargument name="formName" type="Any" required="yes" />
+
+		<cfreturn reReplace(arguments.formName,"[\W]","","all") />
+
+	</cffunction>
+
 	<cffunction name="getRuleScripters" access="public" output="false" returntype="any">
 		<cfreturn variables.RuleScripters />
 	</cffunction>
 	<cffunction name="setRuleScripters" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		<cfset var dirName = listLast(listLast(getMetadata(this).Name,"."),"_") />
-		<cfset var initArgs = {translator=variables.translator} />
+		<cfset var initArgs = {translator=variables.translator,getSafeFormName=variables.getSafeFormName} />
 		<cfset variables.RuleScripters = variables.childObjectFactory.loadChildObjects("ValidateThis.client.#dirName#" & "," & variables.extraClientScriptWriterComponentPaths,"ClientRuleScripter_",structNew(),initArgs) />
 	</cffunction>
 

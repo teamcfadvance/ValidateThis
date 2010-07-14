@@ -106,11 +106,12 @@
 	<cffunction name="generateScriptHeader" returntype="any" access="public" output="false" hint="I generate the JS script required at the top of the script block.">
 		<cfargument name="formName" type="any" required="yes" />
 		<cfset var theScript = "" />
+		<cfset var safeFormName = getSafeFormName(arguments.formName) />
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 				<script type="text/javascript">jQuery(document).ready(function($) {
-					$form_#arguments.formName# = $("###arguments.formName#");
-					$form_#arguments.formName#.validate();
+					$form_#safeFormName# = $("###arguments.formName#");
+					$form_#safeFormName#.validate();
 			</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />

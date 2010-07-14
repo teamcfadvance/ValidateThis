@@ -17,7 +17,9 @@
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
 		<cfargument name="Translator" type="Any" required="yes" />
+		<cfargument name="getSafeFormName" type="Any" required="yes" />
 		<cfset variables.Translator = arguments.Translator />
+		<cfset variables.getSafeFormName = arguments.getSafeFormName />
 		<cfreturn this />
 	</cffunction>
 
@@ -26,7 +28,8 @@
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfset var theScript = "if ($form_#arguments.formName#.find("":input[name='#arguments.validation.ClientFieldName#']"").length) { " />
+		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
+		<cfset var theScript = "if ($form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"").length) { " />
 
 		<cfset var customMessage = "" />
 		
@@ -61,12 +64,13 @@
 		<cfset var paramName = "" />
 		<cfset var paramList = "" />
 		<cfset var ruleDef = getRuleDef(arguments.validation) />
+		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		
 		<cfif len(ruleDef) GT 0>
 			<cfif len(arguments.customMessage) GT 0>
 				<cfset arguments.customMessage = ", messages: {#ListFirst(ruleDef,':')#: '#JSStringFormat(variables.Translator.translate(arguments.customMessage,arguments.locale))#'}" />
 			</cfif>
-			<cfreturn "$form_#arguments.formName#.find("":input[name='#arguments.validation.ClientFieldName#']"").rules('add',{#ruleDef##arguments.customMessage#});" />
+			<cfreturn "$form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"").rules('add',{#ruleDef##arguments.customMessage#});" />
 		</cfif>
 		
 	</cffunction>
@@ -106,8 +110,9 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
-		<cfset var fieldName = arguments.formName & arguments.validation.ClientFieldName />
-		<cfset var fieldSelector = "$form_#arguments.formName#.find("":input[name='#arguments.validation.ClientFieldName#']"")" />
+		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
+		<cfset var fieldName = safeFormName & arguments.validation.ClientFieldName />
+		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"")" />
 		<cfset var valType = arguments.validation.ValType />
 		<cfset var messageScript = "" />
 		<cfif Len(arguments.customMessage) GT 0>

@@ -1,10 +1,4 @@
 <!---
-	
-filename:		\VTDemo\UnitTests\ClientScriptWriter_jQueryTest.cfc
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I ClientScriptWriter_jQueryTest.cfc
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
 	Copyright 2008, Bob Silverberg
@@ -18,17 +12,8 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
-	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 --->
-<cfcomponent displayname="UnitTests.ClientScriptWriter_jQueryTest" extends="UnitTests.BaseTestCase" output="false">
-	
-	<cfset ScriptWriter = "" />
+<cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -58,8 +43,20 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 	
 	<cffunction name="generateScriptHeaderShouldReturnCorrectScript" access="public" returntype="void">
 		<cfscript>
-			script = ScriptWriter.generateScriptHeader("");
+			script = ScriptWriter.generateScriptHeader("formName");
 			assertTrue(Trim(Script) CONTAINS "jQuery(document).ready(function($) {");
+			assertTrue(Trim(Script) CONTAINS "$form_formName = $(""##formName"");");
+			assertTrue(Trim(Script) CONTAINS "$form_formName.validate()");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="generateScriptHeaderShouldReturnSafeJSForUnsafeFormName" access="public" returntype="void">
+		<cfscript>
+			script = ScriptWriter.generateScriptHeader("form-Name2");
+			debug(script);
+			assertTrue(Trim(Script) CONTAINS "jQuery(document).ready(function($) {");
+			assertTrue(Trim(Script) CONTAINS "$form_formName2 = $(""##form-Name2"");");
+			assertTrue(Trim(Script) CONTAINS "$form_formName2.validate()");
 		</cfscript>  
 	</cffunction>
 
@@ -81,11 +78,30 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="CustomValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
+		<cfscript>
+			valStruct.ValType = "custom";
+			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			assertEquals("if ($form_frmMain2.find("":input[name='firstname']"").length) { }",script);
+			valStruct.Parameters = {remoteURL="aURL"}; 
+			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			assertEquals("if ($form_frmMain2.find("":input[name='firstname']"").length) { $form_frmMain2.find("":input[name='firstname']"").rules('add',{remote: 'aURL'});}",script);
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="DateValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "date";
 			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{date: true});}",script);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="DateValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
+		<cfscript>
+			valStruct.ValType = "date";
+			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			assertEquals("if ($form_frmMain2.find("":input[name='firstname']"").length) { $form_frmMain2.find("":input[name='firstname']"").rules('add',{date: true});}",script);
 		</cfscript>  
 	</cffunction>
 
@@ -133,6 +149,18 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="DependentPropertyRequiredValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
+		<cfscript>
+			valStruct.ValType = "required";
+			valStruct.Parameters = {DependentPropertyName="LastName"}; 
+			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
+			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMain2FirstNamerequired"", $.validator.methods.required);");
+			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMain2FirstNamerequired"", {frmMain2FirstNamerequired: function(element) { return $form_frmMain2.find("":input[name='lastname']"").getvalue().length > 0; }});");
+			assertTrue(Script CONTAINS "$form_frmMain2.find("":input[name='FirstName']"").addClass('frmMain2FirstNamerequired');");
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="DependentValueRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
@@ -146,6 +174,19 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="DependentValueRequiredValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
+		<cfscript>
+			valStruct.ValType = "required";
+			valStruct.Parameters = {DependentPropertyName="LastName",DependentPropertyValue="Silverberg"}; 
+			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			//assertEquals(Script,"$form_frmmain.find("":input[name='firstname']"").rules('add',{required: true});");
+			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
+			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMain2FirstNamerequired"", $.validator.methods.required);");
+			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMain2FirstNamerequired"", {frmMain2FirstNamerequired: function(element) { return $form_frmMain2.find("":input[name='lastname']"").getvalue() == 'silverberg'; }});");
+			assertTrue(Script CONTAINS "$form_frmMain2.find("":input[name='FirstName']"").addClass('frmMain2FirstNamerequired');");
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="DependentFieldRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
@@ -155,6 +196,18 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNamerequired"", $.validator.methods.required);");
 			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMainFirstNamerequired"", {frmMainFirstNamerequired: function(element) { return $form_frmMain.find("":input[name='User[LastName]']"").getvalue().length > 0; }});");
 			assertTrue(Script CONTAINS "$form_frmMain.find("":input[name='FirstName']"").addClass('frmMainFirstNamerequired');");
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="DependentFieldRequiredValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
+		<cfscript>
+			valStruct.ValType = "required";
+			valStruct.Parameters = {DependentPropertyName="LastName",DependentFieldName="User[LastName]"}; 
+			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
+			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMain2FirstNamerequired"", $.validator.methods.required);");
+			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMain2FirstNamerequired"", {frmMain2FirstNamerequired: function(element) { return $form_frmMain2.find("":input[name='User[LastName]']"").getvalue().length > 0; }});");
+			assertTrue(Script CONTAINS "$form_frmMain2.find("":input[name='FirstName']"").addClass('frmMain2FirstNamerequired');");
 		</cfscript>  
 	</cffunction>
 	
@@ -234,6 +287,21 @@ purpose:		I ClientScriptWriter_jQueryTest.cfc
 			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNameEqualTo"", $.validator.methods.EqualTo, ""The First Name must be the same as the Last Name."");");
 			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMainFirstNameEqualTo"", {frmMainFirstNameEqualTo: '##frmMain :input[name=""LastName""]'});");
 			assertTrue(Script CONTAINS "$form_frmMain.find("":input[name='FirstName']"").addClass('frmMainFirstNameEqualTo');");
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="EqualToValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
+		<cfscript>
+			ComparePropertyName = "LastName";
+			ComparePropertyDesc = "Last Name";
+			valStruct.ValType = "EqualTo";
+			valStruct.Parameters.ComparePropertyName = ComparePropertyName;
+			valStruct.Parameters.ComparePropertyDesc = ComparePropertyDesc;
+			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
+			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMain2FirstNameEqualTo"", $.validator.methods.EqualTo, ""The First Name must be the same as the Last Name."");");
+			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMain2FirstNameEqualTo"", {frmMain2FirstNameEqualTo: '##frm-Main2 :input[name=""LastName""]'});");
+			assertTrue(Script CONTAINS "$form_frmMain2.find("":input[name='FirstName']"").addClass('frmMain2FirstNameEqualTo');");
 		</cfscript>
 	</cffunction>
 

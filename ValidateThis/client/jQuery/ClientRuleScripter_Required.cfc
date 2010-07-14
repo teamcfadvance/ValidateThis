@@ -25,6 +25,7 @@
 		<cfset var ConditionDesc = "" />
 		<cfset var theScript = "" />
 		<cfset var DependentFieldName = "" />
+		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 
 		<!--- Deal with various conditions --->
 		<cfif StructKeyExists(arguments.validation.Condition,"ClientTest")>
@@ -38,9 +39,9 @@
 		</cfif>
 		<cfif len(DependentFieldName) GT 0>
 			<cfif StructKeyExists(arguments.validation.Parameters,"DependentPropertyValue")>
-				<cfset theCondition = "function(element) { return $form_#arguments.formName#.find("":input[name='#DependentFieldName#']"").getValue() == '#arguments.validation.Parameters.DependentPropertyValue#'; }" />
+				<cfset theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentFieldName#']"").getValue() == '#arguments.validation.Parameters.DependentPropertyValue#'; }" />
 			<cfelse>
-				<cfset theCondition = "function(element) { return $form_#arguments.formName#.find("":input[name='#DependentFieldName#']"").getValue().length > 0; }" />
+				<cfset theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentFieldName#']"").getValue().length > 0; }" />
 			</cfif>
 		</cfif>
 		

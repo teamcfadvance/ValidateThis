@@ -64,7 +64,7 @@
 		</script>
 	</cfsavecontent>	
 	<cfhtmlhead text="#headJS#" />
-	<cfset ValidationScript = UserTO.getValidationScript(Form.Context) />
+	<cfset ValidationScript = UserTO.getValidationScript(context=Form.Context,formName="frm-Main2") />
 	<cfhtmlhead text="#ValidationScript#" />
 </cfif>
 
@@ -73,7 +73,7 @@
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>)</h3>
 <cfif Len(SuccessMessage)><h3>#SuccessMessage#</h3></cfif>
 <div class="formContainer">
-<form action="index.cfm" id="frmMain" method="post" name="frmMain" class="uniForm">
+<form action="index.cfm" id="frm-Main2" method="post" name="frm-Main2" class="uniForm">
 	<input type="hidden" name="Context" id="Context" value="#Form.Context#" />
 	<input type="hidden" name="NoJS" id="NoJS" value="#Form.NoJS#" />
 	<input type="hidden" name="Processing" id="Processing" value="true" />

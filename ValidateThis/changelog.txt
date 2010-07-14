@@ -162,3 +162,12 @@ Version 0.96
 Version 0.96.1
 --------------
 - fixed a bug introduced when adding the support for validating a struct
+
+Version 0.96.2
+--------------
+- fixed a bug when passing an explicit form name into the getValidationScript method
+- fixed another bug regarding form names and generated JS
+- fixed a bug regarding form names with dashes in them
+- fixed a bug in the ColdBox plugin
+- updated end-to-end tests
+

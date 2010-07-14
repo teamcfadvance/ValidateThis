@@ -15,8 +15,6 @@
 --->
 <cfcomponent extends="UnitTests.BaseTestCase" output="false">
 	
-	<cfset ScriptWriter = "" />
-	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
@@ -24,6 +22,15 @@
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">
+	</cffunction>
+
+	<cffunction name="getSafeFormNameShouldReturnFormNameWithOnlyAlphanumericChars" access="public" returntype="void">
+		<cfscript>
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
+			assertEquals("formName",ScriptWriter.getSafeFormName("formName"));
+			assertEquals("formName2",ScriptWriter.getSafeFormName("form-Name2"));
+		</cfscript>  
 	</cffunction>
 
 	<cffunction name="ClientRuleScriptersShouldBeLoadedCorrectly" access="public" returntype="void">
