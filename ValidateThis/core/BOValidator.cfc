@@ -108,7 +108,8 @@
 					<cfelseif StructKeyExists(variables.Instance.PropertyDescs,theRule.propertyName)>
 						<cfset theRule.propertyDesc = variables.Instance.PropertyDescs[theRule.propertyName] />
 					<cfelse>
-						<cfset theRule.propertyDesc = theRule.propertyName />
+						<cfset theRule.propertyDesc = determineLabel(theRule.propertyName)/>
+                        <cfset variables.Instance.PropertyDescs[theRule.propertyName] = theRule.propertyDesc/>
 					</cfif>
 					<cfif NOT StructKeyExists(variables.Instance.ClientFieldDescs,theRule.clientFieldName)>
 						<cfset variables.Instance.ClientFieldDescs[theRule.clientFieldName] = theRule.propertyDesc />
