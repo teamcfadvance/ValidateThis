@@ -31,6 +31,7 @@
 <!--- Are we processing the form? --->
 <cfif StructKeyExists(Form,"Processing")>
 	<!--- Populate the object from the form scope --->
+	<cfset userGroupId = form.userGroupId />
 	<cfloop collection="#form#" item="fld">
 		<cfif StructKeyExists(user,"set" & fld)>
 			<cfinvoke component="#user#" method="set#fld#">
@@ -43,16 +44,10 @@
 	<cfset UniFormErrors = Result.getFailuresForUniForm() />
 	<!--- If validations passed, save the record --->
 	<cfif Result.getIsSuccess()>
-		<cfset txn = ORMGetSession().beginTransaction() />
-		<cftry>
+		<cftransaction action="begin">
 			<cfset entitySave(user) />
-			<cfset txn.commit() />
-			<cfset SuccessMessage = "The User has been saved!" />
-			<cfcatch type="any">
-				<cfset txn.rollback() />
-				<cfrethrow />
-			</cfcatch>
-		</cftry>
+		</cftransaction>
+		<cfset SuccessMessage = "The User has been saved!" />
 	<cfelse>
 		<cfset SuccessMessage = "" />
 	</cfif>
@@ -84,7 +79,6 @@
 	<cfset ValidationScript = application.ValidateThis.getValidationScript(objectType="User",Context=Form.Context) />
 	<cfhtmlhead text="#ValidationScript#" />
 </cfif>
-
 <cfoutput>
 <h1>ValidateThis CF9 ORM - with Facade - Demo</h1>
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>)</h3>

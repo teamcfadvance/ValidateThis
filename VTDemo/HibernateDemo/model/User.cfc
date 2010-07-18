@@ -40,6 +40,13 @@ component output="false" persistent="true" table="tblUser" {
 		return returnStruct;		
 	}
 	
+	public void function setUserGroupId(userGroupId) hint="used to populate the UserGroup from the form" {
+		var userGroup = entityLoadByPK("UserGroup",val(arguments.userGroupId));
+		if (not isNull(userGroup)) {
+			variables.UserGroup = userGroup;
+		}
+	}
+	
 	public boolean function testCondition(string condition) {
 		return evaluate(arguments.condition);
 	}

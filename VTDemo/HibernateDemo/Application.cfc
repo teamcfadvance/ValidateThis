@@ -20,6 +20,7 @@ component output="false" {
 	this.ormSettings = {};
 	this.ormSettings.cfclocation = "model";
 	this.ormSettings.flushatrequestend = false;
+	this.ormSettings.automanageSession = false;
 	
 	function onError(any exception, string eventName) {
 		writeDump(arguments);
