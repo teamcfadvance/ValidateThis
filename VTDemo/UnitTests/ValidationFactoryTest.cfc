@@ -23,60 +23,23 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="loadChildObjectsShouldReturnCollectionOfBuiltInServerRuleValidators" access="public" returntype="void">
+	<cffunction name="createBOVsFromCFCsShouldCreateBOVsFromAnnotatedCFCs" returntype="void" access="public">
 		<cfscript>
-			initargs={defaultFailureMessagePrefix="The "};
-			SRVs = validationFactory.loadChildObjects("ValidateThis.server","ServerRuleValidator_",StructNew(),initargs);
-			assertEquals(true,structKeyExists(SRVs,"Boolean"));
-			assertEquals("ValidateThis.server.serverrulevalidator_boolean",GetMetadata(SRVs.Boolean).name);
-			assertTrue(StructKeyExists(SRVs.Boolean,"validate"));
+			ValidateThisConfig.BOComponentPaths="UnitTests.Fixture.AnnotatedBOs";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			injectMethod(validationFactory, this, "getBOVs", "getBOVs");
+			validationFactory.createBOVsFromCFCs();
+			BOVs = validationFactory.getBOVs();
+			assertTrue(false,"This should fail as this hasn't been implemented yet!");
+			debug(BOVs);
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="loadChildObjectsShouldReturnCollectionOfServerRuleValidatorsFromTwoPaths" access="public" returntype="void">
-		<cfscript>
-			initargs={defaultFailureMessagePrefix="The "};
-			SRVs = validationFactory.loadChildObjects("ValidateThis.server,VTDemo.UnitTests.Fixture.ServerRuleValidators","ServerRuleValidator_",StructNew(),initargs);
-			assertEquals(true,structKeyExists(SRVs,"Boolean"));
-			assertEquals("ValidateThis.server.serverrulevalidator_boolean",GetMetadata(SRVs.Boolean).name);
-			assertTrue(StructKeyExists(SRVs.Boolean,"validate"));
-			assertEquals(true,structKeyExists(SRVs,"Extra"));
-			assertEquals("vtdemo.unittests.fixture.serverrulevalidators.serverrulevalidator_extra",GetMetadata(SRVs.Extra).name);
-			assertTrue(StructKeyExists(SRVs.Extra,"validate"));
-		</cfscript>
+	<cffunction name="getBOVs" access="public" output="false" returntype="any" hint="Used to retrieve the BOVs for testing.">
+		<cfparam name="variables.Validators" default="#structNew()#" />
+		<cfreturn variables.Validators />
 	</cffunction>
 
-	<cffunction name="loadChildObjectsShouldReturnCollectionOfServerRuleValidatorsWithOverrides" access="public" returntype="void">
-		<cfscript>
-			initargs={defaultFailureMessagePrefix="The "};
-			SRVs = validationFactory.loadChildObjects("ValidateThis.server,VTDemo.UnitTests.Fixture.OverrideServerRuleValidators","ServerRuleValidator_",StructNew(),initargs);
-			assertEquals(true,structKeyExists(SRVs,"Boolean"));
-			assertEquals("ValidateThis.server.serverrulevalidator_boolean",GetMetadata(SRVs.Boolean).name);
-			assertTrue(StructKeyExists(SRVs.Boolean,"validate"));
-			assertEquals(true,structKeyExists(SRVs,"Custom"));
-			assertEquals(true,structKeyExists(SRVs,"Extra"));
-			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_custom",GetMetadata(SRVs.Custom).name);
-			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_extra",GetMetadata(SRVs.Extra).name);
-			assertTrue(StructKeyExists(SRVs.Custom,"validate"));
-			assertTrue(StructKeyExists(SRVs.Extra,"validate"));
-		</cfscript>
-	</cffunction>
-
-	<!---
-
-	<cffunction name="OverrideRuleValidatorsShouldBeLoaded" access="public" returntype="void">
-		<cfscript>
-			ServerValidator = CreateObject("component","ValidateThis.server.ServerValidator").init(FileSystem,TransientFactory,ObjectChecker,"VTDemo.UnitTests.Fixture.OverrideServerRuleValidators");
-			RuleValidators = ServerValidator.getRuleValidators();
-			assertEquals(true,structKeyExists(RuleValidators,"Custom"));
-			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
-			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_custom",GetMetadata(RuleValidators.Custom).name);
-			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
-			assertTrue(StructKeyExists(RuleValidators.Custom,"validate"));
-		</cfscript>  
-	</cffunction>
-	--->
-	
 	<cffunction name="newResultShouldReturnBuiltInResultObjectWithDefaultConfig" access="public" returntype="void">
 		<cfscript>
 			result = validationFactory.newResult();

@@ -86,6 +86,7 @@ Adds a constructor property to a bean.
 		addSingleton("ValidateThis.util.TransientFactory");
 		addSingleton("ValidateThis.core.ChildObjectFactory");
 		addSingleton("ValidateThis.core.ExternalFileReader");
+		addSingleton("ValidateThis.core.AnnotationReader");
 		addSingleton("ValidateThis.server.ServerValidator");
 		addSingleton("ValidateThis.client.ClientValidator");
 		addSingleton("ValidateThis.client.CommonScriptGenerator");
@@ -97,6 +98,8 @@ Adds a constructor property to a bean.
 		addTransient("ValidateThis.core.fileReaders.FileReader_XML");
 		addTransient(variables.ValidateThisConfig.ResultPath,"Result");
 		addTransient("ValidateThis.core.StructWrapper");
+		addTransient("ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_JSON");
+		addTransient("ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_XML");
 		/*
 		addSingleton("ValidateThis.util.TransientFactoryNoCS");
 		addSingleton("ValidateThis.util.FileSystem");

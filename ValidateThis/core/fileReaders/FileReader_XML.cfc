@@ -16,25 +16,9 @@
 <cfcomponent output="false" extends="BaseFileReader" hint="I am a responsible for reading and processing an XML file.">
 
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I read the validations XML file and reformat it into a struct">
-		<cfargument name="fileName" type="any" required="true" />
+		<cfargument name="metadataSource" type="any" required="true" hint="the path to the file to read" />
 
-		<cfset var xmlConditions = 0 />
-		<cfset var theConditions = {} />
-		<cfset var theCondition = 0 />
-		<cfset var xmlContexts = 0 />
-		<cfset var theContexts = {} />
-		<cfset var theContext = 0 />
-		<cfset var theProperty = 0 />
-		<cfset var theName = 0 />
-		<cfset var theDesc = 0 />
-		<cfset var theRules = 0 />
-		<cfset var theRule = 0 />
-		<cfset var theVal = 0 />
-		<cfset var theParams = 0 />
-		<cfset var theParam = 0 />
-		<cfset var PropertyType = 0 />
-		
-		<cfset var theXML = XMLParse(arguments.fileName) />
+		<cfset var theXML = XMLParse(arguments.metadataSource) />
 		<cfset var theProperties = convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//property")) />
 
 		<cfset processConditions(convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//condition"))) />

@@ -19,6 +19,7 @@
 		<cfargument name="objectType" type="string" required="true" />
 		<cfargument name="FileSystem" type="any" required="true" />
 		<cfargument name="externalFileReader" type="any" required="true" />
+		<cfargument name="annotationReader" type="any" required="true" />
 		<cfargument name="ServerValidator" type="any" required="true" />
 		<cfargument name="ClientValidator" type="any" required="true" />
 		<cfargument name="TransientFactory" type="any" required="true" />
@@ -30,11 +31,15 @@
 		<cfargument name="definitionPath" type="string" required="true" />
 		<cfargument name="specificDefinitionPath" type="string" required="true" />
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
+		<cfargument name="componentPath" type="any" required="true" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 
+		<cfset request.debug(arguments) />
+		
 		<cfset variables.Instance = {objectType = arguments.objectType} />
 		<cfset variables.Instance.newRules = {} />
 		<cfset variables.FileSystem = arguments.FileSystem />
 		<cfset variables.externalFileReader = arguments.externalFileReader />
+		<cfset variables.annotationReader = arguments.annotationReader />
 		<cfset variables.ServerValidator = arguments.ServerValidator />
 		<cfset variables.ClientValidator = arguments.ClientValidator />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
@@ -47,8 +52,28 @@
 		<!--- Prepend a specified definitionPath to the paths in the ValidateThisConfig --->
 		<cfset variables.definitionPath = listPrepend(arguments.definitionPath,arguments.specificDefinitionPath) />
 		
+		<cfif isObject(arguments.theObject) or len(arguments.componentPath) gt 0>
+			<cfset loadRulesFromAnnotations(arguments.theObject,arguments.componentPath) />
+		</cfif>
+		
+		<!--- TODO: Combine rules from annotations with rules from file --->
+		
 		<cfset loadRulesFromExternalFile(arguments.objectType,variables.definitionPath) />
 		<cfreturn this />
+	</cffunction>
+
+	<cffunction name="loadRulesFromAnnotations" returnType="void" access="private" output="false" hint="I ask the externalFileReader to read the validations XML file and reformat it into a struct">
+		<cfargument name="theObject" type="any" required="true" />
+		<cfargument name="componentPath" type="any" required="true" />
+
+		<cfset var theStruct = variables.annotationReader.loadRulesFromAnnotations(argumentCollection=arguments) />
+		
+		<cfset variables.Instance.PropertyDescs = theStruct.PropertyDescs />
+		<cfset variables.Instance.ClientFieldDescs = theStruct.ClientFieldDescs />
+		<cfset variables.Instance.FormContexts = theStruct.FormContexts />
+		<cfset variables.Instance.Validations = theStruct.Validations />
+		<cfset variables.Instance.requiredPropertiesAndFields = determineRequiredPropertiesAndFields() />
+		
 	</cffunction>
 
 	<cffunction name="loadRulesFromExternalFile" returnType="void" access="private" output="false" hint="I ask the externalFileReader to read the validations XML file and reformat it into a struct">

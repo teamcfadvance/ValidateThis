@@ -91,9 +91,13 @@
 			ValidateThisConfig.injectResultIntoBO=false;
 			ValidateThisConfig.JSIncludes=true;
 			ValidateThisConfig.defaultFailureMessagePrefix="The ";
+			ValidateThisConfig.BOComponentPaths="";
+			ValidateThisConfig.annotationAttributeName="vtRules";
+			ValidateThisConfig.extraAnnotationTypeReaderComponentPaths="";
 			return ValidateThisConfig;
 		</cfscript>
 	</cffunction>
 
 </cfcomponent>
+
 

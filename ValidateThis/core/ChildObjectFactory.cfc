@@ -29,6 +29,7 @@
 		<cfset var objNames = "" />
 		<cfset var obj = 0 />
 		<cfset var childPath = ""/>
+		<cfset var componentPath = ""/>
 		<cfset var actualPath = ""/>
 		
 		<cfloop list="#arguments.childPaths#" index="childPath">

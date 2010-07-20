@@ -112,6 +112,9 @@
 			extra = {ExtraRuleValidatorComponentPaths="VTDemo.UnitTests.Fixture.ServerRuleValidators"};
 			createServerValidator(extra);
 			RuleValidators = serverValidator.getRuleValidators();
+			assertTrue(GetMetadata(RuleValidators.Custom).name CONTAINS "ServerRuleValidator_Custom");
+			assertTrue(GetMetadata(RuleValidators.Required).name CONTAINS "ServerRuleValidator_Required");
+			assertTrue(StructKeyExists(RuleValidators.Required,"validate"));
 			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
 			assertEquals("vtdemo.unittests.fixture.serverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
 			assertTrue(StructKeyExists(RuleValidators.Extra,"validate"));
@@ -125,8 +128,10 @@
 			RuleValidators = serverValidator.getRuleValidators();
 			assertEquals(true,structKeyExists(RuleValidators,"Custom"));
 			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
+			assertEquals(true,structKeyExists(RuleValidators,"Required"));
 			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_custom",GetMetadata(RuleValidators.Custom).name);
 			assertEquals("vtdemo.unittests.fixture.overrideserverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
+			assertEquals("validatethis.server.serverrulevalidator_required",GetMetadata(RuleValidators.Required).name);
 			assertTrue(StructKeyExists(RuleValidators.Custom,"validate"));
 		</cfscript>  
 	</cffunction>

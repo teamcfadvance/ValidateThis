@@ -32,8 +32,42 @@
 	
 	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
 		<cfscript>
-			assertEquals("0.96",ValidateThis.getVersion());
+			assertEquals("0.97",ValidateThis.getVersion());
 		</cfscript>  
+	</cffunction>
+
+	<cffunction name="defaultVTConfigShouldBeAccurate" access="public" returntype="void">
+		<cfscript>
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(structNew());
+			injectMethod(ValidateThis, this, "getVTConfig", "getVTConfig");
+			VTConfig = ValidateThis.getVTConfig();
+			assertEquals("ValidateThis.core.BOValidator",VTConfig.BOValidatorPath);
+			assertEquals("jQuery",VTConfig.DefaultJSLib);
+			assertEquals("",VTConfig.ExtraClientScriptWriterComponentPaths);
+			assertEquals("",VTConfig.ExtraRuleValidatorComponentPaths);
+			assertEquals(true,VTConfig.JSIncludes);
+			assertEquals("js/",VTConfig.JSRoot);
+			assertEquals("ValidateThis.core.BaseLocaleLoader",VTConfig.LocaleLoaderPath);
+			assertEquals("ValidateThis.util.Result",VTConfig.ResultPath);
+			assertEquals("ValidateThis.core.BaseTranslator",VTConfig.TranslatorPath);
+			assertEquals("getValue",VTConfig.abstractGetterMethod);
+			assertEquals("The ",VTConfig.defaultFailureMessagePrefix);
+			assertEquals("frmMain",VTConfig.defaultFormName);
+			assertEquals("en_US",VTConfig.defaultLocale);
+			assertEquals("/model/",VTConfig.definitionPath);
+			assertEquals("xml,json",VTConfig.externalFileTypes);
+			assertEquals("",VTConfig.extraFileReaderComponentPaths);
+			assertEquals(false,VTConfig.injectResultIntoBO);
+			assertEquals(structNew(),VTConfig.localeMap);
+			assertEquals("",VTConfig.BOComponentPaths);
+			assertEquals("vtRules",VTConfig.annotationAttributeName);
+			assertEquals("",VTConfig.ExtraAnnotationTypeReaderComponentPaths);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getVTConfig" access="public" output="false" returntype="any" hint="Used to retrieve the VTConfig for testing.">
+		<cfparam name="variables.ValidateThisConfig" default="#structNew()#" />
+		<cfreturn variables.ValidateThisConfig />
 	</cffunction>
 
 	<cffunction name="getInitializationScriptWithDefaultVTConfigReturnsCorrectScript" returntype="void" access="public">

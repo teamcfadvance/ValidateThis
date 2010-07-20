@@ -112,9 +112,24 @@
 	<cffunction name="listFiles" access="public" output="false" returntype="any" hint="returns a list of filenames">
 		<cfargument name="Destination" required="true" type="string" />
 		<cfargument name="Filter" required="false" type="string" default=""/>
+		<cfargument name="recurse" required="false" type="boolean" default="false"/>
 		<cfset var qryDir = "">
-		<cfdirectory directory="#arguments.Destination#" filter="#arguments.Filter#" name="qryDir" action="list" type="file" />
+		<cfdirectory directory="#arguments.Destination#" filter="#arguments.Filter#" name="qryDir" action="list" type="file" recurse="#arguments.recurse#" />
 		<cfreturn ValueList(qryDir.name)>
+	</cffunction>
+
+	<cffunction name="listRelativeFilePaths" access="public" output="false" returntype="any" hint="returns a list of filenames with path info">
+		<cfargument name="Destination" required="true" type="string" />
+		<cfargument name="Filter" required="false" type="string" default=""/>
+		<cfargument name="recurse" required="false" type="boolean" default="false"/>
+		<cfset var qryDir = "">
+		<cfset var theList = "">
+		<cfdirectory directory="#arguments.Destination#" filter="#arguments.Filter#" name="qryDir" action="list" type="file" recurse="#arguments.recurse#" />
+		<cfset request.debug(qryDir) />
+		<cfloop query="qryDir">
+			<cfset theList = listAppend(theList,replace(replaceNoCase(qryDir.directory,arguments.Destination,""),"\","/") & "/" & qryDir.name) />
+		</cfloop>
+		<cfreturn theList>
 	</cffunction>
 
 	<cffunction name="listDirs" access="public" output="false" returntype="any" hint="returns a list of directories">

@@ -26,6 +26,42 @@
 		<cfreturn this />
 	</cffunction>
 
+	<cffunction name="createBOVsFromCFCs" access="public" output="false" returntype="void" hint="I create BOVs from annotated CFCs">
+		
+		<cfset var fileSystem = getBean("fileSystem") />
+		<cfset var BOComponentPath = ""/>
+		<cfset var actualPath = ""/>
+		<cfset var cfcNames = "" />
+		<cfset var cfc = "" />
+		<cfset var componentPath = ""/>
+		<cfset var objectType = "" />
+		<cfset var md = "" />
+		
+		<cfloop list="#variables.ValidateThisConfig.BOComponentPaths#" index="BOComponentPath">
+			<cfset actualPath = fileSystem.getMappingPath(BOComponentPath) />
+			<cfset cfcNames = fileSystem.listRelativeFilePaths(actualPath,"*.cfc",true)/>
+			<cfset request.debug(cfcNames) />
+			<cfloop list="#cfcNames#" index="cfc">
+				<cfset componentPath = BOComponentPath & replace(replaceNoCase(cfc,".cfc","","last"),"/",".","all") />
+				<cfset request.debug(componentPath) />
+				<cfset objectType = listLast(componentPath,".") />
+				<cfset md = getComponentMetadata(componentPath) />
+				<cfset request.debug(md) />
+				<cfset request.debug(objectType) />
+				<cfset request.debug(getDirectoryFromPath(fileSystem.getMappingPath(componentPath))) />
+				
+				<!--- TODO: Now we need to call getValidator --->
+				<cfset getValidator(objectType=listLast(componentPath,"."),componentPath=componentPath,definitionPath=getDirectoryFromPath(fileSystem.getMappingPath(componentPath))) />
+				<!---
+				<cfif ListLast(obj,".") EQ "cfc" AND obj CONTAINS arguments.fileNamePrefix>
+					<cfset arguments.childCollection[replaceNoCase(ListLast(obj,"_"),".cfc","")] = CreateObject("component",componentPath & ReplaceNoCase(obj,".cfc","")).init(argumentCollection=arguments.initArguments) />
+				</cfif>
+				--->
+			</cfloop>
+		</cfloop>
+		
+	</cffunction>
+	
 	<cffunction name="getBean" access="public" output="false" returntype="any" hint="I return a singleton">
 		<cfargument name="BeanName" type="Any" required="false" />
 		
@@ -37,9 +73,10 @@
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="false" default="" />
 		<cfargument name="theObject" type="any" required="false" default="" hint="The object from which to read annotations" />
+		<cfargument name="componentPath" type="any" required="false" default="" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 
 		<cfif NOT StructKeyExists(variables.Validators,arguments.objectType)>
-			<cfset variables.Validators[arguments.objectType] = createValidator(arguments.objectType,arguments.definitionPath,arguments.theObject) />
+			<cfset variables.Validators[arguments.objectType] = createValidator(argumentCollection=arguments) />
 		</cfif>
 		<cfreturn variables.Validators[arguments.objectType] />
 		
@@ -49,39 +86,16 @@
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
+		<cfargument name="componentPath" type="any" required="true" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 		
 		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),
-			getBean("externalFileReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),
+			getBean("externalFileReader"),getBean("annotationReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),
 			getBean("CommonScriptGenerator"),getBean("Version"),
 			variables.ValidateThisConfig.defaultFormName,variables.ValidateThisConfig.defaultJSLib,variables.ValidateThisConfig.JSIncludes,variables.ValidateThisConfig.definitionPath,
-			arguments.definitionPath,arguments.theObject) />
+			arguments.definitionPath,arguments.theObject,arguments.componentPath) />
 
 	</cffunction>
 
-	<cffunction name="loadChildObjects" returntype="struct" access="public" output="false" hint="I am a utility function used to create groups of child objects, such as SRVs, CRSs and fileReaders.">
-		<cfargument name="childPaths" type="string" required="true" hint="A comma delimited list of component paths" />
-		<cfargument name="fileNamePrefix" type="string" required="true" hint="The expected prefix for the object type (e.g., ServerRuleValidator_)" />
-		<cfargument name="childCollection" type="struct" required="false" default="#StructNew()#" hint="The structure into which to load the objects" />
-		<cfargument name="initArguments" type="struct" required="false" default="#StructNew()#" hint="The arguments to be passed to the init method of each object" />
-		<cfset var objNames = "" />
-		<cfset var obj = 0 />
-		<cfset var childPath = ""/>
-		<cfset var actualPath = ""/>
-		
-		<cfloop list="#arguments.childPaths#" index="childPath">
-			<cfset actualPath = getBean("FileSystem").getMappingPath(childPath) />
-			<cfset componentPath = childPath & "." />
-			<cfset objNames = getBean("FileSystem").listFiles(actualPath)/>
-			<cfloop list="#objNames#" index="obj">
-				<cfif ListLast(obj,".") EQ "cfc" AND obj CONTAINS arguments.fileNamePrefix>
-					<cfset arguments.childCollection[replaceNoCase(ListLast(obj,"_"),".cfc","")] = CreateObject("component",componentPath & ReplaceNoCase(obj,".cfc","")).init(argumentCollection=arguments.initArguments) />
-				</cfif>
-			</cfloop>
-		</cfloop>
-		
-		<cfreturn arguments.childCollection />
-	</cffunction>
-	
 	<cffunction name="newResult" returntype="any" access="public" output="false" hint="I create a Result object.">
 
 		<cfreturn getBean("TransientFactory").newResult() />

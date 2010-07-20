@@ -1,6 +1,6 @@
 <!---
 	
-	Copyright 2008, Bob Silverberg
+	Copyright 2010, Bob Silverberg
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -13,10 +13,21 @@
 	License.
 	
 --->
-<cfcomponent output="false" extends="BaseFileReader" hint="I am a responsible for reading and processing a JSON file.">
+<cfcomponent output="false" extends="BaseAnnotationTypeReader" hint="I am a responsible for reading and processing an XML annotation.">
 
-	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I read the validations JSON file and reformat it into private properties">
-		<cfargument name="metadataSource" type="any" required="true" hint="the path to the file to read" />
+	<cffunction name="isThisFormat" returnType="boolean" access="public" output="false" hint="I determine whether the annotation value contains this type of format">
+		<cfargument name="annotationValue" type="string" required="true" />
+		
+		<cfif isXML(arguments.annotationValue)>
+			<cfreturn true />
+		<cfelse>
+			<cfreturn false />
+		</cfif>
+		
+	</cffunction>
+
+	<cffunction name="getRules" returnType="void" access="public" output="false" hint="I read the validations JSON file and reformat it into private properties">
+		<cfargument name="metadataSource" type="any" required="true" />
 
 		<cfset fileContent = variables.FileSystem.read(arguments.metadataSource).getContent() />
 		<cfif isJSON(fileContent)>
@@ -34,10 +45,10 @@
 					<cfset processPropertyRules(VT.objectProperties) />
 				</cfif>
 			<cfelse>
-				<cfthrow type="ValidateThis.core.fileReaders.Filereader_JSON.invalidJSON" detail="The json object in the file #arguments.metadataSource# does not contain a validateThis struct." />
+				<cfthrow type="ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_JSON.invalidJSON" detail="The json object in the annotation does not contain an array of rules." />
 			</cfif>
 		<cfelse>
-			<cfthrow type="ValidateThis.core.fileReaders.Filereader_JSON.invalidJSON" detail="The contents of the file #arguments.metadataSource# are not valid JSON." />
+			<cfthrow type="ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_JSON.invalidJSON" detail="The contents of the annotation is not valid JSON." />
 		</cfif>
 
 	</cffunction>
