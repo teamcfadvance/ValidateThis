@@ -33,8 +33,6 @@
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
 		<cfargument name="componentPath" type="any" required="true" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 
-		<cfset request.debug(arguments) />
-		
 		<cfset variables.Instance = {objectType = arguments.objectType} />
 		<cfset variables.Instance.newRules = {} />
 		<cfset variables.FileSystem = arguments.FileSystem />

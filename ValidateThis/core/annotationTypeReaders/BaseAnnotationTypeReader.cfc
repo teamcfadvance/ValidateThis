@@ -35,6 +35,61 @@
 
 	</cffunction>
 
+	<cffunction name="processContexts" returnType="void" access="private" output="false" hint="I translate context annotation metadata into an array to be used by the BaseMetadataProcessor">
+		<cfargument name="contexts" type="any" required="true" />
+		
+		<cfset arguments.contexts = processJSONOrList(arguments.contexts) />
+		<cfset super.processContexts(arguments.contexts) />
+	</cffunction>
+
+	<cffunction name="processConditions" returnType="void" access="private" output="false" hint="I translate condition annotation metadata into an array to be used by the BaseMetadataProcessor">
+		<cfargument name="conditions" type="any" required="true" />
+		
+		<cfset arguments.conditions = processJSONOrList(arguments.conditions) />
+		<cfset super.processConditions(arguments.conditions) />
+	</cffunction>
+
+	<cffunction name="processJSONOrList" returnType="array" access="private" output="false" hint="I translate annotation metadata into an array to be used by the BaseMetadataProcessor">
+		<cfargument name="theItems" type="any" required="true" />
+		
+		<cfset var items = [] />
+		<cfset var item = "" />
+		<cfset var newItem = "" />
+		<cfif len(arguments.theItems) gt 0>
+			<cfif isJSON(arguments.theItems)>
+				<cfset items = deserializeJSON(arguments.theItems) />
+				<cfif not isArray(items)>
+					<cfthrow type="ValidateThis.core.annotationTypeReaders.BaseAnnotationTypeReader.InvalidJSON" detail="If items are supplied in a json string, they must be in the form of an array of structs." />
+				</cfif>
+			<cfelse>
+				<cfloop list="#arguments.theItems#" index="item">
+					<cfset newItem = {} />
+					<cfset newItem.name = listFirst(item,"|") />
+					<cfif listLen(item,"|") eq 2>
+						<!--- context --->
+						<cfset newItem.formName = listLast(item,"|") />
+					<cfelse>
+						<!--- condition --->
+						<cfset newItem.serverTest = listGetAt(item,2,"|") />
+						<cfset newItem.clientTest = listGetAt(item,3,"|") />
+					</cfif>
+					<cfset arrayAppend(items,newItem) />
+				</cfloop>
+			</cfif>
+		</cfif>
+		<cfreturn items />
+	</cffunction>
+
+	<cffunction name="processPropertyDescs" returnType="any" access="private" output="false" hint="I simply pass the call on to my parent">
+		<cfargument name="theProperties" type="any" required="true" />
+		<cfset super.processPropertyDescs(arguments.theProperties) />
+	</cffunction>
+
+	<cffunction name="processPropertyRules" returnType="any" access="private" output="false" hint="I simply pass the call on to my parent">
+		<cfargument name="theProperties" type="any" required="true" />
+		<cfset super.processPropertyRules(arguments.theProperties) />
+	</cffunction>
+
 	<cffunction name="normalizeValidations" returnType="struct" access="private" output="false" hint="I take the rules and post-process them using other property metadata">
 		<cfargument name="allRules" type="struct" required="true" />
 		
@@ -44,7 +99,7 @@
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I take the metadata and reformat it into a struct">
 		<cfargument name="metadataSource" type="any" required="true" hint="the object metadata" />
 		
-		<cfthrow type="ValidateThis.core.fileReaders.BaseFileReader.MissingImplementation" detail="The loadRules method must be implemented in a concrete AnnotationTypeReader object" />
+		<cfthrow type="ValidateThis.core.annotationTypeReaders.BaseAnnotationTypeReader.MissingImplementation" detail="The loadRules method must be implemented in a concrete AnnotationTypeReader object" />
 
 	</cffunction>
 

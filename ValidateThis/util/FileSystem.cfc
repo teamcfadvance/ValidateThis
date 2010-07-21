@@ -125,7 +125,6 @@
 		<cfset var qryDir = "">
 		<cfset var theList = "">
 		<cfdirectory directory="#arguments.Destination#" filter="#arguments.Filter#" name="qryDir" action="list" type="file" recurse="#arguments.recurse#" />
-		<cfset request.debug(qryDir) />
 		<cfloop query="qryDir">
 			<cfset theList = listAppend(theList,replace(replaceNoCase(qryDir.directory,arguments.Destination,""),"\","/") & "/" & qryDir.name) />
 		</cfloop>

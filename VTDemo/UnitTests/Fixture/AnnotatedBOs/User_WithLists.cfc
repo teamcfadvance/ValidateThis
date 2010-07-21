@@ -15,11 +15,8 @@
 	License.
 	
 --->
-<cfcomponent output="false" vtContexts='[{"name":"Register","formName":"frmRegister"},{"name":"Profile","formName":"frmProfile"}]'
-	vtConditions='[{"name":"MustLikeSomething", 
-		"serverTest":"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0",
-		"clientTest":"$(&quot;[name=''LikeCheese'']&quot;).getValue() == 0 && $(&quot;[name=''LikeChocolate'']&quot;).getValue() == 0;"}]'>
-	
+<cfcomponent output="false" vtContexts="Register|frmRegister,Profile|frmProfile"
+	vtConditions="MustLikeSomething|getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0|$(&quot;[name=''LikeCheese'']&quot;).getValue() == 0 && $(&quot;[name=''LikeChocolate'']&quot;).getValue() == 0;" >	
 	<cfproperty name="userId" />
 	<cfproperty name="userName" displayname="Email Address" vtRules='[
 			{"type":"required","contexts":"*"},
@@ -71,7 +68,7 @@
 	<cfproperty name="likeCheese" />
 	<cfproperty name="likeChocolate" />
 	<cfproperty name="likeOther" displayName="What do you like?" vtRules='[
-			{"type":"required","contexts":"*","condition":"MustLikeSomething","failureMessage":"If you don''t like cheese and you don''t like chocolate, you must like something!"}
+			{"type":"required","contexts":"*","condition":"MustLikeSomething","failureMessage":"If you don"t like cheese and you don"t like chocolate, you must like something!"}
 		]' />
 	<cfproperty name="allowCommunication" />
 	<cfproperty name="communicationMethod" vtRules='[

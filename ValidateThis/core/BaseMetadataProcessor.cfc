@@ -83,6 +83,10 @@
 
 	<cffunction name="processPropertyDescs" returnType="any" access="private" output="false" hint="I process property descriptions">
 		<cfargument name="properties" type="any" required="true" />
+		
+		<cfset var theProperty = 0 />
+		<cfset var theName = 0 />
+		<cfset var theDesc = 0 />
 		<cfloop array="#arguments.properties#" index="theProperty">
 			<cfset theName = theProperty.name />
 			<cfif StructKeyExists(theProperty,"desc")>
@@ -95,7 +99,7 @@
 				<cfif StructKeyExists(theProperty,"clientfieldname")>
 					<cfset variables.clientFieldDescs[theProperty.clientfieldname] = theDesc />
 				<cfelse>
-					<cfset clientFieldDescs[theName] = theDesc />
+					<cfset variables.clientFieldDescs[theName] = theDesc />
 				</cfif>
 			</cfif>
 		</cfloop>
