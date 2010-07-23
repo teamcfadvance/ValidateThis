@@ -68,7 +68,6 @@
 		<cfscript>
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/json";
 			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
-			debug(PropertyDescs);
 		</cfscript>  
 	</cffunction>
 
@@ -336,7 +335,6 @@
 			className = "user";
 			definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
 			Validations = externalFileReader.loadRulesFromExternalFile(className,definitionPath).Validations;
-			debug(Validations);
 			assertEquals(StructCount(Validations),1);
 			assertEquals(StructCount(Validations.Contexts),3);
 			Rules = Validations.Contexts.Register;

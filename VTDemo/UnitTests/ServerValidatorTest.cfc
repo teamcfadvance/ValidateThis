@@ -71,7 +71,6 @@
 			result = validationFactory.newResult();
 			serverValidator.validate(BOValidator,user,"Register",result);
 			AssertFalse(user.getVTResult().getIsSuccess());
-			debug(user.getVTResult());
 		</cfscript>  
 	</cffunction>
 
@@ -145,7 +144,6 @@
 			serverValidator.validate(BOValidator,user,"Register",result);
 			AssertFalse(result.getIsSuccess());
 			Failures = result.getFailures();
-			debug(Failures);
 			assertEquals(7,ArrayLen(Failures));
 			Failure = Failures[1];
 			assertEquals(Failure.Type,"required");
@@ -242,7 +240,6 @@
 			user = setUpUser();
 			result = validationFactory.newResult();
 			serverValidator.validate(BOValidator,user,"Register",Result);
-			debug(result.getFailures());
 			AssertTrue(Result.getIsSuccess());
 			user.setFirstName("");
 			user.setLastName("");

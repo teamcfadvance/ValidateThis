@@ -30,6 +30,13 @@
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 
+	<cffunction name="getValidatorFromAnnotatedCFCReturnsCorrectValidator" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createBOVFromCFC();
+			isBOVCorrect(BOValidator);
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="initReturnsCorrectObjectWithExplicitExpandedPath" access="public" returntype="void">
 		<cfscript>
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
@@ -207,6 +214,13 @@
 			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
 			return validationFactory.getValidator(variables.className,defPath);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="createBOVFromCFC" access="private" returntype="any">
+		<cfscript>
+			theObject = createObject("component","VTDemo.UnitTests.Fixture.AnnotatedBOs.User");
+			return validationFactory.getValidator(objectType="User",theObject=theObject);
 		</cfscript>  
 	</cffunction>
 

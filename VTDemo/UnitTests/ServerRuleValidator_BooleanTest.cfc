@@ -55,7 +55,6 @@
 			validation.getObjectValue().returns("abc");
 			validation.setFailureMessage("PropertyDesc must be a valid boolean.").returns();
 			SRV.validate(validation);
-			debug(validation.debugmock());
 			validation.verifyTimes(1).setFailureMessage("PropertyDesc must be a valid boolean."); 
 		</cfscript>  
 	</cffunction>

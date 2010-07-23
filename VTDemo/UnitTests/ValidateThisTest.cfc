@@ -104,7 +104,6 @@
 			result = ValidateThis.validate(theObject=theStruct,context="Register");
 			AssertFalse(result.getIsSuccess());
 			Failures = result.getFailures();
-			debug(Failures);
 			assertEquals(7,ArrayLen(Failures));
 			Failure = Failures[1];
 			assertEquals(Failure.Type,"required");

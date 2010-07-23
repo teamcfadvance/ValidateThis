@@ -50,8 +50,8 @@
 
 		<cfloop array="#arguments.properties#" index="theProperty">
 			<cfset newProperty = {name=theProperty.name} />
-			<cfif StructKeyExists(theProperty,"desc")>
-				<cfset newProperty.desc = theProperty.desc />
+			<cfif StructKeyExists(theProperty,"vtDesc")>
+				<cfset newProperty.desc = theProperty.vtDesc />
 			<cfelseif structKeyExists(theProperty,"displayname")>
 				<cfset newProperty.desc = theProperty.displayname />
 			</cfif>

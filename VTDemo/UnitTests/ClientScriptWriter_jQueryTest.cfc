@@ -53,7 +53,6 @@
 	<cffunction name="generateScriptHeaderShouldReturnSafeJSForUnsafeFormName" access="public" returntype="void">
 		<cfscript>
 			script = ScriptWriter.generateScriptHeader("form-Name2");
-			debug(script);
 			assertTrue(Trim(Script) CONTAINS "jQuery(document).ready(function($) {");
 			assertTrue(Trim(Script) CONTAINS "$form_formName2 = $(""##form-Name2"");");
 			assertTrue(Trim(Script) CONTAINS "$form_formName2.validate()");
@@ -134,7 +133,6 @@
 			valStruct.ValType = "regex";
 			valStruct.Parameters = {Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"}; 
 			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
-			debug(script);
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNameregex"", $.validator.methods.regex, ""The First Name does not match the specified pattern."");");
 			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMainFirstNameregex"", {frmMainFirstNameregex: /^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$/});");
@@ -150,7 +148,6 @@
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
 			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
-			debug(script);
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "$.validator.addMethod(""frmMainFirstNameregex"", $.validator.methods.regex, ""First Name does not match the specified pattern."");");
 			assertTrue(Script CONTAINS "$.validator.addClassRules(""frmMainFirstNameregex"", {frmMainFirstNameregex: /^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$/});");

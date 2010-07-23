@@ -54,9 +54,11 @@
 			<cfset loadRulesFromAnnotations(arguments.theObject,arguments.componentPath) />
 		</cfif>
 		
-		<!--- TODO: Combine rules from annotations with rules from file --->
+		<!--- for now we're going to just allow annotations or external file - not both --->
+		<cfif not structKeyExists(variables.Instance,"Validations") or structIsEmpty(variables.Instance.Validations)>
+			<cfset loadRulesFromExternalFile(arguments.objectType,variables.definitionPath) />
+		</cfif>
 		
-		<cfset loadRulesFromExternalFile(arguments.objectType,variables.definitionPath) />
 		<cfreturn this />
 	</cffunction>
 

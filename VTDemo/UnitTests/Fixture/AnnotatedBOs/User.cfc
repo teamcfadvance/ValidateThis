@@ -21,7 +21,7 @@
 		"clientTest":"$(&quot;[name=''LikeCheese'']&quot;).getValue() == 0 && $(&quot;[name=''LikeChocolate'']&quot;).getValue() == 0;"}]'>
 	
 	<cfproperty name="userId" />
-	<cfproperty name="userName" displayname="Email Address" vtRules='[
+	<cfproperty name="userName" vtDesc="Email Address" vtRules='[
 			{"type":"required","contexts":"*"},
 			{"type":"email","failureMessage":"Hey, buddy, you call that an Email Address?"}
 		]' />
