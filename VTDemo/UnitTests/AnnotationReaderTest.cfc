@@ -28,6 +28,14 @@
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
+	<cffunction name="loadRulesFromAnnotationsReturnsEmptyStructIfNoValidAnnotationFormatFound" access="public" returntype="void">
+		<cfscript>
+			theObject = createObject("component","VTDemo.UnitTests.Fixture.User");
+			PropertyDescs = annotationReader.loadRulesFromAnnotations(theObject=theObject,componentPath="").PropertyDescs;
+			assertTrue(structIsEmpty(PropertyDescs));
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="loadRulesFromAnnotationsReturnsCorrectPropertyDescsForObjectWithJSON" access="public" returntype="void">
 		<cfscript>
 			theObject = createObject("component","VTDemo.UnitTests.Fixture.AnnotatedBOs.User");
@@ -36,7 +44,7 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="loadRulesReturnsCorrectValidations" access="public" returntype="void">
+	<cffunction name="loadRulesReturnsCorrectValidationsForObjectWithJSON" access="public" returntype="void">
 		<cfscript>
 			theObject = createObject("component","VTDemo.UnitTests.Fixture.AnnotatedBOs.User");
 			Validations = annotationReader.loadRulesFromAnnotations(theObject=theObject,componentPath="").Validations;

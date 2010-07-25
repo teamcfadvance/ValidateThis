@@ -15,10 +15,10 @@
 --->
 <cfsilent>
 	<!--- Reload ORM and ValidateThis, if needed --->
-	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"ValidateThis")>
+	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"validateThis")>
 		<cfset ormReload() />
-		<cfset ValidateThisConfig = {definitionPath="none",JSRoot="/js/"} />
-		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
+		<cfset validateThisConfig = {definitionPath="",JSRoot="/js/"} />
+		<cfset application.validateThis = createObject("component","ValidateThis.ValidateThis").init(validateThisConfig) />
 	</cfif>
 </cfsilent>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

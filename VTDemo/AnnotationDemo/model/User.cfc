@@ -12,34 +12,19 @@
 	License.
 	
 */
-/**
-* @persistent true
-* @table tblUser_A
-* @vtContexts [{"name":"Register","formName":"frmRegister"},{"name":"Profile","formName":"frmProfile"}]
-* @vtConditions [{"name":"MustLikeSomething", 
+component persistent="true" table="tblUser_A" vtContexts='[{"name":"Register","formName":"frmRegister"},{"name":"Profile","formName":"frmProfile"}]'
+	vtConditions='[{"name":"mustLikeSomething", 
 		"serverTest":"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0",
-		"clientTest":"$(&quot;[name='LikeCheese']&quot;).getValue() == 0 && $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;"}]
-*/
-component {
+		"clientTest":"$(\"[name=''likeCheese'']\").getValue() == 0 && $(\"[name=''likeChocolate'']\").getValue() == 0;"}]' {
 	
-	/**
-	* @fieldtype id
-	* @generator native
-	*/
-	property numeric UserId;
+	property name="userId" type="numeric" fieldtype="id" generator="native";
 	
-	/**
-	* @vtDesc Email Address
-	* @vtRules [
-			{"type":"required","contexts":"*"},
-			{"type":"email","failureMessage":"Hey, buddy, you call that an Email Address?"}
-		]
-	*/
-	property string UserName;
+	property name="userName" vtDesc="Email Address" vtRules='[
+		{"type":"required","contexts":"*"},
+		{"type":"email","failureMessage":"Hey, buddy, you call that an Email Address?"}
+		]';
 
-	/**
-	* @displayName Password
-	* @vtRules [
+	property name="userPass" displayName="Password" vtRules='[
 			{"type":"required"},
 			{"type":"rangelength",
 				"params" : [
@@ -47,126 +32,75 @@ component {
 					{"maxlength":"10"}
 				]
 			}
-		]
-	*/
-	property string UserPass;
+		]';
 	
-	/**
-	* @vtRules [
-			{"type":"custom","failureMessage":"That Nickname is already taken. Please try another",
+	property name="nickname" vtRules='[
+			{"type":"custom","failureMessage":"That Nickname is already taken. Please try a different Nickname.",
 				"params":[
-					{"methodName":"CheckDupNickname"},
+					{"methodName":"checkDupNickname"},
 					{"remoteURL":"CheckDupNickname.cfm"}
 				]}
-		]
-	*/
-	property string Nickname;
+		]';
 	
-	/**
-	* @vtRules [
+	property name="salutation" vtRules='[
 			{"type":"required","contexts":"Profile"},
 			{"type":"regex","failureMessage":"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.",
 				"params" : [
 					{"Regex":"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\\.)?$"}
 				]
 			}
-		]
-	*/
-	property string Salutation;
+		]';
 	
-	/**
-	* @vtRules [
+	property name="firstName" vtRules='[
 			{"type":"required","contexts":"Profile"}
-		]
-	*/
-	property string FirstName;
-	
-	/**
-	* @vtRules [
+		]';
+
+	property name="lastName" vtRules='[
 			{"type":"required","contexts":"Profile"},
 			{"type":"required","contexts":"Register",
 				"params" : [
-					{"DependentPropertyName":"FirstName"}
+					{"DependentPropertyName":"firstName"}
 				]
 			}
-		]
-	*/
-	property string LastName;
-	
-	/**
-	* @ormtype int
-	* @default 1
-	*/
-	property string LikeCheese;
-	
-	/**
-	* @ormtype int
-	* @default 1
-	*/
-	property string LikeChocolate;
-	
-	/**
-	* @displayName What do you like?
-	* @vtRules [
-			{"type":"required","condition":"MustLikeSomething","failureMessage":"If you don't like cheese and you don't like chocolate, you must like something!"}
-		]
-	*/
-	property string LikeOther;
-	
-	/**
-	* @ormtype timestamp
-	*/
-	property string LastUpdateTimestamp;
-	
-	/**
-	* @ormtype int
-	*/
-	property string AllowCommunication;
-	
-	/**
-	* ormtype int
-	* @displayName How much money would you like?
-	* @vtRules [
-			{"type":"numeric"}
-		]
-	*/
-	property string HowMuch;
-	
-	/**
-	* @vtRules [
-			{"type":"required","failureMessage":"if you are allowing communication, you must choose a method",
+		]';
+
+	property name="likeCheese" ormtype="int" default="0";
+
+	property name="likeChocolate" ormtype="int" default="0";
+
+	property name="likeOther" displayName="What do you like?" vtRules='[
+			{"type":"required","condition":"mustLikeSomething","failureMessage":"If you don''t like cheese and you don''t like chocolate, you must like something!"}
+		]';
+
+	property name="allowCommunication" ormtype="int";
+
+	property name="communicationMethod" vtRules='[
+			{"type":"required","failureMessage":"If you are allowing communication, you must choose a communication method.",
 				"params" : [
-					{"DependentPropertyName":"AllowCommunication"},
+					{"DependentPropertyName":"allowCommunication"},
 					{"DependentPropertyValue":"1"}
 				]
 			}
-		]
-	*/
-	property string CommunicationMethod;
-	
-	/**
-	* @fieldtype many-to-one
-	* @cfc UserGroup
-	* @fkcolumn UserGroupId
-	* @vtClientFieldName UserGroupId
-	* @vtRules [
+		]';
+
+	property name="howMuch" displayName="How much money would you like?" ormtype="double" default="0" vtRules='[
+			{"type":"numeric"}
+		]';
+
+	property name="userGroup" fieldtype="many-to-one" cfc="UserGroup" fkcolumn="UserGroupId" vtClientFieldName="userGroupId" vtRules='[
 			{"type":"required"}
-		]
-	*/
-	property string UserGroup;
+		]';
 	
-		/**
-	* @persistent false
-	* @vtRules [
+	property name="LastUpdateTimestamp" ormtype="timestamp";
+	
+	property name="verifyPassword" persistent="false" vtRules='[
 			{"type":"required"},
 			{"type":"equalTo",
 				"params" : [
-					{"ComparePropertyName":"UserPass"}
+					{"ComparePropertyName":"userPass"}
 				]
 			}
-		]
-	*/
-	property string verifyPassword;
+		]';
 	
 	public struct function checkDupNickname() {
 		// This is just a "mock" method to test out the custom validation type

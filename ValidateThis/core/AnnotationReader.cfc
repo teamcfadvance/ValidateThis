@@ -73,8 +73,10 @@
 		<cfset var annotationTypeReader = 0 />
 		<cfif structKeyExists(md,"properties")>
 			<cfset annotationFormat = determineAnnotationFormat(md.properties) />
-			<cfset annotationTypeReader = variables.transientFactory.create("AnnotationTypeReader_" & annotationFormat) />
-			<cfset rulesStruct = annotationTypeReader.getValidations(md) />
+			<cfif len(annotationFormat) gt 1>
+				<cfset annotationTypeReader = variables.transientFactory.create("AnnotationTypeReader_" & annotationFormat) />
+				<cfset rulesStruct = annotationTypeReader.getValidations(md) />
+			</cfif>
 		</cfif>
 		
 		<cfreturn rulesStruct />
