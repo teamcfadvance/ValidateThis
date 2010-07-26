@@ -98,7 +98,7 @@
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "LikeOther") {
 					assertEquals(Validation.PropertyDesc,"What do you like?");
 					assertEquals(Validation.FailureMessage,"If you don't like Cheese and you don't like Chocolate, you must like something!");
-					assertEquals(Validation.Condition.ClientTest,"$(&quot;[name='likecheese']&quot;).getvalue() == 0 && $(&quot;[name='likechocolate']&quot;).getvalue() == 0;");
+					assertEquals(Validation.Condition.ClientTest,"$(""[name='likecheese']"").getvalue() == 0 && $(""[name='likechocolate']"").getvalue() == 0;");
 					assertEquals(Validation.Condition.ServerTest,"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0");
 				}
 				if (Validation.ValType eq "numeric" and Validation.PropertyName eq "HowMuch") {
@@ -162,7 +162,7 @@
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "LikeOther") {
 					assertEquals(Validation.PropertyDesc,"What do you like?");
 					assertEquals(Validation.FailureMessage,"If you don't like Cheese and you don't like Chocolate, you must like something!");
-					assertEquals(Validation.Condition.ClientTest,"$(&quot;[name='likecheese']&quot;).getvalue() == 0 && $(&quot;[name='likechocolate']&quot;).getvalue() == 0;");
+					assertEquals(Validation.Condition.ClientTest,"$(""[name='likecheese']"").getvalue() == 0 && $(""[name='likechocolate']"").getvalue() == 0;");
 					assertEquals(Validation.Condition.ServerTest,"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0");
 				}
 				if (Validation.ValType eq "numeric" and Validation.PropertyName eq "HowMuch") {

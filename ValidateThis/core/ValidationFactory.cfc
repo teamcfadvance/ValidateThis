@@ -40,15 +40,10 @@
 		<cfloop list="#variables.ValidateThisConfig.BOComponentPaths#" index="BOComponentPath">
 			<cfset actualPath = fileSystem.getMappingPath(BOComponentPath) />
 			<cfset cfcNames = fileSystem.listRelativeFilePaths(actualPath,"*.cfc",true)/>
-			<cfset request.debug(cfcNames) />
 			<cfloop list="#cfcNames#" index="cfc">
 				<cfset componentPath = BOComponentPath & replace(replaceNoCase(cfc,".cfc","","last"),"/",".","all") />
-				<cfset request.debug(componentPath) />
 				<cfset objectType = listLast(componentPath,".") />
 				<cfset md = getComponentMetadata(componentPath) />
-				<cfset request.debug(md) />
-				<cfset request.debug(objectType) />
-				<cfset request.debug(getDirectoryFromPath(fileSystem.getMappingPath(componentPath))) />
 				
 				<!--- TODO: Now we need to call getValidator --->
 				<cfset getValidator(objectType=listLast(componentPath,"."),componentPath=componentPath,definitionPath=getDirectoryFromPath(fileSystem.getMappingPath(componentPath))) />

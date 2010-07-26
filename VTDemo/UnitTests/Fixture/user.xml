@@ -11,7 +11,7 @@
 	</contexts>
 	<objectProperties>
 		<property name="UserName" desc="Email Address">
-			<rule type="required" contexts="*" />
+			<rule type="required" />
 			<rule type="email" contexts="*" failureMessage="Hey, buddy, you call that an Email Address?" />
 		</property>
 		<property name="Nickname">
@@ -21,24 +21,24 @@
 			</rule>
 		</property>
 		<property name="UserPass" desc="Password">
-			<rule type="required" contexts="*" />
-			<rule type="rangelength" contexts="*">
+			<rule type="required" />
+			<rule type="rangelength">
 				<param minlength="5" />
 				<param maxlength="10" />
 			</rule>
 		</property>
 		<property name="VerifyPassword">
-			<rule type="required" contexts="*" />
-			<rule type="equalTo" contexts="*">
+			<rule type="required" />
+			<rule type="equalTo">
 				<param ComparePropertyName="UserPass" />
 			</rule>
 		</property>
 		<property name="UserGroup" clientfieldname="UserGroupId">
-			<rule type="required" contexts="*" />
+			<rule type="required" />
 		</property>
 		<property name="Salutation">
 			<rule type="required" contexts="Profile" />
-			<rule type="regex" contexts="*"
+			<rule type="regex"
 				failureMessage="Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.">
 				<param Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
 			</rule>
@@ -53,16 +53,16 @@
 			</rule>
 		</property>
 		<property name="LikeOther" desc="What do you like?">
-			<rule type="required" contexts="*" condition="MustLikeSomething"
+			<rule type="required" condition="MustLikeSomething"
 				failureMessage="If you don't like Cheese and you don't like Chocolate, you must like something!">
 			</rule>
 		</property>
 		<property name="HowMuch" desc="How much money would you like?">
-			<rule type="numeric" contexts="*" />
+			<rule type="numeric" />
 		</property>
 		<property name="AllowCommunication" />
 		<property name="CommunicationMethod">
-			<rule type="required" contexts="*"
+			<rule type="required"
 				failureMessage="If you are allowing communication, you must choose a communication method.">
 				<param DependentPropertyName="AllowCommunication" />
 				<param DependentPropertyValue="1" />

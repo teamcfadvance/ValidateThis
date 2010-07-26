@@ -26,33 +26,67 @@
 		
 	</cffunction>
 
-	<cffunction name="getRules" returnType="void" access="public" output="false" hint="I read the validations JSON file and reformat it into private properties">
-		<cfargument name="metadataSource" type="any" required="true" />
-
-		<cfset fileContent = variables.FileSystem.read(arguments.metadataSource).getContent() />
-		<cfif isJSON(fileContent)>
-			<cfset jsonStruct = deserializeJSON(fileContent) />
-			<cfif structKeyExists(jsonStruct,"validateThis")>
-				<cfset VT = jsonStruct.validateThis />
-				<cfif structKeyExists(VT,"conditions")>
-					<cfset processConditions(VT.conditions) />
-				</cfif>
-				<cfif structKeyExists(VT,"contexts")>
-					<cfset processContexts(VT.contexts) />
-				</cfif>
-				<cfif structKeyExists(VT,"objectProperties")>
-					<cfset processPropertyDescs(VT.objectProperties) />
-					<cfset processPropertyRules(VT.objectProperties) />
-				</cfif>
-			<cfelse>
-				<cfthrow type="ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_JSON.invalidJSON" detail="The json object in the annotation does not contain an array of rules." />
-			</cfif>
-		<cfelse>
-			<cfthrow type="ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_JSON.invalidJSON" detail="The contents of the annotation is not valid JSON." />
+	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I take the object metadta and reformat it into private properties">
+		<cfargument name="metadataSource" type="any" required="true" hint="the object metadata" />
+		
+		<cfif structKeyExists(arguments.metadataSource,"vtConditions")>
+			<cfset processConditions(arguments.metadataSource.vtConditions) />
+		</cfif>
+		<cfif structKeyExists(arguments.metadataSource,"vtContexts")>
+			<cfset processContexts(arguments.metadataSource.vtContexts) />
+		</cfif>
+		<cfif structKeyExists(arguments.metadataSource,"properties")>
+			<cfset processPropertyDescs(arguments.metadataSource.properties) />
+			<cfset processPropertyRules(arguments.metadataSource.properties) />
 		</cfif>
 
 	</cffunction>
+
+	<cffunction name="reformatProperties" returnType="array" access="private" output="false" hint="I translate metadata into an array of properties to be used by the BaseMetadataProcessor">
+		<cfargument name="properties" type="any" required="true" />
+		<cfset var theProperty = 0 />
+		<cfset var newProperty = 0 />
+		<cfset var theProperties = [] />
+
+		<cfset request.debug(arguments) />
 		
+		<cfloop array="#arguments.properties#" index="theProperty">
+			<cfset newProperty = {name=theProperty.name} />
+			<cfif StructKeyExists(theProperty,"vtDesc")>
+				<cfset newProperty.desc = theProperty.vtDesc />
+			<cfelseif structKeyExists(theProperty,"displayname")>
+				<cfset newProperty.desc = theProperty.displayname />
+			</cfif>
+			<cfif StructKeyExists(theProperty,"vtClientFieldname")>
+				<cfset newProperty.clientfieldname = theProperty.vtClientFieldname />
+			</cfif>
+			<cfif StructKeyExists(theProperty,"vtRules")>
+				<cfif isJSON(theProperty.vtRules)>
+					<cfset newProperty.rules = deserializeJSON(theProperty.vtRules) />
+				<cfelse>
+					<cfthrow type="ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_JSON.InvalidJSON" detail="The contents of a vtRules annotation on the #theProperty.name# property (#theProperty.vtRules#) does not contain valid JSON." />
+				</cfif>
+			</cfif>
+			
+			<cfset arrayAppend(theProperties,newProperty) />
+		</cfloop>
+		<cfreturn theProperties />
+	</cffunction>
+
+	<cffunction name="processPropertyDescs" returnType="any" access="private" output="false" hint="I translate metadata into an array of properties to be used by the BaseMetadataProcessor">
+		<cfargument name="properties" type="any" required="true" />
+		
+		<cfset super.processPropertyDescs(reformatProperties(arguments.properties)) />
+
+	</cffunction>
+	
+	<cffunction name="processPropertyRules" returnType="any" access="private" output="false" hint="I translate metadata into an array of properties to be used by the BaseMetadataProcessor">
+		<cfargument name="properties" type="any" required="true" />
+		
+		<cfset super.processPropertyRules(reformatProperties(arguments.properties)) />
+
+	</cffunction>
+
 </cfcomponent>
 	
 

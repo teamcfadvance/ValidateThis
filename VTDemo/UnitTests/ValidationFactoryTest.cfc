@@ -25,12 +25,12 @@
 	
 	<cffunction name="createBOVsFromCFCsShouldCreateBOVsFromAnnotatedCFCs" returntype="void" access="public">
 		<cfscript>
+			assertTrue(false,"This should fail as this hasn't been fully implemented yet!");
 			ValidateThisConfig.BOComponentPaths="UnitTests.Fixture.AnnotatedBOs";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			injectMethod(validationFactory, this, "getBOVs", "getBOVs");
 			validationFactory.createBOVsFromCFCs();
 			BOVs = validationFactory.getBOVs();
-			assertTrue(false,"This should fail as this hasn't been implemented yet!");
 			debug(BOVs);
 		</cfscript>
 	</cffunction>
