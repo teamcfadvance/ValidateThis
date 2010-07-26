@@ -33,6 +33,7 @@
 	<cffunction name="getValidatorFromAnnotatedCFCReturnsCorrectValidator" access="public" returntype="void">
 		<cfscript>
 			BOValidator = createBOVFromCFC();
+			debug(BOValidator);
 			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>
@@ -220,7 +221,7 @@
 	<cffunction name="createBOVFromCFC" access="private" returntype="any">
 		<cfscript>
 			theObject = createObject("component","VTDemo.UnitTests.Fixture.AnnotatedBOs.User");
-			return validationFactory.getValidator(objectType="User",theObject=theObject);
+			return validationFactory.getValidator(objectType="User",theObject=theObject,definitionPath=getDirectoryFromPath(getMetadata(theObject).path));
 		</cfscript>  
 	</cffunction>
 

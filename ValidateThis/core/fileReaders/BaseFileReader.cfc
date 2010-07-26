@@ -17,7 +17,6 @@
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new XMLFileReader">
 		<cfargument name="FileSystem" type="any" required="true" />
-		<cfargument name="defaultFormName" type="string" required="true" />
 
 		<cfset variables.FileSystem = arguments.FileSystem />
 		<cfset super.init(argumentCollection=arguments) />

@@ -226,6 +226,7 @@
 			theObject = createObject("component","Fixture.APlainCFC_Fixture_cfm");
 			BOValidator = ValidateThis.getValidator(theObject=theObject);
 			allContexts = BOValidator.getAllContexts();
+			debug(allContexts);
 			assertEquals(true,structKeyExists(allContexts,"___Default"));
 			assertEquals("firstName",allContexts.___Default[1].propertyName);
 			assertEquals("lastName",allContexts.___Default[2].propertyName);

@@ -33,8 +33,7 @@
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
 		<cfargument name="componentPath" type="any" required="true" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 
-		<cfset variables.Instance = {objectType = arguments.objectType} />
-		<cfset variables.Instance.newRules = {} />
+		<cfset variables.instance = {objectType = arguments.objectType, propertyDescs = {}, clientFieldDescs = {}, formContexts = {}, validations = {contexts = {___Default = arrayNew(1)}}, newRules = {}} />
 		<cfset variables.FileSystem = arguments.FileSystem />
 		<cfset variables.externalFileReader = arguments.externalFileReader />
 		<cfset variables.annotationReader = arguments.annotationReader />
@@ -54,10 +53,8 @@
 			<cfset loadRulesFromAnnotations(arguments.theObject,arguments.componentPath) />
 		</cfif>
 		
-		<!--- for now we're going to just allow annotations or external file - not both --->
-		<cfif not structKeyExists(variables.Instance,"Validations") or structIsEmpty(variables.Instance.Validations)>
-			<cfset loadRulesFromExternalFile(arguments.objectType,variables.definitionPath) />
-		</cfif>
+		<cfset loadRulesFromExternalFile(arguments.objectType,variables.definitionPath) />
+		<cfset variables.instance.requiredPropertiesAndFields = determineRequiredPropertiesAndFields() />
 		
 		<cfreturn this />
 	</cffunction>
@@ -67,12 +64,7 @@
 		<cfargument name="componentPath" type="any" required="true" />
 
 		<cfset var theStruct = variables.annotationReader.loadRulesFromAnnotations(argumentCollection=arguments) />
-		
-		<cfset variables.Instance.PropertyDescs = theStruct.PropertyDescs />
-		<cfset variables.Instance.ClientFieldDescs = theStruct.ClientFieldDescs />
-		<cfset variables.Instance.FormContexts = theStruct.FormContexts />
-		<cfset variables.Instance.Validations = theStruct.Validations />
-		<cfset variables.Instance.requiredPropertiesAndFields = determineRequiredPropertiesAndFields() />
+		<cfset loadRulesFromStruct(theStruct) />
 		
 	</cffunction>
 
@@ -81,13 +73,27 @@
 		<cfargument name="definitionPath" type="any" required="true" />
 
 		<cfset var theStruct = variables.externalFileReader.loadRulesFromExternalFile(arguments.objectType,arguments.definitionPath) />
+		<cfset loadRulesFromStruct(theStruct) />
 		
-		<cfset variables.Instance.PropertyDescs = theStruct.PropertyDescs />
-		<cfset variables.Instance.ClientFieldDescs = theStruct.ClientFieldDescs />
-		<cfset variables.Instance.FormContexts = theStruct.FormContexts />
-		<cfset variables.Instance.Validations = theStruct.Validations />
-		<cfset variables.Instance.requiredPropertiesAndFields = determineRequiredPropertiesAndFields() />
+	</cffunction>
+
+	<cffunction name="loadRulesFromStruct" returnType="void" access="public" output="false" hint="I take a struct of validation data and call addrule for each validation">
+		<cfargument name="theStruct" type="struct" required="true" />
 		
+		<cfset var context = 0 />
+		<cfset var rule = 0 />
+
+		<cfset structAppend(variables.instance.propertyDescs,theStruct.propertyDescs) />
+		<cfset structAppend(variables.instance.clientFieldDescs,theStruct.clientFieldDescs) />
+		<cfset structAppend(variables.instance.formContexts,theStruct.formContexts) />
+		
+		<cfif structKeyExists(arguments.theStruct,"validations") and structKeyExists(arguments.theStruct.validations,"contexts")>
+			<cfloop collection="#arguments.theStruct.validations.contexts#" item="context">
+				<cfloop array="#arguments.theStruct.validations.contexts[context]#" index="rule">
+					<cfset addRule(argumentCollection=rule,contexts=context) />
+				</cfloop>
+			</cfloop>
+		</cfif>
 	</cffunction>
 
 	<cffunction name="determineRequiredPropertiesAndFields" access="private" output="false" returntype="any">
@@ -122,36 +128,38 @@
 		<cfset var theContext = 0 />
 		<cfset var ruleHash = getHashFromStruct(theRule) />
 		
-		<cfif NOT StructKeyExists(variables.Instance.newRules,ruleHash)>
+		<cfif NOT StructKeyExists(variables.instance.newRules,ruleHash)>
+			<cfset structDelete(theRule,"contexts",false) />
+			<cfset structDelete(theRule,"formName",false) />
 			<cflock name="#ruleHash#" type="exclusive" timeout="10" throwontimeout="true">
-				<cfif NOT StructKeyExists(variables.Instance.newRules,ruleHash)>
-					<cfset variables.Instance.newRules[ruleHash] = 1 />
+				<cfif NOT StructKeyExists(variables.instance.newRules,ruleHash)>
+					<cfset variables.instance.newRules[ruleHash] = 1 />
 					<cfif theRule.propertyDesc neq theRule.propertyName>
-						<cfif NOT StructKeyExists(variables.Instance.PropertyDescs,theRule.propertyName)>
-							<cfset variables.Instance.PropertyDescs[theRule.propertyName] = theRule.propertyDesc />
+						<cfif NOT StructKeyExists(variables.instance.propertyDescs,theRule.propertyName)>
+							<cfset variables.instance.propertyDescs[theRule.propertyName] = theRule.propertyDesc />
 						</cfif>
-					<cfelseif StructKeyExists(variables.Instance.PropertyDescs,theRule.propertyName)>
-						<cfset theRule.propertyDesc = variables.Instance.PropertyDescs[theRule.propertyName] />
+					<cfelseif StructKeyExists(variables.instance.propertyDescs,theRule.propertyName)>
+						<cfset theRule.propertyDesc = variables.instance.propertyDescs[theRule.propertyName] />
 					<cfelse>
 						<cfset theRule.propertyDesc = determineLabel(theRule.propertyName)/>
-                        <cfset variables.Instance.PropertyDescs[theRule.propertyName] = theRule.propertyDesc/>
+                        <cfset variables.instance.propertyDescs[theRule.propertyName] = theRule.propertyDesc/>
 					</cfif>
-					<cfif NOT StructKeyExists(variables.Instance.ClientFieldDescs,theRule.clientFieldName)>
-						<cfset variables.Instance.ClientFieldDescs[theRule.clientFieldName] = theRule.propertyDesc />
+					<cfif NOT StructKeyExists(variables.instance.clientFieldDescs,theRule.clientFieldName)>
+						<cfset variables.instance.clientFieldDescs[theRule.clientFieldName] = theRule.propertyDesc />
 					</cfif>
-					<cfif Len(theRule.contexts) AND NOT ListFindNoCase(theRule.contexts,"*")>
-						<cfloop list="#theRule.contexts#" index="theContext">
-							<cfif NOT StructKeyExists(variables.Instance.Validations.Contexts,theContext)>
-								<cfset variables.Instance.Validations.Contexts[theContext] = ArrayNew(1) />
+					<cfif Len(arguments.contexts) AND NOT ListFindNoCase(arguments.contexts,"*")>
+						<cfloop list="#arguments.contexts#" index="theContext">
+							<cfif NOT StructKeyExists(variables.instance.Validations.Contexts,theContext)>
+								<cfset variables.instance.Validations.Contexts[theContext] = ArrayNew(1) />
 							</cfif>
-							<cfset ArrayAppend(variables.Instance.Validations.Contexts[theContext],theRule) />
-							<cfif NOT StructKeyExists(variables.Instance.FormContexts,theContext) AND Len(arguments.formName)>
-								<cfset variables.Instance.FormContexts[theContext] = arguments.formName />
+							<cfset ArrayAppend(variables.instance.Validations.Contexts[theContext],theRule) />
+							<cfif NOT StructKeyExists(variables.instance.formContexts,theContext) AND Len(arguments.formName)>
+								<cfset variables.instance.formContexts[theContext] = arguments.formName />
 							</cfif>
 						</cfloop>
 					<cfelse>
-						<cfloop collection="#variables.Instance.Validations.Contexts#" item="theContext">
-							<cfset ArrayAppend(variables.Instance.Validations.Contexts[theContext],theRule) />
+						<cfloop collection="#variables.instance.Validations.Contexts#" item="theContext">
+							<cfset ArrayAppend(variables.instance.Validations.Contexts[theContext],theRule) />
 						</cfloop>
 					</cfif>
 				</cfif>
@@ -215,48 +223,48 @@
 		
 		<cfset var theContext = fixDefaultContext(arguments.Context) />
 		
-		<cfreturn variables.Instance.Validations.Contexts[theContext] />
+		<cfreturn variables.instance.Validations.Contexts[theContext] />
 	</cffunction>
 
 	<cffunction name="getFormName" access="public" output="false" returntype="any">
 		<cfargument name="Context" type="any" required="true" />
 		
 		<cfset var formName = variables.defaultFormName />
-		<cfif StructKeyExists(variables.Instance.FormContexts,arguments.Context)>
-			<cfset formName = variables.Instance.FormContexts[arguments.Context] />
+		<cfif StructKeyExists(variables.instance.formContexts,arguments.Context)>
+			<cfset formName = variables.instance.formContexts[arguments.Context] />
 		</cfif>
 		<cfreturn formName />
 	</cffunction>
 
 	<cffunction name="getValidationPropertyDescs" access="public" output="false" returntype="any">
-		<cfreturn variables.Instance.PropertyDescs />
+		<cfreturn variables.instance.propertyDescs />
 	</cffunction>
 	
 	<cffunction name="getValidationClientFieldDescs" access="public" output="false" returntype="any">
-		<cfreturn variables.Instance.ClientFieldDescs />
+		<cfreturn variables.instance.clientFieldDescs />
 	</cffunction>
 	
 	<cffunction name="getValidationFormContexts" access="public" output="false" returntype="any">
-		<cfreturn variables.Instance.FormContexts />
+		<cfreturn variables.instance.formContexts />
 	</cffunction>
 	
 	<cffunction name="getAllContexts" access="public" output="false" returntype="any">
-		<cfreturn variables.Instance.Validations.Contexts />
+		<cfreturn variables.instance.Validations.Contexts />
 	</cffunction>
 
 	<cffunction name="getRequiredProperties" access="public" output="false" returntype="any">
 		<cfargument name="Context" type="any" required="false" default="" />
-		<cfreturn variables.Instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].properties />
+		<cfreturn variables.instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].properties />
 	</cffunction>
 	
 	<cffunction name="getRequiredFields" access="public" output="false" returntype="any">
 		<cfargument name="Context" type="any" required="false" default="" />
-		<cfreturn variables.Instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].fields />
+		<cfreturn variables.instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].fields />
 	</cffunction>
 	
 	<cffunction name="fixDefaultContext" access="public" output="false" returntype="any">
 		<cfargument name="Context" type="any" required="true" />
-		<cfif NOT Len(arguments.Context) OR arguments.Context EQ "*" OR NOT StructKeyExists(variables.Instance.Validations.Contexts,arguments.Context)>
+		<cfif NOT Len(arguments.Context) OR arguments.Context EQ "*" OR NOT StructKeyExists(variables.instance.Validations.Contexts,arguments.Context)>
 			<cfreturn "___Default" />
 		<cfelse>
 			<cfreturn arguments.Context />
@@ -314,7 +322,7 @@
 		<cfargument name="propertyName" type="any" required="yes" hint="The name of the property." />
 		<cfargument name="Context" type="any" required="false" default="" />
 
-		<cfreturn structKeyExists(variables.Instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].properties,arguments.propertyName) />
+		<cfreturn structKeyExists(variables.instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].properties,arguments.propertyName) />
 	
 	</cffunction>
 

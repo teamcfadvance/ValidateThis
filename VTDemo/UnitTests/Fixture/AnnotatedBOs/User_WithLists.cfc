@@ -1,4 +1,4 @@
-<!---
+/*
 				
 	// **************************************** LICENSE INFO **************************************** \\
 	
@@ -14,15 +14,19 @@
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 	
---->
-<cfcomponent output="false" vtContexts="Register|frmRegister,Profile|frmProfile"
-	vtConditions="MustLikeSomething|getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0|$(&quot;[name=''LikeCheese'']&quot;).getValue() == 0 && $(&quot;[name=''LikeChocolate'']&quot;).getValue() == 0;" >	
-	<cfproperty name="userId" />
-	<cfproperty name="userName" displayname="Email Address" vtRules='[
-			{"type":"required","contexts":"*"},
-			{"type":"email","failureMessage":"Hey, buddy, you call that an Email Address?"}
-		]' />
-	<cfproperty name="userPass" displayName="Password" vtRules='[
+*/
+
+component persistent="true" table="tblUser_A" vtContexts="Register|frmRegister,Profile|frmProfile"
+	vtConditions="mustLikeSomething|getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0|$(""[name='likeCheese']"").getValue() == 0 && $(""[name='likeChocolate']"").getValue() == 0;" {
+	
+	property name="userId" type="numeric" fieldtype="id" generator="native";
+	
+	property name="userName" vtDesc="Email Address" vtRules='[
+		{"type":"required","contexts":"*"},
+		{"type":"email","failureMessage":"Hey, buddy, you call that an Email Address?"}
+		]';
+
+	property name="userPass" displayName="Password" vtRules='[
 			{"type":"required"},
 			{"type":"rangelength",
 				"params" : [
@@ -30,251 +34,95 @@
 					{"maxlength":"10"}
 				]
 			}
-		]' />
-	<cfproperty name="VerifyPassword" vtRules='[
-			{"type":"required"},
-			{"type":"equalTo",
-				"params" : [
-					{"ComparePropertyName":"UserPass"}
-				]
-			}
-		]' />
-	<cfproperty name="nickname" vtRules='[
-			{"type":"custom","failureMessage":"That Nickname is already taken. Please try another",
+		]';
+	
+	property name="nickname" vtRules='[
+			{"type":"custom","failureMessage":"That Nickname is already taken. Please try a different Nickname.",
 				"params":[
-					{"methodName":"CheckDupNickname"},
+					{"methodName":"checkDupNickname"},
 					{"remoteURL":"CheckDupNickname.cfm"}
 				]}
-		]' />
-	<cfproperty name="salutation" vtRules='[
+		]';
+	
+	property name="salutation" vtRules='[
 			{"type":"required","contexts":"Profile"},
 			{"type":"regex","failureMessage":"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.",
 				"params" : [
 					{"Regex":"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\\.)?$"}
 				]
 			}
-		]' />
-	<cfproperty name="firstName" vtRules='[
+		]';
+	
+	property name="firstName" vtRules='[
 			{"type":"required","contexts":"Profile"}
-		]' />
-	<cfproperty name="lastName" vtRules='[
+		]';
+
+	property name="lastName" vtRules='[
 			{"type":"required","contexts":"Profile"},
 			{"type":"required","contexts":"Register",
 				"params" : [
-					{"DependentPropertyName":"FirstName"}
+					{"DependentPropertyName":"firstName"}
 				]
 			}
-		]' />
-	<cfproperty name="likeCheese" />
-	<cfproperty name="likeChocolate" />
-	<cfproperty name="likeOther" displayName="What do you like?" vtRules='[
-			{"type":"required","contexts":"*","condition":"MustLikeSomething","failureMessage":"If you don"t like cheese and you don"t like chocolate, you must like something!"}
-		]' />
-	<cfproperty name="allowCommunication" />
-	<cfproperty name="communicationMethod" vtRules='[
-			{"type":"required","contexts":"*","failureMessage":"if you are allowing communication, you must choose a method",
+		]';
+
+	property name="likeCheese" ormtype="int" default="0";
+
+	property name="likeChocolate" ormtype="int" default="0";
+
+	property name="likeOther" displayName="What do you like?" vtRules='[
+			{"type":"required","condition":"mustLikeSomething","failureMessage":"If you don''t like cheese and you don''t like chocolate, you must like something!"}
+		]';
+
+	property name="allowCommunication" ormtype="int";
+
+	property name="communicationMethod" vtRules='[
+			{"type":"required","failureMessage":"If you are allowing communication, you must choose a communication method.",
 				"params" : [
-					{"DependentPropertyName":"AllowCommunication"},
+					{"DependentPropertyName":"allowCommunication"},
 					{"DependentPropertyValue":"1"}
 				]
 			}
-		]' />
-	<cfproperty name="howMuch" displayName="How much money would you like?" vtRules='[
-			{"type":"numeric", "contexts":"*"}
-		]' />
-	<cfproperty name="userGroup" vtClientFieldName="UserGroupId" vtRules='[
+		]';
+
+	property name="howMuch" displayName="How much money would you like?" ormtype="double" default="0" vtRules='[
+			{"type":"numeric"}
+		]';
+
+	property name="userGroup" fieldtype="many-to-one" cfc="UserGroup" fkcolumn="UserGroupId" vtClientFieldName="userGroupId" vtRules='[
 			{"type":"required"}
-		]' />
-
-	<cffunction name="init" access="public" returntype="any">
-		<cfargument name="userId" default="" />
-		<cfargument name="userName" default="" />
-		<cfargument name="userPass" default="" />
-		<cfargument name="nickname" default="" />
-		<cfargument name="salutation" default="" />
-		<cfargument name="firstName" default="" />
-		<cfargument name="lastName" default="" />
-		<cfargument name="likeCheese" default="0" />
-		<cfargument name="likeChocolate" default="0" />
-		<cfargument name="likeOther" default="" />
-		<cfargument name="allowCommunication" default="0" />
-		<cfargument name="communicationMethod" default="" />
-		<cfargument name="howMuch" default="" />
-		<cfargument name="userGroup" />
-		<cfset variables.userId = arguments.userId />
-		<cfset variables.userName = arguments.userName />
-		<cfset variables.userPass = arguments.userPass />
-		<cfset variables.nickname = arguments.nickname />
-		<cfset variables.salutation = arguments.salutation />
-		<cfset variables.firstName = arguments.firstName />
-		<cfset variables.lastName = arguments.lastName />
-		<cfset variables.likeCheese = arguments.likeCheese />
-		<cfset variables.likeChocolate = arguments.likeChocolate />
-		<cfset variables.likeOther = arguments.likeOther />
-		<cfset variables.lastUpdateTimestamp = now() />
-		<cfset variables.allowCommunication = arguments.allowCommunication />
-		<cfset variables.communicationMethod = arguments.communicationMethod />
-		<cfset variables.howMuch = arguments.howMuch />
-		<cfif structKeyExists(arguments,"userGroup")>
-			<cfset variables.userGroup = arguments.userGroup />
-		</cfif>
-		<cfreturn this />
-	</cffunction>
+		]';
 	
-	<cffunction name="CheckDupNickname" access="public" output="false" returntype="any" hint="Checks for a duplicate UserName.">
-
-		<!--- This is just a "mock" method to test out the custom validation type --->
-		<cfset var ReturnStruct = StructNew() />
-		<cfset ReturnStruct.IsSuccess = false />
-		<cfset ReturnStruct.FailureMessage = "That Nickname has already been used. Try to be more original!" />
-		<cfif getNickname() NEQ "BobRules">
-			<cfset ReturnStruct = StructNew() />
-			<cfset ReturnStruct.IsSuccess = true />
-		</cfif>
-		<cfreturn ReturnStruct />		
-	</cffunction>
-
-	<cffunction name="testCondition" access="Public" returntype="boolean" output="false" hint="I dynamically evaluate a condition and return true or false.">
-		<cfargument name="Condition" type="any" required="true" />
-		
-		<cfreturn Evaluate(arguments.Condition)>
-
-	</cffunction>
-
-	<cffunction name="setUserId" access="public" returntype="any">
-		<cfargument name="userId" />
-		<cfset variables.userId = arguments.userId />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getUserId" access="public" returntype="any">
-		<cfreturn variables.userId />
-	</cffunction>
-
-	<cffunction name="setUserName" access="public" returntype="any">
-		<cfargument name="userName" />
-		<cfset variables.userName = arguments.userName />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getUserName" access="public" returntype="any">
-		<cfreturn variables.userName />
-	</cffunction>
-
-	<cffunction name="setUserPass" access="public" returntype="any">
-		<cfargument name="userPass" />
-		<cfset variables.userPass = arguments.userPass />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getUserPass" access="public" returntype="any">
-		<cfreturn variables.userPass />
-	</cffunction>
-
-	<cffunction name="setNickname" access="public" returntype="any">
-		<cfargument name="nickname" />
-		<cfset variables.nickname = arguments.nickname />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getNickname" access="public" returntype="any">
-		<cfreturn variables.nickname />
-	</cffunction>
-
-	<cffunction name="setSalutation" access="public" returntype="any">
-		<cfargument name="salutation" />
-		<cfset variables.salutation = arguments.salutation />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getSalutation" access="public" returntype="any">
-		<cfreturn variables.salutation />
-	</cffunction>
-
-	<cffunction name="setFirstName" access="public" returntype="any">
-		<cfargument name="firstName" />
-		<cfset variables.firstName = arguments.firstName />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getFirstName" access="public" returntype="any">
-		<cfreturn variables.firstName />
-	</cffunction>
+	property name="LastUpdateTimestamp" ormtype="timestamp";
 	
-	<cffunction name="setLastName" access="public" returntype="any">
-		<cfargument name="lastName" />
-		<cfset variables.lastName = arguments.lastName />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getLastName" access="public" returntype="any">
-		<cfreturn variables.lastName />
-	</cffunction>
+	property name="verifyPassword" persistent="false" vtRules='[
+			{"type":"required"},
+			{"type":"equalTo",
+				"params" : [
+					{"ComparePropertyName":"userPass"}
+				]
+			}
+		]';
 	
-	<cffunction name="setLikeCheese" access="public" returntype="any">
-		<cfargument name="likeCheese" />
-		<cfset variables.likeCheese = arguments.likeCheese />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getLikeCheese" access="public" returntype="any">
-		<cfreturn variables.likeCheese />
-	</cffunction>
+	public struct function checkDupNickname() {
+		// This is just a "mock" method to test out the custom validation type
+		var returnStruct = {isSuccess = false, failureMessage = "That Nickname has already been used. Try to be more original!"};
+		if (getNickname() NEQ "BobRules") {
+			returnStruct = {isSuccess = true};
+		}
+		return returnStruct;		
+	}
 	
-	<cffunction name="setLikeChocolate" access="public" returntype="any">
-		<cfargument name="likeChocolate" />
-		<cfset variables.likeChocolate = arguments.likeChocolate />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getLikeChocolate" access="public" returntype="any">
-		<cfreturn variables.likeChocolate />
-	</cffunction>
+	public void function setUserGroupId(userGroupId) hint="used to populate the UserGroup from the form" {
+		var userGroup = entityLoadByPK("UserGroup",val(arguments.userGroupId));
+		if (not isNull(userGroup)) {
+			variables.UserGroup = userGroup;
+		}
+	}
+	
+	public boolean function testCondition(string condition) {
+		return evaluate(arguments.condition);
+	}
 
-	<cffunction name="setLikeOther" access="public" returntype="any">
-		<cfargument name="likeOther" />
-		<cfset variables.likeOther = arguments.likeOther />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getLikeOther" access="public" returntype="any">
-		<cfreturn variables.likeOther />
-	</cffunction>
-
-	<cffunction name="setAllowCommunication" access="public" returntype="any">
-		<cfargument name="allowCommunication" />
-		<cfset variables.allowCommunication = arguments.allowCommunication />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getAllowCommunication" access="public" returntype="any">
-		<cfreturn variables.allowCommunication />
-	</cffunction>
-
-	<cffunction name="setCommunicationMethod" access="public" returntype="any">
-		<cfargument name="communicationMethod" />
-		<cfset variables.communicationMethod = arguments.communicationMethod />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getCommunicationMethod" access="public" returntype="any">
-		<cfreturn variables.communicationMethod />
-	</cffunction>
-
-	<cffunction name="setHowMuch" access="public" returntype="any">
-		<cfargument name="howMuch" />
-		<cfset variables.howMuch = arguments.howMuch />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getHowMuch" access="public" returntype="any">
-		<cfreturn variables.howMuch />
-	</cffunction>
-
-	<cffunction name="setUserGroup" access="public" returntype="any">
-		<cfargument name="userGroup" />
-		<cfset variables.userGroup = arguments.userGroup />
-		<cfreturn this />
-	</cffunction>
-	<cffunction name="getUserGroup" access="public" returntype="any">
-		<cfreturn variables.userGroup />
-	</cffunction>
-
-	<cffunction name="setVerifyPassword" returntype="void" access="public" output="false">
-		<cfargument name="VerifyPassword" type="any" required="true" />
-		<cfset variables.VerifyPassword = arguments.VerifyPassword />
-	</cffunction>
-	<cffunction name="getVerifyPassword" access="public" output="false" returntype="any">
-		<cfreturn variables.VerifyPassword />
-	</cffunction>
-
-</cfcomponent>
-
+}
 

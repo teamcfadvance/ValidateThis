@@ -6,8 +6,8 @@
 			clientTest="$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;" />
 	</conditions>
 	<contexts>
-		<context name="Register" formName="frmMain" />
-		<context name="Profile" formName="frmMain" />
+		<context name="Register" formName="frmRegister" />
+		<context name="Profile" formName="frmProfile" />
 	</contexts>
 	<objectProperties>
 		<property name="UserName" desc="Email Address">

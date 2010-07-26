@@ -19,13 +19,11 @@
 		<cfargument name="fileSystem" type="any" required="true" />
 		<cfargument name="transientFactory" type="any" required="true" />
 		<cfargument name="extraFileReaderComponentPaths" type="string" required="true" />
-		<cfargument name="defaultFormName" type="string" required="true" />
 		<cfargument name="externalFileTypes" type="string" required="true" />
 
 		<cfset variables.fileSystem = arguments.fileSystem />
 		<cfset variables.transientFactory = arguments.transientFactory />
 		<cfset variables.extraFileReaderComponentPaths = arguments.extraFileReaderComponentPaths />
-		<cfset variables.defaultFormName = arguments.defaultFormName />
 		<cfset variables.externalFileTypes = arguments.externalFileTypes />
 		<cfreturn this />
 	</cffunction>

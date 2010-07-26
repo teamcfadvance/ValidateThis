@@ -19,7 +19,6 @@
 		<cfargument name="transientFactory" type="any" required="true" />
 		<cfargument name="childObjectFactory" type="any" required="true" />
 		<cfargument name="extraFileReaderComponentPaths" type="string" required="true" />
-		<cfargument name="defaultFormName" type="string" required="true" />
 		<cfargument name="externalFileTypes" type="string" required="true" />
 		<cfargument name="annotationAttributeName" type="string" required="true" />
 		<cfargument name="extraAnnotationTypeReaderComponentPaths" type="string" required="true" />
@@ -27,7 +26,6 @@
 		<cfset variables.transientFactory = arguments.transientFactory />
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.extraFileReaderComponentPaths = arguments.extraFileReaderComponentPaths />
-		<cfset variables.defaultFormName = arguments.defaultFormName />
 		<cfset variables.externalFileTypes = arguments.externalFileTypes />
 		<cfset variables.annotationAttributeName = arguments.annotationAttributeName />
 		<cfset variables.extraAnnotationTypeReaderComponentPaths = arguments.extraAnnotationTypeReaderComponentPaths />
@@ -83,7 +81,7 @@
 	</cffunction>
 
 	<cffunction name="setAnnotationTypeReaders" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
-		<cfset var initArgs = {defaultFormName=variables.defaultFormName} />
+		<cfset var initArgs = {} />
 		<cfset variables.AnnotationTypeReaders = variables.childObjectFactory.loadChildObjects("ValidateThis.core.annotationTypeReaders,#variables.extraAnnotationTypeReaderComponentPaths#","AnnotationTypeReader_",structNew(),initArgs) />
 	</cffunction>
 	

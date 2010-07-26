@@ -16,7 +16,6 @@
 <cfcomponent output="false" extends="ValidateThis.core.BaseMetadataProcessor" hint="I am a responsible for reading and processing an annotation.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new XMLFileReader">
-		<cfargument name="defaultFormName" type="string" required="true" />
 
 		<cfset super.init(argumentCollection=arguments) />
 		<cfreturn this />

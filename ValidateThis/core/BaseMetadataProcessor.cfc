@@ -16,9 +16,7 @@
 <cfcomponent output="false" hint="I am a responsible for reading and processing an XML file.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new XMLFileReader">
-		<cfargument name="defaultFormName" type="string" required="true" />
 
-		<cfset variables.defaultFormName = arguments.defaultFormName />
 		<cfset variables.propertyDescs = {} />
 		<cfset variables.clientFieldDescs = {} />
 		<cfset variables.conditions = {} />
@@ -152,7 +150,6 @@
 						</cfloop>
 					<cfelse>
 						<cfset arrayAppend(variables.validations.contexts["___Default"],theVal) />
-						<cfset theVal.formName = variables.defaultFormName />
 					</cfif>
 				</cfloop>
 			</cfif>
