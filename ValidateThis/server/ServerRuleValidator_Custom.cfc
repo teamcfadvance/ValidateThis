@@ -18,18 +18,23 @@
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var customResult = {IsSuccess=false,FailureMessage="A custom validator failed."} />
+		<cfset var customResult = 0 />
+		<cfset var failureMessage = "A custom validator failed." />
 		<cfset var theObject = arguments.valObject.getTheObject() />
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfset var theMethod = Parameters.MethodName />
 		
 		<cfset customResult = evaluate("theObject.#theMethod#()") />
 		<cfif NOT IsDefined("customResult")>
-			<cfset customResult = {IsSuccess=false,FailureMessage="A custom validator failed."} />
+			<cfreturn />
 		</cfif>
-		<cfif NOT customResult.IsSuccess>
-			<cfset fail(arguments.valObject,customResult.FailureMessage) />
+		<cfif (isBoolean(customResult) and customResult) or (isStruct(customResult) and customResult.IsSuccess)>
+			<cfreturn />
 		</cfif>
+		<cfif isStruct(customResult) and structKeyExists(customResult,"failureMessage")>
+			<cfset failureMessage = customResult.failureMessage />
+		</cfif>
+		<cfset fail(arguments.valObject,failureMessage) />
 	</cffunction>
 
 </cfcomponent>

@@ -60,7 +60,6 @@
 			assertEquals(false,VTConfig.injectResultIntoBO);
 			assertEquals(structNew(),VTConfig.localeMap);
 			assertEquals("",VTConfig.BOComponentPaths);
-			assertEquals("vtRules",VTConfig.annotationAttributeName);
 			assertEquals("",VTConfig.ExtraAnnotationTypeReaderComponentPaths);
 		</cfscript>  
 	</cffunction>

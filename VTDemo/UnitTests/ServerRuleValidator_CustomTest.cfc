@@ -51,6 +51,30 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="validateReturnsFalseWhenMethodReturnsFalse" access="public" returntype="void">
+		<cfscript>
+			customResult = false;
+			theObject.myMethod().returns(customResult);
+			validation.getTheObject().returns(theObject);
+			validation.getObjectValue().returns("");
+			validation.getIsRequired().returns(true);
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="validateReturnsTrueWhenMethodReturnsTrue" access="public" returntype="void">
+		<cfscript>
+			customResult = true;
+			theObject.myMethod().returns(customResult);
+			validation.getTheObject().returns(theObject);
+			validation.getObjectValue().returns("");
+			validation.getIsRequired().returns(true);
+			SRV.validate(validation);
+			validation.verifyTimes(0).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
 			customResult = {IsSuccess=false,FailureMessage="A custom validator failed."};

@@ -39,7 +39,6 @@
 		<cfparam name="variables.ValidateThisConfig.JSIncludes" default="true" />
 		<cfparam name="variables.ValidateThisConfig.defaultFailureMessagePrefix" default="The " />
 		<cfparam name="variables.ValidateThisConfig.BOComponentPaths" default="" />
-		<cfparam name="variables.ValidateThisConfig.annotationAttributeName" default="vtRules" />
 		<cfparam name="variables.ValidateThisConfig.extraAnnotationTypeReaderComponentPaths" default="" />
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />

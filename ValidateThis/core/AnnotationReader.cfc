@@ -20,14 +20,12 @@
 		<cfargument name="childObjectFactory" type="any" required="true" />
 		<cfargument name="extraFileReaderComponentPaths" type="string" required="true" />
 		<cfargument name="externalFileTypes" type="string" required="true" />
-		<cfargument name="annotationAttributeName" type="string" required="true" />
 		<cfargument name="extraAnnotationTypeReaderComponentPaths" type="string" required="true" />
 
 		<cfset variables.transientFactory = arguments.transientFactory />
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.extraFileReaderComponentPaths = arguments.extraFileReaderComponentPaths />
 		<cfset variables.externalFileTypes = arguments.externalFileTypes />
-		<cfset variables.annotationAttributeName = arguments.annotationAttributeName />
 		<cfset variables.extraAnnotationTypeReaderComponentPaths = arguments.extraAnnotationTypeReaderComponentPaths />
 		
 		<cfset setAnnotationTypeReaders() />
