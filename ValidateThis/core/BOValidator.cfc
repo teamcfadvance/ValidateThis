@@ -368,6 +368,12 @@
 	<cfreturn result />	
 	</cffunction>
 
+	<cffunction name="getObjectType" returntype="any" access="public" output="false" hint="I get the BOValidator Object type.">
+
+		<cfreturn variables.Instance.objectType />
+
+	</cffunction>
+
 </cfcomponent>
 	
 

@@ -96,5 +96,12 @@
 		<cfreturn variables.ScriptWriters[arguments.JSLib] />
 	</cffunction>
 
+	<cffunction name="getRuleScripts" access="public" output="false" returntype="any">
+		<cfargument name="JSLib" default="#variables.validateThisConfig.DefaultJSLib#" type="any" required="false" />
+		
+		<cfreturn getScriptWriter(arguments.JSLib).getRuleScripters() />
+		
+	</cffunction>	
+
 </cfcomponent>
 

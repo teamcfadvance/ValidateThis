@@ -97,6 +97,70 @@
 		
 	</cffunction>
 
-</cfcomponent>
-	
+	<cffunction name="getServerRuleValidators" access="public" output="false" returntype="any">
 
+        <cfreturn getBean("ServerValidator").getRuleValidators() />
+
+    </cffunction>
+    
+	<cffunction name="getClientRuleScripts" access="public" output="false" returntype="any">
+		<cfargument name="JSLib" type="any" required="true"/>
+		
+		<cfreturn getBean("ClientValidator").getRuleScripts(arguments.JSLib) />
+	
+	</cffunction>
+    
+	<cffunction name="loadValidators" access="public" output="false" returntype="any">
+		<cfargument name="objectList" type="any" required="true"/>
+		
+		<cfset list = []/>
+		
+		<cfif isSimpleValue(arguments.objectList)>
+				<cfif (listLen(arguments.objectList) gt 1)>
+					<cfloop list="#arguments.objectList#" index="obj">					
+						<cfset ArrayAppend(list,obj)/>
+					</cfloop>
+				<cfelse>
+					<cfset ArrayAppend(list,arguments.objectList)/>
+				</cfif>
+		<cfelseif isStruct(arguments.objectList)>
+			<cfscript>
+				for (obj in arguments.objectList){
+					ArrayAppend(list,obj);									
+				}
+			</cfscript>
+		<cfelseif isArray(arguments.objectList)>
+			<cfset list = arguments.objectList/>
+		<cfelse>
+			<cfset list[0] = arguments.objectList>
+		</cfif>
+		
+		<cfif isArray(list)>
+	       <cfloop array="#list#" index="objectType">
+				<cfset getValidator(objectType)/>
+		   </cfloop>
+	   </cfif>
+	   
+	   <cfreturn getValidatorNames()/>
+	   
+    </cffunction>
+    
+	<cffunction name="clearValidators" access="public" output="false" returntype="void">
+
+			<cfset variables.Validators = StructNew() />
+			
+	</cffunction>
+	
+	<cffunction name="getValidatorNames" access="public" output="false" returntype="any">
+		
+		<cfset var result = []/>
+		
+		<cfloop collection="#variables.Validators#" item="validatorName">
+			<cfset arrayAppend(result,validatorName)/>
+		</cfloop>
+		
+		<cfreturn result/>
+		
+	</cffunction>	
+
+</cfcomponent>

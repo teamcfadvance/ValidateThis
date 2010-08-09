@@ -155,11 +155,49 @@
 	</cffunction>
 	
 	<cffunction name="getVersion" access="public" output="false" returntype="any">
-
+		
 		<cfreturn getBean("Version").getVersion() />
+				
+	</cffunction>
+		
+	<cffunction name="getValidateThisConfig" access="public" output="false" returntype="any">
+        
+		<cfreturn variables.ValidateThisConfig />
+				
+    </cffunction>
+	
+    <cffunction name="getServerRuleValidators" access="public" output="false" returntype="any">
+        
+		<cfreturn variables.ValidationFactory.getServerRuleValidators() />
+				
+    </cffunction>
+	
+    <cffunction name="getClientRuleScripts" access="public" output="false" returntype="any">
+
+		<cfreturn variables.ValidationFactory.getClientRuleScripts(variables.ValidateThisConfig.DefaultJSLib) />
+		
+	</cffunction>
+		
+	<cffunction name="loadValidators" access="public" output="false" returntype="any">
+		<cfargument name="objectList" type="any" required="true"/>
+		
+		<cfreturn variables.ValidationFactory.loadValidators(objectList)/>
 		
 	</cffunction>
 	
+	<cffunction name="clearValidators" access="public" output="false" returntype="void">
+		
+		<cfset variables.ValidationFactory.clearValidators() />
+
+	</cffunction>
+	
+	
+	<cffunction name="getValidatorNames" access="public" output="false" returntype="any">
+
+		<cfreturn variables.ValidationFactory.getValidatorNames() />
+		
+	</cffunction>
+		
 </cfcomponent>
 	
 
