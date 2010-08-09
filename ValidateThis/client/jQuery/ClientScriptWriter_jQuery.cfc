@@ -55,7 +55,7 @@
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 				<script type="text/javascript">
-					$.noConflict();
+					//$.noConflict();
 					jQuery(document).ready(function($) {
 						$.validator.addMethod("regex", function(value, element, param) {
 							var re = param;
