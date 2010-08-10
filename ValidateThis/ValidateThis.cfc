@@ -190,8 +190,7 @@
 		<cfset variables.ValidationFactory.clearValidators() />
 
 	</cffunction>
-	
-	
+		
 	<cffunction name="getValidatorNames" access="public" output="false" returntype="any">
 
 		<cfreturn variables.ValidationFactory.getValidatorNames() />
