@@ -240,6 +240,19 @@
 		<cfreturn variables.instance.propertyDescs />
 	</cffunction>
 	
+	<cffunction name="getRequiredPropertiesAndDescs" access="public" output="false" returntype="any">
+		<cfset var RequiredPropertyDescs = {}/>
+		<cfset var requiredFields = this.getRequiredFields()/>
+		<cfset var propertyDescs = this.getValidationPropertyDescs()>
+		
+		<cfloop list="#structKeyList(requiredFields)#" index="name">
+			<cfset StructInsert(RequiredPropertyDescs,name,propertyDescs[name])>
+		</cfloop>
+		
+		<cfreturn RequiredPropertyDescs />
+		
+	</cffunction>
+		
 	<cffunction name="getValidationClientFieldDescs" access="public" output="false" returntype="any">
 		<cfreturn variables.instance.clientFieldDescs />
 	</cffunction>
