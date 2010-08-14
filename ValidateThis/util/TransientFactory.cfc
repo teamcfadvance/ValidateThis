@@ -33,8 +33,10 @@
 		<cfargument name="transientName" type="string" required="true">
 		<cfargument name="afterCreateArgs" type="struct" required="false" default="#structNew()#">
 		
-		
+		<cfset var temp = ''/>
+		<cfset var key = ''/>
 		<cfset var obj = variables.lightWire.getTransient(arguments.transientName) />
+		
 		<!--- Need to do manual injections of singletons as we're not coupled to CS anymore, ugly but it works for now 
 		<cfif arguments.transientName EQ "Result">
 			<cfset initArgs.Translator = variables.Translator />
@@ -44,6 +46,12 @@
 			<cfinvoke component="#local.obj#" method="init" argumentcollection="#arguments.initArgs#" />
 		</cfif>--->
 		<cfif StructKeyExists(obj,variables.afterCreateMethod)>
+			<!--- TODO: http://groups.google.com/group/validatethis/browse_thread/thread/8c72b46ed61de4c4 --->
+			<cfloop collection="#arguments.afterCreateArgs#" item="key">
+		        <cfset temp = arguments.afterCreateArgs[key] />
+		        <cfset StructDelete(arguments.afterCreateArgs, key) />
+		        <cfset arguments.afterCreateArgs[JavaCast('string', key)] = temp />
+			</cfloop> 
 			<cfinvoke component="#obj#" method="#variables.afterCreateMethod#" argumentcollection="#arguments.afterCreateArgs#" />
 		</cfif>
 		<cfreturn obj>
