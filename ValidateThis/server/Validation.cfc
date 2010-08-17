@@ -35,7 +35,7 @@
 
 		<cfset variables.instance = Duplicate(arguments.ValStruct) />
 		<cfset variables.instance.IsSuccess = true />
-		<cfset variables.instance.FailureMessage = "" />
+		<cfparam name="variables.instance.FailureMessage" default="" />
 		<cfreturn this />
 
 	</cffunction>

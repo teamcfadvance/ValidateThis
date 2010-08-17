@@ -58,8 +58,11 @@
 			validation.getTheObject().returns(theObject);
 			validation.getObjectValue().returns("");
 			validation.getIsRequired().returns(true);
+			validation.setFailureMessage("A custom validator failed.").returns();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
+			debug(validation.debugMock());
+			validation.verifyTimes(1).setFailureMessage("A custom validator failed."); 
 		</cfscript>  
 	</cffunction>
 	
@@ -72,6 +75,22 @@
 			validation.getIsRequired().returns(true);
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="validateGeneratesProperErrorMessageWhenOverriddenInXML" access="public" returntype="void">
+		<cfscript>
+			customResult = false;
+			theObject.myMethod().returns(customResult);
+			validation.getTheObject().returns(theObject);
+			validation.getObjectValue().returns("");
+			validation.getIsRequired().returns(true);
+			validation.getFailureMessage().returns("A custom failure message."); 
+			validation.setFailureMessage("A custom failure message.").returns();
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false); 
+			debug(validation.debugMock());
+			validation.verifyTimes(1).setFailureMessage("A custom failure message."); 
 		</cfscript>  
 	</cffunction>
 	
