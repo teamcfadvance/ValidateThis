@@ -59,6 +59,7 @@
 			validation.getObjectValue().returns("");
 			validation.getIsRequired().returns(true);
 			validation.setFailureMessage("A custom validator failed.").returns();
+			validation.getFailureMessage().returns(""); 
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 			debug(validation.debugMock());

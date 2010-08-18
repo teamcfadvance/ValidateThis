@@ -18,7 +18,10 @@
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I read the validations JSON file and reformat it into private properties">
 		<cfargument name="metadataSource" type="any" required="true" hint="the path to the file to read" />
 
-		<cfset fileContent = variables.FileSystem.read(arguments.metadataSource).getContent() />
+		<cfset var jsonStruct = 0 />
+		<cfset var VT = 0 />
+		<cfset var fileContent = variables.FileSystem.read(arguments.metadataSource).getContent() />
+		
 		<cfif isJSON(fileContent)>
 			<cfset jsonStruct = deserializeJSON(fileContent) />
 			<cfif structKeyExists(jsonStruct,"validateThis")>
