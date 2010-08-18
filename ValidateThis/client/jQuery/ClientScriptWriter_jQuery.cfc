@@ -55,15 +55,14 @@
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 				<script type="text/javascript">
-					$.noConflict();
-					jQuery(document).ready(function($) {
-						$.validator.addMethod("regex", function(value, element, param) {
+					jQuery(document).ready(function() {
+						jQuery.validator.addMethod("regex", function(value, element, param) {
 							var re = param;
 							return this.optional(element) || re.test(value);
-						}, $.format("The value entered does not match the specified pattern ({0})"));
-						$.validator.addMethod("boolean", function(value, element) {
+						}, jQuery.format("The value entered does not match the specified pattern ({0})"));
+						jQuery.validator.addMethod("boolean", function(value, element) {
 							return this.optional(element) || isCFBoolean(value);
-						}, $.format("The value entered must be a boolean"));
+						}, jQuery.format("The value entered must be a boolean"));
 					});
 					function isCFBoolean( value )
 					{
@@ -109,8 +108,8 @@
 		<cfset var safeFormName = getSafeFormName(arguments.formName) />
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<script type="text/javascript">jQuery(document).ready(function($) {
-					$form_#safeFormName# = $("###arguments.formName#");
+				<script type="text/javascript">jQuery(document).ready(function() {
+					$form_#safeFormName# = jQuery("###arguments.formName#");
 					$form_#safeFormName#.validate();
 			</cfoutput>
 		</cfsavecontent>
