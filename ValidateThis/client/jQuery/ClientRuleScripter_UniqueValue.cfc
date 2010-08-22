@@ -39,7 +39,7 @@ See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 
 		<cfset var messageScript = "" />
 		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "#defaultFailulreMessagePrefix##arguments.validation.propertyDesc()# must not contain the values of properties named: #params.propertyNames#."/>
+			<cfset arguments.customMessage = "#arguments.validation.propertyDesc# must not contain the values of properties named: #params.propertyNames#."/>
 		</cfif>
 		<cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
 
