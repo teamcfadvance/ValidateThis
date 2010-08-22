@@ -45,16 +45,21 @@ See ServerRuleValidator_DoesNotContainOtherProperties.cfc for cf server implmene
 			<cfsavecontent variable="theCondition">
 				function(value,element,options) {
 					var isValid = true;
-					$(options).each(function(){					
+					$(options).each(function(){		
+						var propertyName = this;			
 						var propertyValue = $(':input[name='+this+']').getValue();
-						if (propertyValue.length > 0){
-							if (value.search(propertyValue) == -1){
-								isValid = true
-								//$.ValidateThis.log("Found " + element.name + "value in " + this);
-							}else{
-								isValid = false;
-								//$.ValidateThis.log("Did not find " + element.name + "value in " + this);
-							}
+						if (propertyValue.length){
+							// if this is a mutilple select list, split the value into an array for iteration
+							if (propertyValue.search(",")){
+								propertyValue = propertyValue.split( "," )
+							};
+							// for each property value in the array to check
+							$(propertyValue).each(function(){
+								var test = value.toString().toLowerCase().search(this.toString().toLowerCase()) == -1;
+								if (!test){ // Only worrie about failures here so we return true if none of the other values fail.
+									isValid = false;
+								}
+							});
 						}
 						return isValid;
 					});
