@@ -21,7 +21,7 @@ Definition Usage Example:
 See ClientRuleScripter_UniqueValue.cfc for client implmenetation
 --->
 
-<cfcomponent extends="validatethis.server.AbstractServerRuleValidator" hint="Fails if the validated property contains the value of another property">
+<cfcomponent extends="AbstractServerRuleValidator" hint="Fails if the validated property contains the value of another property">
 	<cfscript>
 		function validate(valObject){
 			var value = arguments.valObject.getObjectValue();
