@@ -16,10 +16,10 @@
 <cfcomponent output="false" extends="BaseAnnotationTypeReader" hint="I am a responsible for reading and processing VTML annotations.">
 
     <cffunction name="init" returnType="any" access="public" output="false" hint="I build a new VTML AnnotationTypeReader">
-        <cfargument name="defaultFormName" type="string" required="true" />
-        <cfset super.init(argumentCollection=arguments) />
+       <cfset super.init(argumentCollection=arguments) />
         
 		<cfscript>
+		  /*
 		  variables.VTML = {		  
 		      rulePattern = '^[\w].*[\([\w=?\w,?]+]?\)]?.*[\[.*\]]?.*[{.*}]?.*[".*"]?.*[\w]?\|?[\w]?[:\w]?(\+|;)?(\s|\n)?',
 		      valTypePattern = {test='^\w+'},
@@ -30,6 +30,7 @@
 		      formPattern = {test = '\w+\|\w+:?\w+$'},
 		      appenderPattern = {test = '(\+|;)'}		  
 		  }
+		  */
 		</cfscript>
 				
         <cfreturn this />
