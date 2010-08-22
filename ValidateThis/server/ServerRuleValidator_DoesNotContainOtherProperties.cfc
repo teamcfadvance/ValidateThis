@@ -27,7 +27,7 @@ See ClientRuleScripter_DoesNotContainOtherProperties.cfc for client implmenetati
 			var value = arguments.valObject.getObjectValue();
 			var params = arguments.valObject.getParameters();
 			var property = "";
-			
+
 			if(	NOT shouldTest(arguments.valObject)	OR trim(value) eq "" OR NOT structKeyExists(params,"propertyNames")) return;
 
 			var propertyNames = listToArray(params.propertyNames);

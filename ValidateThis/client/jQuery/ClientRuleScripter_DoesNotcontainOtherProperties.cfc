@@ -22,7 +22,6 @@ See ServerRuleValidator_DoesNotContainOtherProperties.cfc for cf server implmene
 --->
 
 <cfcomponent extends="AbstractClientRuleScripter" hint="Fails if the validated property contains the exact value of another property">
-
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
@@ -48,13 +47,14 @@ See ServerRuleValidator_DoesNotContainOtherProperties.cfc for cf server implmene
 					var isValid = true;
 					$(options).each(function(){					
 						var propertyValue = $(':input[name='+this+']').getValue();
-						
-						if (value.search(propertyValue) == -1){
-							isValid = true
-							//$.ValidateThis.log("Found " + element.name + "value in " + this);
-						}else{
-							isValid = false;
-							//$.ValidateThis.log("Did not find " + element.name + "value in " + this);
+						if (propertyValue.length > 0){
+							if (value.search(propertyValue) == -1){
+								isValid = true
+								//$.ValidateThis.log("Found " + element.name + "value in " + this);
+							}else{
+								isValid = false;
+								//$.ValidateThis.log("Did not find " + element.name + "value in " + this);
+							}
 						}
 						return isValid;
 					});
@@ -67,11 +67,9 @@ See ServerRuleValidator_DoesNotContainOtherProperties.cfc for cf server implmene
 					#fieldSelector#.rules("add", {
 						 #valType# : #serializeJSON(listToArray(trim(params.propertyNames)))#
 					});
-					
 			</cfsavecontent>
 			</cfoutput>
 		</cfif>
 		<cfreturn theScript/>
 	</cffunction>
-
 </cfcomponent>
