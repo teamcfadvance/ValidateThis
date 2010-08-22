@@ -1,27 +1,27 @@
 <!--- 
-DoesNotContainOtherProperties:
+UniqueValue:
 	ServerRuleValidator Implmenetation By Marc Esher:
 	ClientRuleScripter Implementation By Adam Drew
 
 Definition Usage Example:
 
-<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your first or last name." >
+<rule type="UniqueValue" failuremessage="Password may not contain your first or last name." >
 	<param propertyNames="firstName,LastName"/>
 </rule>
-<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your username.">
+<rule type="UniqueValue" failuremessage="Password may not contain your username.">
 	<param propertyNames="username" />
 </rule>
-<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your email address." >
+<rule type="UniqueValue" failuremessage="Password may not contain your email address." >
 	<param propertyNames="emailAddress"/>
 </rule>
-<rule type="DoesNotContainOtherProperties" failuremessage="This better be ignored!" >
+<rule type="UniqueValue" failuremessage="This better be ignored!" >
 	<param propertyNames="thisPropertyDoesNotExist"/>
 </rule>
 
-See ServerRuleValidator_DoesNotContainOtherProperties.cfc for cf server implmenetation
+See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 --->
 
-<cfcomponent extends="AbstractClientRuleScripter" hint="Fails if the validated property contains the exact value of another property">
+<cfcomponent extends="AbstractClientRuleScripter" hint="Fails if the validated property contains the value of another property">
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />

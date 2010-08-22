@@ -1,27 +1,27 @@
 <!--- 
-DoesNotContainOtherProperties:
+UniqueValue:
 	ServerRuleValidator Implmenetation By Marc Esher:
 	ClientRuleScripter Implementation By Adam Drew
 
 Definition Usage Example:
 
-<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your first or last name." >
+<rule type="UniqueValue" failuremessage="Password may not contain your first or last name." >
 	<param propertyNames="firstName,LastName"/>
 </rule>
-<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your username.">
+<rule type="UniqueValue" failuremessage="Password may not contain your username.">
 	<param propertyNames="username" />
 </rule>
-<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your email address." >
+<rule type="UniqueValue" failuremessage="Password may not contain your email address." >
 	<param propertyNames="emailAddress"/>
 </rule>
-<rule type="DoesNotContainOtherProperties" failuremessage="This better be ignored!" >
+<rule type="UniqueValue" failuremessage="This better be ignored!" >
 	<param propertyNames="thisPropertyDoesNotExist"/>
 </rule>
 
-See ClientRuleScripter_DoesNotContainOtherProperties.cfc for client implmenetation
+See ClientRuleScripter_UniqueValue.cfc for client implmenetation
 --->
 
-<cfcomponent extends="validatethis.server.AbstractServerRuleValidator" hint="Fails if the validated property contains the exact value of another property">
+<cfcomponent extends="validatethis.server.AbstractServerRuleValidator" hint="Fails if the validated property contains the value of another property">
 	<cfscript>
 		function validate(valObject){
 			var value = arguments.valObject.getObjectValue();
