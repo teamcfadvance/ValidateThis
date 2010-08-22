@@ -51,10 +51,10 @@ See ServerRuleValidator_DoesNotContainOtherProperties.cfc for cf server implmene
 						
 						if (value.search(propertyValue) == -1){
 							isValid = true
-							$.ValidateThis.log("Found " + element.name + "value in " + this);
+							//$.ValidateThis.log("Found " + element.name + "value in " + this);
 						}else{
 							isValid = false;
-							$.ValidateThis.log("Did not find " + element.name + "value in " + this);
+							//$.ValidateThis.log("Did not find " + element.name + "value in " + this);
 						}
 						return isValid;
 					});
