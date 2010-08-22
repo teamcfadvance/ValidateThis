@@ -32,14 +32,16 @@ See ServerRuleValidator_DoesNotContainOtherProperties.cfc for cf server implmene
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var fieldName = safeFormName & arguments.validation.ClientFieldName />
-		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"")" />
-		<cfset var valType = arguments.validation.ValType />
-		<cfset var messageScript = "" />
-		<cfif Len(arguments.customMessage) GT 0>
-			<cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
-		</cfif>
-		<cfset var theCondition="function(value,element,options) { return true; }"/>
+		<cfset var valType = arguments.validation.ValType />		
 		<cfset var params = arguments.validation.Parameters/>
+		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"")" />
+		<cfset var theCondition="function(value,element,options) { return true; }"/>
+
+		<cfset var messageScript = "" />
+		<cfif Len(arguments.customMessage) eq 0>
+			<cfset arguments.customMessage = "#defaultFailulreMessagePrefix##arguments.validation.propertyDesc()# must not contain the values of properties named: #params.propertyNames#."/>
+		</cfif>
+		<cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
 
 		<cfif StructKeyExists(params,"propertyNames")>
 			<cfsavecontent variable="theCondition">
@@ -66,6 +68,7 @@ See ServerRuleValidator_DoesNotContainOtherProperties.cfc for cf server implmene
 					return isValid;
 				}
 			</cfsavecontent>
+			
 			<cfoutput>
 				<cfsavecontent variable="theScript">
 					$.validator.addMethod("#valType#", #theCondition#, #messageScript#);
@@ -74,6 +77,7 @@ See ServerRuleValidator_DoesNotContainOtherProperties.cfc for cf server implmene
 					});
 			</cfsavecontent>
 			</cfoutput>
+			
 		</cfif>
 		<cfreturn theScript/>
 	</cffunction>
