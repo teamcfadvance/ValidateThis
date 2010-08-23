@@ -35,6 +35,9 @@
 	
 	<cffunction name="getValidations" returnType="struct" access="public" output="false" hint="I return the processed metadata in a struct that is expected by the BOValidator">
 		<cfargument name="metadataSource" type="any" required="true" hint="the source of the metadata - may be a filename or a metadata struct" />
+		
+		<cfset var returnStruct = 0 />
+		
 		<cfset loadRules(arguments.metadataSource) />
 		<cfset returnStruct = {propertyDescs=variables.propertyDescs,clientFieldDescs=variables.clientFieldDescs,formContexts=variables.formContexts,validations=variables.validations} />
 		<cfreturn returnStruct />
@@ -64,6 +67,9 @@
 
 	<cffunction name="processConditions" returnType="void" access="private" output="false" hint="I process condition metadata">
 		<cfargument name="conditions" type="any" required="true" />
+		
+		<cfset var theCondition = 0 />
+		
 		<cfloop array="#arguments.conditions#" index="theCondition">
 			<cfset variables.conditions[theCondition.name] = theCondition />
 		</cfloop>
@@ -71,6 +77,9 @@
 
 	<cffunction name="processContexts" returnType="void" access="private" output="false" hint="I process context metadata">
 		<cfargument name="contexts" type="any" required="true" />
+		
+		<cfset var theContext = 0 />
+		
 		<cfloop array="#arguments.contexts#" index="theContext">
 			<cfset variables.contexts[theContext.name] = theContext />
 			<cfif structKeyExists(theContext,"formName")>
@@ -85,6 +94,7 @@
 		<cfset var theProperty = 0 />
 		<cfset var theName = 0 />
 		<cfset var theDesc = 0 />
+		
 		<cfloop array="#arguments.properties#" index="theProperty">
 			<cfset theName = theProperty.name />
 			<cfif StructKeyExists(theProperty,"desc")>
@@ -105,6 +115,14 @@
 
 	<cffunction name="processPropertyRules" returnType="any" access="private" output="false" hint="I process property rules">
 		<cfargument name="properties" type="any" required="true" />
+		
+		<cfset var theProperty = 0 />
+		<cfset var theRule = 0 />
+		<cfset var theVal = 0 />
+		<cfset var theParam = 0 />
+		<cfset var propertyType = 0 />
+		<cfset var theContext = 0 />
+		
 		<cfloop array="#arguments.properties#" index="theProperty">
 			<cfif structKeyExists(theProperty,"rules")>
 				<cfloop array="#theProperty.rules#" index="theRule">

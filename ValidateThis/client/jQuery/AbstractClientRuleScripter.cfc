@@ -124,8 +124,8 @@
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				$.validator.addMethod("#fieldName##valType#", $.validator.methods.#valType##messageScript#);
-				$.validator.addClassRules("#fieldName##valType#", {#fieldName##valType#: #arguments.theCondition#});
+				jQuery.validator.addMethod("#fieldName##valType#", jQuery.validator.methods.#valType##messageScript#);
+				jQuery.validator.addClassRules("#fieldName##valType#", {#fieldName##valType#: #arguments.theCondition#});
 				#fieldSelector#.addClass('#fieldName##valType#');
 			</cfoutput>
 		</cfsavecontent>

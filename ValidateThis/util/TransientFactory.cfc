@@ -13,8 +13,6 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-   TransientFactory.cfc (.1)
-   [2009-09-25]	Initial Release.				
  --->
 <cfcomponent output="false" hint="I create Transient objects.">
 
@@ -23,8 +21,6 @@
 	<cffunction name="init" access="public" output="false" returntype="any" hint="returns a configured transient factory">
 		<cfargument name="lightWire" type="any" required="yes" />
 		<cfset variables.lightWire = arguments.lightWire />
-		<!---<cfargument name="pathToResultObject" type="string" required="yes" />
-		<cfset variables.classes = {Result=arguments.pathToResultObject,Validation="ValidateThis.server.Validation",BusinessObjectWrapper="ValidateThis.core.BusinessObjectWrapper",ResourceBundle="ValidateThis.util.ResourceBundle"} />--->
 		<cfset variables.afterCreateMethod = "setup" />
 		<cfreturn this />
 	</cffunction>

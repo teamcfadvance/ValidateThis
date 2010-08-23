@@ -32,6 +32,7 @@
 			ObjectChecker.findGetter("{*}").returns("getFirstName()");
 			valStruct = StructNew();
 			valStruct.ValType = "required";
+			valStruct.FailureMessage = "A custom failure message.";
 			valStruct.PropertyName = "FirstName";
 			valStruct.ClientFieldName = "FirstName";
 			valStruct.PropertyDesc = "First Name";
@@ -42,6 +43,7 @@
 			Validation.setup(obj);
 			Validation.load(valStruct);
 			assertEquals(valStruct.ValType,Validation.getValType());
+			assertEquals(valStruct.FailureMessage,Validation.getFailureMessage());
 			assertEquals(valStruct.PropertyName,Validation.getPropertyName());
 			assertEquals(valStruct.PropertyDesc,Validation.getPropertyDesc());
 			assertEquals(valStruct.Parameters,Validation.getParameters());

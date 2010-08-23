@@ -161,11 +161,13 @@
 		<cfargument name="missingMethodName" type="any" required="true" />
 		<cfargument name="missingMethodArguments" type="any" required="true" />
 
-		<cfset returnValue = "" />
+		<cfset var returnValue = "" />
+
 		<cfinvoke component="#variables.ValidateThis#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="returnValue" />
 		<cfif NOT IsDefined("returnValue")>
 			<cfset returnValue = "" />
 		</cfif>
+
 		<cfreturn returnValue />
 		
 	</cffunction>
