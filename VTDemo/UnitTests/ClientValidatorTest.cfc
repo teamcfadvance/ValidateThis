@@ -70,7 +70,7 @@
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ClientValidator = validationFactory.getBean("ClientValidator");
 			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
-			assertTrue(script contains "$form_testFormName = $(""##testFormName"");");
+			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
 			assertTrue(script contains "$form_testFormName.validate();");
 			assertTrue(script contains "if ($form_testFormName.find("":input[name='clientFieldName']"").length)");
 			assertTrue(script contains "$form_testFormName.find("":input[name='clientFieldName']"").rules");

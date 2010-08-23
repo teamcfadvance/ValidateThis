@@ -21,30 +21,22 @@
 		<cfscript>
 			super.setup();
 			SRV = getSRV("Range");
-			parameters = {min=5,max=10};
+			parameters = {min="2010-12-01",max="2010-12-31"};
 			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validateReturnsTrueForValidMinAndMax" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForDateInRange" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(5);
+			validation.getObjectValue().returns("2010-12-19");
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidMin" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForDateOutOfRange" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
-			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
-	<cffunction name="validateReturnsFalseForInvalidMax" access="public" returntype="void">
-		<cfscript>
-			validation.getObjectValue().returns(11);
+			validation.getObjectValue().returns("2010-02-19");
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

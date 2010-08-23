@@ -23,7 +23,7 @@
 			JSLib = "jQuery";
 			ExpectedInJSIncludes = '<script src="JS/jquery-1.4.2.min.js" type="text/javascript">';
 			ExpectedInLocale = '<script src="JS/messages_fr.js" type="text/javascript"></script>';
-			ExpectedInVTSetup = '$.validator.addMethod("regex", function(value, element, param)';
+			ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
 		</cfscript>  
 	</cffunction>
 

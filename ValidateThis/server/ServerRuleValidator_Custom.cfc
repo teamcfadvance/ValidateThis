@@ -34,9 +34,8 @@
 		<cfif isStruct(customResult) and structKeyExists(customResult,"failureMessage")>
 			<cfset failureMessage = customResult.failureMessage />
 		<cfelseif len(arguments.valObject.getFailureMessage()) GT 0>
-            <cfset failureMessage = arguments.valObject.getFailureMessage() /> 
+			<cfset failureMessage = arguments.valObject.getFailureMessage() /> 
 		</cfif>
-		
 		<cfset fail(arguments.valObject,failureMessage) />
 	</cffunction>
 

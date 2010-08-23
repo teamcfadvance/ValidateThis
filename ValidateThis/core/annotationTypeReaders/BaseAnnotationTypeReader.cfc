@@ -25,6 +25,8 @@
 		
 		<cfargument name="properties" type="array" required="true" />
 		
+		<cfset var prop = 0 />
+		
 		<cfloop array="#arguments.properties#" index="prop">
 			<cfif structKeyExists(prop,"vtRules") and isThisFormat(prop.vtRules)>
 				<cfreturn true />
