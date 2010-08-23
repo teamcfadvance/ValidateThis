@@ -90,6 +90,23 @@
 			arguments.definitionPath,arguments.theObject,arguments.componentPath) />
 
 	</cffunction>
+	
+	<cffunction name="createWrapper" returntype="any" access="public" output="false">
+		<cfargument name="theObject" type="any" required="true" />
+		<!--- Inject testCondition if needed --->
+		<!--- Notes for Java/Groovy objects:
+			If you're using Groovy, 
+			you will need to write your own testCondition method into your BOs. You may consider doing this 
+			by adding the method to a base BO class. I am not certain this can even be done in Java, as I do 
+			not believe Java supports runtime evaluation. --->
+		<cfif not isObject(arguments.theObject) and isStruct(arguments.theObject)>
+			<cfset arguments.theObject = getBean("TransientFactory").newStructWrapper(arguments.theObject) />
+		</cfif>
+		<cfif getBean("ObjectChecker").isCFC(arguments.theObject) AND NOT StructKeyExists(arguments.theObject,"testCondition")>
+			<cfset arguments.theObject["testCondition"] = this["testCondition"] />
+		</cfif>
+		<cfreturn arguments.theObject/>
+	</cffunction>
 
 	<cffunction name="newResult" returntype="any" access="public" output="false" hint="I create a Result object.">
 
@@ -162,5 +179,12 @@
 		<cfreturn result/>
 		
 	</cffunction>	
+	
+	<cffunction name="testCondition" access="Public" returntype="boolean" output="false" hint="FOR MIXIN USE - I am here to dynamically evaluate a condition and return true or false.">
+		<cfargument name="Condition" type="any" required="true" />
+		
+		<cfreturn Evaluate(arguments.Condition)>
+
+	</cffunction>
 
 </cfcomponent>

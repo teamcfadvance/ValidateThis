@@ -63,25 +63,21 @@
 		
 	</cffunction>
 	
+	<cffunction name="createWrapper" access="public" output="false" returntype="any">
+		<cfargument name="theObject" type="any" required="true"/>
+		<cfreturn variables.ValidationFactory.createWrapper(arguments.theObject)/>
+	</cffunction>
+	
 	<cffunction name="validate" access="public" output="false" returntype="any">
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="objectType" type="any" required="false" default="" />
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
 
-		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
-		<!--- Inject testCondition if needed --->
-		<!--- Notes for Java/Groovy objects:
-			If you're using Groovy, 
-			you will need to write your own testCondition method into your BOs. You may consider doing this 
-			by adding the method to a base BO class. I am not certain this can even be done in Java, as I do 
-			not believe Java supports runtime evaluation. --->
-		<cfif not isObject(arguments.theObject) and isStruct(arguments.theObject)>
-			<cfset arguments.theObject = variables.TransientFactory.newStructWrapper(arguments.theObject) />
-		</cfif>
-		<cfif getBean("ObjectChecker").isCFC(arguments.theObject) AND NOT StructKeyExists(arguments.theObject,"testCondition")>
-			<cfset arguments.theObject["testCondition"] = this["testCondition"] />
-		</cfif>
+		<cfset var BOValidator = getValidator(arguments.objectType) />
+		
+		<cfset arguments.theObject = createWrapper(arguments.theObject)/>
+		
 		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result) />
 		
 		<cfreturn arguments.Result />
