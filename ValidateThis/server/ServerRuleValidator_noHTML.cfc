@@ -17,14 +17,11 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-	
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<!--- <cfparam name="Parameters.allowedTags" default=""/> --->
-		
 		<cfif shouldTest(arguments.valObject) and reFindNoCase("</?\w+((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>",arguments.valObject.getObjectValue(),1,false)>
 			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# cannot contain HTML tags.")) />
 		</cfif>
-				
 	</cffunction>
 	
 </cfcomponent>
