@@ -26,19 +26,15 @@
 	</cffunction>
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-		<cfset var theScript = "if ($form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"").length) { " />
+		<cfset var theScript = "if ($form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"").length) { " />
 
-		<cfset var customMessage = "" />
+		<cfset var customMessage = arguments.validation.getFailureMessage() />
 		
-		<cfif StructKeyExists(arguments.validation,"failureMessage")>
-			<cfset customMessage = arguments.validation.failureMessage />
-		</cfif>
-
 		<cfset theScript &= generateRuleScript(argumentCollection=arguments,customMessage=customMessage,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix) />
 
 		<cfset theScript &= "}" />
@@ -48,7 +44,7 @@
 	</cffunction>
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="defaultFailureMessagePrefix" type="Any" required="yes" />
 		<cfargument name="customMessage" type="Any" required="no" default="" />
@@ -59,7 +55,7 @@
 	</cffunction>
 
 	<cffunction name="generateAddRule" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
@@ -73,27 +69,28 @@
 			<cfif len(arguments.customMessage) GT 0>
 				<cfset arguments.customMessage = ", messages: {#ListFirst(ruleDef,':')#: '#JSStringFormat(variables.Translator.translate(arguments.customMessage,arguments.locale))#'}" />
 			</cfif>
-			<cfreturn "$form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"").rules('add',{#ruleDef##arguments.customMessage#});" />
+			<cfreturn "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"").rules('add',{#ruleDef##arguments.customMessage#});" />
 		</cfif>
 		
 	</cffunction>
 
 	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 
 		<cfset var paramName = "" />
 		<cfset var paramList = "" />
-		<cfset var ruleDef = lCase(arguments.validation.ValType) & ": " />
+		<cfset var ruleDef = lCase(arguments.validation.getValType()) & ": " />
+		<cfset var parameters = arguments.validation.getParameters() />
 
-		<cfif structKeyExists(arguments.validation,"Parameters") AND structCount(arguments.validation.Parameters) GT 0>
-			<cfif structCount(arguments.validation.Parameters) EQ 1>
-				<cfset paramName = structKeyArray(arguments.validation.Parameters) />
+		<cfif structCount(parameters) GT 0>
+			<cfif structCount(parameters) EQ 1>
+				<cfset paramName = structKeyArray(parameters) />
 				<cfset paramName = paramName[1] />
-				<cfset ruleDef &= arguments.validation.Parameters[paramName] />
+				<cfset ruleDef &= parameters[paramName] />
 			<cfelse>
 				<cfset ruleDef &= "[" />
-				<cfloop collection="#arguments.validation.Parameters#" item="paramName">
-					<cfset paramList = listAppend(paramList,arguments.validation.Parameters[paramName]) />
+				<cfloop collection="#parameters#" item="paramName">
+					<cfset paramList = listAppend(paramList,parameters[paramName]) />
 				</cfloop>
 				<cfset ruleDef &= paramList & "]" />
 			</cfif>
@@ -106,7 +103,7 @@
 	</cffunction>
 
 	<cffunction name="generateAddMethod" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="theCondition" type="any" required="yes" hint="The conditon to test." />
 		<cfargument name="customMessage" type="any" required="no" default="" hint="A custom message to display on failure." />
@@ -114,9 +111,9 @@
 
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-		<cfset var fieldName = safeFormName & arguments.validation.ClientFieldName />
-		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"")" />
-		<cfset var valType = arguments.validation.ValType />
+		<cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
+		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
+		<cfset var valType = arguments.validation.getValType() />
 		<cfset var messageScript = "" />
 		<cfif Len(arguments.customMessage) GT 0>
 			<cfset messageScript = ', "' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />

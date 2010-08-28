@@ -48,8 +48,6 @@
 		<cfset var newProperty = 0 />
 		<cfset var theProperties = [] />
 
-		<cfset request.debug(arguments) />
-		
 		<cfloop array="#arguments.properties#" index="theProperty">
 			<cfset newProperty = {name=theProperty.name} />
 			<cfif StructKeyExists(theProperty,"vtDesc")>

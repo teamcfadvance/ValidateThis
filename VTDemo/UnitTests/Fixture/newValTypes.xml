@@ -23,21 +23,21 @@
 		<!-- 
 		<property name="Nickname">
 			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname."> 
-				<param methodname="CheckDupNickname" />
-				<param remoteURL="CheckDupNickname.cfm" />
+				<param name="methodname" value="CheckDupNickname" />
+				<param name="remoteURL" value="CheckDupNickname.cfm" />
 			</rule>
 		</property>
 		<property name="UserPass" desc="Password">
 			<rule type="required" />
 			<rule type="rangelength">
-				<param minlength="5" />
-				<param maxlength="10" />
+				<param name="minlength" value="5" />
+				<param name="maxlength" value="10" />
 			</rule>
 		</property>
 		<property name="VerifyPassword">
 			<rule type="required" />
 			<rule type="equalTo">
-				<param ComparePropertyName="UserPass" />
+				<param name="ComparePropertyName" value="UserPass" />
 			</rule>
 		</property>
 		<property name="UserGroup" clientfieldname="UserGroupId">
@@ -47,7 +47,7 @@
 			<rule type="required" contexts="Profile" />
 			<rule type="regex"
 				failureMessage="Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.">
-				<param Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
+				<param name="Regex" value="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
 			</rule>
 		</property>
 		<property name="FirstName">
@@ -56,7 +56,7 @@
 		<property name="LastName">
 			<rule type="required" contexts="Profile" />
 			<rule type="required" contexts="Register">
-				<param DependentPropertyName="FirstName" />
+				<param name="DependentPropertyName" value="FirstName" />
 			</rule>
 		</property>
 		<property name="LikeOther" desc="What do you like?">
@@ -71,8 +71,8 @@
 		<property name="CommunicationMethod">
 			<rule type="required"
 				failureMessage="If you are allowing communication, you must choose a communication method.">
-				<param DependentPropertyName="AllowCommunication" />
-				<param DependentPropertyValue="1" />
+				<param name="DependentPropertyName" value="AllowCommunication" />
+				<param name="DependentPropertyValue" value="1" />
 			</rule>
 		</property>
 		 -->

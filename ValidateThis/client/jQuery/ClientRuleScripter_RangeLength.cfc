@@ -18,7 +18,9 @@
 	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 
-		<cfreturn "rangelength: [#arguments.validation.Parameters.minlength#,#arguments.validation.Parameters.maxlength#]" />
+		<cfset var parameters = arguments.validation.getParameters() />
+
+		<cfreturn "rangelength: [#parameters.minlength#,#parameters.maxlength#]" />
 		
 	</cffunction>
 

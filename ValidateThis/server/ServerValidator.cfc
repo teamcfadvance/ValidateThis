@@ -45,7 +45,7 @@
 		<cfset var theFailure = 0 />
 		<cfset var FailureMessage = 0 />
 		<cfset var Validations = arguments.BOValidator.getValidations(arguments.Context) />
-		<cfset var theVal = variables.TransientFactory.newValidation(arguments.theObject,variables.ObjectChecker) />
+		<cfset var theVal = variables.TransientFactory.newValidation(arguments.theObject) />
 		<cfset var dependentPropertyExpression = 0 />
 		<cfset var dependentPropertyValue = "" />
 		<cfset var conditionPasses = true />
@@ -53,24 +53,24 @@
 		<cfif IsArray(Validations) and ArrayLen(Validations)>
 			<!--- Loop through the validations array, creating validation objects and using them --->
 			<cfloop Array="#Validations#" index="v">
+				<cfset theVal.load(v) />
 				<cfset conditionPasses = true />
 				<!--- Deal with various conditions --->
 				<cfif StructKeyExists(v.Condition,"ServerTest")>
 					<cfset conditionPasses = arguments.theObject.testCondition(v.Condition.ServerTest) />
 				<cfelseif StructKeyExists(v.Parameters,"DependentPropertyName")>
-					<cfset dependentPropertyExpression = variables.ObjectChecker.findGetter(arguments.theObject,v.Parameters.DependentPropertyName) />
+					<cfset dependentPropertyExpression = variables.ObjectChecker.findGetter(arguments.theObject,theVal.getParameterValue("DependentPropertyName")) />
 					<cfset dependentPropertyValue = evaluate("arguments.theObject.#dependentPropertyExpression#") />
 					<cfif not isDefined("dependentPropertyValue")>
 						<cfset dependentPropertyValue = "" />
 					</cfif>
 					<cfif StructKeyExists(v.Parameters,"DependentPropertyValue")>
-						<cfset conditionPasses = dependentPropertyValue EQ v.Parameters.DependentPropertyValue />
+						<cfset conditionPasses = dependentPropertyValue EQ theVal.getParameterValue("DependentPropertyValue") />
 					<cfelse>
 						<cfset conditionPasses = len(dependentPropertyValue) GT 0 />
 					</cfif>
 				</cfif>
 				<cfif conditionPasses>
-					<cfset theVal.load(v) />
 					<cfset theVal.setIsRequired(arguments.BOValidator.propertyIsRequired(v.PropertyName)) />
 					<cfset variables.RuleValidators[v.ValType].validate(theVal) />
 					<cfif NOT theVal.getIsSuccess()>

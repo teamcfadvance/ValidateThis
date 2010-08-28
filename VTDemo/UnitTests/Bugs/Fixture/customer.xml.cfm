@@ -37,7 +37,7 @@
 			<rule type="email" contexts="registerInterest" failureMessage="Your email address must be in the correct format. "/>
 
 			<rule type="equalTo" contexts="registerInterest">
-				<param ComparePropertyName="emailAddress" />
+				<param name="ComparePropertyName" value="emailAddress" />
 			</rule>
 		</property>
 

@@ -22,10 +22,12 @@
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
+		<cfset var parameters = arguments.validation.getParameters() />
+
 		<cfif len(arguments.customMessage) EQ 0>
-			<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.PropertyDesc# must be the same as the #arguments.validation.Parameters.ComparePropertyDesc#." />
+			<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# must be the same as the #parameters.ComparePropertyDesc#." />
 		</cfif>
-		<cfreturn generateAddMethod(arguments.validation,arguments.formName,"'###arguments.formName# :input[name=""#arguments.validation.Parameters.ComparePropertyName#""]'",arguments.customMessage,arguments.locale) />
+		<cfreturn generateAddMethod(arguments.validation,arguments.formName,"'###arguments.formName# :input[name=""#parameters.ComparePropertyName#""]'",arguments.customMessage,arguments.locale) />
 	</cffunction>
 
 </cfcomponent>

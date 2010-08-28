@@ -15,7 +15,7 @@
 --->
 <cfcomponent output="false" hint="I am a responsible for reading and processing an XML file.">
 
-	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new XMLFileReader">
+	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new metadataprocessor">
 
 		<cfset variables.propertyDescs = {} />
 		<cfset variables.clientFieldDescs = {} />
@@ -120,6 +120,7 @@
 		<cfset var theRule = 0 />
 		<cfset var theVal = 0 />
 		<cfset var theParam = 0 />
+		<cfset var paramType = 0 />
 		<cfset var propertyType = 0 />
 		<cfset var theContext = 0 />
 		
@@ -139,13 +140,17 @@
 					</cfif>
 					<cfif structKeyExists(theRule,"params")>
 						<cfloop array="#theRule.params#" index="theParam">
-							<cfset structAppend(theVal.parameters,theParam) />
+							<cfset theVal.parameters[theParam.name] = theParam />
+							<cfif NOT structKeyExists(theParam,"type")>
+								<cfset theVal.parameters[theParam.name].type = "value" />
+							</cfif>
 							<cfloop list="compareProperty,dependentProperty" index="propertyType">
-								<cfif structKeyExists(theParam,propertyType & "Name")>
-									<cfif structKeyExists(variables.propertyDescs,theParam[propertyType & "Name"])>
-										<cfset theVal.parameters[propertyType & "Desc"] = variables.propertyDescs[theParam[propertyType & "Name"]] />
+								<cfif theParam.name eq propertyType & "Name">
+									<cfset theVal.parameters[propertyType & "Desc"] = {type="value"} />
+									<cfif structKeyExists(variables.propertyDescs,theParam.value)>
+										<cfset theVal.parameters[propertyType & "Desc"].value = variables.propertyDescs[theParam.value] />
 									<cfelse>
-										<cfset theVal.parameters[propertyType & "Desc"] = determineLabel(theParam[propertyType & "Name"]) />
+										<cfset theVal.parameters[propertyType & "Desc"].value = determineLabel(theParam.value) />
 									</cfif>
 								</cfif>
 							</cfloop>

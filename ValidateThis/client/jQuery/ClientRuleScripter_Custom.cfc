@@ -18,8 +18,10 @@
 	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 
-		<cfif StructKeyExists(arguments.validation.Parameters,"remoteURL")>
-			<cfreturn "remote: '#arguments.validation.Parameters.remoteURL#'" />
+		<cfset var parameters = arguments.validation.getParameters() />
+		
+		<cfif StructKeyExists(parameters,"remoteURL")>
+			<cfreturn "remote: '#parameters.remoteURL#'" />
 		<cfelse>
 			<cfreturn "" />
 		</cfif>

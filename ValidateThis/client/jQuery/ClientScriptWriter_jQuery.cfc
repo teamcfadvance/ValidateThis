@@ -90,12 +90,13 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
+		<cfset var valType = arguments.validation.getValType() />
 
 		<!--- Conditional validations can only be generated for "required" type --->
-		<cfif (NOT (StructCount(arguments.validation.Condition) GT 0 OR
-			StructKeyExists(arguments.validation.Parameters,"DependentPropertyName")) OR arguments.validation.ValType EQ "required")
-			AND StructKeyExists(variables.RuleScripters,arguments.validation.ValType)>
-			<cfset theScript = variables.RuleScripters[arguments.validation.ValType].generateValidationScript(arguments.validation,arguments.formName,arguments.locale) />
+		<cfif (NOT (StructCount(arguments.validation.getCondition()) GT 0 OR
+			StructKeyExists(arguments.validation.getParameters(),"DependentPropertyName")) OR valType EQ "required")
+			AND StructKeyExists(variables.RuleScripters,valType)>
+			<cfset theScript = variables.RuleScripters[valType].generateValidationScript(arguments.validation,arguments.formName,arguments.locale) />
 		</cfif>
 		
 		<cfreturn theScript />

@@ -23,15 +23,16 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theRegex = "" />
+		<cfset var parameters = arguments.validation.getParameters() />
 
-		<cfif StructKeyExists(arguments.validation.Parameters,"ServerRegex")>
-			<cfset theRegex = arguments.validation.Parameters.ServerRegex />
-		<cfelseif StructKeyExists(arguments.validation.Parameters,"Regex")>
-			<cfset theRegex = arguments.validation.Parameters.Regex />
+		<cfif StructKeyExists(parameters,"ServerRegex")>
+			<cfset theRegex = parameters.ServerRegex />
+		<cfelseif StructKeyExists(parameters,"Regex")>
+			<cfset theRegex = parameters.Regex />
 		</cfif>
 
 		<cfif len(arguments.customMessage) EQ 0>
-			<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.PropertyDesc# does not match the specified pattern." />
+			<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# does not match the specified pattern." />
 		</cfif>
 
 		<cfreturn generateAddMethod(arguments.validation,arguments.formName,"/#theRegex#/",arguments.customMessage,arguments.locale) />

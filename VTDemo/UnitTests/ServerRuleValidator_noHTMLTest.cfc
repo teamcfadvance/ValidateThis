@@ -15,6 +15,7 @@
 	License.
 	
 --->
+<!---
 <cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
@@ -56,3 +57,4 @@
 	</cffunction>
 	
 </cfcomponent>
+--->

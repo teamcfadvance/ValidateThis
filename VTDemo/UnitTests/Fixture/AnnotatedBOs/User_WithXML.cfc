@@ -29,15 +29,15 @@ component persistent="true" table="tblUser_A" vtContexts="Register|frmRegister,P
 	property name="userPass" displayName="Password" vtRules='<rules>
 			<rule type="required" />
 			<rule type="rangelength">
-				<param minlength="5" />
-				<param maxlength="10" />
+				<param name="minlength" value="5" />
+				<param name="maxlength" value="10" />
 			</rule>
 		</rules>';
 	
 	property name="nickname" vtRules='<rules>
 			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname."> <!-- Specifying no context is the same as specifying a context of "*" -->
-				<param methodname="CheckDupNickname" />
-				<param remoteURL="CheckDupNickname.cfm" />
+				<param name="methodname" value="CheckDupNickname" />
+				<param name="remoteURL" value="CheckDupNickname.cfm" />
 			</rule>
 		</rules>';
 	
@@ -45,7 +45,7 @@ component persistent="true" table="tblUser_A" vtContexts="Register|frmRegister,P
 			<rule type="required" contexts="Profile" />
 			<rule type="regex"
 				failureMessage="Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.">
-				<param Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
+				<param name="Regex" value="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
 			</rule>
 		</rules>';
 	
@@ -56,7 +56,7 @@ component persistent="true" table="tblUser_A" vtContexts="Register|frmRegister,P
 	property name="lastName" vtRules='<rules>
 			<rule type="required" contexts="Profile" />
 			<rule type="required" contexts="Register">
-				<param DependentPropertyName="FirstName" />
+				<param name="DependentPropertyName" value="FirstName" />
 			</rule>
 		</rules>';
 
@@ -75,8 +75,8 @@ component persistent="true" table="tblUser_A" vtContexts="Register|frmRegister,P
 	property name="communicationMethod" vtRules='<rules>
 			<rule type="required"
 				failureMessage="If you are allowing communication, you must choose a communication method.">
-				<param DependentPropertyName="AllowCommunication" />
-				<param DependentPropertyValue="1" />
+				<param name="DependentPropertyName" value="AllowCommunication" />
+				<param name="DependentPropertyValue" value="1" />
 			</rule>
 		</rules>';
 
@@ -93,7 +93,7 @@ component persistent="true" table="tblUser_A" vtContexts="Register|frmRegister,P
 	property name="verifyPassword" persistent="false" vtRules='<rules>
 			<rule type="required" />
 			<rule type="equalTo">
-				<param ComparePropertyName="UserPass" />
+				<param name="ComparePropertyName" value="UserPass" />
 			</rule>
 		</rules>';
 	
