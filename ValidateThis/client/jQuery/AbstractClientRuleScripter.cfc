@@ -27,23 +27,6 @@
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
-		<cfargument name="valType" type="string" required="true">
-		<cfargument name="defaultFailureMessage" type="string" required="false" default="">
-		<cfset theScript="">
-		<!--- 
-		<cfsavecontent variable="theCondition">
-				function(value,element,options) { 
-					return true; 
-				}
-		</cfsavecontent>
-		<cfsavecontent variable="theScript">
-			$.validator.addMethod("#valType#", #theCondition#, "#arguments.customMessage#");
-		</cfsavecontent> 
-		--->
-		<cfreturn theScript/>
-	</cffunction>
-	
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
