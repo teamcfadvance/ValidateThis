@@ -358,5 +358,16 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="noHTMLValidationGeneratesCorrectScript" access="public" returntype="void">
+		<cfscript>
+			/* not implemented yet
+			valStruct.ValType = "noHTML";
+			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			debug(script);
+			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{email: true});}",Script);
+			*/
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>
 
