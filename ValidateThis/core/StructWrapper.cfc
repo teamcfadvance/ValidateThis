@@ -40,6 +40,24 @@
 		<cfreturn Evaluate(arguments.Condition)>
 
 	</cffunction>
+	
+	<cffunction name="onMissingMethod" access="public" output="false" returntype="Any" hint="An abstract getter">
+		<cfargument name="missingMethodName" type="any" required="true" />
+		<cfargument name="missingMethodArguments" type="any" required="true" />
+
+		<cfset var propertyName = arguments.missingMethodName>
+		
+		<cfif left(arguments.missingMethodName,3) eq "get">
+			<cfset propertyName = right(arguments.missingMethodName,(len(arguments.missingMethodName)-len("get")))>
+		</cfif>
+				
+		<cfif structKeyExists(variables.theStruct,propertyName)>
+			<cfreturn getValue(propertyName) />
+		<cfelse>
+			<cfreturn "" />
+		</cfif>
+
+	</cffunction>
 
 </cfcomponent>
 	

@@ -93,7 +93,7 @@
 		<cfset variables.instance.PropertyDesc = arguments.PropertyDesc />
 	</cffunction>
 
-	<cffunction name="setParameters" returntype="void" access="private" output="false">
+	<cffunction name="setParameters" returntype="void" access="public" output="false">
 		<cfargument name="Parameters" type="any" required="true" />
 		<cfset variables.instance.Parameters = arguments.Parameters />
 	</cffunction>
@@ -101,7 +101,7 @@
 		<cfreturn variables.instance.Parameters />
 	</cffunction>
 
-	<cffunction name="setCondition" returntype="void" access="private" output="false">
+	<cffunction name="setCondition" returntype="void" access="public" output="false">
 		<cfargument name="Condition" type="any" required="true" />
 		<cfset variables.instance.Condition = arguments.Condition />
 	</cffunction>
