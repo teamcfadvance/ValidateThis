@@ -24,10 +24,9 @@ See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 <cfcomponent extends="AbstractClientRuleScripter" hint="Fails if the validated property contains the value of another property">
 	
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
-		<cfargument name="defaultMessage" type="string" required="false" default="value cannot contain any HTML tags.">
+		<cfargument name="defaultMessage" type="string" required="false" default="The value cannot not contain the value of another property.">
 		<cfset var theScript="">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
-		
 		
 		<cfsavecontent variable="theCondition">
 		function(value,element,options) {
@@ -56,7 +55,7 @@ See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 			
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		jQuery.validator.addMethod("UniqueValue", #theCondition#, jQuery.format("#arguments.defaultMessage#"));
+		jQuery.validator.addMethod("DoesNotContainOtherValues", #theCondition#, jQuery.format("#arguments.defaultMessage#"));
 		</cfsavecontent>
 		</cfoutput>
 		
