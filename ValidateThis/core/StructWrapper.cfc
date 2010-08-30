@@ -21,14 +21,14 @@
 
 	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
 		<cfargument name="theStruct" type="struct" required="yes" hint="The struct to be wrapped" />
-		<cfset variables.theStruct = arguments.theStruct />
+		<cfset structAppend(variables,arguments.theStruct,true) />
 	</cffunction>
 
 	<cffunction name="getValue" access="public" output="false" returntype="Any" hint="An abstract getter">
 		<cfargument name="propertyName" type="any" required="true" />
 		
-		<cfif structKeyExists(variables.theStruct,arguments.propertyName)>
-			<cfreturn variables.theStruct[arguments.propertyName] />
+		<cfif structKeyExists(variables,arguments.propertyName)>
+			<cfreturn variables[arguments.propertyName] />
 		<cfelse>
 			<cfreturn "" />
 		</cfif>

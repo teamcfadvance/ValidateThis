@@ -2,7 +2,7 @@
 <validateThis xsi:noNamespaceSchemaLocation="validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<conditions>
 		<condition name="MustLikeSomething" 
-			serverTest="theStruct.LikeCheese EQ 0 AND theStruct.LikeChocolate EQ 0"
+			serverTest="LikeCheese EQ 0 AND LikeChocolate EQ 0"
 			clientTest="$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;" />
 	</conditions>
 	<contexts>
@@ -19,6 +19,9 @@
 			<rule type="rangelength" contexts="*">
 				<param name="minlength" value="5" />
 				<param name="maxlength" value="10" />
+			</rule>
+			<rule type="expression" contexts="*" failureMessage="The password must be between 5 and 10 characters long (expression).">
+				<param name="expression" value="len(UserPass) GE 5 and len(UserPass) LE 10" />
 			</rule>
 		</property>
 		<property name="VerifyPassword" desc="Verify Password">

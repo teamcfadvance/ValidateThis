@@ -26,6 +26,9 @@
 				<param name="minlength" value="5" />
 				<param name="maxlength" value="10" />
 			</rule>
+			<rule type="expression" contexts="*" failureMessage="The password must be between 5 and 10 characters long (expression).">
+				<param name="expression" value="len(getUserPass()) GE 5 and len(getUserPass()) LE 10" />
+			</rule>
 		</property>
 		<property name="VerifyPassword">
 			<rule type="required" contexts="*" />
