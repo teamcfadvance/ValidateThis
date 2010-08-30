@@ -88,7 +88,20 @@
 		</cfloop>
 		<cfreturn parameters />
 	</cffunction>
->
+
+	<cffunction name="addParameter" access="public" output="false" returntype="void">
+		<cfargument name="name" type="string" required="true" />
+		<cfargument name="value" type="any" required="true" />
+		<cfargument name="type" type="string" required="false" default="value" />
+		
+		<cfset variables.instance.Parameters[arguments.name] = {value=arguments.value,type=arguments.type} />
+		
+	</cffunction>
+
+	<cffunction name="hasObject" access="public" output="false" returntype="boolean">
+		<cfreturn structKeyExists(variables,"theObject") />		
+	</cffunction>
+
 	<cffunction name="getMemento" access="public" output="false" returntype="any">
 		<cfreturn variables.instance />
 	</cffunction>

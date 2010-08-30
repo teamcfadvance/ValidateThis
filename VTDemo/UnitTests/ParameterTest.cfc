@@ -52,17 +52,17 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="ParameterWithExpressionTypeAndValidationShouldReturnCorrectValueFromObjectContext" access="public" returntype="void">
+	<cffunction name="ParameterWithExpressionTypeAndObjectShouldReturnCorrectValueFromObjectContext" access="public" returntype="void">
 		<cfscript>
+			validation.setup(obj);
 			paramStruct = {value="getMetadata(this).name",type="expression"};
 			parameter.load(paramStruct);
 			assertEquals("unittests.fixture.aplaincfc_fixture",parameter.getValue());
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="ParameterWithExpressionTypeAndNoValidationShouldReturnCorrectValueFromParameterContext" access="public" returntype="void">
+	<cffunction name="ParameterWithExpressionTypeAndNoObjectShouldReturnCorrectValueFromParameterContext" access="public" returntype="void">
 		<cfscript>
-			parameter = createObject("component","ValidateThis.core.Parameter").init();
 			paramStruct = {value="getMetadata(this).name",type="expression"};
 			parameter.load(paramStruct);
 			assertEquals("validatethis.core.parameter",parameter.getValue());
@@ -71,15 +71,15 @@
 
 	<cffunction name="ParameterWithPropertyTypeShouldReturnCorrectValue" access="public" returntype="void">
 		<cfscript>
+			validation.setup(obj);
 			paramStruct = {value="FirstName",type="property"};
 			parameter.load(paramStruct);
 			assertEquals("Bob",parameter.getValue());
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="ParameterWithPropertyTypeAndNoValidationShouldThrow" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.Parameter.NoValidationLoaded">
+	<cffunction name="ParameterWithPropertyTypeAndNoObjectShouldThrow" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.Parameter.NoValidationLoaded">
 		<cfscript>
-			parameter = createObject("component","ValidateThis.core.Parameter").init();
 			paramStruct = {value="FirstName",type="property"};
 			parameter.load(paramStruct);
 			assertEquals("Bob",parameter.getValue());
@@ -96,7 +96,6 @@
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
 			validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			validation.setup(obj);
 			validation.load(valStruct);
 			return validation;
 		</cfscript>  

@@ -253,6 +253,74 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="addParameterAddsANewValueParameter" access="public" returntype="void">
+		<cfscript>
+			objectChecker = mock();
+			objectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
+			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.load(valStruct);
+			validation.addParameter(name="Param3",value="3*3");
+			parameters = validation.getParameters();
+			assertEquals(3,structCount(parameters));
+			assertEquals("3*3",parameters.Param3);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="addParameterAddsANewExpressionParameter" access="public" returntype="void">
+		<cfscript>
+			objectChecker = mock();
+			objectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
+			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.load(valStruct);
+			validation.addParameter(name="Param3",value="3*3",type="Expression");
+			parameters = validation.getParameters();
+			assertEquals(3,structCount(parameters));
+			assertEquals(9,parameters.Param3);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="addParameterReplacesAnExistingValueParameter" access="public" returntype="void">
+		<cfscript>
+			objectChecker = mock();
+			objectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
+			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.load(valStruct);
+			validation.addParameter(name="Param1",value="3*3");
+			parameters = validation.getParameters();
+			assertEquals(2,structCount(parameters));
+			assertEquals("3*3",parameters.Param1);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="addParameterReplacesAnExistingExpressionParameter" access="public" returntype="void">
+		<cfscript>
+			objectChecker = mock();
+			objectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
+			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.load(valStruct);
+			validation.addParameter(name="Param2",value="3*3",type="Expression");
+			parameters = validation.getParameters();
+			assertEquals(2,structCount(parameters));
+			assertEquals(9,parameters.Param2);
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">
 		<cfargument name="expression" type="any" required="false" default="1" />
 		
