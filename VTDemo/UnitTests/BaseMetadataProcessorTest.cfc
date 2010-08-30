@@ -21,15 +21,17 @@
 			baseMetadataProcessor = CreateObject("component","ValidateThis.core.BaseMetadataProcessor").init();
 			makePublic(baseMetadataProcessor,"processPropertyRules");
 			injectMethod(baseMetadataProcessor, this, "getVariables", "getVariables");
-			extractParamTypeData = [{foo=1,type=1,another_attribute=1},{type=1,foo=1,another_attribute=1},{another_attribute=1,foo=1,type=1},{another_attribute=1,type=1,foo=1}];
-		</cfscript>  
+		</cfscript>
+		<cfsavecontent variable="jsonMetadata">
+			<cfinclude template="/VTDemo/AnnotationDemo/model/json/user.json" />
+		</cfsavecontent>
 	</cffunction>
 
 	<cffunction name="getVariables" access="public" output="false" returntype="any" hint="Used to retrieve the ATRs for testing.">
 		<cfreturn variables />
 	</cffunction>
 
-	<cffunction name="processPropertyRulesShouldPickupEvaluateAttribute" access="public" returntype="void">
+	<cffunction name="processPropertyRulesShouldPickupTypeAttribute" access="public" returntype="void">
 		<cfscript>
 			properties = [{name="theName",rules=[{type="required",params=[{name="min",value=5,type="expression"},{name="max",value=10,type="value"}]}]}];
 			baseMetadataProcessor.processPropertyRules(properties);
