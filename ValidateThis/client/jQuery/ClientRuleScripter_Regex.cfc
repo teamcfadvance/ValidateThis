@@ -15,6 +15,25 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_Regex" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the regex validation.">
 
+
+	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
+		<cfargument name="defaultMessage" type="string" required="false" default="The value entered does not match the specified pattern ({0})">
+		<cfset theScript="">
+
+		<cfsavecontent variable="theCondition">function(value, element, param) {
+			var re = param;
+			return this.optional(element) || re.test(value);
+		}</cfsavecontent>
+
+		<cfoutput>
+		<cfsavecontent variable="theScript">
+		jQuery.validator.addMethod("regex", #theCondition#, jQuery.format("#arguments.defaultMessage#"));
+		</cfsavecontent>
+		</cfoutput>
+
+		<cfreturn theScript/>
+	</cffunction>
+	
 	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfset var theRegex = "" />
@@ -33,5 +52,3 @@
 	</cffunction>
 
 </cfcomponent>
-
-

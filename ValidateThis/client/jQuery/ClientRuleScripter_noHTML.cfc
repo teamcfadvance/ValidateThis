@@ -16,13 +16,34 @@
 
 <cfcomponent output="false" name="ClientRuleScripter_noHTML" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the noHTML validation.">
 
+	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
+		<cfargument name="defaultMessage" type="string" required="false" default="value cannot contain any HTML tags.">
+		<cfset var theScript="">
+		<cfset var theCondition="function(value,element,options) { return true; }"/>
+		
+		
+		<cfsavecontent variable="theCondition">function(value,element,options) {
+			var m = value.search("</?\\w+((\\s+\\w+(\\s*=\\s*(?:\\\".*?\\\"|'.*?'|[^'\\\">\\s]+))?)+\\s*|\\s*)/?>");
+			if (m == -1) return true;
+			else return false;
+		}</cfsavecontent>
+			
+		<cfoutput>
+		<cfsavecontent variable="theScript">
+		jQuery.validator.addMethod("noHTML", #theCondition#, jQuery.format("#arguments.defaultMessage#"));
+		</cfsavecontent>
+		</cfoutput>
+		
+		<cfreturn theScript/>
+	</cffunction>
+
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="defaultFailureMessagePrefix" type="Any" required="yes" />
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
-		
+
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var fieldName = safeFormName & arguments.validation.ClientFieldName />
@@ -35,19 +56,14 @@
 				<cfset arguments.customMessage = "#arguments.validation.propertyName# cannot contain HTML tags."/>
 			</cfif>
 
-			<cfsavecontent variable="theCondition">
-				function(value,element,options) {
-					var m = value.search("</?\\w+((\\s+\\w+(\\s*=\\s*(?:\\\".*?\\\"|'.*?'|[^'\\\">\\s]+))?)+\\s*|\\s*)/?>");
-					if (m == -1) { return true } else {return false };
-				}
-			</cfsavecontent>
-
 			<cfoutput>
-				<cfsavecontent variable="theScript">
-					$.validator.addMethod("#valType#", #theCondition#, "#arguments.customMessage#");
-					#fieldSelector#.rules("add", {
-						 #valType# : true
-					});
+			<cfsavecontent variable="theScript">
+			#fieldSelector#.rules("add", {
+				#valType# : true,
+				messages: {
+					#valType#: "#arguments.customMessage#"
+				} 
+			});
 			</cfsavecontent>
 			</cfoutput>
 

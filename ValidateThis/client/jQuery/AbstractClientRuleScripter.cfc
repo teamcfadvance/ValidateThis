@@ -14,7 +14,9 @@
 	
 --->
 <cfcomponent output="false" name="AbstractClientRuleScripter" hint="I am a base object which all concrete ClientRuleScripters extend.">
-
+	
+	<cfproperty name="defaultFailureMessage" type="string" default=""/>
+	
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
 		<cfargument name="Translator" type="Any" required="yes" />
 		<cfargument name="getSafeFormName" type="Any" required="yes" />
@@ -29,22 +31,15 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
-
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var theScript = "if ($form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"").length) { " />
-
 		<cfset var customMessage = "" />
-		
 		<cfif StructKeyExists(arguments.validation,"failureMessage")>
 			<cfset customMessage = arguments.validation.failureMessage />
 		</cfif>
-
 		<cfset theScript &= generateRuleScript(argumentCollection=arguments,customMessage=customMessage,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix) />
-
 		<cfset theScript &= "}" />
-
 		<cfreturn theScript />
-		
 	</cffunction>
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">

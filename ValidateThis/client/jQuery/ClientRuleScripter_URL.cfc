@@ -13,7 +13,7 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ClientRuleScripter_URL" extends="validatethis.client.jQuery.AbstractClientRuleScripter" hint="I am responsible for generating JS code for the URL validation.">
+<cfcomponent output="false" name="ClientRuleScripter_URL" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the URL validation.">
 	
 </cfcomponent>
 
