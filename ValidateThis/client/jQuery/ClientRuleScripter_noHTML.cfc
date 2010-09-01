@@ -46,14 +46,14 @@
 
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-		<cfset var fieldName = safeFormName & arguments.validation.ClientFieldName />
-		<cfset var valType = arguments.validation.ValType />		
-		<cfset var params = arguments.validation.Parameters/>
-		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"")" />
+		<cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
+		<cfset var valType = arguments.validation.getValType() />		
+		<cfset var params = arguments.validation.getParameters()/>
+		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 
 			<cfif len(arguments.customMessage) eq 0>
-				<cfset arguments.customMessage = "#arguments.validation.propertyName# cannot contain HTML tags."/>
+				<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# cannot contain HTML tags."/>
 			</cfif>
 
 			<cfoutput>

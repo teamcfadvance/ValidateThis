@@ -72,15 +72,15 @@ See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-		<cfset var fieldName = safeFormName & arguments.validation.ClientFieldName />
-		<cfset var valType = arguments.validation.ValType />		
-		<cfset var params = arguments.validation.Parameters/>
-		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.ClientFieldName#']"")" />
+		<cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
+		<cfset var valType = arguments.validation.getValType() />		
+		<cfset var params = arguments.validation.getParameters()/>
+		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 
 		<cfset var messageScript = "" />
 		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "#arguments.validation.propertyDesc# must not contain the values of properties named: #params.propertyNames#."/>
+			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#."/>
 		</cfif>
 		<cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
 
