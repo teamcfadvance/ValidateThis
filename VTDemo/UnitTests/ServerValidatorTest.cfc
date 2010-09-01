@@ -51,7 +51,8 @@
 				user.setLikeCheese(1);
 				user.setUserGroup("Something");
 			}
-			BOValidator = validationFactory.getValidator("User",getDirectoryFromPath(getMetadata(user).path),user);
+			injectMethod(user, this, "evaluateExpression", "evaluateExpression");
+			BOValidator = validationFactory.getValidator("User",getDirectoryFromPath(getMetadata(user).path));
 			return user;
 		</cfscript>
 	</cffunction>
@@ -59,7 +60,7 @@
 	<cffunction name="setupCustomRuleTester" access="private" returntype="void">
 		<cfscript>
 			customRuleTester = createObject("component","VTDemo.UnitTests.Fixture.CustomRuleTester").init();
-			BOValidator = validationFactory.getValidator("CustomRuleTester",getDirectoryFromPath(getMetadata(customRuleTester).path),customRuleTester);
+			BOValidator = validationFactory.getValidator("CustomRuleTester",getDirectoryFromPath(getMetadata(customRuleTester).path));
 		</cfscript>  
 	</cffunction>
 
@@ -259,10 +260,60 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="DependentPropertyAsExpressionWithoutValueShouldWorkAsExpected" access="public" returntype="void">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			BOValidator = validationFactory.getValidator("User_Expression",getDirectoryFromPath(getMetadata(user).path));
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",Result);
+			AssertTrue(Result.getIsSuccess());
+			user.setFirstName("");
+			user.setLastName("");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",Result);
+			AssertTrue(Result.getIsSuccess());
+			user.setFirstName("Bob");
+			user.setLastName("");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",Result);
+			AssertFalse(Result.getIsSuccess());
+			Failures = Result.getFailures();
+			Failure = Failures[1];
+			assertEquals("required",Failure.Type);
+			assertEquals("LastName",Failure.PropertyName);
+			assertEquals("The Last Name is required if you specify a value for the First Name.",Failure.Message);
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="DependentPropertyWithValueShouldWorkAsExpected" access="public" returntype="void">
 		<cfscript>
 			createServerValidator();
 			user = setUpUser();
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
+			AssertTrue(Result.getIsSuccess());
+			user.setAllowCommunication(1);
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
+			AssertFalse(Result.getIsSuccess());
+			Failures = Result.getFailures();
+			Failure = Failures[1];
+			assertEquals(Failure.Type,"required");
+			assertEquals(Failure.PropertyName,"CommunicationMethod");
+			assertEquals(Failure.Message,"If you are allowing communication, you must choose a communication method.");
+			user.setCommunicationMethod("Email");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Profile",Result);
+			AssertTrue(Result.getIsSuccess());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="DependentPropertyAsExpressionWithValueShouldWorkAsExpected" access="public" returntype="void">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			BOValidator = validationFactory.getValidator("User_Expression",getDirectoryFromPath(getMetadata(user).path));
 			result = validationFactory.newResult();
 			serverValidator.validate(BOValidator,user,"Profile",Result);
 			AssertTrue(Result.getIsSuccess());
@@ -400,6 +451,13 @@
 			failureMessage = serverValidator.determineFailureMessage(v,theVal);
 			assertEquals(customMessage,failureMessage);
 		</cfscript>
+	</cffunction>
+
+	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">
+		<cfargument name="expression" type="any" required="false" default="1" />
+		
+		<cfreturn Evaluate(arguments.expression)>
+
 	</cffunction>
 
 </cfcomponent>

@@ -57,8 +57,8 @@
 				Validation = Rules[i];
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "LastName") {
 					assertEquals(Validation.PropertyDesc,"Last Name");
-					assertEquals(Validation.Parameters.DependentPropertyName,"FirstName");
-					assertEquals(Validation.Parameters.DependentPropertyDesc,"First Name");
+					assertEquals(Validation.Parameters.DependentPropertyName.value,"FirstName");
+					assertEquals(Validation.Parameters.DependentPropertyDesc.value,"First Name");
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserName") {
 					assertEquals(Validation.PropertyDesc,"Email Address");
@@ -69,30 +69,30 @@
 				}
 				if (Validation.ValType eq "custom" and Validation.PropertyName eq "Nickname") {
 					assertEquals(Validation.PropertyDesc,"Nickname");
-					assertEquals(Validation.Parameters.MethodName,"CheckDupNickname");
+					assertEquals(Validation.Parameters.MethodName.value,"CheckDupNickname");
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserPass") {
 					assertEquals(Validation.PropertyDesc,"Password");
 				}
 				if (Validation.ValType eq "rangelength" and Validation.PropertyName eq "UserPass") {
 					assertEquals(Validation.PropertyDesc,"Password");
-					assertEquals(Validation.Parameters.MinLength,5);
-					assertEquals(Validation.Parameters.MaxLength,10);
+					assertEquals(Validation.Parameters.MinLength.value,5);
+					assertEquals(Validation.Parameters.MaxLength.value,10);
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "VerifyPassword") {
 					assertEquals(Validation.PropertyDesc,"Verify Password");
 				}
 				if (Validation.ValType eq "equalTo" and Validation.PropertyName eq "VerifyPassword") {
 					assertEquals(Validation.PropertyDesc,"Verify Password");
-					assertEquals(Validation.Parameters.ComparePropertyName,"UserPass");
-					assertEquals(Validation.Parameters.ComparePropertyDesc,"Password");
+					assertEquals(Validation.Parameters.ComparePropertyName.value,"UserPass");
+					assertEquals(Validation.Parameters.ComparePropertyDesc.value,"Password");
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserGroup") {
 					assertEquals(Validation.PropertyDesc,"User Group");
 				}
 				if (Validation.ValType eq "regex" and Validation.PropertyName eq "Salutation") {
 					assertEquals(Validation.PropertyDesc,"Salutation");
-					assertEquals(Validation.Parameters.Regex,"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$");
+					assertEquals(Validation.Parameters.Regex.value,"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$");
 					assertEquals(Validation.FailureMessage,"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.");
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "LikeOther") {
@@ -106,9 +106,9 @@
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "CommunicationMethod") {
 					assertEquals(Validation.PropertyDesc,"Communication Method");
-					assertEquals(Validation.Parameters.DependentPropertyDesc,"Allow Communication");
-					assertEquals(Validation.Parameters.DependentPropertyName,"AllowCommunication");
-					assertEquals(Validation.Parameters.DependentPropertyValue,1);
+					assertEquals(Validation.Parameters.DependentPropertyDesc.value,"Allow Communication");
+					assertEquals(Validation.Parameters.DependentPropertyName.value,"AllowCommunication");
+					assertEquals(Validation.Parameters.DependentPropertyValue.value,1);
 				}
 			}
 			Rules = Validations.Contexts.Profile;
@@ -133,30 +133,30 @@
 				}
 				if (Validation.ValType eq "custom" and Validation.PropertyName eq "Nickname") {
 					assertEquals(Validation.PropertyDesc,"Nickname");
-					assertEquals(Validation.Parameters.MethodName,"CheckDupNickname");
+					assertEquals(Validation.Parameters.MethodName.value,"CheckDupNickname");
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserPass") {
 					assertEquals(Validation.PropertyDesc,"Password");
 				}
 				if (Validation.ValType eq "rangelength" and Validation.PropertyName eq "UserPass") {
 					assertEquals(Validation.PropertyDesc,"Password");
-					assertEquals(Validation.Parameters.MinLength,5);
-					assertEquals(Validation.Parameters.MaxLength,10);
+					assertEquals(Validation.Parameters.MinLength.value,5);
+					assertEquals(Validation.Parameters.MaxLength.value,10);
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "VerifyPassword") {
 					assertEquals(Validation.PropertyDesc,"Verify Password");
 				}
 				if (Validation.ValType eq "equalTo" and Validation.PropertyName eq "VerifyPassword") {
 					assertEquals(Validation.PropertyDesc,"Verify Password");
-					assertEquals(Validation.Parameters.ComparePropertyName,"UserPass");
-					assertEquals(Validation.Parameters.ComparePropertyDesc,"Password");
+					assertEquals(Validation.Parameters.ComparePropertyName.value,"UserPass");
+					assertEquals(Validation.Parameters.ComparePropertyDesc.value,"Password");
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserGroup") {
 					assertEquals(Validation.PropertyDesc,"User Group");
 				}
 				if (Validation.ValType eq "regex" and Validation.PropertyName eq "Salutation") {
 					assertEquals(Validation.PropertyDesc,"Salutation");
-					assertEquals(Validation.Parameters.Regex,"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$");
+					assertEquals(Validation.Parameters.Regex.value,"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$");
 					assertEquals(Validation.FailureMessage,"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.");
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "LikeOther") {
@@ -170,9 +170,9 @@
 				}
 				if (Validation.ValType eq "required" and Validation.PropertyName eq "CommunicationMethod") {
 					assertEquals(Validation.PropertyDesc,"Communication Method");
-					assertEquals(Validation.Parameters.DependentPropertyDesc,"Allow Communication");
-					assertEquals(Validation.Parameters.DependentPropertyName,"AllowCommunication");
-					assertEquals(Validation.Parameters.DependentPropertyValue,1);
+					assertEquals(Validation.Parameters.DependentPropertyDesc.value,"Allow Communication");
+					assertEquals(Validation.Parameters.DependentPropertyName.value,"AllowCommunication");
+					assertEquals(Validation.Parameters.DependentPropertyValue.value,1);
 				}
 			}
 		</cfscript>  

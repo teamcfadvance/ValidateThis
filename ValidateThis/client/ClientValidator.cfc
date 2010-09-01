@@ -19,6 +19,7 @@
 		<cfargument name="childObjectFactory" type="any" required="true" />
 		<cfargument name="translator" type="any" required="true" />
 		<cfargument name="fileSystem" type="any" required="true" />
+		<cfargument name="transientFactory" type="any" required="true" />
 		<cfargument name="JSRoot" type="string" required="true" />
 		<cfargument name="extraClientScriptWriterComponentPaths" type="string" required="true" />
 		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
@@ -26,6 +27,7 @@
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.translator = arguments.translator />
 		<cfset variables.fileSystem = arguments.fileSystem />
+		<cfset variables.transientFactory = arguments.TransientFactory />
 		<cfset variables.JSRoot = arguments.JSRoot />
 		<cfset variables.extraClientScriptWriterComponentPaths = arguments.extraClientScriptWriterComponentPaths />
 		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
@@ -43,16 +45,16 @@
 		<cfset var validation = "" />
 		<cfset var theScript = "" />
 		<cfset var theScriptWriter = variables.ScriptWriters[arguments.JSLib] />
+		<cfset var theVal = variables.TransientFactory.newValidation() />
 
 		<cfsetting enableCFoutputOnly = "true">
 		
 		<cfif IsArray(arguments.Validations) and ArrayLen(arguments.Validations)>
-			<!--- Loop through the validations array, generating the JS validation statements --->
 			<cfsavecontent variable="theScript">
 				<cfoutput>#Trim(theScriptWriter.generateScriptHeader(arguments.formName))#</cfoutput>
 				<cfloop Array="#arguments.Validations#" index="validation">
-					<!--- Generate the JS validation statements  --->
-					<cfoutput>#Trim(theScriptWriter.generateValidationScript(validation,arguments.formName,arguments.locale))#</cfoutput>
+					<cfset theVal.load(validation) />
+					<cfoutput>#Trim(theScriptWriter.generateValidationScript(theVal,arguments.formName,arguments.locale))#</cfoutput>
 				</cfloop>
 				<cfoutput>#Trim(theScriptWriter.generateScriptFooter())#</cfoutput>
 			</cfsavecontent>

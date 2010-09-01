@@ -22,11 +22,11 @@
 	</cffunction>
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfset var theScript = "objForm#arguments.formName#.#arguments.validation.clientFieldName#.description = '#JSStringFormat(arguments.validation.PropertyDesc)#';" />
+		<cfset var theScript = "objForm#arguments.formName#.#arguments.validation.getclientFieldName()#.description = '#JSStringFormat(arguments.validation.getPropertyDesc())#';" />
 		<cfset theScript = theScript & generateSpecificValidationScript(argumentCollection=arguments) />
 		<cfreturn theScript />
 		

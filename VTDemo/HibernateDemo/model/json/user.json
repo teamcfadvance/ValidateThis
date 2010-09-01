@@ -22,8 +22,8 @@
 	             "rules" : [
 	                 {"type":"custom","failureMessage":"That Nickname is already taken. Please try another",
 	                    "params":[
-	                        {"methodName":"CheckDupNickname"},
-	                        {"remoteURL":"CheckDupNickname.cfm"}
+	                        {"name":"methodName","value":"CheckDupNickname"},
+	                        {"name":"remoteURL","value":"CheckDupNickname.cfm"}
 	                    ]
 	                 }
 	             ]
@@ -33,8 +33,8 @@
 	             {"type":"required","contexts":"*"},
 	             {"type":"rangelength","contexts":"*",
 	                 "params" : [
-	                     {"minlength":"5"},
-	                     {"maxlength":"10"}
+	                     {"name":"minlength","value":"5"},
+	                     {"name":"maxlength","value":"10"}
 	                 ]
 	             }
 	            ]
@@ -44,7 +44,7 @@
 	              {"type":"required","contexts":"*"},
 	              {"type":"equalTo","contexts":"*",
 	                  "params" : [
-	                      {"ComparePropertyName":"UserPass"}
+	                      {"name":"ComparePropertyName","value":"UserPass"}
 	                  ]
 	              }
 	          ]
@@ -59,7 +59,7 @@
 	              {"type":"required","contexts":"Profile"},
 	              {"type":"regex","contexts":"*","failureMessage":"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.",
 	                "params" : [
-	                   {"Regex":"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\\.)?$"}
+	                   {"name":"Regex","value":"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\\.)?$"}
 	                ]
 	              }
 	          ]
@@ -74,7 +74,7 @@
 	                {"type":"required","contexts":"Profile"},
 	                {"type":"required","contexts":"Register",
 	                    "params" : [
-	                       {"DependentPropertyName":"FirstName"}
+	                       {"name":"DependentPropertyName","value":"FirstName"}
 	                    ]
 	                }
 	            ]
@@ -94,8 +94,8 @@
 	            "rules" : [
 	               {"type":"required","contexts":"*","failureMessage":"if you are allowing communication, you must choose a method",
 	                   "params" : [
-	                       {"DependentPropertyName":"AllowCommunication"},
-	                       {"DependentPropertyValue":"1"}
+	                       {"name":"DependentPropertyName","value":"AllowCommunication"},
+	                       {"name":"DependentPropertyValue","value":"1"}
 	                   ]
 	               }
 	            ]

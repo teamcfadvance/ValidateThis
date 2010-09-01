@@ -13,17 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>http://vtdemo/BODemo/index.cfm?init=true</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTitle</td>
-	<td>ValidateThis Demo Page</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Turn off JS Validations</td>
+	<td>http://vtdemo/BODemo/index.cfm?init=true&amp;noJS=true</td>
 	<td></td>
 </tr>
 <tr>
@@ -49,7 +39,7 @@
 <tr>
 	<td>assertText</td>
 	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
-	<td>The Password is required.<br />The Password must be between 5 and 10 characters long.</td>
+	<td>The Password is required.<br />The Password must be between 5 and 10 characters long.<br />The password must be between 5 and 10 characters long (expression).</td>
 </tr>
 <tr>
 	<td>assertText</td>
@@ -129,7 +119,7 @@
 <tr>
 	<td>assertText</td>
 	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
-	<td>The Password must be between 5 and 10 characters long.</td>
+	<td>The Password must be between 5 and 10 characters long.<br />The password must be between 5 and 10 characters long (expression).</td>
 </tr>
 <tr>
 	<td>assertText</td>

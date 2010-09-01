@@ -2,7 +2,7 @@
 <validateThis xsi:noNamespaceSchemaLocation="validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<conditions>
 		<condition name="MustLikeSomething" 
-			serverTest="theStruct.LikeCheese EQ 0 AND theStruct.LikeChocolate EQ 0"
+			serverTest="LikeCheese EQ 0 AND LikeChocolate EQ 0"
 			clientTest="$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;" />
 	</conditions>
 	<contexts>
@@ -17,14 +17,17 @@
 		<property name="UserPass" desc="Password">
 			<rule type="required" contexts="*" />
 			<rule type="rangelength" contexts="*">
-				<param minlength="5" />
-				<param maxlength="10" />
+				<param name="minlength" value="5" />
+				<param name="maxlength" value="10" />
+			</rule>
+			<rule type="expression" contexts="*" failureMessage="The password must be between 5 and 10 characters long (expression).">
+				<param name="expression" value="len(UserPass) GE 5 and len(UserPass) LE 10" />
 			</rule>
 		</property>
 		<property name="VerifyPassword" desc="Verify Password">
 			<rule type="required" contexts="*" />
 			<rule type="equalTo" contexts="*">
-				<param ComparePropertyName="UserPass" />
+				<param name="ComparePropertyName" value="UserPass" />
 			</rule>
 		</property>
 		<property name="UserGroupId" desc="User Group" clientfieldname="UserGroupId">
@@ -34,7 +37,7 @@
 			<rule type="required" contexts="Profile" />
 			<rule type="regex" contexts="*"
 				failureMessage="Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.">
-				<param Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
+				<param name="Regex" value="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
 			</rule>
 		</property>
 		<property name="FirstName" desc="First Name">
@@ -43,7 +46,7 @@
 		<property name="LastName" desc="Last Name">
 			<rule type="required" contexts="Profile" />
 			<rule type="required" contexts="Register">
-				<param DependentPropertyName="FirstName" />
+				<param name="DependentPropertyName" value="FirstName" />
 			</rule>
 		</property>
 		<property name="LikeOther" desc="What do you like?">
@@ -58,8 +61,8 @@
 		<property name="CommunicationMethod" desc="Communication Method">
 			<rule type="required" contexts="*"
 				failureMessage="If you are allowing communication, you must choose a communication method.">
-				<param DependentPropertyName="AllowCommunication" />
-				<param DependentPropertyValue="1" />
+				<param name="DependentPropertyName" value="AllowCommunication" />
+				<param name="DependentPropertyValue" value="1" />
 			</rule>
 		</property>
 	</objectProperties>

@@ -77,7 +77,7 @@
 		<cfset var BOValidator = getValidator(arguments.objectType) />
 		
 		<cfset arguments.theObject = createWrapper(arguments.theObject)/>
-		
+
 		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result) />
 		
 		<cfreturn arguments.Result />
@@ -140,6 +140,13 @@
 		<cfargument name="Condition" type="any" required="true" />
 		
 		<cfreturn Evaluate(arguments.Condition)>
+
+	</cffunction>
+
+	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">
+		<cfargument name="expression" type="any" required="true" />
+		
+		<cfreturn Evaluate(arguments.expression)>
 
 	</cffunction>
 

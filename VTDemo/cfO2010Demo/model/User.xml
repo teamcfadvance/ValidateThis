@@ -15,20 +15,20 @@
 		<property name="UserPass" desc="Password">
 			<rule type="required" />
 			<rule type="rangelength">
-				<param minlength="5" />
-				<param maxlength="10" />
+				<param name="minlength" value="5" />
+				<param name="maxlength" value="10" />
 			</rule>
 		</property>
 <property name="LastName">
 			<rule type="required">
-				<param DependentPropertyName="FirstName" />
+				<param name="DependentPropertyName" value="FirstName" />
 			</rule>
 		</property>
 <property name="CommunicationMethod" desc="Communication Method">
 			<rule type="required"
 				failureMessage="If you are allowing communication, you must choose a communication method.">
-				<param DependentPropertyName="AllowCommunication" />
-				<param DependentPropertyValue="1" />
+				<param name="DependentPropertyName" value="AllowCommunication" />
+				<param name="DependentPropertyValue" value="1" />
 			</rule>
 		</property>
 <property name="LikeOther" desc="What do you like?">
@@ -38,8 +38,8 @@
 		</property>
 		<property name="Nickname">
         			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname.">
-        				<param methodname="CheckDupNickname" />
-        				<param remoteURL="CheckDupNickname.cfm" />
+        				<param name="methodname" value="CheckDupNickname" />
+        				<param name="remoteURL" value="CheckDupNickname.cfm" />
         			</rule>
         		</property>
         

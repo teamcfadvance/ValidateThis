@@ -22,12 +22,12 @@
 			super.setup();
 			SRV = getSRV("Regex");
 			parameters = {Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
+			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForValidRegex" access="public" returntype="void">
 		<cfscript>
-			validation.getParameters().returns(parameters);
 			validation.getObjectValue().returns("Mr.");
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -36,7 +36,6 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidRegex" access="public" returntype="void">
 		<cfscript>
-			validation.getParameters().returns(parameters);
 			validation.getObjectValue().returns(1);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -45,6 +44,8 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidRegexWithServerRegexParameter" access="public" returntype="void">
 		<cfscript>
+			super.setup();
+			SRV = getSRV("Regex");
 			parameters = {ServerRegex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
 			validation.getParameters().returns(parameters);
 			validation.getObjectValue().returns(1);
@@ -53,24 +54,4 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
-		<cfscript>
-			validation.getParameters().returns(parameters);
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(false);
-			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
-	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
-		<cfscript>
-			validation.getParameters().returns(parameters);
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
-			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
 </cfcomponent>

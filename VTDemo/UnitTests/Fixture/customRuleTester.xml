@@ -3,7 +3,7 @@
 	<objectProperties>
 		<property name="a">
 			<rule type="custom" failuremessage="The message in the xml file.">
-				<param methodname="customMethod" />
+				<param name="methodname" value="customMethod" />
 			</rule>
 		</property>
 	</objectProperties>

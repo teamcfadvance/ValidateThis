@@ -37,18 +37,20 @@
 	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfset var theRegex = "" />
+		<cfset var parameters = arguments.validation.getParameters() />
 
-		<cfif StructKeyExists(arguments.validation.Parameters,"ServerRegex")>
-			<cfset theRegex = arguments.validation.Parameters.ServerRegex />
-		<cfelseif StructKeyExists(arguments.validation.Parameters,"Regex")>
-			<cfset theRegex = arguments.validation.Parameters.Regex />
+		<cfif StructKeyExists(parameters,"ServerRegex")>
+			<cfset theRegex = parameters.ServerRegex />
+		<cfelseif StructKeyExists(parameters,"Regex")>
+			<cfset theRegex = parameters.Regex />
 		<cfelse>			
 			<cfthrow type="validatethis.client.jQuery.ClientRuleScripter_Regex.missingParameter"
 			message="Either a regex or a serverRegex parameter must be defined for a regex rule type." />
 		</cfif>
 
-		<cfreturn "regex: /#theRegex#/" />
 		
+		<cfreturn "regex: /#theRegex#/" />
+
 	</cffunction>
 
 </cfcomponent>

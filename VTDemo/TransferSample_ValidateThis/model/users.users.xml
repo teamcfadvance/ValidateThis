@@ -7,8 +7,8 @@
 		<property name="lname" desc="Last Name">
 			<rule type="required" />
 			<rule type="rangelength" contexts="*">
-				<param minlength="5" />
-				<param maxlength="10" />
+				<param name="minlength" value="5" />
+				<param name="maxlength" value="10" />
 			</rule>
 		</property>
 		<property name="email" desc="Email Address">

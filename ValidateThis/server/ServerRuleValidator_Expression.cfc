@@ -7,7 +7,7 @@
 		<cfset var Parameters = arguments.valObject.getParameters() />
 		<cfset var expr = Parameters.expression />
 		<cfif NOT theObject.testCondition(expr)>
-			<cfset fail(valObject, createDefaultFailureMessage("#valObject.getPropertyDesc()# expression failure: #expr#")) />
+			<cfset fail(valObject, valObject.getFailureMessage()) />
 		</cfif>
 		
 	</cffunction>

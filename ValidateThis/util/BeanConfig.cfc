@@ -91,7 +91,7 @@ Adds a constructor property to a bean.
 		addSingleton("ValidateThis.client.ClientValidator");
 		addSingleton("ValidateThis.client.CommonScriptGenerator");
 		//
-		addTransient("ValidateThis.server.Validation");
+		addTransient("ValidateThis.core.Validation");
 		addTransient("ValidateThis.core.BusinessObjectWrapper");
 		addTransient("ValidateThis.util.ResourceBundle"); //??? do we need this?
 		addTransient("ValidateThis.core.fileReaders.FileReader_JSON");
@@ -100,6 +100,7 @@ Adds a constructor property to a bean.
 		addTransient("ValidateThis.core.StructWrapper");
 		addTransient("ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_JSON");
 		addTransient("ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_XML");
+		addTransient("ValidateThis.core.Parameter");
 		/*
 		addSingleton("ValidateThis.util.TransientFactoryNoCS");
 		addSingleton("ValidateThis.util.FileSystem");

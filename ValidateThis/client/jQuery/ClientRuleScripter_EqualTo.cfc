@@ -18,11 +18,7 @@
 	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 
-		<cfif StructKeyExists(arguments.validation.Parameters,"ComparePropertyName")>
-			<cfreturn "equalTo: ':input[name=" & arguments.validation.Parameters.ComparePropertyName & "]'" />
-		<cfelse>
-			<cfreturn "" />
-		</cfif>
+		<cfreturn "equalTo: ':input[name=" & arguments.validation.getParameter("ComparePropertyName") & "]'" />
 
 	</cffunction>
 
