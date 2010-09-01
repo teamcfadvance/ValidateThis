@@ -27,33 +27,34 @@
 		<cfset var theScript = "" />
 		<cfset var DependentFieldName = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
+		<cfset var parameters = arguments.validation.getParameters() />
 
 		<!--- Deal with various conditions --->
-		<cfif StructKeyExists(arguments.validation.Condition,"ClientTest")>
-			<cfset theCondition = "function(element) { return #arguments.validation.Condition.ClientTest# }" />
+		<cfif StructKeyExists(arguments.validation.getCondition(),"ClientTest")>
+			<cfset theCondition = "function(element) { return #arguments.validation.getCondition().ClientTest# }" />
 		<cfelse>
-			<cfif StructKeyExists(arguments.validation.Parameters,"DependentFieldName")>
-				<cfset DependentFieldName = arguments.validation.Parameters.DependentFieldName />
-			<cfelseif StructKeyExists(arguments.validation.Parameters,"DependentPropertyName")>
-				<cfset DependentFieldName = arguments.validation.Parameters.DependentPropertyName />
+			<cfif StructKeyExists(parameters,"DependentFieldName")>
+				<cfset DependentFieldName = parameters.DependentFieldName />
+			<cfelseif StructKeyExists(parameters,"DependentPropertyName")>
+				<cfset DependentFieldName = parameters.DependentPropertyName />
 			</cfif>
 		</cfif>
 		<cfif len(DependentFieldName) GT 0>
-			<cfif StructKeyExists(arguments.validation.Parameters,"DependentPropertyValue")>
-				<cfset theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentFieldName#']"").getValue() == '#arguments.validation.Parameters.DependentPropertyValue#'; }" />
+			<cfif StructKeyExists(parameters,"DependentPropertyValue")>
+				<cfset theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentFieldName#']"").getValue() == '#parameters.DependentPropertyValue#'; }" />
 			<cfelse>
 				<cfset theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentFieldName#']"").getValue().length > 0; }" />
 			</cfif>
 		</cfif>
 		
 		<cfif Len(theCondition)>
-			<cfif len(arguments.customMessage) EQ 0 AND StructKeyExists(arguments.validation.Parameters,"DependentPropertyDesc")>
-				<cfif StructKeyExists(arguments.validation.Parameters,"DependentPropertyValue")>
-					<cfset ConditionDesc = " based on what you entered for the " & arguments.validation.Parameters.DependentPropertyDesc />
+			<cfif len(arguments.customMessage) EQ 0 AND StructKeyExists(parameters,"DependentPropertyDesc")>
+				<cfif StructKeyExists(parameters,"DependentPropertyValue")>
+					<cfset ConditionDesc = " based on what you entered for the " & parameters.DependentPropertyDesc />
 				<cfelse>
-					<cfset ConditionDesc = " if you specify a value for the " & arguments.validation.Parameters.DependentPropertyDesc />
+					<cfset ConditionDesc = " if you specify a value for the " & parameters.DependentPropertyDesc />
 				</cfif>
-				<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.PropertyDesc# is required#ConditionDesc#." />
+				<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# is required#ConditionDesc#." />
 			</cfif>
 			<cfset theScript = generateAddMethod(arguments.validation,arguments.formName,theCondition,arguments.customMessage,arguments.locale) />
 		<cfelse>

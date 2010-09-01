@@ -157,7 +157,7 @@
 		<cfargument name="PropertyName" required="false" default="FirstName" />
 		<cfargument name="PropertyDesc" required="false" default="First Name" />
 		
-		<cfset Validation = CreateObject("component","ValidateThis.server.validation").init(arguments.theObject,ObjectChecker).load(arguments) />
+		<cfset Validation = CreateObject("component","ValidateThis.core.validation").init(arguments.theObject,ObjectChecker).load(arguments) />
 		<cfset CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker).validate(Validation) />
 		<cfreturn Validation />
 		

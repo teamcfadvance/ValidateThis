@@ -28,8 +28,8 @@ component persistent="true" table="tblUser_A" vtContexts='[{"name":"Register","f
 			{"type":"required"},
 			{"type":"rangelength",
 				"params" : [
-					{"minlength":"5"},
-					{"maxlength":"10"}
+					{"name":"minlength","value":"5"},
+					{"name":"maxlength","value":"10"}
 				]
 			}
 		]';
@@ -37,8 +37,8 @@ component persistent="true" table="tblUser_A" vtContexts='[{"name":"Register","f
 	property name="nickname" vtRules='[
 			{"type":"custom","failureMessage":"That Nickname is already taken. Please try a different Nickname.",
 				"params":[
-					{"methodName":"checkDupNickname"},
-					{"remoteURL":"CheckDupNickname.cfm"}
+					{"name":"methodName","value":"CheckDupNickname"},
+					{"name":"remoteURL","value":"CheckDupNickname.cfm"}
 				]}
 		]';
 	
@@ -46,7 +46,7 @@ component persistent="true" table="tblUser_A" vtContexts='[{"name":"Register","f
 			{"type":"required","contexts":"Profile"},
 			{"type":"regex","failureMessage":"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.",
 				"params" : [
-					{"Regex":"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\\.)?$"}
+					{"name":"Regex","value":"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\\.)?$"}
 				]
 			}
 		]';
@@ -59,7 +59,7 @@ component persistent="true" table="tblUser_A" vtContexts='[{"name":"Register","f
 			{"type":"required","contexts":"Profile"},
 			{"type":"required","contexts":"Register",
 				"params" : [
-					{"DependentPropertyName":"firstName"}
+					{"name":"DependentPropertyName","value":"FirstName"}
 				]
 			}
 		]';
@@ -77,8 +77,8 @@ component persistent="true" table="tblUser_A" vtContexts='[{"name":"Register","f
 	property name="communicationMethod" vtRules='[
 			{"type":"required","failureMessage":"If you are allowing communication, you must choose a communication method.",
 				"params" : [
-					{"DependentPropertyName":"allowCommunication"},
-					{"DependentPropertyValue":"1"}
+					{"name":"DependentPropertyName","value":"AllowCommunication"},
+					{"name":"DependentPropertyValue","value":"1"}
 				]
 			}
 		]';
@@ -97,7 +97,7 @@ component persistent="true" table="tblUser_A" vtContexts='[{"name":"Register","f
 			{"type":"required"},
 			{"type":"equalTo",
 				"params" : [
-					{"ComparePropertyName":"userPass"}
+					{"name":"ComparePropertyName","value":"UserPass"}
 				]
 			}
 		]';

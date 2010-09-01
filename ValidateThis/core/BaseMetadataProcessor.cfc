@@ -15,7 +15,7 @@
 --->
 <cfcomponent output="false" hint="I am a responsible for reading and processing an XML file.">
 
-	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new XMLFileReader">
+	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new metadataprocessor">
 
 		<cfset variables.propertyDescs = {} />
 		<cfset variables.clientFieldDescs = {} />
@@ -120,9 +120,25 @@
 		<cfset var theRule = 0 />
 		<cfset var theVal = 0 />
 		<cfset var theParam = 0 />
+		<cfset var paramType = 0 />
 		<cfset var propertyType = 0 />
 		<cfset var theContext = 0 />
 		
+		<!--- Must determine all Contexts first in order to add rules in the proper sequence --->
+		<cfloop array="#arguments.properties#" index="theProperty">
+			<cfif structKeyExists(theProperty,"rules")>
+				<cfloop array="#theProperty.rules#" index="theRule">
+					<cfif structKeyExists(theRule,"contexts")>
+						<cfloop list="#theRule.contexts#" index="theContext">
+							<cfif theContext NEQ "*" AND NOT structKeyExists(variables.validations.contexts,theContext)>
+								<cfset variables.validations.contexts[theContext] = ArrayNew(1) />
+							</cfif>
+						</cfloop>
+					</cfif>
+				</cfloop>
+			</cfif>
+		</cfloop>
+
 		<cfloop array="#arguments.properties#" index="theProperty">
 			<cfif structKeyExists(theProperty,"rules")>
 				<cfloop array="#theProperty.rules#" index="theRule">
@@ -139,13 +155,17 @@
 					</cfif>
 					<cfif structKeyExists(theRule,"params")>
 						<cfloop array="#theRule.params#" index="theParam">
-							<cfset structAppend(theVal.parameters,theParam) />
+							<cfset theVal.parameters[theParam.name] = theParam />
+							<cfif NOT structKeyExists(theParam,"type")>
+								<cfset theVal.parameters[theParam.name].type = "value" />
+							</cfif>
 							<cfloop list="compareProperty,dependentProperty" index="propertyType">
-								<cfif structKeyExists(theParam,propertyType & "Name")>
-									<cfif structKeyExists(variables.propertyDescs,theParam[propertyType & "Name"])>
-										<cfset theVal.parameters[propertyType & "Desc"] = variables.propertyDescs[theParam[propertyType & "Name"]] />
+								<cfif theParam.name eq propertyType & "Name">
+									<cfset theVal.parameters[propertyType & "Desc"] = {type="value"} />
+									<cfif structKeyExists(variables.propertyDescs,theParam.value)>
+										<cfset theVal.parameters[propertyType & "Desc"].value = variables.propertyDescs[theParam.value] />
 									<cfelse>
-										<cfset theVal.parameters[propertyType & "Desc"] = determineLabel(theParam[propertyType & "Name"]) />
+										<cfset theVal.parameters[propertyType & "Desc"].value = determineLabel(theParam.value) />
 									</cfif>
 								</cfif>
 							</cfloop>
@@ -159,27 +179,15 @@
 					<cfelse>
 						<cfset theVal.condition = {} />
 					</cfif>
-					<cfif structKeyExists(theRule,"contexts") AND NOT listFindNoCase(theRule.contexts,"*")>
-						<cfloop list="#theRule.contexts#" index="theContext">
-							<cfif NOT structKeyExists(variables.validations.contexts,theContext)>
-								<cfset variables.validations.contexts[theContext] = ArrayNew(1) />
-							</cfif>
+					<cfif NOT structKeyExists(theRule,"contexts") OR listFind(theRule.contexts,"*")>
+						<cfloop collection="#variables.validations.contexts#" item="theContext">
 							<cfset arrayAppend(variables.validations.contexts[theContext],theVal) />
 						</cfloop>
 					<cfelse>
-						<cfset arrayAppend(variables.validations.contexts["___Default"],theVal) />
+						<cfloop list="#theRule.contexts#" index="theContext">
+							<cfset arrayAppend(variables.validations.contexts[theContext],theVal) />
+						</cfloop>
 					</cfif>
-				</cfloop>
-			</cfif>
-		</cfloop>
-		<!--- Add all default rules back into each context --->
-		<cfloop collection="#variables.validations.contexts#" item="theContext">
-			<cfif theContext NEQ "___Default">
-				<cfloop array="#variables.validations.contexts.___Default#" index="theVal">
-					<cfif StructKeyExists(variables.contexts,theContext)>
-						<cfset theVal = duplicate(theVal) />
-					</cfif>
-					<cfset ArrayAppend(variables.validations.contexts[theContext],theVal) />
 				</cfloop>
 			</cfif>
 		</cfloop>

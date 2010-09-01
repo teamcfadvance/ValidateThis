@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--Created with Liquid XML Studio 6.1.18.0 - FREE Community Edition (http://www.liquid-technologies.com)-->
 <!--
-	
-filename:		\validateThis.xsd
-date created:	2008-10-22
-author:			Bob Silverberg (http://www.silverwareconsulting.com/)
-purpose:		I am the XML Schema definition for ValidateThis
-				
 	// **************************************** LICENSE INFO **************************************** \\
 	
-	Copyright 2008, Bob Silverberg
+	Copyright 2010, Bob Silverberg
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -21,12 +15,6 @@ purpose:		I am the XML Schema definition for ValidateThis
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 	
-	// ****************************************** REVISIONS ****************************************** \\
-	
-	DATE		DESCRIPTION OF CHANGES MADE												CHANGES MADE BY
-	===================================================================================================
-	2008-10-22	New																		BS
-
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="validateThis">
@@ -119,11 +107,21 @@ b. Needs a description recorded for it.  E.g., if it relates to another property
                               <xs:documentation>A rule may have any number of params defined, including zero.  Certain rule types require that certain params be defined.  E.g., the MaxLength rule type requires a MaxLength param.</xs:documentation>
                             </xs:annotation>
                             <xs:complexType>
-                              <xs:anyAttribute namespace="##any" processContents="lax">
-                                <xs:annotation>
-                                  <xs:documentation>Each param must have a single attribute. E.g., for a MaxLength rule there would be a param with an attribute maxlength="x", where x is the maxlength to test for.</xs:documentation>
-                                </xs:annotation>
-                              </xs:anyAttribute>
+		                        <xs:attribute name="name" type="xs:string" use="required">
+		                          <xs:annotation>
+		                            <xs:documentation>The name of the parameter (e.g., min, max, methodName, etc.).</xs:documentation>
+		                          </xs:annotation>
+		                        </xs:attribute>
+		                        <xs:attribute name="value" type="xs:string" use="required">
+		                          <xs:annotation>
+		                            <xs:documentation>The value of the parameter.</xs:documentation>
+		                          </xs:annotation>
+		                        </xs:attribute>
+		                        <xs:attribute name="type" type="xs:string" use="optional">
+		                          <xs:annotation>
+		                            <xs:documentation>The type of the parameter. Can be one of value, expression or property. Defaults to value if not specified.</xs:documentation>
+		                          </xs:annotation>
+		                        </xs:attribute>
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>

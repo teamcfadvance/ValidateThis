@@ -20,6 +20,7 @@
 			ValidateThisConfig = getVTConfig();
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
+			validation = validationFactory.getBean("Validation");
 			createValStruct();
 		</cfscript>
 	</cffunction>
@@ -69,10 +70,12 @@
 	<cffunction name="CustomValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "custom";
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { }",script);
-			valStruct.Parameters = {remoteURL="aURL"}; 
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.remoteURL = {value="aURL",type="value"}; 
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{remote: 'aURL'});}",script);
 		</cfscript>  
 	</cffunction>
@@ -80,10 +83,12 @@
 	<cffunction name="CustomValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "custom";
-			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			assertEquals("if ($form_frmMain2.find("":input[name='firstname']"").length) { }",script);
-			valStruct.Parameters = {remoteURL="aURL"}; 
-			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			valStruct.Parameters.remoteURL = {value="aURL",type="value"}; 
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			assertEquals("if ($form_frmMain2.find("":input[name='firstname']"").length) { $form_frmMain2.find("":input[name='firstname']"").rules('add',{remote: 'aURL'});}",script);
 		</cfscript>  
 	</cffunction>
@@ -91,7 +96,8 @@
 	<cffunction name="DateValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "date";
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{date: true});}",script);
 		</cfscript>  
 	</cffunction>
@@ -99,7 +105,8 @@
 	<cffunction name="DateValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "date";
-			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			assertEquals("if ($form_frmMain2.find("":input[name='firstname']"").length) { $form_frmMain2.find("":input[name='firstname']"").rules('add',{date: true});}",script);
 		</cfscript>  
 	</cffunction>
@@ -107,7 +114,8 @@
 	<cffunction name="EmailValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "email";
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{email: true});}",Script);
 		</cfscript>  
 	</cffunction>
@@ -115,7 +123,8 @@
 	<cffunction name="IntegerValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "integer";
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{digits: true});}",script);
 		</cfscript>  
 	</cffunction>
@@ -123,7 +132,8 @@
 	<cffunction name="NumericValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "numeric";
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{number: true});}",script);
 		</cfscript>  
 	</cffunction>
@@ -131,8 +141,9 @@
 	<cffunction name="RegexValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "regex";
-			valStruct.Parameters = {Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"}; 
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.Regex = {value="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$",type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMainFirstNameregex"", jQuery.validator.methods.regex, ""The First Name does not match the specified pattern."");");
 			assertTrue(Script CONTAINS "jQuery.validator.addClassRules(""frmMainFirstNameregex"", {frmMainFirstNameregex: /^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$/});");
@@ -143,11 +154,12 @@
 	<cffunction name="RegexValidationWithOverriddenPrefixGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "regex";
-			valStruct.Parameters = {Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"}; 
+			valStruct.Parameters.Regex = {value="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$",type="value"};
 			ValidateThisConfig.defaultFailureMessagePrefix = "";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMainFirstNameregex"", jQuery.validator.methods.regex, ""First Name does not match the specified pattern."");");
 			assertTrue(Script CONTAINS "jQuery.validator.addClassRules(""frmMainFirstNameregex"", {frmMainFirstNameregex: /^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$/});");
@@ -158,7 +170,8 @@
 	<cffunction name="SimpleRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{required: true});}",script);
 		</cfscript>  
 	</cffunction>
@@ -166,8 +179,9 @@
 	<cffunction name="DependentPropertyRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
-			valStruct.Parameters = {DependentPropertyName="LastName"}; 
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMainFirstNamerequired"", jQuery.validator.methods.required);");
 			assertTrue(Script CONTAINS "jQuery.validator.addClassRules(""frmMainFirstNamerequired"", {frmMainFirstNamerequired: function(element) { return $form_frmMain.find("":input[name='lastname']"").getvalue().length > 0; }});");
@@ -178,8 +192,9 @@
 	<cffunction name="DependentPropertyRequiredValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
-			valStruct.Parameters = {DependentPropertyName="LastName"}; 
-			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMain2FirstNamerequired"", jQuery.validator.methods.required);");
 			assertTrue(Script CONTAINS "jQuery.validator.addClassRules(""frmMain2FirstNamerequired"", {frmMain2FirstNamerequired: function(element) { return $form_frmMain2.find("":input[name='lastname']"").getvalue().length > 0; }});");
@@ -190,8 +205,10 @@
 	<cffunction name="DependentValueRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
-			valStruct.Parameters = {DependentPropertyName="LastName",DependentPropertyValue="Silverberg"}; 
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
+			valStruct.Parameters.DependentPropertyValue = {value="Silverberg",type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			//assertEquals(Script,"$form_frmmain.find("":input[name='firstname']"").rules('add',{required: true});");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMainFirstNamerequired"", jQuery.validator.methods.required);");
@@ -203,8 +220,10 @@
 	<cffunction name="DependentValueRequiredValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
-			valStruct.Parameters = {DependentPropertyName="LastName",DependentPropertyValue="Silverberg"}; 
-			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
+			valStruct.Parameters.DependentPropertyValue = {value="Silverberg",type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			//assertEquals(Script,"$form_frmmain.find("":input[name='firstname']"").rules('add',{required: true});");
 			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMain2FirstNamerequired"", jQuery.validator.methods.required);");
@@ -216,8 +235,10 @@
 	<cffunction name="DependentFieldRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
-			valStruct.Parameters = {DependentPropertyName="LastName",DependentFieldName="User[LastName]"}; 
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
+			valStruct.Parameters.DependentFieldName = {value="User[LastName]",type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMainFirstNamerequired"", jQuery.validator.methods.required);");
 			assertTrue(Script CONTAINS "jQuery.validator.addClassRules(""frmMainFirstNamerequired"", {frmMainFirstNamerequired: function(element) { return $form_frmMain.find("":input[name='User[LastName]']"").getvalue().length > 0; }});");
@@ -228,8 +249,10 @@
 	<cffunction name="DependentFieldRequiredValidationGeneratesCorrectScriptWithProblematicFormName" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
-			valStruct.Parameters = {DependentPropertyName="LastName",DependentFieldName="User[LastName]"}; 
-			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
+			valStruct.Parameters.DependentFieldName = {value="User[LastName]",type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMain2FirstNamerequired"", jQuery.validator.methods.required);");
 			assertTrue(Script CONTAINS "jQuery.validator.addClassRules(""frmMain2FirstNamerequired"", {frmMain2FirstNamerequired: function(element) { return $form_frmMain2.find("":input[name='User[LastName]']"").getvalue().length > 0; }});");
@@ -241,8 +264,9 @@
 		<cfscript>
 			theLength = 5;
 			valStruct.ValType = "minlength";
-			valStruct.Parameters.minlength = theLength;
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.minlength = {value=theLength,type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{minlength: 5});}",script);
 		</cfscript>  
 	</cffunction>
@@ -251,8 +275,9 @@
 		<cfscript>
 			theLength = 5;
 			valStruct.ValType = "maxlength";
-			valStruct.Parameters.maxlength = theLength;
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.maxlength = {value=theLength,type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{maxlength: 5});}",script);
 		</cfscript>  
 	</cffunction>
@@ -262,9 +287,10 @@
 			minLength = 5;
 			maxLength = 10;
 			valStruct.ValType = "rangelength";
-			valStruct.Parameters.minlength = minLength;
-			valStruct.Parameters.maxlength = maxLength;
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.minLength = {value=minLength,type="value"};
+			valStruct.Parameters.maxlength = {value=maxlength,type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{rangelength: [5,10]});}",script);
 		</cfscript>  
 	</cffunction>
@@ -273,8 +299,9 @@
 		<cfscript>
 			theVal = 5;
 			valStruct.ValType = "min";
-			valStruct.Parameters.min = theVal;
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.min = {value=theVal,type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{min: 5});}",script);
 		</cfscript>  
 	</cffunction>
@@ -283,8 +310,9 @@
 		<cfscript>
 			theVal = 5;
 			valStruct.ValType = "max";
-			valStruct.Parameters.max = theVal;
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.max = {value=theVal,type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{max: 5});}",script);
 		</cfscript>  
 	</cffunction>
@@ -294,9 +322,10 @@
 			min = 5;
 			max = 10;
 			valStruct.ValType = "range";
-			valStruct.Parameters.min = min;
-			valStruct.Parameters.max = max;
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.min = {value=min,type="value"};
+			valStruct.Parameters.max = {value=max,type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{range: [5,10]});}",script);
 		</cfscript>  
 	</cffunction>
@@ -306,9 +335,10 @@
 			ComparePropertyName = "LastName";
 			ComparePropertyDesc = "Last Name";
 			valStruct.ValType = "EqualTo";
-			valStruct.Parameters.ComparePropertyName = ComparePropertyName;
-			valStruct.Parameters.ComparePropertyDesc = ComparePropertyDesc;
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			valStruct.Parameters.ComparePropertyName = {value=ComparePropertyName,type="value"};
+			valStruct.Parameters.ComparePropertyDesc = {value=ComparePropertyDesc,type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertTrue(Script CONTAINS "if ($form_frmmain.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMainFirstNameEqualTo"", jQuery.validator.methods.EqualTo, ""The First Name must be the same as the Last Name."");");
 			assertTrue(Script CONTAINS "jQuery.validator.addClassRules(""frmMainFirstNameEqualTo"", {frmMainFirstNameEqualTo: '##frmMain :input[name=""LastName""]'});");
@@ -321,9 +351,10 @@
 			ComparePropertyName = "LastName";
 			ComparePropertyDesc = "Last Name";
 			valStruct.ValType = "EqualTo";
-			valStruct.Parameters.ComparePropertyName = ComparePropertyName;
-			valStruct.Parameters.ComparePropertyDesc = ComparePropertyDesc;
-			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			valStruct.Parameters.ComparePropertyName = {value=ComparePropertyName,type="value"};
+			valStruct.Parameters.ComparePropertyDesc = {value=ComparePropertyDesc,type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMain2FirstNameEqualTo"", jQuery.validator.methods.EqualTo, ""The First Name must be the same as the Last Name."");");
 			assertTrue(Script CONTAINS "jQuery.validator.addClassRules(""frmMain2FirstNameEqualTo"", {frmMain2FirstNameEqualTo: '##frm-Main2 :input[name=""LastName""]'});");
@@ -336,12 +367,13 @@
 			ComparePropertyName = "LastName";
 			ComparePropertyDesc = "Last Name";
 			valStruct.ValType = "EqualTo";
-			valStruct.Parameters.ComparePropertyName = ComparePropertyName;
-			valStruct.Parameters.ComparePropertyDesc = ComparePropertyDesc;
+			valStruct.Parameters.ComparePropertyName = {value=ComparePropertyName,type="value"};
+			valStruct.Parameters.ComparePropertyDesc = {value=ComparePropertyDesc,type="value"};
 			ValidateThisConfig.defaultFailureMessagePrefix = "";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
-			script = ScriptWriter.generateValidationScript(valStruct,"frm-Main2");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			assertTrue(Script CONTAINS "if ($form_frmmain2.find("":input[name='firstname']"").length) { ");
 			assertTrue(Script CONTAINS "jQuery.validator.addMethod(""frmMain2FirstNameEqualTo"", jQuery.validator.methods.EqualTo, ""First Name must be the same as the Last Name."");");
 			assertTrue(Script CONTAINS "jQuery.validator.addClassRules(""frmMain2FirstNameEqualTo"", {frmMain2FirstNameEqualTo: '##frm-Main2 :input[name=""LastName""]'});");
@@ -352,9 +384,22 @@
 	<cffunction name="BooleanValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "boolean";
-			script = ScriptWriter.generateValidationScript(valStruct,"frmMain");
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{boolean: true});}",Script);
 			
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="noHTMLValidationGeneratesCorrectScript" access="public" returntype="void">
+		<cfscript>
+			/* not implemented yet
+			valStruct.ValType = "noHTML";
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
+			debug(script);
+			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{email: true});}",Script);
+			*/
 		</cfscript>  
 	</cffunction>
 
