@@ -100,33 +100,28 @@
 	</cffunction>
 
 	<cffunction name="generateAddMethod" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
-		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="theCondition" type="any" required="yes" hint="The conditon to test." />
 		<cfargument name="customMessage" type="any" required="no" default="" hint="A custom message to display on failure." />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
-		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-		<cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
-		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
-		<cfset var valType = arguments.validation.getValType() />
 		<cfset var messageScript = "" />
 		<cfif Len(arguments.customMessage) GT 0>
-			<cfset messageScript = ', "' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
+			<cfset messageScript = "#variables.Translator.translate(arguments.customMessage,arguments.locale)#" />
 		</cfif>
 
-		<cfsavecontent variable="theScript">
-			<cfoutput>
-				jQuery.validator.addMethod("#fieldName##valType#", jQuery.validator.methods.#valType##messageScript#);
-				jQuery.validator.addClassRules("#fieldName##valType#", {#fieldName##valType#: #arguments.theCondition#});
-				#fieldSelector#.addClass('#fieldName##valType#');
-			</cfoutput>
-		</cfsavecontent>
-		<cfreturn theScript />
+		<cfoutput>
+        <cfsavecontent variable="theScript">
+        jQuery.validator.addMethod("#getValType()#", #theCondition#, jQuery.format("#messageScript#"));
+        </cfsavecontent>
+        </cfoutput>
+        
+        <cfreturn theScript/>
 		
 	</cffunction>
-
+	
+	<cffunction name="getValType" returntype="string" access="public" output="false" hint="I generate the JS script required to implement a validation.">
+		<cfreturn ListLast(getMetadata(this).name,"_") />
+	</cffunction>
+	
 </cfcomponent>
-
-
