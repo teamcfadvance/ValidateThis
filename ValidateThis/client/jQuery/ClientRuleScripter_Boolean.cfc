@@ -13,35 +13,34 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ClientRuleScripter_Boolean" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the boolean validation.">
+<cfcomponent output="false" name="ClientRuleScripter_boolean" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the boolean validation.">
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="The value entered must be a boolean">
 		<cfset theScript="">
-
-		<cfsavecontent variable="theCondition">function(value, element, param) {
-			return this.optional(element) || jQuery.isCFBoolean(value);
-		}</cfsavecontent>
-		
-		<cfoutput>
-		<cfsavecontent variable="theScript">
-		jQuery.isCFBoolean = function( value )
-		{
+		<cfset var theCondition="function(value,element,options) { return true; }"/>
+		<!--- JAVASCRIPT VALIDATION METHOD --->
+		<cfsavecontent variable="theCondition">function(value, element, options) {
 			if ( value==null ) 
 				{
 					return false
 				}
 			else 
 			{
-				var tocheck = value.toString();
-				var pattern = /^((-){0,1}[0-9]{1,}(\.([0-9]{1,})){0,1}|true|false|yes|no)$/gi;
+				var tocheck = value.toString().toLowerCase();
+				var pattern = /^((-){0,1}[0-9]{1,}(\.([0-9]{1,})){0,1}|(true)|(false)|(yes)|(no))$/;
 				return tocheck.match( pattern ) == null ? false : true;
 			}
-		}
-		jQuery.validator.addMethod("boolean", #theCondition#, jQuery.format("#arguments.defaultMessage#"));
-		</cfsavecontent>
-		</cfoutput>
-		<cfreturn theScript/>
+		}</cfsavecontent>
+		
+		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
+	</cffunction>
+	
+	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+
+		<cfreturn "#getValType()#: true" />
+		
 	</cffunction>
 	
 </cfcomponent>

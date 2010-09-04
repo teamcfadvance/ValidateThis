@@ -21,20 +21,14 @@
 		<cfset var theScript="">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		
-		
+		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">function(value,element,options) {
 			var m = value.search("</?\\w+((\\s+\\w+(\\s*=\\s*(?:\\\".*?\\\"|'.*?'|[^'\\\">\\s]+))?)+\\s*|\\s*)/?>");
 			if (m == -1) return true;
 			else return false;
 		}</cfsavecontent>
 			
-		<cfoutput>
-		<cfsavecontent variable="theScript">
-		jQuery.validator.addMethod("noHTML", #theCondition#, jQuery.format("#arguments.defaultMessage#"));
-		</cfsavecontent>
-		</cfoutput>
-		
-		<cfreturn theScript/>
+		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
@@ -47,25 +41,31 @@
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
-		<cfset var valType = arguments.validation.getValType() />		
 		<cfset var params = arguments.validation.getParameters()/>
 		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
-		<cfset var theCondition="function(value,element,options) { return true; }"/>
+	
+		<cfif len(arguments.customMessage) eq 0>
+			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# cannot contain HTML tags."/>
+		</cfif>
+		
+		
+		
+		<cfif structCount(params) eq 0>
+			<cfset options=true/>
+		<cfelse>
+			<cfset options=serializeJSON(params)>
+		</cfif>
 
-			<cfif len(arguments.customMessage) eq 0>
-				<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# cannot contain HTML tags."/>
-			</cfif>
-
-			<cfoutput>
-			<cfsavecontent variable="theScript">
-			#fieldSelector#.rules("add", {
-				#valType# : true,
-				messages: {
-					#valType#: "#arguments.customMessage#"
-				} 
-			});
-			</cfsavecontent>
-			</cfoutput>
+		<cfoutput>
+		<cfsavecontent variable="theScript">
+		#fieldSelector#.rules("add", {
+			#getValType()# : #options#,
+			messages: {
+				#getValType()#: "#arguments.customMessage#"
+			} 
+		});
+		</cfsavecontent>
+		</cfoutput>
 
 		<cfreturn theScript/>
 	</cffunction>

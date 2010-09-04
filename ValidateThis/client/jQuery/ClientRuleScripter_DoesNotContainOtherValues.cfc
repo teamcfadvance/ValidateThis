@@ -27,7 +27,7 @@ See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 		<cfargument name="defaultMessage" type="string" required="false" default="The value cannot not contain the value of another property.">
 		<cfset var theScript="">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
-		
+		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 		function(value,element,options) {
 			var isValid = true;
@@ -53,13 +53,7 @@ See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 		}
 		</cfsavecontent>
 			
-		<cfoutput>
-		<cfsavecontent variable="theScript">
-		jQuery.validator.addMethod("DoesNotContainOtherValues", #theCondition#, jQuery.format("#arguments.defaultMessage#"));
-		</cfsavecontent>
-		</cfoutput>
-		
-		<cfreturn theScript/>
+		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 	
 	

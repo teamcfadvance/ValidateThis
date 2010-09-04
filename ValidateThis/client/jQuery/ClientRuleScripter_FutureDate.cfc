@@ -19,7 +19,7 @@
         <cfargument name="defaultMessage" type="string" required="false" default="The date entered must be in the future.">
         <cfset var theScript="">
         <cfset var theCondition="function(value,element,options) { return true; }"/>
-     
+          <!--- JAVASCRIPT VALIDATION METHOD --->
 	      <cfsavecontent variable="theCondition">
 	      function(value,element,options) {
 	            var dToday = new Date(); 
@@ -28,13 +28,7 @@
 	      }
 	      </cfsavecontent>
     
-       <cfoutput>
-        <cfsavecontent variable="theScript">
-        jQuery.validator.addMethod("FutureDate", #theCondition#, jQuery.format("#arguments.defaultMessage#"));
-        </cfsavecontent>
-        </cfoutput>
-        
-        <cfreturn theScript/>
+       <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
     </cffunction>
     
     <cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">

@@ -19,21 +19,16 @@
         <cfargument name="defaultMessage" type="string" required="false" default="The value entered must be a true boolean.">
         <cfset var theScript="">
         <cfset var theCondition="function(value,element,options) { return true; }"/>
-     
-          <cfsavecontent variable="theCondition">
+
+     	  <!--- JAVASCRIPT VALIDATION METHOD --->
+	      <cfsavecontent variable="theCondition">
           function(value,element,options) {
-            var pattern = /^(1|true|yes)$/;
-            return value.match( pattern ) == null ? false : true;  
+            var pattern = /^([1-9]|(true)|(yes))$/;
+            return value.toUpperCase().match( pattern ) == null ? false : true;  
           }
           </cfsavecontent>
     
-       <cfoutput>
-        <cfsavecontent variable="theScript">
-        jQuery.validator.addMethod("AssertTrue", #theCondition#, jQuery.format("#arguments.defaultMessage#"));
-        </cfsavecontent>
-        </cfoutput>
-        
-        <cfreturn theScript/>
+       <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
     </cffunction>
     
     <cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
