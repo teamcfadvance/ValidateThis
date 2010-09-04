@@ -13,7 +13,7 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ClientRuleScripter_AssetTrue" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the false boolean validation.">
+<cfcomponent output="false" name="ClientRuleScripter_AssertFalse" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the false boolean validation.">
 
     <cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
         <cfargument name="defaultMessage" type="string" required="false" default="The value entered must be a false boolean.">
@@ -40,7 +40,7 @@
         <cfset var theScript = "" />
         <cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
         <cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
-        <cfset var valType = arguments.validation.getValType() />       
+        <cfset var valType = this.getValType() />       
         <cfset var params = arguments.validation.getParameters()/>
         <cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
         
