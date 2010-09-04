@@ -177,3 +177,24 @@ Version 0.97
 - added a config option for defaultFailureMessagePrefix which can be used to remove the "The " at the front of the default failure messages
 - implemented annotation support for JSON format annotations
 - added a demo for JSON annotations
+
+Version 0.98
+--------------
+AD - updated jquery/ClientScriptWriter_jQuery - removed hardcoded addMethod() usage in getInitializationScript() - Now checks all ClientRuleScripters for an optional generateInitMethod() to provide the custom validation initialization.
+AD - updated jquery/AbstractClientRuleScripter - added getValType() and refactored the generateAddMethod() to eliminate addClassRules() usage. 
+AD - updated jquery/ClientRuleScripter_[ValType] - added the optional generateInitScript() check to provide custom methods for the getInitializationScript()
+AD - added new framework validation types:
+		URL();
+		AssertFalse();
+		AssertTrue();
+		DatePast();
+		DateFuture();
+		DateRange(from,until);
+		noHTML();
+		Patterns(patterns_desc [,patterns_desc2, .... ],[minMatches=1]);
+		DoesNotContainOtherValues(propertyNames);
+		Expression(expr); // Server Only
+	
+AD - exposed additional helper methods via the framework facade (for admin, debug, & testing)
+AD - added a getRequiredPropertiesAndDescs() method in the BOValidator.
+AD - added a createWrapper() function in the facade to allow a developer to programatically prepare objects/structures for validation using a BOValidator.
