@@ -180,21 +180,29 @@ Version 0.97
 
 Version 0.98
 --------------
+
+BS - !!compatibility!! - changed parameter element definitions to allow dynamic parameters that can now be an value, expression, or property
+BS - updated Validation object for addParameter(name,value,type) usage
+BS - bug fix in rules/context ordering  	
+BS - updated end-to-end tests
+BS - updated test cases
+
+AD - exposed additional methods through the framework facade (for debugging & testing, administration, and extension)
+AD - added a getRequiredPropertiesAndDescs(context) method in the BOValidator.
+AD - added a createWrapper(struct|object) function to the ValidationFactory and exposed it through the facade to allow a developer to prepare objects|structures for validation using a BOValidator directly.
+AD - updated Validation object with hasParameter(name)
 AD - updated jquery/ClientScriptWriter_jQuery - removed hardcoded addMethod() usage in getInitializationScript() - Now checks all ClientRuleScripters for an optional generateInitMethod() to provide the custom validation initialization.
 AD - updated jquery/AbstractClientRuleScripter - added getValType() and refactored the generateAddMethod() to eliminate addClassRules() usage. 
 AD - updated jquery/ClientRuleScripter_[ValType] - added the optional generateInitScript() check to provide custom methods for the getInitializationScript()
-AD - added new framework validation types:
+AD - updates and bug fixes to most jquery CRS types
+AD - added a bunch of new SRV + CRS validation types to the framework:
 		URL();
 		AssertFalse();
 		AssertTrue();
-		DatePast();
-		DateFuture();
-		DateRange(from,until);
+		DatePast([before=1/1/1970]);
+		DateFuture([after=12/31/1969]);
+		DateRange(from=1/1/1970,until=1/1/2012);
 		noHTML();
-		Patterns(patterns_desc [,patterns_desc2, .... ],[minMatches=1]);
-		DoesNotContainOtherValues(propertyNames);
-		Expression(expr); // Server Only
-	
-AD - exposed additional helper methods via the framework facade (for admin, debug, & testing)
-AD - added a getRequiredPropertiesAndDescs() method in the BOValidator.
-AD - added a createWrapper() function in the facade to allow a developer to programatically prepare objects/structures for validation using a BOValidator.
+		Patterns(patterns_name=/regex/ [,patterns_anotherName=/regex/, .... ],[minMatches=1]);
+		DoesNotContainOtherValues(propertyNames="list,of,properties");
+		Expression(expr);
