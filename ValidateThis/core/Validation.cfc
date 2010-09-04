@@ -101,6 +101,11 @@
 		<cfset variables.instance.Parameters[arguments.name] = {value=arguments.value,type=arguments.type} />
 		
 	</cffunction>
+	
+	<cffunction name="hasParameter" access="public" output="false" returntype="boolean">
+		<cfargument name="name" type="string" required="true" />
+		<cfreturn structKeyExists(variables.instance.Parameters,arguments.name) />		
+	</cffunction>
 
 	<cffunction name="hasObject" access="public" output="false" returntype="boolean">
 		<cfreturn structKeyExists(variables,"theObject") />		
