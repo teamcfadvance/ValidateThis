@@ -17,13 +17,18 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-        <cfset theVal = arguments.valObject.getObjectValue()/>
-		
-		<cfif shouldTest(arguments.valObject) AND not isDate(theVal) or not dateCompare(theVal,now()) gt 0>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a date in the future.")) />
+        <cfset var theVal = arguments.valObject.getObjectValue()/>
+		<cfset var theDate = now()/>
+		<cfset var parameterMessages = ""/>
+
+		<cfif arguments.valObject.hasParameter("after")>
+			<cfset theDate = arguments.valObject.getParameterValue("after")/>
+			<cfset parameterMessages = " The date entered must come after #theDate#">
+		</cfif>
+
+		<cfif shouldTest(arguments.valObject) AND not isDate(theVal) or not dateCompare(theVal,theDate) gt 0>
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a date in the future.#parameterMessages#")) />
 		</cfif>
 	</cffunction>
 	
 </cfcomponent>
-	
-

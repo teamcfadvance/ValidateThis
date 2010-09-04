@@ -17,10 +17,17 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-        <cfset theVal = arguments.valObject.getObjectValue()/>
+		<cfset var theVal = arguments.valObject.getObjectValue()/>
+		<cfset var theDate = now()/>
+		<cfset var parameterMessages = ""/>
 		
-		<cfif shouldTest(arguments.valObject) AND not isDate(theVal) or not dateCompare(theVal,now()) eq -1>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a date in the past.")) />
+		<cfif arguments.valObject.hasParameter("before")>
+			<cfset theDate = arguments.valObject.getParameterValue("before")/>
+			<cfset parameterMessages = " The date entered must come before #theDate#">
+		</cfif>
+		
+		<cfif shouldTest(arguments.valObject) AND not isDate(theVal) or not dateCompare(theVal,theDate) eq -1>
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a date in the past.#parameterMessages#")) />
 		</cfif>
 	</cffunction>
 	

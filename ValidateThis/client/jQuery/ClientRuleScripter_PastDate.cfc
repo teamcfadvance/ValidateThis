@@ -23,9 +23,14 @@
 		 <!--- JAVASCRIPT VALIDATION METHOD --->
 	      <cfsavecontent variable="theCondition">
 	      function(value,element,options) {
-	            var dToday = new Date(); 
+	            var dBefore = new Date(); 
 	            var dValue  = new Date(value); 
-				return (dToday > dValue);
+	            
+	            if (options.before) {
+	            	dBefore = new Date(options.before);
+	            }
+	            
+	            return (dBefore > dValue);
 	      }
 	      </cfsavecontent>
     
@@ -42,21 +47,30 @@
         <cfset var theScript = "" />
         <cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
         <cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
-        <cfset var valType = arguments.validation.getValType() />       
+        <cfset var valType = this.getValType() />       
         <cfset var params = arguments.validation.getParameters()/>
         <cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
         
-        <cfset var messageScript = "" />
-        <cfif Len(arguments.customMessage) eq 0>
-            <cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must contain a date in the past."/>
+		<cfset var options = true/>
+		<cfset var messageScript = "" />
+        
+		<cfif Len(arguments.customMessage) eq 0>
+            <cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must be a date in the past."/>
         </cfif>
-        <cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
-
+        
+		<cfif arguments.validation.hasParameter("before")>
+			<cfset options = {'before'=arguments.validation.getParameterValue("before")}>
+			<cfset arguments.customMessage = arguments.customMessage & " The date entered must come before #arguments.validation.getParameterValue('before')#"/>
+		</cfif>
+		
+		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
+		
+		
          <cfoutput>
          <cfsavecontent variable="theScript">
              #fieldSelector#.rules("add", {
-                  #valType# : true,
-                  messages: {"#valType#": "#arguments.customMessage#"}
+                  #valType# : #serializeJSON(options)#,
+                  messages: {"#valType#": "#messageScript#"}
              });
          </cfsavecontent>
          </cfoutput>
@@ -65,4 +79,3 @@
     </cffunction>
 
 </cfcomponent>
-

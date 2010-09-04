@@ -24,6 +24,11 @@
 	      function(value,element,options) {
 	            var dToday = new Date(); 
 	            var dValue  = new Date(value); 
+
+	            if (options.after) {
+	            	dToday = new Date(options.after);
+	            }
+
 				return (dToday < dValue);
 	      }
 	      </cfsavecontent>
@@ -44,18 +49,25 @@
         <cfset var valType = arguments.validation.getValType() />       
         <cfset var params = arguments.validation.getParameters()/>
         <cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
-        
+		
+		<cfset var options = true/>
+		
         <cfset var messageScript = "" />
         <cfif Len(arguments.customMessage) eq 0>
-            <cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must contain a date in the future."/>
+            <cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must be a date in the future."/>
         </cfif>
-        <cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
-
+		 <cfif arguments.validation.hasParameter("after")>
+			<cfset options = {'after'=arguments.validation.getParameterValue("after")}>
+			<cfset arguments.customMessage = arguments.customMessage & " The date entered must come after #arguments.validation.getParameterValue('after')#"/>
+		</cfif>
+		
+		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
+		 
          <cfoutput>
          <cfsavecontent variable="theScript">
              #fieldSelector#.rules("add", {
-                  #valType# : true,
-                  messages: {"#valType#": "#arguments.customMessage#"}
+                  #valType# : #serializeJSON(options)#,
+                  messages: {"#valType#": "#messageScript#"}
              });
          </cfsavecontent>
          </cfoutput>
@@ -64,4 +76,3 @@
     </cffunction>
 
 </cfcomponent>
-
