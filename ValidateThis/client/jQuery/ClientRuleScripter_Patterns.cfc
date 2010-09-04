@@ -13,7 +13,7 @@ Example Usage:
  --->
 
 
-<cfcomponent extends="AbstractClientRuleScripter" hint="Fails if the validated property does not match at least 1 or the specficied ammount of regex patterns defined.">
+<cfcomponent  name="ClientRuleScripter_Patterns" extends="AbstractClientRuleScripter" hint="Fails if the validated property does not match at least 1 or the specficied ammount of regex patterns defined.">
 	
 	
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
@@ -52,7 +52,7 @@ Example Usage:
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
-		<cfset var valType = arguments.validation.getValType() />		
+		<cfset var valType = this.getValType() />		
 		<cfset var params = arguments.validation.getParameters()/>
 		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 		<cfset var theCondition="function(value,element,options) { return true; }"/>

@@ -21,7 +21,7 @@ Definition Usage Example:
 See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 --->
 
-<cfcomponent extends="AbstractClientRuleScripter" hint="Fails if the validated property contains the value of another property">
+<cfcomponent name="ClientRuleScripter_DoesNotContainOtherValues" extends="AbstractClientRuleScripter" hint="Fails if the validated property contains the value of another property">
 	
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="The value cannot not contain the value of another property.">

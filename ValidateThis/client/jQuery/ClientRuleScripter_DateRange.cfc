@@ -13,7 +13,7 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ClientRuleScripter_PastDate" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the past date validation.">
+<cfcomponent output="false" name="ClientRuleScripter_DateRange" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the past date validation.">
 
    <cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
         <cfargument name="defaultMessage" type="string" required="false" default="The date entered must be in the range specified.">
@@ -58,7 +58,7 @@
         <cfset var theScript = "" />
         <cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
         <cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
-        <cfset var valType = arguments.validation.getValType() />       
+        <cfset var valType = this.getValType() />       
         <cfset var params = arguments.validation.getParameters()/>
         <cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
         
