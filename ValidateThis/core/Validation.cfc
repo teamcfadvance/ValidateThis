@@ -80,7 +80,12 @@
 
 	<cffunction name="getParameterValue" access="public" output="false" returntype="any">
 		<cfargument name="parameterName" type="string" required="true" />
-		<cfreturn getParameter(arguments.parameterName).getValue() />
+		<cfargument name="defaultValue" type="any" required="false" default="" />
+		<cfset var theVal = arguments.defaultValue/>
+		<cfif hasParameter(arguments.parameterName)>
+			<cfset theVal = getParameter(arguments.parameterName).getValue() />
+		</cfif>
+		<cfreturn theVal/>
 	</cffunction>
 
 	<cffunction name="getParameters" access="public" output="false" returntype="any" hint="This will process the Parameters struct to return just values.">
