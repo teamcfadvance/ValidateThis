@@ -41,6 +41,13 @@
 
 	</cffunction>
 	
+	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">
+		<cfargument name="expression" type="any" required="true" />
+		
+		<cfreturn Evaluate(arguments.expression)>
+
+	</cffunction>
+	
 	<cffunction name="onMissingMethod" access="public" output="false" returntype="Any" hint="An abstract getter">
 		<cfargument name="missingMethodName" type="any" required="true" />
 		<cfargument name="missingMethodArguments" type="any" required="true" />

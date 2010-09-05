@@ -93,7 +93,7 @@
 	
 	<cffunction name="createWrapper" returntype="any" access="public" output="false">
 		<cfargument name="theObject" type="any" required="true" />
-		<!--- Inject testCondition if needed --->
+		
 		<!--- Notes for Java/Groovy objects:
 			If you're using Groovy, 
 			you will need to write your own testCondition method into your BOs. You may consider doing this 
@@ -102,9 +102,17 @@
 		<cfif not isObject(arguments.theObject) and isStruct(arguments.theObject)>
 			<cfset arguments.theObject = getBean("TransientFactory").newStructWrapper(arguments.theObject) />
 		</cfif>
-		<cfif getBean("ObjectChecker").isCFC(arguments.theObject) AND NOT StructKeyExists(arguments.theObject,"testCondition")>
-			<cfset arguments.theObject["testCondition"] = this["testCondition"] />
+		
+		<!--- Inject testCondition & evaluateExpression if needed --->
+		<cfif getBean("ObjectChecker").isCFC(arguments.theObject)>
+			<cfif NOT StructKeyExists(arguments.theObject,"testCondition")>
+				<cfset arguments.theObject["testCondition"] = this["testCondition"] />
+			</cfif>
+			<cfif NOT StructKeyExists(arguments.theObject,"evaluateExpression")>
+				<cfset arguments.theObject["evaluateExpression"] = this["evaluateExpression"] />
+			</cfif>
 		</cfif>
+		
 		<cfreturn arguments.theObject/>
 	</cffunction>
 
@@ -186,5 +194,11 @@
 		<cfreturn Evaluate(arguments.Condition)>
 
 	</cffunction>
+	
+	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">
+		<cfargument name="expression" type="any" required="true" />
+		
+		<cfreturn Evaluate(arguments.expression)>
 
+	</cffunction>
 </cfcomponent>
