@@ -13,7 +13,7 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ClientRuleScripter_EqualTo" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the equalTo validation.">
+<cfcomponent output="false" name="ClientRuleScripter_equalTo" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the equalTo validation.">
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
@@ -22,16 +22,31 @@
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		
+		<cfset var theScript = "" />
+		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
+		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
+		<cfset var options = true/>
 		<cfset var messageScript = "" />
-		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "#validation.getPropertyDesc()# must be the same as #arguments.validation.getParameterValue('ComparePropertyDesc')#"/>
-		</cfif>
-		<cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
-			
-			
 		<cfset var propertyName=arguments.validation.getParameterValue('ComparePropertyName')>
-		<cfreturn "equalTo: ':input[name=""#propertyName#""]'" />
+		<cfset var propertyDesc=arguments.validation.getParameterValue('ComparePropertyDesc')>
+		
+		<cfif Len(arguments.customMessage) eq 0>
+			<cfset arguments.customMessage = "#validation.getPropertyDesc()# must be the same as #propertyDesc#"/>
+		</cfif>
+		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
+		
+		<cfoutput>
+		<cfsavecontent variable="theScript">
+		#fieldSelector#.rules("add", {
+			equalTo : ":input[name='#propertyName#']",
+			messages: {
+				equalTo: "#messageScript#"
+			} 
+		});
+		</cfsavecontent>
+		</cfoutput>
+
+		<cfreturn theScript/>
 	</cffunction>
 
 </cfcomponent>
