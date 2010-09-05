@@ -3,18 +3,16 @@
 Example Usage:
 
 <rule type="Patterns">
-	<param minMatches="3" />
-	<param pattern_lowerCaseLetter="[a-z]" />
-	<param pattern_upperCaseLetter="[A-Z]" />
-	<param pattern_digit="[\d]" />
-	<param pattern_punct="[[:punct:]]" />
+	<param name="minMatches" value="3" />
+	<param name="pattern_lowerCaseLetter" value="[a-z]" />
+	<param name="pattern_upperCaseLetter" value="[A-Z]" />
+	<param name="pattern_digit" value="[\d]" />
+	<param name="pattern_punct" value="[[:punct:]]" />
 </rule>
 
  --->
 
-
 <cfcomponent  name="ClientRuleScripter_Patterns" extends="AbstractClientRuleScripter" hint="Fails if the validated property does not match at least 1 or the specficied ammount of regex patterns defined.">
-	
 	
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="Value did not match the pattern requirements.">
@@ -61,12 +59,13 @@ Example Usage:
 		<cfif Len(arguments.customMessage) eq 0>
 			<cfset arguments.customMessage = "Did not match the patterns for #validation.getPropertyDesc()#"/>
 		</cfif>
-		<cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
+		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
 			
 		<cfoutput>
 			<cfsavecontent variable="theScript">
 				#fieldSelector#.rules("add", {
-					 #valType# : #serializeJSON(params)#
+					 #valType# : #serializeJSON(params)#,
+					 messages: {"#valType#": "#messageScript#"}
 				});
 			</cfsavecontent>
 		</cfoutput>

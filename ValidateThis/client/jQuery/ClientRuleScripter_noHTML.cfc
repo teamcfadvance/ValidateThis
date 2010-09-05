@@ -40,28 +40,26 @@
 
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-		<cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
 		<cfset var params = arguments.validation.getParameters()/>
 		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
-	
+		<cfset var options = true/>
+		<cfset var messageScript = "" />
+		
 		<cfif len(arguments.customMessage) eq 0>
 			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# cannot contain HTML tags."/>
 		</cfif>
+		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
 		
-		
-		
-		<cfif structCount(params) eq 0>
-			<cfset options=true/>
-		<cfelse>
-			<cfset options=serializeJSON(params)>
+		<cfif structCount(params) gt 0>
+			<cfset options=params>
 		</cfif>
 
 		<cfoutput>
 		<cfsavecontent variable="theScript">
 		#fieldSelector#.rules("add", {
-			#getValType()# : #options#,
+			#getValType()# : #serializeJSON(options)#,
 			messages: {
-				#getValType()#: "#arguments.customMessage#"
+				#getValType()#: "#messageScript#"
 			} 
 		});
 		</cfsavecontent>

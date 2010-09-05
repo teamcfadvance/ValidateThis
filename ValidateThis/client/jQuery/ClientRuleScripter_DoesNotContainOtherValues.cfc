@@ -1,24 +1,23 @@
 <!--- 
-UniqueValue:
+DoesNotContainOtherProperties:
 	ServerRuleValidator Implmenetation By Marc Esher:
 	ClientRuleScripter Implementation By Adam Drew
 
 Definition Usage Example:
 
-<rule type="UniqueValue" failuremessage="Password may not contain your first or last name." >
-	<param propertyNames="firstName,LastName"/>
+<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your first or last name." >
+	<param name="propertyNames" value="firstName,LastName"/>
 </rule>
-<rule type="UniqueValue" failuremessage="Password may not contain your username.">
-	<param propertyNames="username" />
+<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your username.">
+	<param name="propertyNames" value="username" />
 </rule>
-<rule type="UniqueValue" failuremessage="Password may not contain your email address." >
-	<param propertyNames="emailAddress"/>
+<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your email address." >
+	<param name="propertyNames" value="emailAddress"/>
 </rule>
-<rule type="UniqueValue" failuremessage="This better be ignored!" >
-	<param propertyNames="thisPropertyDoesNotExist"/>
+<rule type="DoesNotContainOtherProperties" failuremessage="This better be ignored!" >
+	<param name="propertyNames" value"="thisPropertyDoesNotExist"/>
 </rule>
 
-See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 --->
 
 <cfcomponent name="ClientRuleScripter_DoesNotContainOtherValues" extends="AbstractClientRuleScripter" hint="Fails if the validated property contains the value of another property">
@@ -66,24 +65,23 @@ See ServerRuleValidator_UniqueValue.cfc for cf server implmenetation
 
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-		<cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
 		<cfset var valType = arguments.validation.getValType() />		
 		<cfset var params = arguments.validation.getParameters()/>
 		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
-
 		<cfset var messageScript = "" />
+		
 		<cfif Len(arguments.customMessage) eq 0>
 			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#."/>
 		</cfif>
-		<cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
+		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
 
 		<cfif StructKeyExists(params,"propertyNames")>
 			<cfoutput>
 				<cfsavecontent variable="theScript">
 					#fieldSelector#.rules("add", {
 						 #valType# : #serializeJSON(listToArray(trim(params.propertyNames)))#,
-						 messages: {"#valType#": "#arguments.customMessage#"}
+						 messages: {"#valType#": "#messageScript#"}
 					});
 			</cfsavecontent>
 			</cfoutput>

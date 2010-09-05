@@ -57,7 +57,6 @@
 
         <cfset var theScript = "" />
         <cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-        <cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
         <cfset var valType = this.getValType() />       
         <cfset var params = arguments.validation.getParameters()/>
         <cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
@@ -66,13 +65,13 @@
         <cfif Len(arguments.customMessage) eq 0>
             <cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must contain a date between #params['from']# and #params['until']#."/>
         </cfif>
-        <cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
+        <cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
 
          <cfoutput>
          <cfsavecontent variable="theScript">
              #fieldSelector#.rules("add", {
-                  #valType# : #serializeJSON(arguments.validation.getParameters())#,
-                  messages: {"#valType#": "#arguments.customMessage#"}
+                  #valType# : #serializeJSON(params)#,
+                  messages: {"#valType#": "#messageScript#"}
              });
          </cfsavecontent>
          </cfoutput>

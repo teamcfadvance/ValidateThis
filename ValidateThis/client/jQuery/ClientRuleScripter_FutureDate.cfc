@@ -45,14 +45,12 @@
 
         <cfset var theScript = "" />
         <cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-        <cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
-        <cfset var valType = arguments.validation.getValType() />       
+        <cfset var valType = getValType() />       
         <cfset var params = arguments.validation.getParameters()/>
         <cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
-		
 		<cfset var options = true/>
-		
         <cfset var messageScript = "" />
+		
         <cfif Len(arguments.customMessage) eq 0>
             <cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must be a date in the future."/>
         </cfif>
