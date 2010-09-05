@@ -13,7 +13,7 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ClientRuleScripter_Regex" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the regex validation.">
+<cfcomponent output="false" name="ClientRuleScripter_regex" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the regex validation.">
 
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
@@ -42,8 +42,7 @@
 			<cfthrow type="validatethis.client.jQuery.ClientRuleScripter_Regex.missingParameter"
 			message="Either a regex or a serverRegex parameter must be defined for a regex rule type." />
 		</cfif>
-
-		
+				
 		<cfreturn "regex: /#theRegex#/" />
 
 	</cffunction>

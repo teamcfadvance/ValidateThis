@@ -121,7 +121,7 @@
 	</cffunction>
 	
 	<cffunction name="getValType" returntype="string" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfreturn ListLast(getMetadata(this).name,"_") />
+		<cfreturn lcase(ListLast(getMetadata(this).name,"_")) />
 	</cffunction>
 	
 </cfcomponent>
