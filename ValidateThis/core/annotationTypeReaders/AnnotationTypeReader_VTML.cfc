@@ -123,8 +123,7 @@ VTML
 						}
 						if (test.HasCondition){
 							pos.Condition = reFind(variables.VTML.Condition.Test,theRule,0,true);
-							theCondition = createConditionStruct(getElementFromVTMLRule(theRule,pos.Condition,"\{|\}"));
-							//rule.Condition = theCondition;
+							rule.Condition =  getElementFromVTMLRule(theRule,pos.Condition,"\{|\}");
 						}
 						if (test.HasFormProperties){
 						pos.FormProperties = reFind(variables.VTML.FormSettings.Test,theRule,0,true);

@@ -56,7 +56,7 @@
 				</cfif>
 				<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# is required#ConditionDesc#." />
 			</cfif>
-			<cfset theScript = generateAddMethod(arguments.validation,arguments.formName,theCondition,arguments.customMessage,arguments.locale) />
+			<cfset theScript = generateAddMethod(theCondition,arguments.customMessage,arguments.locale) />
 		<cfelse>
 			<cfset theScript = generateAddRule(argumentCollection=arguments) />
 		</cfif>
