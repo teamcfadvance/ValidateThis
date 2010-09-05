@@ -13,21 +13,25 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ServerRuleValidator_PastDate" extends="AbstractServerRuleValidator" hint="I am responsible for performing the past date validation.">
+<cfcomponent output="false" name="ServerRuleValidator_InList" extends="AbstractServerRuleValidator" hint="I am responsible for performing the future InList validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-		<cfset var theVal = arguments.valObject.getObjectValue()/>
-		<cfset var theDate = now()/>
+        <cfset var theVal = arguments.valObject.getObjectValue()/>
+		<cfset var theList = ""/>
+		<cfset var theDelim= ","/>
 		<cfset var parameterMessages = ""/>
-		
-		<cfif arguments.valObject.hasParameter("before")>
-			<cfset theDate = arguments.valObject.getParameterValue("before")/>
-			<cfset parameterMessages = " The date entered must come before #theDate#">
+
+		<cfif arguments.valObject.hasParameter("list")>
+			<cfset theList = arguments.valObject.getParameterValue("list")/>
 		</cfif>
-		
-		<cfif shouldTest(arguments.valObject) AND not isDate(theVal) or not dateCompare(theVal,theDate) eq -1>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a date in the past.#parameterMessages#")) />
+
+		<cfif arguments.valObject.hasParameter("delim")>
+			<cfset theDelim= arguments.valObject.getParameterValue("delim")/>
+		</cfif>
+
+		<cfif shouldTest(arguments.valObject) AND not listLen(theList) or not listFindNoCase(theList,theVal,theDelim)>
+			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# was not found in the list: #theList#. #parameterMessages#")) />
 		</cfif>
 	</cffunction>
 	
