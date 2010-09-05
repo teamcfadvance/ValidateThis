@@ -16,11 +16,11 @@
 <cfcomponent output="false" name="ServerRuleValidator_Min" extends="AbstractServerRuleValidator" hint="I am responsible for performing the Min validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var Parameters = arguments.valObject.getParameters() />
-		<cfif shouldTest(arguments.valObject) AND Val(arguments.valObject.getObjectValue()) LT Parameters.Min>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be at least #Parameters.Min#.")) />
+		<cfset var Parameters = arguments.validation.getParameters() />
+		<cfif shouldTest(arguments.validation) AND Val(arguments.validation.getObjectValue()) LT Parameters.Min>
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be at least #Parameters.Min#.")) />
 		</cfif>
 	</cffunction>
 	

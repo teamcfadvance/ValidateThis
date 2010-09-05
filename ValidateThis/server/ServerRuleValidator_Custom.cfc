@@ -16,27 +16,37 @@
 <cfcomponent output="false" name="ServerRuleValidator_Custom" extends="AbstractServerRuleValidator" hint="I am responsible for performing a custom validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
 		<cfset var customResult = 0 />
 		<cfset var failureMessage = "A custom validator failed." />
-		<cfset var theObject = arguments.valObject.getTheObject() />
-		<cfset var Parameters = arguments.valObject.getParameters() />
-		<cfset var theMethod = Parameters.MethodName />
+		<cfset var theObject = validation.getTheObject() />
+		<cfset var Parameters = validation.getParameters() />		
+		<cfset var theMethod = ""/>
 		
-		<cfset customResult = evaluate("theObject.#theMethod#()") />
+		<cfif validation.hasParameter("methodName")>
+			<cfset theMethod = validation.getParameterValue("methodname") />
+			<cfset customResult = evaluate("theObject.#theMethod#()") />
+		<cfelseif validation.hasParameter("remoteURL")>
+			<cfhttp url="#validation.getParameterValue('remoteURL')#" result="customResult"/>
+		</cfif>
+
 		<cfif NOT IsDefined("customResult")>
 			<cfreturn />
 		</cfif>
-		<cfif (isBoolean(customResult) and customResult) or (isStruct(customResult) and customResult.IsSuccess)>
+
+		<cfif (isBoolean(customResult) and customResult) or (isStruct(customResult) and (structKeyExists(customResult,"IsSuccess") and customResult.IsSuccess)) or (structKeyExists(customResult,"fileContent") and evaluate(customResult.fileContent.toString()))>
 			<cfreturn />
 		</cfif>
+		
 		<cfif isStruct(customResult) and structKeyExists(customResult,"failureMessage")>
 			<cfset failureMessage = customResult.failureMessage />
-		<cfelseif len(arguments.valObject.getFailureMessage()) GT 0>
-			<cfset failureMessage = arguments.valObject.getFailureMessage() /> 
+		<cfelseif len(arguments.validation.getFailureMessage()) GT 0>
+			<cfset failureMessage = arguments.validation.getFailureMessage() /> 
 		</cfif>
-		<cfset fail(arguments.valObject,failureMessage) />
+		
+		<cfset fail(arguments.validation,failureMessage) />
+		
 	</cffunction>
 
 </cfcomponent>

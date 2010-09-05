@@ -16,10 +16,10 @@
 <cfcomponent output="false" extends="AbstractServerRuleValidator" hint="I am responsible for performing the False Boolean validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-		<cfset var val = arguments.valObject.getObjectValue()/>
-		<cfif shouldTest(arguments.valObject) AND (not IsValid("Boolean",val) or (isValid("Boolean",val) and val))>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a false boolean.")) />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfset var val = arguments.validation.getObjectValue()/>
+		<cfif shouldTest(arguments.validation) AND (not IsValid("Boolean",val) or (isValid("Boolean",val) and val))>
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a false boolean.")) />
 		</cfif>
 	</cffunction>
 	

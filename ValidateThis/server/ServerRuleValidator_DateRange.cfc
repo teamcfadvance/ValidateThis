@@ -16,13 +16,13 @@
 <cfcomponent output="false" name="ServerRuleValidator_DateRange" extends="AbstractServerRuleValidator" hint="I am responsible for performing the DateRange validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-		<cfset var fromDate = arguments.valObject.getParameterValue("from")/>
-		<cfset var untilDate = arguments.valObject.getParameterValue("until")/>
-		<cfset var theDate = arguments.valObject.getObjectValue()/>
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfset var fromDate = arguments.validation.getParameterValue("from")/>
+		<cfset var untilDate = arguments.validation.getParameterValue("until")/>
+		<cfset var theDate = arguments.validation.getObjectValue()/>
 		
-		<cfif shouldTest(arguments.valObject) AND ((theDate lt fromDate) or (theDate gt untilDate))>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a date between #fromDate# and #untilDate#.")) />
+		<cfif shouldTest(arguments.validation) AND ((theDate lt fromDate) or (theDate gt untilDate))>
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date between #fromDate# and #untilDate#.")) />
 		</cfif>
 	</cffunction>
 	

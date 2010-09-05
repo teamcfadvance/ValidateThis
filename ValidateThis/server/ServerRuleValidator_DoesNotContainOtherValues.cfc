@@ -23,18 +23,18 @@ See ClientRuleScripter_UniqueValue.cfc for client implmenetation
 
 <cfcomponent extends="AbstractServerRuleValidator" hint="Fails if the validated property contains the value of another property">
 	<cfscript>
-		function validate(valObject){
-			var value = arguments.valObject.getObjectValue();
-			var params = arguments.valObject.getParameters();
+		function validate(validation){
+			var value = arguments.validation.getObjectValue();
+			var params = arguments.validation.getParameters();
 			var property = "";
 
-			if(	NOT shouldTest(arguments.valObject)	OR trim(value) eq "" OR NOT structKeyExists(params,"propertyNames")) return;
+			if(	NOT shouldTest(arguments.validation)	OR trim(value) eq "" OR NOT structKeyExists(params,"propertyNames")) return;
 
 			var propertyNames = listToArray(params.propertyNames);
 			for(property in propertyNames){
-				var propValue = arguments.valObject.getObjectValue(property);
+				var propValue = arguments.validation.getObjectValue(property);
 				if(propValue NEQ "" AND value contains propValue){
-					fail(valObject, "The #arguments.valObject.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#. ");
+					fail(validation, "The #arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#. ");
 				}
 			}
 		}

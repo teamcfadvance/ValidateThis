@@ -16,9 +16,9 @@
 <cfcomponent output="false" extends="AbstractServerRuleValidator" hint="I am responsible for performing the Boolean validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-		<cfif shouldTest(arguments.valObject) AND NOT IsValid("Boolean",arguments.valObject.getObjectValue())>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a valid boolean.")) />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfif shouldTest(arguments.validation) AND NOT IsValid("Boolean",arguments.validation.getObjectValue())>
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid boolean.")) />
 		</cfif>
 	</cffunction>
 	

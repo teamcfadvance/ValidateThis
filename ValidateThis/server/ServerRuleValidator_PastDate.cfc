@@ -16,18 +16,18 @@
 <cfcomponent output="false" name="ServerRuleValidator_PastDate" extends="AbstractServerRuleValidator" hint="I am responsible for performing the past date validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-		<cfset var theVal = arguments.valObject.getObjectValue()/>
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfset var theVal = arguments.validation.getObjectValue()/>
 		<cfset var theDate = now()/>
 		<cfset var parameterMessages = ""/>
 		
-		<cfif arguments.valObject.hasParameter("before")>
-			<cfset theDate = arguments.valObject.getParameterValue("before")/>
+		<cfif arguments.validation.hasParameter("before")>
+			<cfset theDate = arguments.validation.getParameterValue("before")/>
 			<cfset parameterMessages = " The date entered must come before #theDate#">
 		</cfif>
 		
-		<cfif shouldTest(arguments.valObject) AND (not isValid("date",theVal) OR (isValid("date",theVal) AND not dateCompare(theVal,theDate) eq -1))>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a date in the past.#parameterMessages#")) />
+		<cfif shouldTest(arguments.validation) AND (not isValid("date",theVal) OR (isValid("date",theVal) AND not dateCompare(theVal,theDate) eq -1))>
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the past.#parameterMessages#")) />
 		</cfif>
 	</cffunction>
 	

@@ -16,12 +16,12 @@
 <cfcomponent output="false" name="ServerRuleValidator_Required" extends="AbstractServerRuleValidator" hint="I am responsible for performing the Required validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var Parameters = arguments.valObject.getParameters() />
-		<cfset var theCondition = arguments.valObject.getCondition() />
+		<cfset var Parameters = arguments.validation.getParameters() />
+		<cfset var theCondition = arguments.validation.getCondition() />
 		<cfset var ConditionDesc = "" />
-		<cfset var theValue = arguments.valObject.getObjectValue() />
+		<cfset var theValue = arguments.validation.getObjectValue() />
 		
 		<cfif NOT IsObject(theValue) AND Len(theValue) EQ 0>
 			<cfif StructKeyExists(theCondition,"Desc")>
@@ -33,7 +33,7 @@
 					<cfset ConditionDesc = " if you specify a value for the " & Parameters.DependentPropertyDesc />
 				</cfif>
 			</cfif>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# is required#ConditionDesc#.")) />
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#ConditionDesc#.")) />
 		</cfif>
 	</cffunction>
 	

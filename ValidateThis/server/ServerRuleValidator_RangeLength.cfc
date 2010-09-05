@@ -16,12 +16,12 @@
 <cfcomponent output="false" name="ServerRuleValidator_RangeLength" extends="AbstractServerRuleValidator" hint="I am responsible for performing the RangeLength validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 	
-		<cfset var Parameters = arguments.valObject.getParameters() />
-		<cfset var theLength =  Len(arguments.valObject.getObjectValue()) />
-		<cfif shouldTest(arguments.valObject) AND theLength LT Parameters.MinLength OR theLength GT Parameters.MaxLength>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be between #Parameters.MinLength# and #Parameters.MaxLength# characters long.")) />
+		<cfset var Parameters = arguments.validation.getParameters() />
+		<cfset var theLength =  Len(arguments.validation.getObjectValue()) />
+		<cfif shouldTest(arguments.validation) AND theLength LT Parameters.MinLength OR theLength GT Parameters.MaxLength>
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be between #Parameters.MinLength# and #Parameters.MaxLength# characters long.")) />
 		</cfif>
 	</cffunction>
 	

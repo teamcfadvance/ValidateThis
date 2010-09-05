@@ -14,14 +14,14 @@ Example Usage:
 
 <cfcomponent extends="AbstractServerRuleValidator" hint="Evaluates each regex pattern. Any parameter starting with the word 'pattern' is considered. Validation fails if at least X patterns match, where 'X' is specified as the 'minMatches' parameter">
 	<cfscript>
-		function validate(valObject){
-			var value = valObject.getObjectValue();
-			var params = valObject.getParameters();
+		function validate(validation){
+			var value = validation.getObjectValue();
+			var params = validation.getParameters();
 			var param = "";
 			var minMatches = 1;
 			var complexity = 0;
 	
-			if(NOT shouldTest(arguments.valObject)) return;
+			if(NOT shouldTest(arguments.validation)) return;
 	
 			if(structKeyExists(params,"minMatches")){
 				minMatches = params.minMatches;
@@ -35,7 +35,7 @@ Example Usage:
 			}
 			
 			if(complexity LT minMatches){
-				fail(valObject,"#complexity# patterns were matched but #params.minMatches# were required");
+				fail(validation,"#complexity# patterns were matched but #params.minMatches# were required");
 			}
 		}
 	</cfscript>

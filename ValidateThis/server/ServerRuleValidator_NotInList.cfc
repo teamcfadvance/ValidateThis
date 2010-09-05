@@ -16,22 +16,22 @@
 <cfcomponent output="false" name="ServerRuleValidator_NotInList" extends="AbstractServerRuleValidator" hint="I am responsible for performing the NotInList validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-        <cfset var theVal = arguments.valObject.getObjectValue()/>
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+        <cfset var theVal = arguments.validation.getObjectValue()/>
 		<cfset var theList = ""/>
 		<cfset var theDelim= ","/>
 		<cfset var parameterMessages = ""/>
 
-		<cfif arguments.valObject.hasParameter("list")>
-			<cfset theList = arguments.valObject.getParameterValue("list")/>
+		<cfif arguments.validation.hasParameter("list")>
+			<cfset theList = arguments.validation.getParameterValue("list")/>
 		</cfif>
 
-		<cfif arguments.valObject.hasParameter("delim")>
-			<cfset theDelim= arguments.valObject.getParameterValue("delim")/>
+		<cfif arguments.validation.hasParameter("delim")>
+			<cfset theDelim= arguments.validation.getParameterValue("delim")/>
 		</cfif>
 
-		<cfif shouldTest(arguments.valObject) AND not listLen(theList) or listFindNoCase(theList,theVal,theDelim)>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# was found in the list: #theList#. #parameterMessages#")) />
+		<cfif shouldTest(arguments.validation) AND not listLen(theList) or listFindNoCase(theList,theVal,theDelim)>
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was found in the list: #theList#. #parameterMessages#")) />
 		</cfif>
 	</cffunction>
 	
