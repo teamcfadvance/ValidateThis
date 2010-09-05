@@ -206,3 +206,5 @@ AD - added a bunch of new SRV + CRS validation types to the framework:
 		Patterns(patterns_name=/regex/ [,patterns_anotherName=/regex/, .... ],[minMatches=1]);
 		DoesNotContainOtherValues(propertyNames="list,of,properties");
 		Expression(expr);
+		InList(list,[delim=","]);
+		NotInList(list,[delim=","]);

@@ -26,7 +26,7 @@
 			<cfset parameterMessages = " The date entered must come after #theDate#">
 		</cfif>
 
-		<cfif shouldTest(arguments.valObject) AND not isDate(theVal) or not dateCompare(theVal,theDate) gt 0>
+		<cfif shouldTest(arguments.valObject) AND (not isValid("date",theVal) OR (isValid("date",theVal) AND not dateCompare(theVal,theDate) gt 0))>
 			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a date in the future.#parameterMessages#")) />
 		</cfif>
 	</cffunction>

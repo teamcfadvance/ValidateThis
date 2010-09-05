@@ -17,7 +17,8 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
-		<cfif shouldTest(arguments.valObject) AND not IsValid("Boolean",arguments.valObject.getObjectValue()) or not arguments.valObject.getObjectValue()>
+		<cfset var val = arguments.valObject.getObjectValue()/>
+		<cfif shouldTest(arguments.valObject) AND (not IsValid("Boolean",val) or (isValid("Boolean",val) and not val))>
 			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be a true boolean.")) />
 		</cfif>
 	</cffunction>
