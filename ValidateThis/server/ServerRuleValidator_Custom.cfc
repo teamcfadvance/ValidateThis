@@ -23,19 +23,23 @@
 		<cfset var theObject = validation.getTheObject() />
 		<cfset var Parameters = validation.getParameters() />		
 		<cfset var theMethod = ""/>
+		<cfset var fileContent = ""/>
 		
 		<cfif validation.hasParameter("methodName")>
 			<cfset theMethod = validation.getParameterValue("methodname") />
 			<cfset customResult = evaluate("theObject.#theMethod#()") />
 		<cfelseif validation.hasParameter("remoteURL")>
-			<cfhttp url="#validation.getParameterValue('remoteURL')#" result="customResult"/>
+			<cfhttp method="get" url="#validation.getParameterValue('remoteURL')#" result="customResult">
+				<cfhttpparam type="url" name="#arguments.validation.getClientFieldName()#" value="#arguments.validation.getObjectValue()#">
+			</cfhttp>
+			<cfif isStruct(customResult)>
+				<cfset fileContent = customResult.fileContent/>
+				<cfset customResult = evaluate(fileContent.toString())/>
+				<cfset failureMessage = failureMessage & " (#validation.getPropertyName()#=#validation.getObjectValue()# - valid: #customResult#)"/>
+			</cfif>			
 		</cfif>
 
-		<cfif NOT IsDefined("customResult")>
-			<cfreturn />
-		</cfif>
-
-		<cfif (isBoolean(customResult) and customResult) or (isStruct(customResult) and (structKeyExists(customResult,"IsSuccess") and customResult.IsSuccess)) or (structKeyExists(customResult,"fileContent") and evaluate(customResult.fileContent.toString()))>
+		<cfif !IsDefined("customResult") or (isBoolean(customResult) and customResult) or (isStruct(customResult) and (structKeyExists(customResult,"IsSuccess") and customResult.IsSuccess))>
 			<cfreturn />
 		</cfif>
 		
