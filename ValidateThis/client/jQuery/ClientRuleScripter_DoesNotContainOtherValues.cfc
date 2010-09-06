@@ -65,7 +65,7 @@ Definition Usage Example:
 
 		<cfset var theScript = "" />
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-		<cfset var valType = arguments.validation.getValType() />		
+		<cfset var valType = this.getValType() />		
 		<cfset var params = arguments.validation.getParameters()/>
 		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
