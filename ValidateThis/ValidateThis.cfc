@@ -175,9 +175,9 @@
 				
     </cffunction>
 	
-    <cffunction name="getClientRuleScripts" access="public" output="false" returntype="any">
+    <cffunction name="getClientRuleScripters" access="public" output="false" returntype="any">
 
-		<cfreturn variables.ValidationFactory.getClientRuleScripts(variables.ValidateThisConfig.DefaultJSLib) />
+		<cfreturn variables.ValidationFactory.getClientRuleScripters(variables.ValidateThisConfig.DefaultJSLib) />
 		
 	</cffunction>
 		

@@ -128,7 +128,7 @@
 
     </cffunction>
     
-	<cffunction name="getClientRuleScripts" access="public" output="false" returntype="any">
+	<cffunction name="getClientRuleScripters" access="public" output="false" returntype="any">
 		<cfargument name="JSLib" type="any" required="true"/>
 		
 		<cfreturn getBean("ClientValidator").getRuleScripts(arguments.JSLib) />
