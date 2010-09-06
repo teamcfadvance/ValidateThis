@@ -13,7 +13,7 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ServerRuleValidator_InList" extends="AbstractServerRuleValidator" hint="I am responsible for performing the future InList validation.">
+<cfcomponent output="false" name="ServerRuleValidator_InList" extends="AbstractServerRuleValidator" hint="I am responsible for performing the InList validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
