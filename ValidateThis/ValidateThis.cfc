@@ -74,7 +74,7 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
 
-		<cfset var BOValidator = getValidator(arguments.objectType) />
+		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
 		
 		<cfset arguments.theObject = createWrapper(arguments.theObject)/>
 
