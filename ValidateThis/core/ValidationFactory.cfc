@@ -142,7 +142,7 @@
 		
 		<cfif isSimpleValue(arguments.objectList)>
 				<cfif (listLen(arguments.objectList) gt 1)>
-					<cfloop list="#arguments.objectList#" index="obj">					
+					<cfloop list="#arguments.objectList#" index="obj">
 						<cfset ArrayAppend(list,obj)/>
 					</cfloop>
 				<cfelse>
@@ -151,9 +151,10 @@
 		<cfelseif isStruct(arguments.objectList)>
 			<cfscript>
 				for (obj in arguments.objectList){
-					ArrayAppend(list,obj);									
+					ArrayAppend(list,obj);
 				}
 			</cfscript>
+			
 		<cfelseif isArray(arguments.objectList)>
 			<cfset list = arguments.objectList/>
 		<cfelse>
@@ -161,8 +162,13 @@
 		</cfif>
 		
 		<cfif isArray(list)>
-	       <cfloop array="#list#" index="objectType">
-				<cfset getValidator(objectType)/>
+			<cfloop array="#list#" index="objectType">
+				<cfif isStruct(objectType)>
+					<cfset name = listLast(getMetadata(objectType).name,".")>
+					<cfset getValidator(objectType=name,theObject=objectType)/>
+				<cfelseif isSimpleValue(objectType)>
+					<cfset getValidator(objectType=objectType)/>
+				</cfif>
 		   </cfloop>
 	   </cfif>
 	   

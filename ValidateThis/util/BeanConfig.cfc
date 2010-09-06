@@ -100,6 +100,7 @@ Adds a constructor property to a bean.
 		addTransient("ValidateThis.core.StructWrapper");
 		addTransient("ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_JSON");
 		addTransient("ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_XML");
+		addTransient("ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_VTML");
 		addTransient("ValidateThis.core.Parameter");
 		/*
 		addSingleton("ValidateThis.util.TransientFactoryNoCS");
