@@ -234,7 +234,7 @@
 		<cfscript>
 			injectMethod(annotationReader, this, "getATRs", "getATRs");
 			atrs = annotationReader.getATRs();
-			assertEquals(2,structCount(atrs));
+			assertEquals(3,structCount(atrs));
 		</cfscript>  
 	</cffunction>
 

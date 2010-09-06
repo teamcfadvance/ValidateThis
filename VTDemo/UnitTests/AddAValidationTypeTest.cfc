@@ -30,6 +30,8 @@
 
 	<cffunction name="additionalRuleShouldBeAvailableToClientSideValidations" access="public" returntype="void">
 		<cfscript>
+			//failing fast as I know this doesn't work yet
+			fail("This feature doesn't work yet, but needs to be added soon!");
 			script = ValidateThis.getValidationScript(objectType="BigNumber");
 			assertEquals(true,script CONTAINS "rules('add',{min: 1000});");
 		</cfscript>  

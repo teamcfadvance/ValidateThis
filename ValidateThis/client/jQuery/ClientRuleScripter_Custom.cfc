@@ -35,7 +35,7 @@
 		</cfif>
 
 		<cfif not arguments.validation.hasParameter("remoteURL")>
-			<cfset arguments.validation.adParameter("remoteURL","/remoteProxy.cfc?method=customValidator")>
+			<cfset arguments.validation.addParameter("remoteURL","/remoteProxy.cfc?method=customValidator")>
 		</cfif>
 		
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
