@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cfset Result = "" />
 	

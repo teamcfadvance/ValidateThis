@@ -1,6 +1,6 @@
 <!---
 	
-filename:		\VTDemo\ValidationTestSuite.cfm
+filename:		\validatethis\samples\ValidationTestSuite.cfm
 date created:	2008-10-22
 author:			Bob Silverberg (http://www.silverwareconsulting.com/)
 purpose:		I am the unit testing suite
@@ -28,7 +28,7 @@ purpose:		I am the unit testing suite
 --->
 <cfset testSuite = createObject("component","mxunit.framework.TestSuite").TestSuite() />
 <cfloop list="AbstractDecoratorTest,BaseLocaleLoaderTest,BaseTranslatorTest,BOValidatorTest,ClientScriptWriter_jQueryTest,ClientValidatorTest,CommonScriptGeneratorTest,FileSystemTest,RBLocaleLoaderTest,RBTranslatorTest,ResourceBundleTest,ResultTest,ServerRuleValidatorTest,ServerValidatorTest,TransientFactoryTest,ValidateThisTest,ValidationTest,ValidationFactoryTest,externalFileReaderTest" index="i">
-	<cfset testSuite.addAll("UnitTests.#i#") />
+	<cfset testSuite.addAll("validatethis.tests.#i#") />
 </cfloop>
 <cfset results = testSuite.run() />
 <cfoutput>#results.getResultsOutput('html')#</cfoutput>

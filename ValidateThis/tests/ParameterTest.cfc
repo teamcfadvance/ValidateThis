@@ -13,7 +13,7 @@
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 --->
-<cfcomponent extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -57,7 +57,7 @@
 			validation.setup(obj);
 			paramStruct = {value="getMetadata(this).name",type="expression"};
 			parameter.load(paramStruct);
-			assertEquals("unittests.fixture.aplaincfc_fixture",parameter.getValue());
+			assertEquals("validatethis.tests.fixture.aplaincfc_fixture",parameter.getValue());
 		</cfscript>
 	</cffunction>
 

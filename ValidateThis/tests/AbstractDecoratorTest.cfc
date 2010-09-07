@@ -1,6 +1,6 @@
 <!---
 	
-filename:		\VTDemo\UnitTests\AbstractDecoratorTest.cfc
+filename:		\validatethis\samples\UnitTests\AbstractDecoratorTest.cfc
 date created:	2008-10-22
 author:			Bob Silverberg (http://www.silverwareconsulting.com/)
 purpose:		I AbstractDecoratorTest.cfc
@@ -26,7 +26,7 @@ purpose:		I AbstractDecoratorTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="UnitTests.AbstractDecoratorTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent displayname="validatethis.tests.AbstractDecoratorTest" extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cfset Transfer = "" />
 	<cfset UserTO = "" />

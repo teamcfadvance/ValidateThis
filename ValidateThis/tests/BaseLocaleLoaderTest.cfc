@@ -1,6 +1,6 @@
 <!---
 	
-filename:		\VTDemo\UnitTests\BaseLocaleLoaderTest.cfc
+filename:		\validatethis\samples\UnitTests\BaseLocaleLoaderTest.cfc
 date created:	2008-10-22
 author:			Bob Silverberg (http://www.silverwareconsulting.com/)
 purpose:		I BaseLocaleLoaderTest.cfc
@@ -26,7 +26,7 @@ purpose:		I BaseLocaleLoaderTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="UnitTests.BaseLocaleLoaderTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent displayname="validatethis.tests.BaseLocaleLoaderTest" extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cfset BaseLocaleLoader = "" />
 	

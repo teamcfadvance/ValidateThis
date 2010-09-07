@@ -1,6 +1,6 @@
 <!---
 	
-filename:		\VTDemo\UnitTests\RBLocaleLoaderTest.cfc
+filename:		\validatethis\samples\UnitTests\RBLocaleLoaderTest.cfc
 date created:	2008-10-22
 author:			Bob Silverberg (http://www.silverwareconsulting.com/)
 purpose:		I RBLocaleLoaderTest.cfc
@@ -26,7 +26,7 @@ purpose:		I RBLocaleLoaderTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="UnitTests.RBLocaleLoaderTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent displayname="validatethis.tests.RBLocaleLoaderTest" extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>

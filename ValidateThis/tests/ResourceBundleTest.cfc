@@ -1,7 +1,7 @@
 
 <!---
 	
-filename:		\VTDemo\UnitTests\ResourceBundleTest.cfc
+filename:		\validatethis\samples\UnitTests\ResourceBundleTest.cfc
 date created:	2008-10-22
 author:			Bob Silverberg (http://www.silverwareconsulting.com/)
 purpose:		I ResourceBundleTest.cfc
@@ -21,7 +21,7 @@ purpose:		I ResourceBundleTest.cfc
 	License.
 	
 --->
-<cfcomponent displayname="UnitTests.ResourceBundleTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent displayname="validatethis.tests.ResourceBundleTest" extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cfset ResourceBundle = "" />
 	

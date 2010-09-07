@@ -13,7 +13,7 @@
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 --->
-<cfcomponent extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -47,7 +47,7 @@
 
 	<cffunction name="initReturnsCorrectObjectWithExplicitMappedPath" access="public" returntype="void">
 		<cfscript>
-			defPath = "/UnitTests/Fixture";
+			defPath = "/validatethis/tests/Fixture";
 			BOValidator = validationFactory.getValidator(variables.className,defPath);
 			isBOVCorrect(BOValidator);
 		</cfscript>  
@@ -55,14 +55,14 @@
 
 	<cffunction name="initThrowsWithBadExplicitMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			defPath = "/VTDemo/UnitTests/Fixture/_Doesnt_Exist/";
+			defPath = "/validatethis/samples/validatethis/tests/Fixture/_Doesnt_Exist/";
 			BOValidator = validationFactory.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initReturnsCorrectObjectWithMappingInValidateThisConfig" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig.definitionPath = "/UnitTests/Fixture";
+			ValidateThisConfig.definitionPath = "/validatethis/tests/Fixture";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			BOValidator = validationFactory.getValidator(variables.className);
 			isBOVCorrect(BOValidator);
@@ -71,7 +71,7 @@
 
 	<cffunction name="initThrowsWithBadMappingInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			ValidateThisConfig.definitionPath = "/VTDemo/UnitTests/Fixture/_DoesntExist";
+			ValidateThisConfig.definitionPath = "/validatethis/samples/validatethis/tests/Fixture/_DoesntExist";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			BOValidator = validationFactory.getValidator(variables.className);
 		</cfscript>  

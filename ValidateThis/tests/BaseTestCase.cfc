@@ -21,7 +21,7 @@
 		<cfargument name="beansXML" type="string" required="false" default="" />
 		<cfargument name="MockList" type="struct" required="false" default="#StructNew()#" />
 		<cfargument name="params" type="struct" required="false" default="#StructNew()#" />
-		<cfargument name="baseBeanPath" type="any" required="false" default="/BODemo/model/config/Coldspring.xml.cfm" />
+		<cfargument name="baseBeanPath" type="any" required="false" default="/validatethis/samples/BODemo/model/config/Coldspring.xml.cfm" />
 		<cfargument name="forceRefresh" type="any" required="false" default="false" />
 		
 		
@@ -79,7 +79,7 @@
 			ValidateThisConfig.DefaultJSLib="jQuery";
 			ValidateThisConfig.JSRoot="js/";
 			ValidateThisConfig.defaultFormName="frmMain";
-			ValidateThisConfig.definitionPath="/model/";
+			ValidateThisConfig.definitionPath="/validatethis/samples/model/";
 			ValidateThisConfig.localeMap="#StructNew()#";
 			ValidateThisConfig.defaultLocale="en_US";
 			ValidateThisConfig.abstractGetterMethod="";

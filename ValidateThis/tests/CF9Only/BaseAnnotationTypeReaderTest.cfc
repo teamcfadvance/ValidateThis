@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -108,7 +108,8 @@
 		<cfscript>
 			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
 			makePublic(annotationTypeReader,"processPropertyDescs");
-			annotationTypeReader.processPropertyDescs(md.properties);
+			makePublic(annotationTypeReader,"reformatProperties");
+			annotationTypeReader.processPropertyDescs(annotationTypeReader.reformatProperties(md.properties));
 			injectMethod(annotationTypeReader, this, "getPropertyDescs", "getPropertyDescs");
 			PropertyDescs = annotationTypeReader.getPropertyDescs();
 			debug(PropertyDescs);

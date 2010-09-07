@@ -34,10 +34,6 @@
 			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# remote(custom) validation failed."/>
 		</cfif>
 
-		<cfif not arguments.validation.hasParameter("remoteURL")>
-			<cfset arguments.validation.addParameter("remoteURL","/remoteProxy.cfc?method=customValidator")>
-		</cfif>
-		
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
 		
 		<cfoutput>

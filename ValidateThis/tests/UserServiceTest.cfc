@@ -13,7 +13,7 @@
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 --->
-<cfcomponent displayname="UnitTests.UserServiceTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent displayname="validatethis.tests.UserServiceTest" extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cfset Transfer = "" />
 	<cfset UserTO = "" />

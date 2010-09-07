@@ -1,7 +1,7 @@
 
 <!---
 	
-filename:		\VTDemo\UnitTests\RBTranslatorTest.cfc
+filename:		\validatethis\samples\UnitTests\RBTranslatorTest.cfc
 date created:	2008-10-22
 author:			Bob Silverberg (http://www.silverwareconsulting.com/)
 purpose:		I RBTranslatorTest.cfc
@@ -27,7 +27,7 @@ purpose:		I RBTranslatorTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="UnitTests.RBTranslatorTest" extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent displayname="validatethis.tests.RBTranslatorTest" extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>

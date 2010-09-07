@@ -15,7 +15,7 @@
 --->
 <cfsilent>
 	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"ValidateThis")>
-		<cfset ValidateThisConfig = {definitionPath="/UnitTests/Fixture/Rules/",JSRoot="/js/"} />
+		<cfset ValidateThisConfig = {definitionPath="/validatethis/tests/Fixture/Rules/",JSRoot="/js/"} />
 		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 	</cfif>
 </cfsilent>

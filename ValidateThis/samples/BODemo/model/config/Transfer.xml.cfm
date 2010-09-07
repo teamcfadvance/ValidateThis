@@ -20,7 +20,7 @@
 
 	<objectDefinitions>
 		<package name="user">
-			<object name="user" table="tblUser" decorator="BODemo.model.user">
+			<object name="user" table="tblUser" decorator="validatethis.samples.BODemo.model.user">
 				<id name="UserId" type="numeric" />
 				<property name="UserName" type="string" />
 				<property name="UserPass" type="string" />
@@ -39,7 +39,7 @@
 	  				<link to="user.usergroup" column="UserGroupId"/>
 	  			</manytoone>
 			</object>
-			<object name="usergroup" table="tblUserGroup" decorator="BODemo.model.UserGroup">
+			<object name="usergroup" table="tblUserGroup" decorator="validatethis.samples.BODemo.model.UserGroup">
 				<id name="UserGroupId" type="numeric" />
 				<property name="UserGroupDesc" type="string" />
 			</object>

@@ -38,9 +38,9 @@
 	<!-- Transfer beans-->
       
 	<bean id="transferFactory" class="transfer.TransferFactory">
-		<constructor-arg name="datasourcePath"><value>/BODemo/model/config/datasource.xml.cfm</value></constructor-arg>
-		<constructor-arg name="configPath"><value>/BODemo/model/config/transfer.xml.cfm</value></constructor-arg>
-		<constructor-arg name="definitionPath"><value>/BODemo/TransferTemp</value></constructor-arg>
+		<constructor-arg name="datasourcePath"><value>/validatethis/samples/BODemo/model/config/datasource.xml.cfm</value></constructor-arg>
+		<constructor-arg name="configPath"><value>/validatethis/samples/BODemo/model/config/transfer.xml.cfm</value></constructor-arg>
+		<constructor-arg name="definitionPath"><value>/validatethis/samples/BODemo/TransferTemp</value></constructor-arg>
 	</bean>
 
 	<bean id="transfer" factory-bean="transferFactory" factory-method="getTransfer" />
@@ -69,12 +69,12 @@
 		</property>
 	</bean>
 
-	<bean id="UserGateway" class="BODemo.model.Gateway.userGateway">
+	<bean id="UserGateway" class="validatethis.samples.BODemo.model.Gateway.userGateway">
 	</bean>
 
 	<!-- Service beans -->
 	
-	<bean id="UserService" class="BODemo.model.service.UserService">
+	<bean id="UserService" class="validatethis.samples.BODemo.model.service.UserService">
 		<property name="GatewayMap">
 			<ref bean="GatewayMap" />
 		</property>

@@ -31,7 +31,7 @@
 		<cfset var propertyDesc=arguments.validation.getParameterValue('ComparePropertyDesc')>
 		
 		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "#validation.getPropertyDesc()# must be the same as #propertyDesc#"/>
+			<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##validation.getPropertyDesc()# must be the same as #propertyDesc#"/>
 		</cfif>
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
 		

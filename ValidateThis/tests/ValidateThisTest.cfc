@@ -14,11 +14,11 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			VTConfig = {definitionPath="/UnitTests/Fixture"};
+			VTConfig = {definitionPath="/validatethis/tests/Fixture"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 			JSLib = "jQuery";
 			ExpectedInJSIncludes = '<script src="JS/jquery-1.4.2.min.js" type="text/javascript">';
@@ -255,10 +255,10 @@
 
 	<cffunction name="newResultShouldReturnCustomResultObjectWhenspecifiedViaConfig" access="public" returntype="void">
 		<cfscript>
-			vtConfig = {ResultPath="UnitTests.Fixture.CustomResult"};
+			vtConfig = {ResultPath="validatethis.tests.Fixture.CustomResult"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(vtConfig);
 			result = ValidateThis.newResult();
-			assertEquals("UnitTests.Fixture.CustomResult",GetMetadata(result).name);
+			assertEquals("validatethis.tests.Fixture.CustomResult",GetMetadata(result).name);
 		</cfscript>
 	</cffunction>
 

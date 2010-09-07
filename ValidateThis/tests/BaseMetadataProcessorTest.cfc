@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -23,7 +23,7 @@
 			injectMethod(baseMetadataProcessor, this, "getVariables", "getVariables");
 		</cfscript>
 		<cfsavecontent variable="jsonMetadata">
-			<cfinclude template="/VTDemo/AnnotationDemo/model/json/user.json" />
+			<cfinclude template="/validatethis/samples/AnnotationDemo/model/json/user.json" />
 		</cfsavecontent>
 	</cffunction>
 

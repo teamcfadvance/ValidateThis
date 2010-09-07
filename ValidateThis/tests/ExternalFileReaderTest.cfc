@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
 	
 	<cfset externalFileReader = "" />
 	
@@ -132,7 +132,7 @@
 
 	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithMappedPathLookingForXMLExtension" access="public" returntype="void">
 		<cfscript>
-			defPath = "/UnitTests/Fixture";
+			defPath = "/validatethis/tests/Fixture";
 			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -148,7 +148,7 @@
 
 	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithMappedPathLookingForXMLCFMExtension" access="public" returntype="void">
 		<cfscript>
-			defPath = "/UnitTests/Fixture";
+			defPath = "/validatethis/tests/Fixture";
 			PropertyDescs = externalFileReader.loadRulesFromExternalFile("user_cfm",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -164,7 +164,7 @@
 
 	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructLookingForXMLExtensionInFolder" access="public" returntype="void">
 		<cfscript>
-			defPath = "/UnitTests/Fixture";
+			defPath = "/validatethis/tests/Fixture";
 			PropertyDescs = externalFileReader.loadRulesFromExternalFile("user.user_folder",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -172,7 +172,7 @@
 
 	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructLookingForXMLCFMExtensionInFolder" access="public" returntype="void">
 		<cfscript>
-			defPath = "/UnitTests/Fixture";
+			defPath = "/validatethis/tests/Fixture";
 			PropertyDescs = externalFileReader.loadRulesFromExternalFile("user_cfm.user_cfm_folder",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -180,7 +180,7 @@
 
 	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructLookingForFileInSecondFolderInList" access="public" returntype="void">
 		<cfscript>
-			defPath = "/UnitTests/Fixture,/UnitTests/Fixture/aSecondFolderToTest";
+			defPath = "/validatethis/tests/Fixture,/validatethis/tests/Fixture/aSecondFolderToTest";
 			PropertyDescs = externalFileReader.loadRulesFromExternalFile("user.user_secondfolder",defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -188,7 +188,7 @@
 
 	<cffunction name="loadRulesFromExternalFileThrowsWithBadMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			defPath = "/UnitTests/Fixture/Model_Doesnt_Exist/";
+			defPath = "/validatethis/tests/Fixture/Model_Doesnt_Exist/";
 			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -204,7 +204,7 @@
 
 	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithMappedPathWithoutTrailingSlash" access="public" returntype="void">
 		<cfscript>
-			defPath = "/UnitTests/Fixture";
+			defPath = "/validatethis/tests/Fixture";
 			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -212,7 +212,7 @@
 
 	<cffunction name="loadRulesFromExternalFileReturnsCorrectStructWithMappedPathWithTrailingSlash" access="public" returntype="void">
 		<cfscript>
-			defPath = "/UnitTests/Fixture/";
+			defPath = "/validatethis/tests/Fixture/";
 			PropertyDescs = externalFileReader.loadRulesFromExternalFile(className,defPath).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
