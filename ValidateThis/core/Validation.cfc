@@ -38,11 +38,7 @@
 
 		<cfset variables.instance = Duplicate(arguments.ValStruct) />
 		<cfset variables.instance.IsSuccess = true />
-		<cfif structKeyExists(arguments.ValStruct,"FailureMessage")> 
-:            <cfset variables.instance.FailureMessage = arguments.ValStruct.failureMessage />
-        <cfelse>
-            <cfset variables.instance.FailureMessage = "" />
-        </cfif> 
+		<cfparam name="variables.instance.FailureMessage" default="" />
 		
 		<cfreturn this />
 
