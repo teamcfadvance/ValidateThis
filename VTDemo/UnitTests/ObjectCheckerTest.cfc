@@ -54,7 +54,7 @@
 
 	<cffunction name="isWheelsReturnsTrueforWheelsObject" access="public" returntype="void">
 		<cfscript>
-			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
+			var obj = CreateObject("component","VTDemo.models.FakeWheelsObject_Fixture").init();
 			assertEquals(true,objectChecker.isWheels(obj));
 		</cfscript>  
 	</cffunction>
@@ -68,7 +68,7 @@
 
 	<cffunction name="isGroovyReturnsTrueforGroovyObject" access="public" returntype="void">
 		<cfscript>
-			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
+			var obj = CreateObject("component","VTDemo.groovy.lang.FakeGroovyObject_Fixture").init();
 			assertEquals(true,objectChecker.isGroovy(obj));
 		</cfscript>  
 	</cffunction>
@@ -112,21 +112,21 @@
 
 	<cffunction name="findGetterReturnsGetterForExistingMethodInWheelsObject" access="public" returntype="void">
 		<cfscript>
-			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
+			var obj = CreateObject("component","VTDemo.models.FakeWheelsObject_Fixture").init();
 			assertEquals("$propertyvalue('WheelsName')",objectChecker.findGetter(obj,"WheelsName"));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="findGetterReturnsBlankForNonExistentMethodInWheelsObject" access="public" returntype="void">
 		<cfscript>
-			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
+			var obj = CreateObject("component","VTDemo.models.FakeWheelsObject_Fixture").init();
 			assertEquals("",objectChecker.findGetter(obj,"Blah"));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="findGetterReturnsGetterForExistingMethodInGroovyObject" access="public" returntype="void">
 		<cfscript>
-			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
+			var obj = CreateObject("component","VTDemo.groovy.lang.FakeGroovyObject_Fixture").init();
 			injectMethod(ObjectChecker, this, "isCFCFalse", "isCFC");
 			assertEquals("getGroovyName()",objectChecker.findGetter(obj,"GroovyName"));
 		</cfscript>  
@@ -134,7 +134,7 @@
 
 	<cffunction name="findGetterReturnsBlankForNonExistentMethodInGroovyObject" access="public" returntype="void">
 		<cfscript>
-			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
+			var obj = CreateObject("component","VTDemo.groovy.lang.FakeGroovyObject_Fixture").init();
 			injectMethod(ObjectChecker, this, "isCFCFalse", "isCFC");
 			assertEquals("",objectChecker.findGetter(obj,"Blah"));
 		</cfscript>  
