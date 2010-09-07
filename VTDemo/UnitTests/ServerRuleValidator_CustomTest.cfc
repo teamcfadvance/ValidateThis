@@ -23,10 +23,18 @@
 			SRV = getSRV("Custom");
 			parameters = {MethodName="myMethod"};
 			validation.getParameters().returns(parameters);
+			validation.hasParameter("methodName").returns(true);
+			validation.getParameterValue("methodName").returns("myMethod");
 			theObject = mock();
 		</cfscript>
 	</cffunction>
 	
+	<cffunction name="placeholderForTestsForRemoteURLThatAdamAdded" access="public" returntype="void">
+		<cfscript>
+			fail("This is a placeholder test for tests that need to be added.");
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="validateReturnsFalseWhenMethodReturnsFailure" access="public" returntype="void">
 		<cfscript>
 			customResult = {IsSuccess=false,FailureMessage="A custom validator failed."};
