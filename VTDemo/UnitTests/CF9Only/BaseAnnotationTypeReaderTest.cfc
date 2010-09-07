@@ -108,7 +108,8 @@
 		<cfscript>
 			md = getComponentMetadata("VTDemo.UnitTests.Fixture.AnnotatedBOs.User");
 			makePublic(annotationTypeReader,"processPropertyDescs");
-			annotationTypeReader.processPropertyDescs(md.properties);
+			makePublic(annotationTypeReader,"reformatProperties");
+			annotationTypeReader.processPropertyDescs(annotationTypeReader.reformatProperties(md.properties));
 			injectMethod(annotationTypeReader, this, "getPropertyDescs", "getPropertyDescs");
 			PropertyDescs = annotationTypeReader.getPropertyDescs();
 			debug(PropertyDescs);
