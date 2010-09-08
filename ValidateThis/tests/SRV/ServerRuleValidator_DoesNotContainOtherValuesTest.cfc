@@ -22,8 +22,9 @@
 			super.setup();
 			SRV = getSRV("DoesNotContainOtherValues");
 			parameters = {propertyNames="name"};
-			shouldPass = ["booger"];
-			shouldFail = ["test"];
+			validation.getObjectValue("name").returns("badStuff");
+			shouldPass = ["goodStuff"];
+			shouldFail = ["badStuff"];
 		</cfscript>
 	</cffunction>
 	
@@ -31,12 +32,14 @@
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getObjectValue().returns(arguments.value);
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("propertyNames").returns(true);
-			validation.getParameterValue("propertyNames").returns("name");
-			validation.getObjectValue("name").returns("booger");
-			debug(arguments.value);
+            validation.getObjectValue().returns(arguments.value);
+            validation.getParameters().returns(parameters);
+            validation.hasParameter("propertyNames").returns(true);
+            validation.getParameterValue("propertyNames").returns("name");
+            
+			makePublic(SRV,"shouldTest");
+            assertEquals(true,SRV.shouldTest(validation));
+            
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -44,28 +47,53 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
 		<cfscript>
+			setup();
 			validation.getObjectValue().returns("");
-			validation.hasParameter("propertyNames").returns(false);
+			validation.hasParameter("propertyNames").returns(true);
+            validation.getParameterValue("propertyNames").returns("name");			
 			validation.getIsRequired().returns(true);
+			
+			makePublic(SRV,"shouldTest");
+            assertEquals(true,SRV.shouldTest(validation));
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
+	
+	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
+        <cfscript>
+			setup();
+			
+            validation.getObjectValue().returns("");
+            validation.hasParameter("propertyNames").returns(true);
+            validation.getParameterValue("propertyNames").returns("name");          
+            validation.getIsRequired().returns(false);
+            
+            makePublic(SRV,"shouldTest");
+            assertEquals(false,SRV.shouldTest(validation));
+            
+            SRV.validate(validation);
+            validation.verifyTimes(0).setIsSuccess(false); 
+        </cfscript>  
+    </cffunction>
 	
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
 			setup();
+			
 			validation.getObjectValue().returns(arguments.value);
 			validation.getParameters().returns(parameters);
 			validation.hasParameter("propertyNames").returns(true);
 			validation.getParameterValue("propertyNames").returns("name");
-			validation.getObjectValue("name").returns("test");
-			debug(arguments.value);
+			
+			makePublic(SRV,"shouldTest");
+            assertEquals(true,SRV.shouldTest(validation));
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
-	
-	
+		
 </cfcomponent>

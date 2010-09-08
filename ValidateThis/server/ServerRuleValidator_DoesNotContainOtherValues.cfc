@@ -28,18 +28,18 @@ See ClientRuleScripter_UniqueValue.cfc for client implmenetation
 			var params = arguments.validation.getParameters();
 			var property = "";
 			var propValue = "";
+            var propertyNames = listToArray(arguments.validation.getParameterValue("propertyNames"));
 
-			if (not shouldTest(arguments.validation)) return;
-			if (not validation.hasParameter("propertyNames")) {
-				fail(validation, "Missing Parameters");
-				return;
-			};
+			if (not shouldTest(arguments.validation)) {
+			   return;
+			} else if (shouldTest(arguments.validation) and len(value) eq 0){
+			     fail(validation, createDefaultFailureMessage(""));
+			}
 
-			var propertyNames = listToArray(arguments.validation.getParameterValue("propertyNames"));
 			for(property in propertyNames){
-				var propValue = arguments.validation.getObjectValue(property);
+				propValue = arguments.validation.getObjectValue(property);
 				if(propValue NEQ "" AND value contains propValue){
-					fail(validation, "The #arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#. ");
+					fail(validation, createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#."));
 				}
 			}
 		}
