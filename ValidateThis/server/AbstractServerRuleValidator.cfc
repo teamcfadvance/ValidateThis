@@ -50,7 +50,7 @@
 	<cffunction name="propertyHasValue" returntype="boolean" access="private" output="false" hint="I determine whether the current property has a value.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object being used to perform the validation." />
 		 <cfset var theVal = arguments.validation.getObjectValue()>
-		<cfreturn (isSimpleValue(theVal) and len(theVal)) or (isStruct(theVal) and structCount(theVal) gt 0) or (isArray(theVal) and arrayLen(theVal) gt 0)/>
+		<cfreturn (isSimpleValue(theVal) and len(theVal) gt 0) or (isStruct(theVal) and structCount(theVal) gt 0) or (isArray(theVal) and arrayLen(theVal) gt 0)/>
 	</cffunction>
 
 	<cffunction name="propertyIsRequired" returntype="boolean" access="private" output="false" hint="I determine whether the current property is required.">

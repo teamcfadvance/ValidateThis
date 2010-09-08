@@ -26,7 +26,7 @@
 	<cffunction name="getBeanWithValidationFactoryShouldReturnThis" returntype="void" access="public">
 		<cfscript>
 			VF = validationFactory.getBean("validationFactory");
-			assertEquals("validationfactory",getMetadata(VF).name);
+			assertEquals("validationfactory",listLast(getMetadata(VF).name,"."));
 		</cfscript>
 	</cffunction>
 
