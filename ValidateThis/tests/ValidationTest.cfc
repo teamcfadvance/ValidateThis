@@ -130,7 +130,7 @@
 
 	<cffunction name="getObjectValueWheelsShouldWork" access="public" returntype="void">
 		<cfscript>
-			var obj = CreateObject("component","validatethis.samples.models.FakeWheelsObject_Fixture").init();
+			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
 			var objectChecker = mock();
 			objectChecker.findGetter("{*}").returns("$propertyvalue('WheelsName')");
 			valStruct = StructNew();
@@ -145,7 +145,7 @@
 
 	<cffunction name="getObjectValueGroovyShouldWork" access="public" returntype="void">
 		<cfscript>
-			var obj = CreateObject("component","validatethis.samples.groovy.lang.FakeGroovyObject_Fixture").init();
+			var obj = CreateObject("component","groovy.lang.FakeGroovyObject_Fixture").init();
 			var objectChecker = mock();
 			objectChecker.findGetter("{*}").returns("getGroovyName()");
 			valStruct = StructNew();
