@@ -18,7 +18,6 @@
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="value was not found in list.">
-		<cfset var theScript="">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
@@ -57,7 +56,7 @@
 		</cfif>
 
 		<cfif arguments.validation.hasParameter("list")>
-			<cfset options = {'list'=arguments.validation.getParameterValue("list")}>
+			<cfset options = {list=arguments.validation.getParameterValue("list")} />
 			<cfset arguments.customMessage = arguments.customMessage & " #arguments.validation.getParameterValue('list')#"/>
 		</cfif>
 		

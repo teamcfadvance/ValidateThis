@@ -17,7 +17,6 @@
 
    <cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
         <cfargument name="defaultMessage" type="string" required="false" default="The date entered must be in the past.">
-        <cfset var theScript="">
         <cfset var theCondition="function(value,element,options) { return true; }"/>
          
 		 <!--- JAVASCRIPT VALIDATION METHOD --->
@@ -59,7 +58,7 @@
         </cfif>
         
 		<cfif arguments.validation.hasParameter("before")>
-			<cfset options = {'before'=arguments.validation.getParameterValue("before")}>
+			<cfset options = {before=arguments.validation.getParameterValue("before")} />
 			<cfset arguments.customMessage = arguments.customMessage & " The date entered must come before #arguments.validation.getParameterValue('before')#"/>
 		</cfif>
 		

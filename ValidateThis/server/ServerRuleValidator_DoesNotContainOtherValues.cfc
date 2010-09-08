@@ -27,6 +27,7 @@ See ClientRuleScripter_UniqueValue.cfc for client implmenetation
 			var value = arguments.validation.getObjectValue();
 			var params = arguments.validation.getParameters();
 			var property = "";
+			var propIndex = "";
 			var propValue = "";
             var propertyNames = listToArray(arguments.validation.getParameterValue("propertyNames"));
 
@@ -35,8 +36,9 @@ See ClientRuleScripter_UniqueValue.cfc for client implmenetation
 			} else if (shouldTest(arguments.validation) and len(value) eq 0){
 			     fail(validation, createDefaultFailureMessage(""));
 			}
-
-			for(property in propertyNames){
+			
+			for (propIndex = 1; propIndex <= ArrayLen(propertyNames); propIndex++) {
+				property = propertyNames[propIndex];
 				propValue = arguments.validation.getObjectValue(property);
 				if(propValue NEQ "" AND value contains propValue){
 					fail(validation, createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#."));

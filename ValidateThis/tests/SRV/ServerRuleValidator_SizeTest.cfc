@@ -30,7 +30,8 @@
 	
 	<cffunction name="validateReturnsTrueForCorrectArrayLength" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns([{test="test"}]);
+			returns = [{test="test"}];
+			validation.getObjectValue().returns(returns);
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -38,7 +39,8 @@
 	
 	<cffunction name="validateReturnsFalseForIncorrectArrayLength" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns([{test2="test2"},{test="test"}]);
+			returns = [{test2="test2"},{test="test"}];
+			validation.getObjectValue().returns(returns);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -46,7 +48,8 @@
 
 	<cffunction name="validateReturnsTrueForCorrectStructCount" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns({name="test"});
+			returns = {name="test"};
+			validation.getObjectValue().returns(returns);
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -54,7 +57,8 @@
 	
 	<cffunction name="validateReturnsFalseForIncorrectStructCount" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns({test="name",name="test"});
+			returns = {test="name",name="test"};
+			validation.getObjectValue().returns(returns);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -79,7 +83,8 @@
 	<cffunction name="validateReturnsFalseForEmptyArrayIfRequired" access="public" returntype="void">
 		<cfscript>
 			validation.getIsRequired().returns(true);
-			validation.getObjectValue().returns([]);
+			returns = [];
+			validation.getObjectValue().returns(returns);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -88,7 +93,8 @@
 	<cffunction name="validateReturnsFalseForEmptyStructIfRequired" access="public" returntype="void">
 		<cfscript>
 			validation.getIsRequired().returns(true);
-			validation.getObjectValue().returns({});
+			returns = {};
+			validation.getObjectValue().returns(returns);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

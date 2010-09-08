@@ -17,7 +17,6 @@
 
    <cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
         <cfargument name="defaultMessage" type="string" required="false" default="The date entered must be in the future.">
-        <cfset var theScript="">
         <cfset var theCondition="function(value,element,options) { return true; }"/>
           <!--- JAVASCRIPT VALIDATION METHOD --->
 	      <cfsavecontent variable="theCondition">
@@ -55,7 +54,7 @@
             <cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must be a date in the future."/>
         </cfif>
 		 <cfif arguments.validation.hasParameter("after")>
-			<cfset options = {'after'=arguments.validation.getParameterValue("after")}>
+			<cfset options = {after=arguments.validation.getParameterValue("after")}>
 			<cfset arguments.customMessage = arguments.customMessage & " The date entered must come after #arguments.validation.getParameterValue('after')#"/>
 		</cfif>
 		
