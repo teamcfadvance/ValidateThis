@@ -37,16 +37,11 @@
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		#fieldSelector#.rules("add", {
-			equalTo : ":input[name='#propertyName#']",
-			messages: {
-				equalTo: "#messageScript#"
-			} 
-		});
+		#fieldSelector#.rules("add",{equalTo:":input[name='#propertyName#']",messages:{equalTo:"#messageScript#"}});
 		</cfsavecontent>
 		</cfoutput>
 
-		<cfreturn theScript/>
+		<cfreturn trim(theScript)/>
 	</cffunction>
 
 </cfcomponent>
