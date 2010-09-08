@@ -50,19 +50,19 @@ VTML
 		<cfargument name="theSource" type="string" required="true" />
 		<cfset var result = {} />
 		<cfset var processedResult = {} />
-		<cfset var local.theSource = trim(arguments.theSource) />
+		<cfset var localSource = trim(arguments.theSource) />
 		
 		<cftry>
-			<cfset processedResult = convertVTML(local.theSource) />
+			<cfset processedResult = convertVTML(localSource) />
 			
 			<cfif structKeyExists(processedResult,"Rules")>
 				<cfreturn processedResult.Rules />
 			<cfelse>
-				<cfthrow type="Custom" extendedinfo="#local.theSource#" detail="#local.theSource.toString()#" errorcode="ValidateThis.core.AnnotationReader.InvalidMarkup" message="The annotation format is invalid. #arguments.theSource#" />
+				<cfthrow type="Custom" extendedinfo="#localSource#" detail="#localSource.toString()#" errorcode="ValidateThis.core.AnnotationReader.InvalidMarkup" message="The annotation format is invalid. #arguments.theSource#" />
 			</cfif>	
 			
 			<cfcatch>
-				<cfthrow type="Custom" extendedinfo="#cfcatch.message#" detail="#local.theSource.toString()#" errorcode="ValidateThis.core.AnnotationReader.InvalidMarkup" message="The annotation format is invalid. #arguments.theSource#" />
+				<cfthrow type="Custom" extendedinfo="#cfcatch.message#" detail="#localSource.toString()#" errorcode="ValidateThis.core.AnnotationReader.InvalidMarkup" message="The annotation format is invalid. #arguments.theSource#" />
 			</cfcatch>
 		</cftry>
 		

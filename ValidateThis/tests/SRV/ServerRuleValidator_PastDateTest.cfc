@@ -32,7 +32,7 @@
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getParameters().returns({});
+			validation.getParameters().returns(structNew());
 			validation.hasParameter("before").returns(false);
 			validation.getObjectValue().returns(arguments.value);
 			SRV.validate(validation);

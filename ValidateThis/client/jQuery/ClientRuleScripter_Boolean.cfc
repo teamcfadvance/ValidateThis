@@ -17,7 +17,6 @@
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="The value entered must be a boolean">
-		<cfset theScript="">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">function(value, element, options) {

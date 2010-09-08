@@ -18,7 +18,6 @@
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="value was not the right size.">
-		<cfset var theScript="">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
@@ -57,7 +56,7 @@
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var valType = getValType() />       
 		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
-		<cfset var options = {'length'=1}/>
+		<cfset var options = {length=1}/>
 		<cfset var messageScript = "" />
 
 		<cfset options = validation.getParameters()/>
