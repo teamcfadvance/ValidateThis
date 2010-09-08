@@ -34,9 +34,10 @@
 	
 	<cffunction name="checkFileExistsShouldWork" access="public" returntype="void">
 		<cfscript>
-			Result = FileSystem.checkFileExists(Destination,ListLast(GetCurrentTemplatePath(),"/"));
+			FileName = ListLast(Replace(GetCurrentTemplatePath(),"\","/","all"),"/");
+			Result = FileSystem.checkFileExists(Destination,FileName);
 			assertTrue(Result);
-			Result = FileSystem.checkFileExists(Destination,ListLast(GetCurrentTemplatePath(),"/")&"notafile");
+			Result = FileSystem.checkFileExists(Destination,FileName&".notafile");
 			assertFalse(Result);
 		</cfscript>  
 	</cffunction>
