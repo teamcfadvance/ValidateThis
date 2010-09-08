@@ -1,4 +1,4 @@
-<cfcomponent displayname="ServerRuleValidator_URL" extends="validatethis.server.AbstractServerRuleValidator"  hint="I am responsible for performing URL validation.">
+<cfcomponent displayname="ServerRuleValidator_URL" extends="AbstractServerRuleValidator"  hint="I am responsible for performing URL validation.">
 	<cfscript>
 		public any function validate(any validation){
 			var theValue = arguments.validation.getObjectValue();

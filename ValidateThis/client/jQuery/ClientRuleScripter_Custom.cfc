@@ -30,26 +30,22 @@
 		<cfset var options = true/>
 		<cfset var messageScript = "" />
 
-		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# remote(custom) validation failed."/>
+        <cfif arguments.validation.hasParameter('remoteURL')>
+		
+			<cfif Len(arguments.customMessage) eq 0>
+				<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# custom validation failed."/>
+			</cfif>	
+			<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
+		
+			<cfoutput>
+			<cfsavecontent variable="theScript">
+				#fieldSelector#.rules("add",{"remote":"#arguments.validation.getParameterValue('remoteURL')#",messages:{"remote":"#messageScript#"}});
+			</cfsavecontent>
+			</cfoutput>
+			
 		</cfif>
-
-		<cfif not arguments.validation.hasParameter("remoteURL")>
-			<cfset arguments.validation.adParameter("remoteURL","/remoteProxy.cfc?method=customValidator")>
-		</cfif>
 		
-		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
-		
-		<cfoutput>
-		<cfsavecontent variable="theScript">
-		#fieldSelector#.rules("add", {
-			"remote" : "#arguments.validation.getParameterValue('remoteURL')#",
-			messages: {"remote": "#messageScript#"}
-		});
-		</cfsavecontent>
-		</cfoutput>
-		
-		<cfreturn theScript/>
+		<cfreturn trim(theScript)/>
 	</cffunction>
 
 </cfcomponent>

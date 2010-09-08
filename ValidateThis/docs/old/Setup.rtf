@@ -101,7 +101,7 @@ Make sure you have met the requirements listed above.
 \par {\listtext\pard\plain\insrsid8607120 \hich\af0\dbch\af0\loch\f0 2.\tab}}\pard \ql \fi-360\li720\ri0\widctlpar\jclisttab\tx720\wrapdefault\aspalpha\aspnum\faauto\ls4\adjustright\rin0\lin720\itap0\pararsid15467606 {\insrsid8607120 
 Unzip all of the files from the download }{\insrsid15467606 to the webroot from which you wish to run the demo.
 \par {\listtext\pard\plain\insrsid2897490 \hich\af0\dbch\af0\loch\f0 3.\tab}}\pard \ql \fi-360\li720\ri0\widctlpar\jclisttab\tx720\wrapdefault\aspalpha\aspnum\faauto\ls4\adjustright\rin0\lin720\itap0\pararsid10570799 {\insrsid2897490 
-Create a DSN in ColdFusion called VTDemo that points to the database that you created}{\insrsid4946854  (see requirements above)}{\insrsid2897490 .}{\insrsid4548663   You can change the DSN that the demo points to by editing /VTDemo/}{\insrsid13777492 
+Create a DSN in ColdFusion called VTDemo that points to the database that you created}{\insrsid4946854  (see requirements above)}{\insrsid2897490 .}{\insrsid4548663   You can change the DSN that the demo points to by editing /validatethis/samples/}{\insrsid13777492 
 model/config/}{\insrsid13777492\charrsid13777492 datasource.xml.cfm}{\insrsid2897490 
 \par {\listtext\pard\plain\insrsid614847 \hich\af0\dbch\af0\loch\f0 4.\tab}}{\insrsid614847 Browse to th}{\insrsid7755739 e}{\insrsid614847  webroot}{\insrsid7755739  in which you installed the demo}{\insrsid614847  and you should be able to see/run the demo.
 
@@ -171,7 +171,7 @@ Creating the Validation Rules}{\insrsid11734660
 \par }\pard \ql \li0\ri0\widctlpar\wrapdefault\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15036433 {\b\i\insrsid15036433\charrsid3934643 Quick Steps}{\insrsid6520820 
 \par 
 \par Create an xml file for each of your business objects that requires validations.  Name the xml file the same as your Transfer class name (e.g., user.}{\insrsid8144966 u}{\insrsid6520820 ser.xml).  Follow the schema found in }{
-\insrsid6520820\charrsid12867273 /ValidateThis/}{\insrsid6520820 validateThis.xsd.}{\insrsid8144966   A sample file is available in /VTDemo/model/user.user.xml.}{\insrsid6520820 
+\insrsid6520820\charrsid12867273 /ValidateThis/}{\insrsid6520820 validateThis.xsd.}{\insrsid8144966   A sample file is available in /validatethis/samples/model/user.user.xml.}{\insrsid6520820 
 \par 
 \par }{\b\i\insrsid6520820\charrsid6520820 The Details
 \par }\pard \ql \li0\ri0\widctlpar\wrapdefault\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid614847 {\insrsid15036433 
@@ -211,7 +211,7 @@ Integrating the Framework with Your Business Objects
 \par }\pard\plain \ql \li0\ri0\widctlpar\wrapdefault\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid614847 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid3555017 
 \par }\pard \ql \li0\ri0\widctlpar\wrapdefault\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid8008106 {\b\i\insrsid8008106\charrsid3934643 Quick Steps}{\insrsid8008106 
 \par 
-\par }{\insrsid950163 Make your Transfer decorators resemble /VTDemo/model/}{\insrsid950163\charrsid15020075 AbstractTransferDecorator.cfc}{\insrsid950163 .  }{\insrsid10295116 Make your Coldspring beans for Transfer resemble the ones in /}{
+\par }{\insrsid950163 Make your Transfer decorators resemble /validatethis/samples/model/}{\insrsid950163\charrsid15020075 AbstractTransferDecorator.cfc}{\insrsid950163 .  }{\insrsid10295116 Make your Coldspring beans for Transfer resemble the ones in /}{
 \insrsid10295116\charrsid11734660 V}{\insrsid10295116 TDemo}{\insrsid10295116\charrsid11734660 /config/Coldspring.xml.cfm}{\insrsid10295116 . }{\insrsid950163 You }{\insrsid10295116 may}{\insrsid950163  need to look at }{\i\insrsid950163 The Details}{
 \insrsid950163  for this one.}{\insrsid8008106  
 \par }{\b\i\insrsid8008106 
@@ -245,9 +245,9 @@ find the easiest is to setup a certain configuration in Coldspring for Transfer 
 \insrsid14303994 line}{\insrsid526359 -wrap)}{\insrsid9836865 :
 \par 
 \par }\pard \ql \li0\ri0\widctlpar\wrapdefault\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid68821 {\f2\fs20\insrsid68821\charrsid526359 <bean id="transferFactory" class="transfer.TransferFactory">
-\par \tab <constructor-arg }{\f2\fs20\ul\insrsid68821\charrsid526359 name}{\f2\fs20\insrsid68821\charrsid526359 ="datasourcePath"><value>/model/config/datasource.xml.cfm</value></constructor-arg>
-\par \tab <constructor-arg }{\f2\fs20\ul\insrsid68821\charrsid526359 name}{\f2\fs20\insrsid68821\charrsid526359 ="configPath"><value>/model/config/transfer.xml.cfm</value></constructor-arg>
-\par \tab <constructor-arg }{\f2\fs20\ul\insrsid68821\charrsid526359 name}{\f2\fs20\insrsid68821\charrsid526359 ="definitionPath"><value>/TransferTemp</value></constructor-arg>
+\par \tab <constructor-arg }{\f2\fs20\ul\insrsid68821\charrsid526359 name}{\f2\fs20\insrsid68821\charrsid526359 ="datasourcePath"><value>/validatethis/samples/model/config/datasource.xml.cfm</value></constructor-arg>
+\par \tab <constructor-arg }{\f2\fs20\ul\insrsid68821\charrsid526359 name}{\f2\fs20\insrsid68821\charrsid526359 ="configPath"><value>/validatethis/samples/model/config/transfer.xml.cfm</value></constructor-arg>
+\par \tab <constructor-arg }{\f2\fs20\ul\insrsid68821\charrsid526359 name}{\f2\fs20\insrsid68821\charrsid526359 ="definitionPath"><value>/validatethis/samples/BODemo/TransferTemp</value></constructor-arg>
 \par </bean>
 \par 
 \par <bean id="transfer" factory-bean="transferFactory" factory-method="getTransfer" />

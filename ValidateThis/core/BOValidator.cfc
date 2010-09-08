@@ -243,7 +243,7 @@
 	<cffunction name="getRequiredPropertiesAndDescs" access="public" output="false" returntype="any">
 		<cfargument name="context" required="false" type="string" default="">
 		<cfset var RequiredPropertyDescs = {}/>
-		<cfset var requiredFields = this.getRequiredFields(arguments.context)/>
+		<cfset var requiredFields = this.getRequiredProperties(arguments.context)/>
 		<cfset var propertyDescs = this.getValidationPropertyDescs()>
 		
 		<cfloop list="#structKeyList(requiredFields)#" index="name">

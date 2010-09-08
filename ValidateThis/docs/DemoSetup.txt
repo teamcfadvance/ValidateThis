@@ -19,8 +19,8 @@ For the i18nDemo, you'll need:
 To setup the demo:
 1. Make sure you have met the requirements listed above.
 2. Unzip all of the files from the download to the webroot from which you wish to run the demo.
-3. Create a DSN in ColdFusion called VTDemo that points to the database that you created (see requirements above).  You can change the DSN that the demo points to by editing /VTDemo/BODemo/model/config/datasource.xml.cfm and/or /VTDemo/ServiceDemo/model/config/datasource.xml.cfm and/or /VTDemo/i18nDemo/model/config/datasource.xml.cfm
+3. Create a DSN in ColdFusion called VTDemo that points to the database that you created (see requirements above).  You can change the DSN that the demo points to by editing /validatethis/samples/BODemo/model/config/datasource.xml.cfm and/or /validatethis/samples/ServiceDemo/model/config/datasource.xml.cfm and/or /validatethis/samples/i18nDemo/model/config/datasource.xml.cfm
 4. Browse to the webroot in which you installed the demo and you should be presented with a page that will allow you to run all of the demos.
 
-Note that the folders /VTDemo/commonassets and /VTDemo/BODemo/tags hold files related to the cfUniForm custom tag library developed by Matt Quackenbush which is not part of the framework.  More info on that library can be found here:
+Note that the folders /validatethis/samples/commonassets and /validatethis/samples/BODemo/tags hold files related to the cfUniForm custom tag library developed by Matt Quackenbush which is not part of the framework.  More info on that library can be found here:
 http://cfuniform.riaforge.org/

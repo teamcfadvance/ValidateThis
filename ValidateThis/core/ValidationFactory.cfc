@@ -60,7 +60,10 @@
 	<cffunction name="getBean" access="public" output="false" returntype="any" hint="I return a singleton">
 		<cfargument name="BeanName" type="Any" required="false" />
 		
-		<cfreturn variables.lwFactory.getSingleton(arguments.BeanName) />
+		<cfif arguments.BeanName neq "ValidationFactory">
+			<cfreturn variables.lwFactory.getSingleton(arguments.BeanName) />
+		</cfif>
+		<cfreturn this />
 	
 	</cffunction>
 	
@@ -131,7 +134,7 @@
 	<cffunction name="getClientRuleScripters" access="public" output="false" returntype="any">
 		<cfargument name="JSLib" type="any" required="true"/>
 		
-		<cfreturn getBean("ClientValidator").getRuleScripts(arguments.JSLib) />
+		<cfreturn getBean("ClientValidator").getRuleScripters(arguments.JSLib) />
 	
 	</cffunction>
     

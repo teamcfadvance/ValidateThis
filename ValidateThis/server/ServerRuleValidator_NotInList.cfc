@@ -30,7 +30,7 @@
 			<cfset theDelim= arguments.validation.getParameterValue("delim")/>
 		</cfif>
 
-		<cfif shouldTest(arguments.validation) AND not listLen(theList) or listFindNoCase(theList,theVal,theDelim)>
+		<cfif shouldTest(arguments.validation) AND (not listLen(theList) or not len(theVal) or listFindNoCase(theList,theVal,theDelim))>
 			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was found in the list: #theList#. #parameterMessages#")) />
 		</cfif>
 	</cffunction>

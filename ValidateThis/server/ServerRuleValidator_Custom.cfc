@@ -20,23 +20,34 @@
 
 		<cfset var customResult = 0 />
 		<cfset var failureMessage = "A custom validator failed." />
-		<cfset var theObject = validation.getTheObject() />
-		<cfset var Parameters = validation.getParameters() />		
+		<cfset var theObject = arguments.validation.getTheObject() />
+		<cfset var Parameters = arguments.validation.getParameters() />		
 		<cfset var theMethod = ""/>
 		<cfset var fileContent = ""/>
 		
-		<cfif validation.hasParameter("methodName")>
-			<cfset theMethod = validation.getParameterValue("methodname") />
+		<cfif arguments.validation.hasParameter("methodName")>
+		
+			<cfset theMethod = arguments.validation.getParameterValue("methodname") />
 			<cfset customResult = evaluate("theObject.#theMethod#()") />
-		<cfelseif validation.hasParameter("remoteURL")>
-			<cfhttp method="get" url="#validation.getParameterValue('remoteURL')#" result="customResult">
+		
+		<cfelseif arguments.validation.hasParameter("remoteURL")>
+		    
+		    <cfif isValid("url",arguments.validation.getParameterValue("remoteURL"))>
+		      <cfset theMethod = arguments.validation.getParameterValue("remoteURL")>
+		    <cfelse>
+		      <cfset theMethod = CGI.http_host & arguments.validation.getParameterValue("remoteURL")>
+		    </cfif>	
+		    		
+			<cfhttp method="get" url="#theMethod#" result="customResult">
 				<cfhttpparam type="url" name="#arguments.validation.getClientFieldName()#" value="#arguments.validation.getObjectValue()#">
 			</cfhttp>
+			
 			<cfif isStruct(customResult)>
 				<cfset fileContent = customResult.fileContent/>
 				<cfset customResult = evaluate(fileContent.toString())/>
-				<cfset failureMessage = failureMessage & " (#validation.getPropertyName()#=#validation.getObjectValue()# - valid: #customResult#)"/>
-			</cfif>			
+				<cfset failureMessage = failureMessage & " (#arguments.validation.getPropertyName()#=#arguments.validation.getObjectValue()# - valid: #customResult#)"/>
+			</cfif>	
+					
 		</cfif>
 
 		<cfif !IsDefined("customResult") or (isBoolean(customResult) and customResult) or (isStruct(customResult) and (structKeyExists(customResult,"IsSuccess") and customResult.IsSuccess))>
