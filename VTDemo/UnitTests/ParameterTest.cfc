@@ -19,6 +19,8 @@
 		<cfscript>
 			parameter = createObject("component","ValidateThis.core.Parameter").init();
 			validation = createValidation();
+			VTConfig = {definitionPath="/UnitTests/Fixture"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 		</cfscript>
 	</cffunction>
 	
@@ -54,7 +56,7 @@
 
 	<cffunction name="ParameterWithExpressionTypeAndObjectShouldReturnCorrectValueFromObjectContext" access="public" returntype="void">
 		<cfscript>
-			validation.setup(obj);
+			validation.setup(ValidateThis,obj);
 			paramStruct = {value="getMetadata(this).name",type="expression"};
 			parameter.load(paramStruct);
 			assertEquals("vtdemo.unittests.fixture.aplaincfc_fixture",parameter.getValue());
@@ -71,7 +73,7 @@
 
 	<cffunction name="ParameterWithPropertyTypeShouldReturnCorrectValue" access="public" returntype="void">
 		<cfscript>
-			validation.setup(obj);
+			validation.setup(ValidateThis,obj);
 			paramStruct = {value="FirstName",type="property"};
 			parameter.load(paramStruct);
 			assertEquals("Bob",parameter.getValue());

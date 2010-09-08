@@ -262,6 +262,14 @@
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="transientFactoryShouldHaveVTFacadeInjectedIntoIt" access="public" returntype="void">
+		<cfscript>
+			transientFactory = ValidateThis.getBean("TransientFactory");
+			validation = transientFactory.newValidation();
+			assertEquals("validatethis.ValidateThis",GetMetadata(validation.getValidateThis()).name);
+		</cfscript>
+	</cffunction>
+
 	<cffunction name="setUpUserStruct" access="private" returntype="any">
 		<cfargument name="emptyUser" type="boolean" required="false" default="false" />
 		<cfscript>

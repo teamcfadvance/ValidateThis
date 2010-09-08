@@ -20,6 +20,7 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
 			validation = {clientFieldName="clientFieldName",condition=structNew(),formName="formName",parameters=structNew(),propertyDesc="propertyDesc",propertyName="propertyName",valType="required"};
 			validations = [validation];
 		</cfscript>
@@ -67,8 +68,7 @@
 
 	<cffunction name="getValidationScriptShouldHonourPassedInFormName" access="public" returntype="void">
 		<cfscript>
-			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
-			ClientValidator = validationFactory.getBean("ClientValidator");
+			ClientValidator = validateThis.getBean("ClientValidator");
 			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
 			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
 			assertTrue(script contains "$form_testFormName.validate();");

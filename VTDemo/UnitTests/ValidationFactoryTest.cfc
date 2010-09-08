@@ -23,6 +23,13 @@
 		</cfscript>
 	</cffunction>
 	
+	<cffunction name="getBeanWithValidationFactoryShouldReturnThis" returntype="void" access="public">
+		<cfscript>
+			VF = validationFactory.getBean("validationFactory");
+			assertEquals("validationfactory",getMetadata(VF).name);
+		</cfscript>
+	</cffunction>
+
 	<cffunction name="createBOVsFromCFCsShouldCreateBOVsFromAnnotatedCFCs" returntype="void" access="public">
 		<cfscript>
 			assertTrue(false,"This should fail as this hasn't been fully implemented yet!");

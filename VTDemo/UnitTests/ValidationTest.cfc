@@ -20,6 +20,8 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			parameter = createObject("component","ValidateThis.core.Parameter").init();
+			VTConfig = {definitionPath="/UnitTests/Fixture"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 		</cfscript>
 	</cffunction>
 	
@@ -41,7 +43,7 @@
 			valStruct.Parameters.Param1 = {type="value",value="1"};
 			theValue = "Bob";
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals(valStruct.ValType,Validation.getValType());
 			assertEquals(valStruct.FailureMessage,Validation.getFailureMessage());
@@ -55,6 +57,17 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="validationShouldContainVTFacade" access="public" returntype="void">
+		<cfscript>
+			VTConfig = {definitionPath="/UnitTests/Fixture"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+			validation = ValidateThis.getBean("TransientFactory").newValidation();
+			vtFacade = validation.getValidateThis();
+			assertEquals(true,isObject(vtFacade));
+			assertEquals("validatethis.validatethis",getMetadata(vtFacade).name);
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="getObjectValueCFCNoArgumentShouldWork" access="public" returntype="void">
 		<cfscript>
 			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();
@@ -64,7 +77,7 @@
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -79,7 +92,7 @@
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals("Silverberg",Validation.getObjectValue("LastName"));
 		</cfscript>  
@@ -94,7 +107,7 @@
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -109,7 +122,7 @@
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "Blah";
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -124,7 +137,7 @@
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "WheelsName";
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -139,7 +152,7 @@
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "GroovyName";
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals("Bob",Validation.getObjectValue());
 		</cfscript>  
@@ -155,7 +168,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.isRequired = true;
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals(true,Validation.getIsRequired());
 		</cfscript>  
@@ -171,7 +184,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.isRequired = false;
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals(false,Validation.getIsRequired());
 		</cfscript>  
@@ -187,7 +200,7 @@
 			valStruct.ValType = "required";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals(1,Validation.getParameters().Param1);
 			assertEquals(20,Validation.getParameters().Param2);
@@ -247,7 +260,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
-			Validation.setup(obj);
+			Validation.setup(ValidateThis,obj);
 			Validation.load(valStruct);
 			assertEquals(20,Validation.getParameterValue("Param2"));
 		</cfscript>  

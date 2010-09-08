@@ -32,15 +32,6 @@
 		<cfset var temp = ''/>
 		<cfset var key = ''/>
 		<cfset var obj = variables.lightWire.getTransient(arguments.transientName) />
-		
-		<!--- Need to do manual injections of singletons as we're not coupled to CS anymore, ugly but it works for now 
-		<cfif arguments.transientName EQ "Result">
-			<cfset initArgs.Translator = variables.Translator />
-		</cfif>
-		<cfset local.obj = createObject("component",variables.classes[arguments.transientName])>
-		<cfif StructKeyExists(local.obj,"init")>
-			<cfinvoke component="#local.obj#" method="init" argumentcollection="#arguments.initArgs#" />
-		</cfif>--->
 		<cfif StructKeyExists(obj,variables.afterCreateMethod)>
 			<!--- TODO: http://groups.google.com/group/validatethis/browse_thread/thread/8c72b46ed61de4c4 --->
 			<cfloop collection="#arguments.afterCreateArgs#" item="key">
@@ -53,6 +44,15 @@
 		<cfreturn obj>
 	</cffunction>
 
+	<cffunction name="newValidation" access="public" output="false" returntype="any" hint="a concrete method to allow for the ValidateThis facade object to be injected into a validation">
+		<cfargument name="theObject" type="any" required="no" default="" hint="The object being validated" />
+		
+		<cfset var validation = variables.lightWire.getTransient("Validation") />
+		<cfset validation.setup(ValidateThis=variables.validateThis,theObject=arguments.theObject) />
+		<cfreturn validation>
+		
+	</cffunction>
+
 	<cffunction name="onMissingMethod" access="public" output="false" returntype="any" hint="provides virtual api [new{transientName}] for any registered transient.">
 		<cfargument name="MissingMethodName" type="string" required="true" />
 		<cfargument name="MissingMethodArguments" type="struct" required="true" />
@@ -61,4 +61,10 @@
 		</cfif>
 	</cffunction>
 
+	<cffunction name="setValidateThis" access="public" returntype="any">
+		<cfargument name="validateThis" />
+		<cfset variables.validateThis = arguments.validateThis />
+		<cfreturn this />
+	</cffunction>
+	
 </cfcomponent>

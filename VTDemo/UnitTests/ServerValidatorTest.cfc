@@ -31,7 +31,8 @@
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
 			structAppend(ValidateThisConfig,arguments.addToConfig,true);
-			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
+			validationFactory = ValidateThis.getBean("ValidationFactory");
 			serverValidator = validationFactory.getBean("ServerValidator");
 		</cfscript>
 	</cffunction>
