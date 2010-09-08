@@ -85,7 +85,7 @@
 			</cfif>		
 		</cfif>
 
-		<cfif shouldTest(arguments.validation) AND not valid>
+		<cfif shouldTest(arguments.validation) AND ((isSimpleValue(theVal) and len(theVal) eq 0) or (not valid))>
 			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the size requirement of #parameterMessages#.")) />
 		</cfif>
 	</cffunction>

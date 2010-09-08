@@ -27,10 +27,15 @@ See ClientRuleScripter_UniqueValue.cfc for client implmenetation
 			var value = arguments.validation.getObjectValue();
 			var params = arguments.validation.getParameters();
 			var property = "";
+			var propValue = "";
 
-			if(	NOT shouldTest(arguments.validation)	OR trim(value) eq "" OR NOT structKeyExists(params,"propertyNames")) return;
+			if (not shouldTest(arguments.validation)) return;
+			if (not validation.hasParameter("propertyNames")) {
+				fail(validation, "Missing Parameters");
+				return;
+			};
 
-			var propertyNames = listToArray(params.propertyNames);
+			var propertyNames = listToArray(arguments.validation.getParameterValue("propertyNames"));
 			for(property in propertyNames){
 				var propValue = arguments.validation.getObjectValue(property);
 				if(propValue NEQ "" AND value contains propValue){
