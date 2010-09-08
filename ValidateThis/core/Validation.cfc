@@ -27,7 +27,9 @@
 	</cffunction>
 
 	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
+		<cfargument name="ValidateThis" type="any" required="yes" hint="The ValidateThis.cfc facade object" />
 		<cfargument name="theObject" type="any" required="no" default="" hint="The object being validated" />
+		<cfset variables.ValidateThis = arguments.ValidateThis />
 		<cfset variables.theObject = arguments.theObject />
 		<cfreturn this />
 	</cffunction>
@@ -38,11 +40,7 @@
 
 		<cfset variables.instance = Duplicate(arguments.ValStruct) />
 		<cfset variables.instance.IsSuccess = true />
-		<cfif structKeyExists(arguments.ValStruct,"FailureMessage")> 
-:            <cfset variables.instance.FailureMessage = arguments.ValStruct.failureMessage />
-        <cfelse>
-            <cfset variables.instance.FailureMessage = "" />
-        </cfif> 
+		<cfparam name="variables.instance.FailureMessage" default="" />
 		
 		<cfreturn this />
 
@@ -114,6 +112,10 @@
 
 	<cffunction name="hasObject" access="public" output="false" returntype="boolean">
 		<cfreturn structKeyExists(variables,"theObject") />		
+	</cffunction>
+
+	<cffunction name="getValidateThis" access="public" output="false" returntype="any">
+		<cfreturn variables.ValidateThis />
 	</cffunction>
 
 	<cffunction name="getMemento" access="public" output="false" returntype="any">

@@ -29,8 +29,8 @@
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
 			structAppend(ValidateThisConfig,arguments.addToConfig,true);
-			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
-			transientFactory = validationFactory.getBean("transientFactory");
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
+			transientFactory = ValidateThis.getBean("transientFactory");
 		</cfscript>
 	</cffunction>
 
@@ -38,7 +38,7 @@
 	<cffunction name="newResultShouldReturnBuiltInResultObject" access="public" returntype="void">
 		<cfscript>
 			createTransientFactory();
-			result = variables.transientFactory.newResult();
+			result = transientFactory.newResult();
 			assertEquals("validatethis.util.Result",GetMetadata(result).name);
 		</cfscript>
 	</cffunction>
@@ -47,8 +47,16 @@
 		<cfscript>
 			extra = {ResultPath="validatethis.tests.Fixture.CustomResult"};
 			createTransientFactory(extra);
-			result = variables.transientFactory.newResult();
+			result = transientFactory.newResult();
 			assertEquals("validatethis.tests.Fixture.CustomResult",GetMetadata(result).name);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="newValidationShouldReturnValidationWithValidateThisInjected" access="public" returntype="void">
+		<cfscript>
+			createTransientFactory();
+			validation = transientFactory.newValidation();
+			assertEquals("validatethis.ValidateThis",GetMetadata(validation.getValidateThis()).name);
 		</cfscript>
 	</cffunction>
 

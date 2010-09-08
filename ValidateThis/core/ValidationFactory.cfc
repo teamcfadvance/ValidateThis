@@ -60,7 +60,10 @@
 	<cffunction name="getBean" access="public" output="false" returntype="any" hint="I return a singleton">
 		<cfargument name="BeanName" type="Any" required="false" />
 		
-		<cfreturn variables.lwFactory.getSingleton(arguments.BeanName) />
+		<cfif arguments.BeanName neq "ValidationFactory">
+			<cfreturn variables.lwFactory.getSingleton(arguments.BeanName) />
+		</cfif>
+		<cfreturn this />
 	
 	</cffunction>
 	

@@ -44,6 +44,7 @@
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
 		<cfset variables.TransientFactory = getBean("TransientFactory") />
+		<cfset variables.TransientFactory.setValidateThis(this) />
 		
 		<cfset variables.ValidationFactory.createBOVsFromCFCs() />
 		
