@@ -27,7 +27,7 @@
 			validation.hasParameter("until").returns(true);
 			validation.getParameterValue("from").returns("12/30/1968");
 			validation.getParameterValue("until").returns("1/1/1969");
-			shouldPass = ["12/31/1968","Dec. 31 1968","12/31/68","31/12/1968","1968-12-31"];
+			shouldPass = ["12/31/1968",dateFormat("12/31/1968"),"Dec. 31 1968","12/31/68","31/12/1968","1968-12-31"];
 			shouldFail = ["12/28/1969","12/29/1968","1/2/1969","01/02/1969","12/31/1969","2010-12-31"];
 		</cfscript>
 	</cffunction>
