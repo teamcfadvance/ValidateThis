@@ -15,38 +15,43 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("RangeLength");
-			parameters = {minLength=5,maxLength=10};
+			SRV = getSRV("MaxLength");
+			parameters = {MaxLength=5};
 			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validateReturnsTrueForValidMinAndMax" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForValidMaxLength" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(12345);
+			validation.getObjectValue().returns(1);
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidMin" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidMaxLength" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
+			validation.getObjectValue().returns(123456);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
+
+	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" 
+		hint="Need to override this from the base test as it isn't valid in here">
+	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidMax" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForEmptyPropertyIfRequired" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(12345678901);
+			validation.getObjectValue().returns("");
+			validation.getIsRequired().returns(true);
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	

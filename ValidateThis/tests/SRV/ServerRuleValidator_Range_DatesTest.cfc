@@ -15,43 +15,31 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("Regex");
-			parameters = {Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
+			SRV = getSRV("Range");
+			parameters = {min="2010-12-01",max="2010-12-31"};
 			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validateReturnsTrueForValidRegex" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForDateInRange" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("Mr.");
+			validation.getObjectValue().returns("2010-12-19");
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidRegex" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForDateOutOfRange" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
+			validation.getObjectValue().returns("2010-02-19");
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidRegexWithServerRegexParameter" access="public" returntype="void">
-		<cfscript>
-			super.setup();
-			SRV = getSRV("Regex");
-			parameters = {ServerRegex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
-			validation.getParameters().returns(parameters);
-			validation.getObjectValue().returns(1);
-			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-
 </cfcomponent>

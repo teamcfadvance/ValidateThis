@@ -15,44 +15,43 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("Max");
-			parameters = {max=5};
+			SRV = getSRV("Regex");
+			parameters = {Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
 			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validateReturnsTrueForValidMax" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForValidRegex" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
+			validation.getObjectValue().returns("Mr.");
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidMax" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidRegex" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(6);
+			validation.getObjectValue().returns(1);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" 
-		hint="Need to override this from the base test as it isn't valid in here">
-	</cffunction>
-	
-	<cffunction name="validateReturnsTrueForEmptyPropertyIfRequired" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidRegexWithServerRegexParameter" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
+			super.setup();
+			SRV = getSRV("Regex");
+			parameters = {ServerRegex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
+			validation.getParameters().returns(parameters);
+			validation.getObjectValue().returns(1);
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
-	
+
 </cfcomponent>

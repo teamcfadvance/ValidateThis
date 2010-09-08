@@ -15,7 +15,7 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -102,7 +102,7 @@
 		</cfscript>  
 	</cffunction>
 	
-	<!--- Must override these from the base test as they are irrelevent for Expression --->
+	 <!--- Must override these from the base test as they are irrelevent for Expression --->
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 	</cffunction>

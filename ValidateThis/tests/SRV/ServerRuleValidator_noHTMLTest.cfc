@@ -15,14 +15,14 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
 			SRV = getSRV("noHTML");
-			shouldPass = ["a","a few words","10 < 1","1 > 10","what if there's only a closing tag />"];
-			shouldFail = ["<p>","<p />","<p/>","some words with an <a>embedded","some words with an <a>embedded</a>","<notARealTag>","<notARealTag />","<p>Tag at the beginning","Tag at the end<p>"];
+			shouldPass = ["a","a few words","10 < 1","1 > 10","what if there's only a closing tag />","</","/>"];
+			shouldFail = ["<p>","<p />","<p/>","<tag with='attributes'>test</tag>",'<tag with="attributes">',"some words with an <a>embedded","some words with an <a>embedded</a>","<notARealTag>","<notARealTag />","<p>Tag at the beginning","Tag at the end<p>"];
 		</cfscript>
 	</cffunction>
 	

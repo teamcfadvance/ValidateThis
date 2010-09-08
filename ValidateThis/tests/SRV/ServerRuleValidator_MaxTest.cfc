@@ -15,16 +15,18 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("Numeric");
+			SRV = getSRV("Max");
+			parameters = {max=5};
+			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validateReturnsTrueForValidNumeric" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForValidMax" access="public" returntype="void">
 		<cfscript>
 			validation.getObjectValue().returns(1);
 			SRV.validate(validation);
@@ -32,11 +34,24 @@
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidNumeric" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidMax" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("abc");
+			validation.getObjectValue().returns(6);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" 
+		hint="Need to override this from the base test as it isn't valid in here">
+	</cffunction>
+	
+	<cffunction name="validateReturnsTrueForEmptyPropertyIfRequired" access="public" returntype="void">
+		<cfscript>
+			validation.getObjectValue().returns("");
+			validation.getIsRequired().returns(true);
+			SRV.validate(validation);
+			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	

@@ -15,28 +15,26 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("Range");
-			parameters = {min="2010-12-01",max="2010-12-31"};
-			validation.getParameters().returns(parameters);
+			SRV = getSRV("date");
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validateReturnsTrueForDateInRange" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForValidDate" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("2010-12-19");
+			validation.getObjectValue().returns(Now());
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForDateOutOfRange" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidDate" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("2010-02-19");
+			validation.getObjectValue().returns("abc");
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

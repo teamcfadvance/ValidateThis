@@ -1,6 +1,6 @@
 <!---
 	
-filename:		\VTDemo\UnitTests\ServerRuleValidatorTest.cfc
+filename:		\validatethis\samples\UnitTests\ServerRuleValidatorTest.cfc
 date created:	2008-10-22
 author:			Bob Silverberg (http://www.silverwareconsulting.com/)
 purpose:		I ServerRuleValidatorTest.cfc
@@ -26,7 +26,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>

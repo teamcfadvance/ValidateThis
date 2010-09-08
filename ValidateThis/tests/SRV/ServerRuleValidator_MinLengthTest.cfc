@@ -15,26 +15,28 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("date");
+			SRV = getSRV("MinLength");
+			parameters = {MinLength=5};
+			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validateReturnsTrueForValidDate" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForValidMinLength" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(Now());
+			validation.getObjectValue().returns(12345);
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidDate" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidMinLength" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("abc");
+			validation.getObjectValue().returns(1);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

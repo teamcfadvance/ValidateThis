@@ -15,36 +15,26 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("Range");
-			parameters = {min=5,max=10};
-			validation.getParameters().returns(parameters);
+			SRV = getSRV("Integer");
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validateReturnsTrueForValidMinAndMax" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForValidInteger" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(5);
+			validation.getObjectValue().returns(1);
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidMin" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidInteger" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
-			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
-	<cffunction name="validateReturnsFalseForInvalidMax" access="public" returntype="void">
-		<cfscript>
-			validation.getObjectValue().returns(11);
+			validation.getObjectValue().returns("abc");
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

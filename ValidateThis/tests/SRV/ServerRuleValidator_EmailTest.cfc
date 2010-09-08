@@ -15,31 +15,31 @@
 	License.
 	
 --->
-<cfcomponent extends="UnitTests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("MinLength");
-			parameters = {MinLength=5};
-			validation.getParameters().returns(parameters);
+			SRV = getSRV("email");
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validateReturnsTrueForValidMinLength" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForValidEmailAddress" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(12345);
+			validation.getObjectValue().returns("bob.silverberg@gmail.com");
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidMinLength" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidEmailAddress" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
+			validation.getObjectValue().returns("bob.silverberg");
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
 </cfcomponent>
+
+
