@@ -116,7 +116,7 @@
         </cfsavecontent>
         </cfoutput>
         
-        <cfreturn theScript/>
+        <cfreturn trim(theScript)/>
 		
 	</cffunction>
 	
