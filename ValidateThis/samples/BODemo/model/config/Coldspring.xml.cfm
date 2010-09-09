@@ -29,7 +29,7 @@
 			<map>
 				<entry key="BOValidatorPath"><value>BOValidator</value></entry>
 				<entry key="DefaultJSLib"><value>jQuery</value></entry>
-				<entry key="JSRoot"><value>/js/</value></entry>
+				<entry key="JSRoot"><value>/validatethis/samples/js/</value></entry>
 				<entry key="defaultFormName"><value>frmMain</value></entry>
 			</map>
 		</property>

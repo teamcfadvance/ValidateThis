@@ -51,7 +51,7 @@
 	<cfhtmlhead text="#ValInit#" />
 	<!--- Some formatting rules specific to this form --->
 	<cfsavecontent variable="headJS">
-		<script src="/commonassets/scripts/jQuery/forms/uni-form.jquery.js" type="text/javascript"></script>
+		<script src="validatethis/samples/commonassets/scripts/jQuery/forms/uni-form.jquery.js" type="text/javascript"></script>
 	</cfsavecontent>	
 	<cfhtmlhead text="#headJS#" />
 	<cfset ValidationScript = UserTO.getValidationScript(Form.Context) />
@@ -59,7 +59,7 @@
 </cfif>
 
 <!--- Create the form using cfUniForm custom tags --->
-<cfimport taglib="/BODemo/tags/forms/cfUniForm/" prefix="uform" />
+<cfimport taglib="/validateThis/samples/BODemo/tags/forms/cfUniForm/" prefix="uform" />
 
 <cfoutput>
 <h1>ValidateThis Integrated BO Demo - with Transfer and cfUniForm</h1>

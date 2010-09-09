@@ -17,7 +17,7 @@
 	<!--- Check for reinit and grab a copy of the BeanFactory --->
 	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"BeanFactory")>
 		<cfset application.BeanFactory = CreateObject("component","coldspring.beans.DefaultXmlBeanFactory") />
-		<cfset application.BeanFactory.loadBeans(beanDefinitionFileName=expandPath('/BODemo/model/config/Coldspring.xml.cfm'),constructNonLazyBeans=true) />
+		<cfset application.BeanFactory.loadBeans(beanDefinitionFileName=expandPath('/validateThis/samples/BODemo/model/config/Coldspring.xml.cfm'),constructNonLazyBeans=true) />
 	</cfif>
 </cfsilent>
 <cfparam name="url.cfU" default="" />
@@ -25,9 +25,9 @@
 <html>
 	<head>
 		<title>ValidateThis Demo Page</title>
-		<link href="/css/demostyle.css" type="text/css" rel="stylesheet" />
+		<link href="/validatethis/samples/css/demostyle.css" type="text/css" rel="stylesheet" />
 		<cfif NOT Len(url.cfU)>
-			<link href="/css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
+			<link href="/validatethis/samples/css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
 		</cfif>
 	</head>
 	<body>
