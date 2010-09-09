@@ -22,20 +22,18 @@
 		<cfargument name="customMessage" type="Any" required="no" default="" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfset var arguments.theCondition = "true" />
+		<cfset var theCondition = "true" />
 		<cfset var ConditionDesc = "" />
 		<cfset var theScript = "" />
 		<cfset var messageScript = "" />
 		
 		<cfset var DependentInputName = "" />
 		<cfset var DependentInputDesc = "" />
-		<cfset var DependentInputValue = 0 />
-		
+		<cfset var DependentInputValue = 0 />		
 		
 		<cfset var valType = this.getValType() /> 
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var parameters = arguments.validation.getParameters() />
-        <cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
         <cfset var fieldName = safeFormName & arguments.validation.getClientFieldName() />
         <cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
         
@@ -72,9 +70,9 @@
         
         <cfif len(DependentInputName) GT 0>
             <cfif not isNumeric(DependentInputValue)>
-                <cfset arguments.theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentInputName#']"").getValue() == " & DependentInputValue & "; }" />
+                <cfset theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentInputName#']"").getValue() == " & DependentInputValue & "; }" />
             <cfelse>
-                <cfset arguments.theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentInputName#']"").getValue().length > "& DependentInputValue & "; }" />
+                <cfset theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentInputName#']"").getValue().length > "& DependentInputValue & "; }" />
             </cfif>
 			
 			<cfif arguments.validation.hasParameter("DependentPropertyDesc")>
@@ -100,12 +98,12 @@
 			
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		    #fieldSelector#.rules("add", { #valType# : #arguments.theCondition#, messages: {#valType#: "#messageScript#"} });
+		    #fieldSelector#.rules("add", { #valType# : #theCondition#, messages: {#valType#: "#messageScript#"} });
 		</cfsavecontent>
 		</cfoutput>		
 
-	<cfreturn trim(theScript) />
+		<cfreturn trim(theScript) />
 
-</cffunction>
+	</cffunction>
 
 </cfcomponent>
