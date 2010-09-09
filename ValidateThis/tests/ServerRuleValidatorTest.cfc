@@ -13,7 +13,7 @@
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 --->
-<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="defaultFailureMessagesShouldBePrependedWithTheDefaultPrefix" access="public" returntype="void">
 		<cfscript>
@@ -151,14 +151,14 @@
 
 	<cffunction name="validate" access="private" returntype="Any">
 		<cfargument name="theObject" />
-		<cfargument name="ValType" />
+		<cfargument name="validation" />
 		<cfargument name="Parameters" required="false" default="#StructNew()#" />
 		<cfargument name="Condition" required="false" default="#StructNew()#" />
 		<cfargument name="PropertyName" required="false" default="FirstName" />
 		<cfargument name="PropertyDesc" required="false" default="First Name" />
 		
 		<cfset Validation = CreateObject("component","ValidateThis.core.validation").init(arguments.theObject,ObjectChecker).load(arguments) />
-		<cfset CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(ObjectChecker).validate(Validation) />
+		<cfset CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.validation#").init(ObjectChecker).validate(Validation) />
 		<cfreturn Validation />
 		
 	</cffunction>

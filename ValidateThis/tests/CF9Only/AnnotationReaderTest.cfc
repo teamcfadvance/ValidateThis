@@ -211,7 +211,19 @@
 			assertEquals(16,arrayLen(md.properties));
 		</cfscript>  
 	</cffunction>
-
+	
+	<cffunction name="getObjectMetadataReturnsAccurateMetadataForAComponentThatExtendsAnother" access="public" returntype="void">
+		<cfscript>
+			fail("Place holder test");
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="getObjectMetadataReturnsAccurateMetadataForAComponentThatMappedSuperClassesAnother" access="public" returntype="void">
+		<cfscript>
+			fail("Place holder test");
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="determineAnnotationFormatReturnsJSONForJSONAnnotations" access="public" returntype="void">
 		<cfscript>
 			properties = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User").properties;

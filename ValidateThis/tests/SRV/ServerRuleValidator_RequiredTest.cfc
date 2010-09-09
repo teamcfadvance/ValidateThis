@@ -26,7 +26,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent extends="validatethis.tests.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>

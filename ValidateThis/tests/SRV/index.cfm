@@ -1,9 +1,8 @@
 <!---
 NOTE: these tests take a long time to run. A lot of the time is in a subset of tests that use CF's built-in component explorer, which is a pig. In addition, the EXT output is slower than the HTML output.
-
 --->
-<cfsetting requesttimeout="300">
 
+<cfsetting requesttimeout="300">
 
 <cfparam name="url.output" default="extjs">
 <cfparam name="url.debug" default="false">
@@ -12,13 +11,12 @@ NOTE: these tests take a long time to run. A lot of the time is in a subset of t
 <cfset dir = getDirectoryFromPath(getCurrentTemplatePath()) />
 <cfset DTS = createObject("component","mxunit.runner.DirectoryTestSuite")>
 
-
-<cfset excludes = "fixture,Selenium">
+<cfset excludes = "">
 
 <cfinvoke component="#DTS#" 
 	method="run"
 	directory="#dir#"
-	componentpath="tests.srv" 
+	componentpath="validatethis.tests.srv" 
 	recurse="true" 
 	excludes="#excludes#"
 	returnvariable="Results">
@@ -39,6 +37,3 @@ NOTE: these tests take a long time to run. A lot of the time is in a subset of t
 	</cfif>
 
 </cfif>
-
-<!--- 
-<cfdump var="#results.getDebug()#"> --->

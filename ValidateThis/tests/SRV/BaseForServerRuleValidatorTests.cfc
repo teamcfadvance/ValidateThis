@@ -51,10 +51,10 @@
 	</cffunction>
 	
 	<cffunction name="getSRV" access="private" returntype="Any">
-		<cfargument name="ValType" />
+		<cfargument name="validation" />
 		<cfargument name="defaultFailureMessagePrefix" required="false" default="The " />
 		
-		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.valType#").init(arguments.defaultFailureMessagePrefix) />
+		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.validation#").init(arguments.defaultFailureMessagePrefix) />
 		
 	</cffunction>
 

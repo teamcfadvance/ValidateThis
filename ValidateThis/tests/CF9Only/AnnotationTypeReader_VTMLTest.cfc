@@ -18,163 +18,62 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			annotationTypeReader = CreateObject("component","ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_JSON").init("frmMain");
+			annotationTypeReader = CreateObject("component","ValidateThis.core.annotationTypeReaders.AnnotationTypeReader_VTML").init("frmMain");
 		</cfscript>
 	</cffunction>
 
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 
-	<cffunction name="isThisFormatReturnsTrueForJSON" access="public" returntype="void">
+	<cffunction name="isThisFormatReturnsTrueForComplexVTML" access="public" returntype="void">
 		<cfscript>
-			assertTrue(annotationTypeReader.isThisFormat('[{"key1":"value1"}]'));
+			assertTrue(annotationTypeReader.isThisFormat('hot(smart=true,cute=true)[*,Friends,Parents,Sleep]{isCool} "this chick is not hot.";'));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="isThisFormatReturnsTrueForRequiredVTML" access="public" returntype="void">
+		<cfscript>
+			assertTrue(annotationTypeReader.isThisFormat('required()'));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="isThisFormatReturnsTrueForVTMLWithNoCondition" access="public" returntype="void">
+		<cfscript>
+			assertTrue(annotationTypeReader.isThisFormat('required()'));
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="isThisFormatReturnsFalseForNonJSONString" access="public" returntype="void">
+	<cffunction name="isThisFormatReturnsTrueForVTMLWithNoContext" access="public" returntype="void">
 		<cfscript>
-			assertFalse(annotationTypeReader.isThisFormat('abc'));
+			assertTrue(annotationTypeReader.isThisFormat('required()'));
 		</cfscript>  
 	</cffunction>
+
+	<cffunction name="isThisFormatReturnsTrueForVTMLWithNoFailureMessage" access="public" returntype="void">
+		<cfscript>
+			assertTrue(annotationTypeReader.isThisFormat('required()'));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="isThisFormatReturnsTrueForVTMLWithFailureMessage" access="public" returntype="void">
+		<cfscript>
+			assertTrue(annotationTypeReader.isThisFormat('required()"CustomMessage"'));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="isThisFormatReturnsFalseForNonVTMLString" access="public" returntype="void">
+		<cfscript>
+			// Can you catch the subtle error here? using " around a parameter value in VTML is invalid.... for now
+			assertTrue(annotationTypeReader.isThisFormat('hot(smart="true",cute=true)[*,Sleep]{isCool} "this chick is not hot.";'));
+		</cfscript>  
+	</cffunction>
+
 
 	<cffunction name="loadRulesReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
+			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithVTML");
 			PropertyDescs = annotationTypeReader.getValidations(md).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
-		</cfscript>  
-	</cffunction>
-
-	<cffunction name="loadRulesReturnsCorrectValidations" access="public" returntype="void">
-		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
-			Validations = annotationTypeReader.getValidations(md).Validations;
-			assertEquals(StructCount(Validations),1);
-			assertEquals(StructCount(Validations.Contexts),3);
-			Rules = Validations.Contexts.Register;
-			assertEquals(ArrayLen(Rules),13);
-			for (i = 1; i LTE ArrayLen(Rules); i = i + 1) {
-				Validation = Rules[i];
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "LastName") {
-					assertEquals(Validation.PropertyDesc,"Last Name");
-					assertEquals(Validation.Parameters.DependentPropertyName.value,"FirstName");
-					assertEquals(Validation.Parameters.DependentPropertyDesc.value,"First Name");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserName") {
-					assertEquals(Validation.PropertyDesc,"Email Address");
-				}
-				if (Validation.ValType eq "email" and Validation.PropertyName eq "UserName") {
-					assertEquals(Validation.PropertyDesc,"Email Address");
-					assertEquals(Validation.FailureMessage,"Hey, buddy, you call that an Email Address?");
-				}
-				if (Validation.ValType eq "custom" and Validation.PropertyName eq "Nickname") {
-					assertEquals(Validation.PropertyDesc,"Nickname");
-					assertEquals(Validation.Parameters.MethodName.value,"CheckDupNickname");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserPass") {
-					assertEquals(Validation.PropertyDesc,"Password");
-				}
-				if (Validation.ValType eq "rangelength" and Validation.PropertyName eq "UserPass") {
-					assertEquals(Validation.PropertyDesc,"Password");
-					assertEquals(Validation.Parameters.MinLength.value,5);
-					assertEquals(Validation.Parameters.MaxLength.value,10);
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "VerifyPassword") {
-					assertEquals(Validation.PropertyDesc,"Verify Password");
-				}
-				if (Validation.ValType eq "equalTo" and Validation.PropertyName eq "VerifyPassword") {
-					assertEquals(Validation.PropertyDesc,"Verify Password");
-					assertEquals(Validation.Parameters.ComparePropertyName.value,"UserPass");
-					assertEquals(Validation.Parameters.ComparePropertyDesc.value,"Password");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserGroup") {
-					assertEquals(Validation.PropertyDesc,"User Group");
-				}
-				if (Validation.ValType eq "regex" and Validation.PropertyName eq "Salutation") {
-					assertEquals(Validation.PropertyDesc,"Salutation");
-					assertEquals(Validation.Parameters.Regex.value,"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$");
-					assertEquals(Validation.FailureMessage,"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "LikeOther") {
-					assertEquals(Validation.PropertyDesc,"What do you like?");
-					assertEquals(Validation.FailureMessage,"If you don't like Cheese and you don't like Chocolate, you must like something!");
-					assertEquals(Validation.Condition.ClientTest,"$(""[name='likecheese']"").getvalue() == 0 && $(""[name='likechocolate']"").getvalue() == 0;");
-					assertEquals(Validation.Condition.ServerTest,"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0");
-				}
-				if (Validation.ValType eq "numeric" and Validation.PropertyName eq "HowMuch") {
-					assertEquals(Validation.PropertyDesc,"How much money would you like?");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "CommunicationMethod") {
-					assertEquals(Validation.PropertyDesc,"Communication Method");
-					assertEquals(Validation.Parameters.DependentPropertyDesc.value,"Allow Communication");
-					assertEquals(Validation.Parameters.DependentPropertyName.value,"AllowCommunication");
-					assertEquals(Validation.Parameters.DependentPropertyValue.value,1);
-				}
-			}
-			Rules = Validations.Contexts.Profile;
-			assertEquals(ArrayLen(Rules),15);
-			for (i = 1; i LTE ArrayLen(Rules); i = i + 1) {
-				Validation = Rules[i];
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "Salutation") {
-					assertEquals(Validation.PropertyDesc,"Salutation");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "FirstName") {
-					assertEquals(Validation.PropertyDesc,"First Name");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "LastName") {
-					assertEquals(Validation.PropertyDesc,"Last Name");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserName") {
-					assertEquals(Validation.PropertyDesc,"Email Address");
-				}
-				if (Validation.ValType eq "email" and Validation.PropertyName eq "UserName") {
-					assertEquals(Validation.PropertyDesc,"Email Address");
-					assertEquals(Validation.FailureMessage,"Hey, buddy, you call that an Email Address?");
-				}
-				if (Validation.ValType eq "custom" and Validation.PropertyName eq "Nickname") {
-					assertEquals(Validation.PropertyDesc,"Nickname");
-					assertEquals(Validation.Parameters.MethodName.value,"CheckDupNickname");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserPass") {
-					assertEquals(Validation.PropertyDesc,"Password");
-				}
-				if (Validation.ValType eq "rangelength" and Validation.PropertyName eq "UserPass") {
-					assertEquals(Validation.PropertyDesc,"Password");
-					assertEquals(Validation.Parameters.MinLength.value,5);
-					assertEquals(Validation.Parameters.MaxLength.value,10);
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "VerifyPassword") {
-					assertEquals(Validation.PropertyDesc,"Verify Password");
-				}
-				if (Validation.ValType eq "equalTo" and Validation.PropertyName eq "VerifyPassword") {
-					assertEquals(Validation.PropertyDesc,"Verify Password");
-					assertEquals(Validation.Parameters.ComparePropertyName.value,"UserPass");
-					assertEquals(Validation.Parameters.ComparePropertyDesc.value,"Password");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "UserGroup") {
-					assertEquals(Validation.PropertyDesc,"User Group");
-				}
-				if (Validation.ValType eq "regex" and Validation.PropertyName eq "Salutation") {
-					assertEquals(Validation.PropertyDesc,"Salutation");
-					assertEquals(Validation.Parameters.Regex.value,"^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$");
-					assertEquals(Validation.FailureMessage,"Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "LikeOther") {
-					assertEquals(Validation.PropertyDesc,"What do you like?");
-					assertEquals(Validation.FailureMessage,"If you don't like Cheese and you don't like Chocolate, you must like something!");
-					assertEquals(Validation.Condition.ClientTest,"$(""[name='likecheese']"").getvalue() == 0 && $(""[name='likechocolate']"").getvalue() == 0;");
-					assertEquals(Validation.Condition.ServerTest,"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0");
-				}
-				if (Validation.ValType eq "numeric" and Validation.PropertyName eq "HowMuch") {
-					assertEquals(Validation.PropertyDesc,"How much money would you like?");
-				}
-				if (Validation.ValType eq "required" and Validation.PropertyName eq "CommunicationMethod") {
-					assertEquals(Validation.PropertyDesc,"Communication Method");
-					assertEquals(Validation.Parameters.DependentPropertyDesc.value,"Allow Communication");
-					assertEquals(Validation.Parameters.DependentPropertyName.value,"AllowCommunication");
-					assertEquals(Validation.Parameters.DependentPropertyValue.value,1);
-				}
-			}
 		</cfscript>  
 	</cffunction>
 
