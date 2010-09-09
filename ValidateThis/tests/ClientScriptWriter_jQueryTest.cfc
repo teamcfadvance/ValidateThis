@@ -331,7 +331,7 @@
 			valStruct.Parameters.ComparePropertyDesc = {value=ComparePropertyDesc,type="value"};
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
-			assertTrue(Script contains "$form_frmMain.find("":input[name='FirstName']"").rules(""add"",{equalTo:"":input[name='LastName']"",messages:{equalTo:""The First Name must be the same as Last Name""}});");
+			assertTrue(Script contains "$form_frmMain.find("":input[name='FirstName']"").rules(""add"",{equalTo:"":input[name='LastName']"",messages:{equalTo:""The First Name must be the same as the Last Name.""}});");
 		</cfscript>
 	</cffunction>
 
@@ -344,7 +344,7 @@
 			valStruct.Parameters.ComparePropertyDesc = {value=ComparePropertyDesc,type="value"};
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
-			assertTrue(Script contains "$form_frmMain2.find("":input[name='FirstName']"").rules(""add"",{equalTo:"":input[name='LastName']"",messages:{equalTo:""The First Name must be the same as Last Name""}});" );
+			assertTrue(Script contains "$form_frmMain2.find("":input[name='FirstName']"").rules(""add"",{equalTo:"":input[name='LastName']"",messages:{equalTo:""The First Name must be the same as the Last Name.""}});" );
 		</cfscript>
 	</cffunction>
 
@@ -360,7 +360,7 @@
 			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
-			assertTrue(Script contains "$form_frmMain2.find("":input[name='FirstName']"").rules(""add"",{equalTo:"":input[name='LastName']"",messages:{equalTo:""First Name must be the same as Last Name""}});" );
+			assertTrue(Script contains "$form_frmMain2.find("":input[name='FirstName']"").rules(""add"",{equalTo:"":input[name='LastName']"",messages:{equalTo:""First Name must be the same as Last Name.""}});" );
 		</cfscript>
 	</cffunction>
 
