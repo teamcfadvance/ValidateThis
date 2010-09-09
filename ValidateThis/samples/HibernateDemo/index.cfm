@@ -15,10 +15,10 @@
 --->
 <cfsilent>
 	<!--- Reload ORM and ValidateThis, if needed --->
-	<cfparam name="url.defPath" default="/HibernateDemo/model/xml/" />
+	<cfparam name="url.defPath" default="/validatethis/samples/HibernateDemo/model/xml/" />
 	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"ValidateThis")>
 		<cfset ormReload() />
-		<cfset ValidateThisConfig = {definitionPath=url.defPath,JSRoot="/js/"} />
+		<cfset ValidateThisConfig = {definitionPath=url.defPath,JSRoot="/validatethis/samples/js/"} />
 		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 	</cfif>
 </cfsilent>
@@ -26,8 +26,8 @@
 <html>
 	<head>
 		<title>ValidateThis Demo Page</title>
-		<link href="/css/demostyle.css" type="text/css" rel="stylesheet" />
-		<link href="/css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
+		<link href="/validatethis/samples/css/demostyle.css" type="text/css" rel="stylesheet" />
+		<link href="/validatethis/samples/css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
 	</head>
 	<body>
 	<div id="container">

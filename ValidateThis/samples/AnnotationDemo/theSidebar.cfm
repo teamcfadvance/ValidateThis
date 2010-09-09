@@ -28,9 +28,9 @@
 		</cfif>
 		<li><a href="index.cfm?NoJS=#Form.NoJS#">Register a New User</a></li>
 		<li><a href="index.cfm?Context=Profile&NoJS=#Form.NoJS#">Edit an Existing User</a></li>
-		<li><a href="index.cfm?init=true&Context=#Form.Context#&NoJS=#Form.NoJS#&defPath=/HibernateDemo/model/json/">Use a JSON rules file</a></li>
+		<li><a href="index.cfm?init=true&Context=#Form.Context#&NoJS=#Form.NoJS#&defPath=/validatethis/samples/HibernateDemo/model/json/">Use a JSON rules file</a></li>
 		<li><a href="index.cfm?init=true&Context=#Form.Context#&NoJS=#Form.NoJS#">Use an XML rules file</a></li>
-		<li><a href="/index.cfm">Back to the Home Page</a></li>
+		<li><a href="/validatethis/samples/index.cfm">Back to the Home Page</a></li>
 		</cfoutput>
 	</ul>
 </p>
