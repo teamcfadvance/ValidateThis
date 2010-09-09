@@ -21,17 +21,62 @@
 		<cfscript>
 			super.setup();
 			SRV = getSRV("Size");
-			parameters = {length="1"};
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("length").returns(true);
-			validation.getParameterValue("length",0).returns(1);
+			
+			// Define Validation Mockup Test Values
+			parameters={};
+			objectValue = "t";
+			isRequired = true;
+			hasMin = false;
+			hasMax = false;
+			hasLength = true;
+			
+			defaultMin = 1;
+			defaultMax = 10;
+			defaultLength = 1;
 		</cfscript>
+	</cffunction>
+	
+	<cffunction name="validationMockup" access="private">
+		<cfscript>
+			validation.getIsRequired().returns(isRequired);
+			validation.getParameters().returns(parameters);
+			
+			validation.hasParameter("length").returns(hasLength);
+			validation.hasParameter("min").returns(hasMin);
+			validation.hasParameter("max").returns(hasMax);
+			
+			validation.getParameterValue("length",0).returns(defaultLength);
+			validation.getParameterValue("min",0).returns(defaultMin);
+			validation.getParameterValue("max",0).returns(defaultMax);
+			validation.getObjectValue().returns(objectValue);
+		</cfscript>
+	</cffunction>
+	
+	<cffunction name="validateTestIsReliableWithNoFalsePositives" access="public" returntype="void">
+		<cfscript>
+			objectValue = [{test="test"},{test2="test2"}];	
+			isRequired=true;
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			parameters={length="1"};
+			
+			validationMockup();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false); 
+		</cfscript>  
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForCorrectArrayLength" access="public" returntype="void">
 		<cfscript>
-			returns = [{test="test"}];
-			validation.getObjectValue().returns(returns);
+			objectValue = [{test="test"}];	
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -39,8 +84,13 @@
 	
 	<cffunction name="validateReturnsFalseForIncorrectArrayLength" access="public" returntype="void">
 		<cfscript>
-			returns = [{test2="test2"},{test="test"}];
-			validation.getObjectValue().returns(returns);
+			objectValue = [{test2="test2"},{test="test"}];
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -48,8 +98,13 @@
 
 	<cffunction name="validateReturnsTrueForCorrectStructCount" access="public" returntype="void">
 		<cfscript>
-			returns = {name="test"};
-			validation.getObjectValue().returns(returns);
+			objectValue = {name="test"};
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -57,8 +112,13 @@
 	
 	<cffunction name="validateReturnsFalseForIncorrectStructCount" access="public" returntype="void">
 		<cfscript>
-			returns = {test="name",name="test"};
-			validation.getObjectValue().returns(returns);
+			objectValue = {test="name",name="test"};
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -66,7 +126,13 @@
 
 	<cffunction name="validateReturnsTrueForCorrectStringLength" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("t");
+			objectValue  = "t";
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -74,7 +140,13 @@
 	
 	<cffunction name="validateReturnsFalseForIncorrectStringLength" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("tt");
+			objectValue = "tt";
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -82,9 +154,14 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyArrayIfRequired" access="public" returntype="void">
 		<cfscript>
-			validation.getIsRequired().returns(true);
-			returns = [];
-			validation.getObjectValue().returns(returns);
+			isRequired = true;
+			objectValue = [];			
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -92,20 +169,92 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyStructIfRequired" access="public" returntype="void">
 		<cfscript>
-			validation.getIsRequired().returns(true);
-			returns = {};
-			validation.getObjectValue().returns(returns);
+			isRequired = true;
+			objectValue = {};
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 
-
-	<cffunction name="placeholderForTestsOfMinAndMaxParameters" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
-			fail("This is a placeholder for tests that need to be added for min and max parameter usage.");
+			objectValue = "";
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			isRequired = false;
+			
+			validationMockup();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
-
+	
+	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
+		<cfscript>
+			objectValue = "";
+			hasLength=true;
+			hasMin = false;
+			hasMax = false;
+			isRequired = true;
+			
+			validationMockup();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="validateReturnsTrueForValueInRange" access="public" returntype="void">
+		<cfscript>
+			objectValue = "test";
+			parameters={min=1,max=10};
+			hasMin = true;
+			hasMax = true;
+			hasLength = false;
+			
+			validationMockup();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(0).setIsSuccess(false);
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="validateReturnsFalseForValueOutOfRangeLow" access="public" returntype="void">
+		<cfscript>
+			objectValue = "";
+			parameters={min=1,max=10};
+			hasMin = true;
+			hasMax = true;
+			hasLength = false;
+			
+			validationMockup();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false);
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="validateReturnsFalseForValueOutOfRangeHigh" access="public" returntype="void">
+		<cfscript>
+			objectValue = "asdfasdfasdfasdfasdf";
+			parameters={min=1,max=10};
+			hasMin = true;
+			hasMax = true;
+			hasLength = false;
+			
+			validationMockup();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false);
+		</cfscript>  
+	</cffunction>
 	
 </cfcomponent>

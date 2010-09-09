@@ -21,13 +21,28 @@
 		<cfscript>
 			ObjectChecker = mock();
 			ObjectChecker.findGetter("{*}").returns("getFirstName()");
+
+			// Define Validation Mockup Test Values
+			parameters={};
+			objectValue = "";
+			isRequired = true;
+			
 			validation = mock();
 			validation.setIsSuccess(false).returns();
 			validation.getPropertyDesc().returns("PropertyDesc");
+
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">
+	</cffunction>
+	
+	<cffunction name="GenericValidationObjectMockup" access="private">
+		<cfscript>
+			validation.getIsRequired().returns(isRequired);
+			validation.getParameters().returns(parameters);
+			validation.getObjectValue().returns(objectValue);
+		</cfscript>
 	</cffunction>
 
 	<!--- These two tests will be identical for each SRV, but should be run for each --->
@@ -36,6 +51,7 @@
 		<cfscript>
 			validation.getObjectValue().returns("");
 			validation.getIsRequired().returns(false);
+			validation.getFailureMessage().returns("");
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -45,7 +61,8 @@
 		<cfscript>
 			validation.getObjectValue().returns("");
 			validation.getIsRequired().returns(true);
-			SRV.validate(validation);
+			validation.getFailureMessage().returns("");
+			SRV.validate(validation);			
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>

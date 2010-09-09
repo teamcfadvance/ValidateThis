@@ -103,12 +103,11 @@
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForEmptyPropertyIfNotRequired" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
 			customResult = {IsSuccess=false,FailureMessage="A custom validator failed."};
 			theObject.myMethod().returns(customResult);
 			validation.getTheObject().returns(theObject);
-			validation.getObjectValue().returns("");
 			validation.getIsRequired().returns(false);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -127,7 +126,4 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
-	</cffunction>
-	
 </cfcomponent>
