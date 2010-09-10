@@ -26,7 +26,9 @@
 	
 	<cffunction name="validateReturnsTrueForValidBoolean" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(true);
+			objectValue = true;
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -34,7 +36,9 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidBoolean" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("abc");
+			objectValue = "abc";
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -42,20 +46,24 @@
 	
 	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("abc");
-			validation.setFailureMessage("The PropertyDesc must be a valid boolean.").returns();
+			objectValue = "abc";
+            failureMessage = "The PropertyDesc must be a valid boolean.";
+            validationMockup();
+			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setFailureMessage("The PropertyDesc must be a valid boolean."); 
+			validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	
 	<cffunction name="failureMessageIsPrefixedByOverridenPrefix" access="public" returntype="void">
 		<cfscript>
 			SRV = getSRV("Boolean","");
-			validation.getObjectValue().returns("abc");
-			validation.setFailureMessage("PropertyDesc must be a valid boolean.").returns();
+			objectValue = "abc";
+            failureMessage = "PropertyDesc must be a valid boolean.";
+            validationMockup();
+
 			SRV.validate(validation);
-			validation.verifyTimes(1).setFailureMessage("PropertyDesc must be a valid boolean."); 
+			validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	

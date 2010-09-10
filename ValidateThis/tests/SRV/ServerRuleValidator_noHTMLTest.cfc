@@ -30,7 +30,8 @@
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getObjectValue().returns(arguments.value);
+			objectValue = arguments.value;
+			validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -40,7 +41,8 @@
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getObjectValue().returns(arguments.value);
+			objectValue = arguments.value;
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -48,8 +50,9 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
+		    objectValue = "";
+		    isRequired = true;
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  

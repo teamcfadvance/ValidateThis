@@ -22,13 +22,14 @@
 			super.setup();
 			SRV = getSRV("Max");
 			parameters = {max=5};
-			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForValidMax" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
+			objectValue = 1;
+            validationMockup();
+						
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -36,7 +37,9 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidMax" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(6);
+			objectValue = 6;
+            validationMockup();		
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -44,15 +47,6 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" 
 		hint="Need to override this from the base test as it isn't valid in here">
-	</cffunction>
-	
-	<cffunction name="validateReturnsTrueForEmptyPropertyIfRequired" access="public" returntype="void">
-		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
-			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
-		</cfscript>  
 	</cffunction>
 	
 </cfcomponent>

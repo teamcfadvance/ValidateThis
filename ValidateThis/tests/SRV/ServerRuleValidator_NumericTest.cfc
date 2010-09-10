@@ -26,7 +26,9 @@
 	
 	<cffunction name="validateReturnsTrueForValidNumeric" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
+			objectValue = 1;
+            
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -34,7 +36,9 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidNumeric" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("abc");
+			objectValue = "abc";
+            
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

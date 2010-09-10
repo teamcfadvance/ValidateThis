@@ -26,7 +26,10 @@
 	
 	<cffunction name="validateReturnsTrueForValidDate" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(Now());
+			
+			objectValue = Now();
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -34,7 +37,10 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidDate" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("abc");
+			
+			objectValue = "abc";
+            validationMockup();
+
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

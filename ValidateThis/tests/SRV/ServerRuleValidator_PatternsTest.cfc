@@ -33,8 +33,9 @@
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getObjectValue().returns(arguments.value);
-			validation.getParameters().returns(parameters);
+            objectValue = arguments.value;
+
+            validationMockup();
 			validation.hasParameter("minMatches").returns(true);
 			validation.getParameterValue("minMatches",1).returns(0);
 			validation.getParameterValue("pattern_Name").returns("[a-z]]");
@@ -48,12 +49,16 @@
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getObjectValue().returns(arguments.value);
-			validation.getParameters().returns(parameters);
+			objectValue = arguments.value;
+
+            validationMockup();
+
 			validation.hasParameter("minMatches").returns(true);
 			validation.getParameterValue("minMatches",1).returns(1);
 			validation.getParameterValue("pattern_Name").returns("test");
+
 			debug(arguments.value);
+
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -61,12 +66,15 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("minMatches").returns(true);
-			validation.getParameterValue("minMatches",1).returns(1);
-			validation.getParameterValue("pattern_Name").returns("^(test)");
+			objectValue = "";
+			isRequired = true;
+            
+            validationMockup();
+            
+            validation.hasParameter("minMatches").returns(true);
+            validation.getParameterValue("minMatches",1).returns(1);
+            validation.getParameterValue("pattern_Name").returns("^(test)");
+            
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
