@@ -22,13 +22,14 @@
 			super.setup();
 			SRV = getSRV("Range");
 			parameters = {min=5,max=10};
-			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForValidMinAndMax" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(5);
+            objectValue = 5;
+            validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -36,7 +37,9 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidMin" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
+            objectValue = 1;
+            validationMockup();
+
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -44,10 +47,12 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidMax" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(11);
+            objectValue = 11;
+            validationMockup();
+
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
-	
+		
 </cfcomponent>

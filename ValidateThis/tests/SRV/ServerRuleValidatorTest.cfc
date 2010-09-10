@@ -18,20 +18,26 @@
 	<cffunction name="defaultFailureMessagesShouldBePrependedWithTheDefaultPrefix" access="public" returntype="void">
 		<cfscript>
 			SRV = getSRV("required");
-			validation.getObjectValue().returns("");
-			validation.setFailureMessage("The PropertyDesc is required.").returns();
+			objectValue = "";
+			failureMessage = "The PropertyDesc is required.";
+            
+            validationMockup();			
+            
 			SRV.validate(validation);
-			validation.verifyTimes(1).setFailureMessage("The PropertyDesc is required."); 
+			validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="defaultFailureMessagesShouldBePrependedWithTheOverriddenPrefix" access="public" returntype="void">
 		<cfscript>
 			SRV = getSRV("required","");
-			validation.getObjectValue().returns("");
-			validation.setFailureMessage("PropertyDesc is required.").returns();
-			SRV.validate(validation);
-			validation.verifyTimes(1).setFailureMessage("PropertyDesc is required."); 
+			objectValue = "";
+            failureMessage = "PropertyDesc is required.";
+            
+            validationMockup();         
+            
+            SRV.validate(validation);
+            validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	

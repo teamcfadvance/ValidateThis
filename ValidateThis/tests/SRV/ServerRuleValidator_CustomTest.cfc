@@ -21,13 +21,23 @@
 		<cfscript>
 			super.setup();
 			SRV = getSRV("Custom");
-			parameters = {MethodName="myMethod"};
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("methodName").returns(true);
-			validation.getParameterValue("methodName").returns("myMethod");
-			theObject = mock();
+			defaultMethod = "myMethod";
+			defaultRemoteURL = "";
+			parameters = {MethodName=defaultMethod};
+			hasMethod = true;
+			hasRemote = false;
 		</cfscript>
 	</cffunction>
+	
+	<cffunction name="validationMockup" access="private">
+        <cfscript>
+           super.validationMockup();           
+           validation.hasParameter("methodName").returns(hasMethod);
+           validation.hasParameter("remoteURL").returns(hasRemote);
+           validation.getParameterValue("methodName").returns(defaultMethod);
+           validation.getParameterValue("remoteURL").returns(defaultRemoteURL);        
+        </cfscript>
+    </cffunction>
 	
 	<cffunction name="placeholderForTestsForRemoteURLThatAdamAdded" access="public" returntype="void">
 		<cfscript>
@@ -39,9 +49,10 @@
 		<cfscript>
 			customResult = {IsSuccess=false,FailureMessage="A custom validator failed."};
 			theObject.myMethod().returns(customResult);
-			validation.getTheObject().returns(theObject);
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
+            objectValue="";
+            
+            validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -51,9 +62,10 @@
 		<cfscript>
 			customResult = {IsSuccess=true,FailureMessage=""};
 			theObject.myMethod().returns(customResult);
-			validation.getTheObject().returns(theObject);
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
+			objectValue="";            
+			
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -63,11 +75,11 @@
 		<cfscript>
 			customResult = false;
 			theObject.myMethod().returns(customResult);
-			validation.getTheObject().returns(theObject);
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
-			validation.setFailureMessage("A custom validator failed.").returns();
-			validation.getFailureMessage().returns(""); 
+			objectValue="";
+			failureMessage = "A custom validator failed.";
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 			debug(validation.debugMock());
@@ -79,9 +91,10 @@
 		<cfscript>
 			customResult = true;
 			theObject.myMethod().returns(customResult);
-			validation.getTheObject().returns(theObject);
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
+			objectValue = "";
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -89,17 +102,18 @@
 	
 	<cffunction name="validateGeneratesProperErrorMessageWhenOverriddenInXML" access="public" returntype="void">
 		<cfscript>
+			SRV = getSRV("Custom","");
 			customResult = false;
 			theObject.myMethod().returns(customResult);
-			validation.getTheObject().returns(theObject);
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
-			validation.getFailureMessage().returns("A custom failure message."); 
-			validation.setFailureMessage("A custom failure message.").returns();
+			objectValue = "";
+			failureMessage = "A custom failure message.";
+            
+            validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 			debug(validation.debugMock());
-			validation.verifyTimes(1).setFailureMessage("A custom failure message."); 
+			validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	
@@ -107,8 +121,11 @@
 		<cfscript>
 			customResult = {IsSuccess=false,FailureMessage="A custom validator failed."};
 			theObject.myMethod().returns(customResult);
-			validation.getTheObject().returns(theObject);
-			validation.getIsRequired().returns(false);
+			objectValue = "";
+			isRequired = false;
+            
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -118,9 +135,11 @@
 		<cfscript>
 			customResult = {IsSuccess=false,FailureMessage="A custom validator failed."};
 			theObject.myMethod().returns(customResult);
-			validation.getTheObject().returns(theObject);
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
+			objectValue = "";
+            isRequired = true;
+            
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

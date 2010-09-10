@@ -26,7 +26,11 @@
 	
 	<cffunction name="validateReturnsTrueForValidEmailAddress" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("bob.silverberg@gmail.com");
+			objectValue = "bob.silverberg@gmail.com";
+            
+            validationMockup();
+            
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -34,7 +38,10 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidEmailAddress" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("bob.silverberg");
+			objectValue = "bob.silverberg";
+            
+            validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

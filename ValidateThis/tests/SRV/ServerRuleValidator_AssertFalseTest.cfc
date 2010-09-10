@@ -26,7 +26,9 @@
 	
 	<cffunction name="validateReturnsTrueForFalseBoolean" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(false);
+			objectValue = false;
+            
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -34,7 +36,9 @@
 	
 	<cffunction name="validateReturnsFalseForTrueBoolean" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(true);
+			objectValue = true;
+            
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -42,7 +46,9 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidBoolean" access="public" returntype="void">
 0		<cfscript>
-			validation.getObjectValue().returns("abc");
+			objectValue = "abc";
+            
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

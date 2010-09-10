@@ -2,7 +2,7 @@
 	
 	// **************************************** LICENSE INFO **************************************** \\
 	
-	Copyright 2010, Bob Silverberg
+	Copyright 2010, Adam Drew
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -22,21 +22,30 @@
 			super.setup();
 			SRV = getSRV("InList");
 			parameters = {list="milk,cookies,ice cream",delim=","};
-			validation.hasParameter("delim").returns(true);
-			validation.getParameterValue("delim").returns(parameters.delim);
 			shouldFail = ["beer","burgers","cheese","chips"];
 			shouldPass = ["milk","cookies","ice cream"];
 		</cfscript>
 	</cffunction>
 	
+	<cffunction name="validationMockup" access="private">
+        <cfscript>
+           super.validationMockup();
+           validation.hasParameter("delim").returns(true);
+           validation.getParameterValue("delim").returns(",");
+        </cfscript>
+    </cffunction>
+	
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("list").returns(true);
-			validation.getParameterValue("list").returns(parameters.list);
-			validation.getObjectValue().returns(arguments.value);
+			objectValue = arguments.value;
+
+            validationMockup();
+            
+            validation.hasParameter("list").returns(true);
+            validation.getParameterValue("list").returns(parameters.list);
+            
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -46,10 +55,13 @@
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getParameters().returns(parameters);
+			objectValue = arguments.value;
+
+			validationMockup();
+
 			validation.hasParameter("list").returns(true);
 			validation.getParameterValue("list").returns(parameters.list);
-			validation.getObjectValue().returns(arguments.value);
+			
 			debug(arguments.value);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -58,11 +70,14 @@
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getParameters().returns(parameters);
+			objectValue = "";
+			isRequired= false;
+			
+			validationMockup();
+			
 			validation.hasParameter("list").returns(true);
 			validation.getParameterValue("list").returns(parameters.list);
-			validation.getIsRequired().returns(false);
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -70,11 +85,14 @@
 
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("list").returns(true);
-			validation.getParameterValue("list").returns(parameters.list);
-			validation.getIsRequired().returns(true);
+			objectValue = "";
+            isRequired= true;
+            
+            validationMockup();
+            
+            validation.hasParameter("list").returns(true);
+            validation.getParameterValue("list").returns(parameters.list);
+            
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

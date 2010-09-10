@@ -30,8 +30,9 @@
 			theObject.setUserId(1);
 			theObject.setUserName(2);
 			parameters = {expression="getUserId() eq getUserName()"};
-			validation.getParameters().returns(parameters);
-			validation.getTheObject().returns(theObject);
+
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -43,8 +44,9 @@
 			theObject.setUserId(1);
 			theObject.setUserName(1);
 			parameters = {expression="getUserId() eq getUserName()"};
-			validation.getParameters().returns(parameters);
-			validation.getTheObject().returns(theObject);
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -56,8 +58,9 @@
 			theStruct = {userId=1,userName=2};
 			theObject.setup(theStruct);
 			parameters = {expression="getValue('UserId') eq getValue('UserName')"};
-			validation.getParameters().returns(parameters);
-			validation.getTheObject().returns(theObject);
+            
+            validationMockup();
+
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -69,8 +72,9 @@
 			theStruct = {userId=1,userName=1};
 			theObject.setup(theStruct);
 			parameters = {expression="getValue('UserId') eq getValue('UserName')"};
-			validation.getParameters().returns(parameters);
-			validation.getTheObject().returns(theObject);
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -82,8 +86,9 @@
 			theStruct = {userId=1,userName=2};
 			theObject.setup(theStruct);
 			parameters = {expression="UserId eq UserName"};
-			validation.getParameters().returns(parameters);
-			validation.getTheObject().returns(theObject);
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -95,15 +100,15 @@
 			theStruct = {userId=1,userName=1};
 			theObject.setup(theStruct);
 			parameters = {expression="UserId eq UserName"};
-			validation.getParameters().returns(parameters);
-			validation.getTheObject().returns(theObject);
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	 <!--- Must override these from the base test as they are irrelevent for Expression --->
-	
+	 <!--- Must override these from the base test as they are irrelevent for Expression --->	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 	</cffunction>
 	

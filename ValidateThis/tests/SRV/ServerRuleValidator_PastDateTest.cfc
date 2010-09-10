@@ -2,7 +2,7 @@
 	
 	// **************************************** LICENSE INFO **************************************** \\
 	
-	Copyright 2010, Bob Silverberg
+	Copyright 2010, Adam Drew
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -22,19 +22,31 @@
 			super.setup();
 			SRV = getSRV("PastDate");
 			parameters = {before="12/29/1968"};
+			defaultBefore="12/29/1968";
+            hasBefore = true;
 			shouldPassDefault = ["12/21/1920","Dec. 21 1920"];
 			shouldFail = ["12/31/1969","Dec. 31 2010","12/31/90","31/12/2012"];
 			shouldPass = ["12/28/1968","12/29/1968","1/2/1920","01/1969","12/31/1967"];
 		</cfscript>
 	</cffunction>
 	
+	<cffunction name="validationMockup" access="private">
+        <cfscript>
+           super.validationMockup();
+           validation.hasParameter("before").returns(hasBefore);
+           validation.getParameterValue("before").returns(defaultBefore);      
+        </cfscript>
+    </cffunction>
+	
 	<cffunction name="validateReturnsTrueForDateWithNoBeforeParam" access="public" returntype="void" mxunit:dataprovider="shouldPassDefault">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getParameters().returns(structNew());
-			validation.hasParameter("before").returns(false);
-			validation.getObjectValue().returns(arguments.value);
+			parameters = structNew();
+			hasBefore = false;
+			objectValue = arguments.value;
+			validationMockup();
+
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -44,10 +56,12 @@
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("before").returns(true);
-			validation.getParameterValue("before").returns("12/29/1969");
-			validation.getObjectValue().returns(arguments.value);
+			
+            hasBefore = true;
+            defaultBefore = "1/2/1969";
+            objectValue = arguments.value;
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -57,10 +71,11 @@
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("before").returns(true);
-			validation.getParameterValue("before").returns("12/29/1969");
-			validation.getObjectValue().returns(arguments.value);
+			
+			hasBefore = true;
+            objectValue = arguments.value;
+            validationMockup();
+			
 			debug(arguments.value);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -69,11 +84,12 @@
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("before").returns(true);
-			validation.getParameterValue("before").returns("12/29/1969");
-			validation.getIsRequired().returns(false);
+			hasBefore = true;
+            objectValue = "";
+            isRequired=false;
+            
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -81,14 +97,15 @@
 
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("before").returns(true);
-			validation.getParameterValue("before").returns("12/29/1969");
-			validation.getIsRequired().returns(true);
+			hasBefore = true;
+            objectValue = "";
+            isRequired=true;
+            
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
-	
+		
 </cfcomponent>

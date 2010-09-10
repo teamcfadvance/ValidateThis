@@ -38,8 +38,8 @@
 	
 	<cffunction name="validationMockup" access="private">
 		<cfscript>
-			validation.getIsRequired().returns(isRequired);
-			validation.getParameters().returns(parameters);
+			
+			super.validationMockup();
 			
 			validation.hasParameter("length").returns(hasLength);
 			validation.hasParameter("min").returns(hasMin);
@@ -48,7 +48,7 @@
 			validation.getParameterValue("length",0).returns(defaultLength);
 			validation.getParameterValue("min",0).returns(defaultMin);
 			validation.getParameterValue("max",0).returns(defaultMax);
-			validation.getObjectValue().returns(objectValue);
+			
 		</cfscript>
 	</cffunction>
 	

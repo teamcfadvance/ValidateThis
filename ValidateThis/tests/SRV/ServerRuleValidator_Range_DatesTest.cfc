@@ -22,13 +22,16 @@
 			super.setup();
 			SRV = getSRV("Range");
 			parameters = {min="2010-12-01",max="2010-12-31"};
-			validation.getParameters().returns(parameters);
+			
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForDateInRange" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("2010-12-19");
+			objectValue = "2010-12-19";
+			
+			validationMockup();
+
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -36,7 +39,10 @@
 	
 	<cffunction name="validateReturnsFalseForDateOutOfRange" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("2010-02-19");
+            objectValue = "2010-2-19";
+            
+            validationMockup();
+
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

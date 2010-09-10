@@ -26,22 +26,27 @@
 			parameters={};
 			objectValue = "";
 			isRequired = true;
-			
-			validation = mock();
-			validation.setIsSuccess(false).returns();
-			validation.getPropertyDesc().returns("PropertyDesc");
-
+			failureMessage = "";
+            
+            theObject = mock();
+            validation = mock();
+            
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
-	<cffunction name="GenericValidationObjectMockup" access="private">
-		<cfscript>
+	<cffunction name="validationMockup" access="private">
+		<cfscript>			
+            validation.setIsSuccess(false).returns();
+            validation.getPropertyDesc().returns("PropertyDesc");
+            validation.getFailureMessage().returns(failureMessage);
+            validation.setFailureMessage(failureMessage).returns();
 			validation.getIsRequired().returns(isRequired);
 			validation.getParameters().returns(parameters);
 			validation.getObjectValue().returns(objectValue);
+	        validation.getTheObject().returns(theObject);
 		</cfscript>
 	</cffunction>
 
@@ -49,9 +54,12 @@
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(false);
-			validation.getFailureMessage().returns("");
+			objectValue = "";
+			isRequired=false;
+			failureMessage = "";
+			
+			validationMockup();			
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -59,9 +67,12 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
-			validation.getFailureMessage().returns("");
+			objectValue = "";
+			isRequired = true;
+			failureMessage = "";
+			
+			validationMockup();
+			
 			SRV.validate(validation);			
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

@@ -2,7 +2,7 @@
 	
 	// **************************************** LICENSE INFO **************************************** \\
 	
-	Copyright 2010, Bob Silverberg
+	Copyright 2010, Adam Drew
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -30,7 +30,10 @@
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getObjectValue().returns(arguments.value);
+			objectValue = arguments.value;
+			
+			validationMockup();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -40,7 +43,10 @@
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getObjectValue().returns(arguments.value);
+			objectValue = arguments.value;
+            
+            validationMockup();
+            
 			debug(arguments.value);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -49,8 +55,10 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
+			objectValue = "";
+			isRequired = true;
+            
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

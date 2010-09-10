@@ -2,7 +2,7 @@
 	
 	// **************************************** LICENSE INFO **************************************** \\
 	
-	Copyright 2010, Bob Silverberg
+	Copyright 2010, Adam Drew
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -22,19 +22,32 @@
 			super.setup();
 			SRV = getSRV("FutureDate");
 			parameters = {after="12/29/1968"};
+			defaultAfter="12/29/1968";
+			hasAfter = true;
 			shouldPassDefault = ["12/21/2012","Dec. 21 2012"];
 			shouldPass = ["12/31/1969","Dec. 31 2010","12/31/90","31/12/2012"];
 			shouldFail = ["12/28/1968","12/29/1968","1/2/1920","01/1969","12/31/1967"];
 		</cfscript>
 	</cffunction>
 	
+	<cffunction name="validationMockup" access="private">
+        <cfscript>
+           super.validationMockup();
+           validation.hasParameter("after").returns(hasAfter);
+           validation.getParameterValue("after").returns(defaultAfter);      
+        </cfscript>
+    </cffunction>
+	
 	<cffunction name="validateReturnsTrueForDateWithNoBeforeParam" access="public" returntype="void" mxunit:dataprovider="shouldPassDefault">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getParameters().returns(structNew());
-			validation.hasParameter("after").returns(false);
-			validation.getObjectValue().returns(arguments.value);
+			objectValue = arguments.value;
+			parameters = structNew();
+			hasAfter = false;
+			
+			validationMockup();			
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -44,10 +57,13 @@
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getObjectValue().returns(arguments.value);
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("after").returns(true);
-			validation.getParameterValue("after").returns("12/29/1969");
+			objectValue = arguments.value;
+            parameters = {after="12/29/1969"};
+            hasAfter = true;
+            defaultAfter="12/29/1969";
+            
+            validationMockup();                     			
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -57,11 +73,13 @@
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
 			setup();
-			validation.getObjectValue().returns(arguments.value);
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("after").returns(true);
-			validation.getParameterValue("after").returns("12/29/1969");
-			debug(arguments.value);
+			objectValue = arguments.value;
+            parameters = {after="12/29/1969"};
+            hasAfter = true;
+            defaultAfter="12/29/1969";
+            
+            validationMockup(); 
+                   
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -69,11 +87,14 @@
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("after").returns(true);
-			validation.getParameterValue("after").returns("12/29/1969");
-			validation.getIsRequired().returns(false);
+			objectValue = "";
+            parameters = {after="12/29/1969"};
+            hasAfter = true;
+            defaultAfter="12/29/1969";
+            isRequired=false;
+            
+            validationMockup();  
+                  
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -81,11 +102,14 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			validation.getObjectValue().returns("");
-			validation.getIsRequired().returns(true);
-			validation.getParameters().returns(parameters);
-			validation.hasParameter("after").returns(true);
-			validation.getParameterValue("after").returns("12/29/1969");
+			objectValue = "";
+            parameters = {after="12/29/1969"};
+            hasAfter = true;
+            defaultAfter="12/29/1969";
+            isRequired=true;
+            
+            validationMockup();
+            
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

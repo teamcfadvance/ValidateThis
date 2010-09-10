@@ -22,13 +22,14 @@
 			super.setup();
 			SRV = getSRV("Regex");
 			parameters = {Regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
-			validation.getParameters().returns(parameters);
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForValidRegex" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("Mr.");
+			objectValue= "Mr.";
+			validationMockup();
+
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -36,7 +37,8 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidRegex" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(1);
+			objectValue= 1;
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -44,11 +46,9 @@
 	
 	<cffunction name="validateReturnsFalseForInvalidRegexWithServerRegexParameter" access="public" returntype="void">
 		<cfscript>
-			super.setup();
-			SRV = getSRV("Regex");
+            objectValue= 1;
 			parameters = {ServerRegex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
-			validation.getParameters().returns(parameters);
-			validation.getObjectValue().returns(1);
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

@@ -37,7 +37,9 @@ purpose:		I ServerRuleValidatorTest.cfc
 	
 	<cffunction name="requiredShouldSucceedWithAValue" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("abc");
+			objectValue = "abc";
+
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -45,7 +47,9 @@ purpose:		I ServerRuleValidatorTest.cfc
 
 	<cffunction name="requiredShouldSucceedWithAnObject" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns(mock());
+			objectValue = mock();
+
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -53,7 +57,9 @@ purpose:		I ServerRuleValidatorTest.cfc
 
 	<cffunction name="requiredShouldFailWithNoValue" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("");
+			objectValue = "";
+			
+            validationMockup();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
