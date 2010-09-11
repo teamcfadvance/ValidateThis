@@ -19,37 +19,74 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			ObjectChecker = mock();
+			
+			// What needs to be mocked to test SRVs?
+			ObjectChecker = mock(); 	// see  util/ObjectChecker.cfc
+			validation = mock();		// see  core/Validation.cfc
+			theObject = mock(); 		// see 			
+			validateThis = mock();
+			
+			mockFacade=false;
+			
 			ObjectChecker.findGetter("{*}").returns("getFirstName()");
-
-			// Define Validation Mockup Test Values
+			
+			//Default Validation Mock Values
+			propertyDesc="PropertyDesc";
+			propertyName="PropertyName";
 			parameters={};
 			objectValue = "";
 			isRequired = true;
 			failureMessage = "";
-            
-            theObject = mock();
-            validation = mock();
-            
+			
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
+	<cffunction name="facadeMockup" access="private">
+		<cfscript>
+  		   // Integration Testing
+			VTConfig = {definitionPath="/validatethis/tests/Fixture/models/cf9"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+			
+		</cfscript>
+	</cffunction>
+	
 	<cffunction name="validationMockup" access="private">
-		<cfscript>			
-            validation.setIsSuccess(false).returns();
-            validation.getPropertyDesc().returns("PropertyDesc");
-            validation.getFailureMessage().returns(failureMessage);
-            validation.setFailureMessage(failureMessage).returns();
+		<cfscript>
+
+			if (mockfacade eq true){
+				facadeMockup();
+			}
+
+			validation.setIsSuccess(false).returns();
+			validation.getValidateThis().returns(ValidateThis);
+			validation.getPropertyDesc().returns(propertyDesc);
+			validation.getPropertyName().returns(propertyName);
+			validation.getFailureMessage().returns(failureMessage);
+			validation.setFailureMessage(failureMessage).returns();
 			validation.getIsRequired().returns(isRequired);
 			validation.getParameters().returns(parameters);
 			validation.getObjectValue().returns(objectValue);
-	        validation.getTheObject().returns(theObject);
+			validation.getTheObject().returns(theObject);
 		</cfscript>
 	</cffunction>
-
+	
+	<cffunction name="validationMockupReturnsValidateThisWithOtherSRVSLoaded" access="public" returntype="void">
+		<cfscript>
+			validationMockup();
+			
+			if (mockfacade eq true){
+				srvs = validation.getValidateThis().getServerRuleValidators();
+				debug(structCount(srvs));
+				assertTrue(structCount(srvs) gt 0);
+				assertTrue(structCount(srvs) eq 29);
+				assertTrue(structCount(validation.getValidateThis().getServerRuleValidators()) gt 0);
+			}
+		</cfscript>  
+	</cffunction>
+	
 	<!--- These two tests will be identical for each SRV, but should be run for each --->
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
@@ -87,5 +124,3 @@
 	</cffunction>
 
 </cfcomponent>
-
-

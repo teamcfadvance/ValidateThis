@@ -170,13 +170,16 @@
 				
     </cffunction>
 	
-    <cffunction name="getServerRuleValidators" access="public" output="false" returntype="any">
-        
-		<cfreturn variables.ValidationFactory.getServerRuleValidators() />
-				
-    </cffunction>
+	<cffunction name="getServerRuleValidators" access="public" output="false" returntype="any">
+		<cfargument name="validator" required="false" default=""/>
+		<cfreturn variables.ValidationFactory.getServerRuleValidators(argumentCollection=arguments) />
+	</cffunction>
+	<cffunction name="getSRV" access="public" output="false" returntype="any">
+		<cfargument name="validator" required="true"/>
+		<cfreturn this.getServerRuleValidators(argumentCollection=arguments) />
+	</cffunction>
 	
-    <cffunction name="getClientRuleScripters" access="public" output="false" returntype="any">
+	<cffunction name="getClientRuleScripters" access="public" output="false" returntype="any">
 
 		<cfreturn variables.ValidationFactory.getClientRuleScripters(variables.ValidateThisConfig.DefaultJSLib) />
 		
@@ -202,5 +205,3 @@
 	</cffunction>
 		
 </cfcomponent>
-	
-
