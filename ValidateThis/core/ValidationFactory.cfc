@@ -126,11 +126,14 @@
 	</cffunction>
 
 	<cffunction name="getServerRuleValidators" access="public" output="false" returntype="any">
+		<cfargument name="validator" required="false" default=""/>
+		<cfif len(arguments.validator) gt 0>
+			<cfreturn getBean("ServerValidator").getRuleValidator(arguments.validator) />
+		<cfelse>
+			<cfreturn getBean("ServerValidator").getRuleValidators() />
+		</cfif>
+	</cffunction>
 
-        <cfreturn getBean("ServerValidator").getRuleValidators() />
-
-    </cffunction>
-    
 	<cffunction name="getClientRuleScripters" access="public" output="false" returntype="any">
 		<cfargument name="JSLib" type="any" required="true"/>
 		
