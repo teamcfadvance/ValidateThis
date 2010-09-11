@@ -173,6 +173,7 @@ VTML
 				<cfset splitPairs =  arguments.theString.split(",") />
 				<cfif isArray(splitPairs) and ArrayLen(splitPairs) gt 0>
 					<cfloop array="#splitPairs#" index="pair">
+						<cfset param = structNew()/>
 						<cfset splitParams = pair.split("=") />
 						<cfif isArray(splitParams) and ArrayLen(splitParams) eq 2>
 							<cfset structInsert(param,"name",splitParams[1],true) />

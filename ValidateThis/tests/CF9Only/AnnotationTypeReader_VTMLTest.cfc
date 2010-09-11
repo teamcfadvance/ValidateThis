@@ -68,13 +68,29 @@
 		</cfscript>  
 	</cffunction>
 
-
 	<cffunction name="loadRulesReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
 			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithVTML");
 			PropertyDescs = annotationTypeReader.getValidations(md).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="loadRulesReturnsCorrectPropertyRules" access="public" returntype="void">
+		<cfscript>
+			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithVTML");
+			PropertyRules = annotationTypeReader.getValidations(md);
+			debug(PropertyRules);
+			
+			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['___DEFAULT']) eq 12 ,"Inncorect Rule count in DEFAULT context");
+			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['Profile']) eq 15 ,"Inncorect Rule count in Profile context");
+			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['Register']) eq 13 ,"Inncorect Rule count in Register Context");
+			assertTrue(structCount(PropertyRules['Validations']['Contexts']['Profile'][4].parameters) eq 2 ,"Inccorect parameter count found.. 2 were expcted.");
+			assertTrue(structCount(PropertyRules['Validations']['Contexts']['___DEFAULT'][7].condition) eq 3 ,"Inccorect condition count found.. 2 were expcted.");
+			assertTrue(structCount(PropertyRules['Validations']['Contexts']) eq 3,"Invalid Context Count");
+			assertTrue(structCount(PropertyRules['FormContexts']) eq 2,"Invalid FormContexts Count");
+			// TODO: ADD MORE ASSERTIONS
+		</cfscript>
 	</cffunction>
 
 	<cffunction name="isPropertiesStructCorrect" access="private" returntype="void">
@@ -93,10 +109,6 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="placeholderForVTMLTests" access="public" returntype="void">
-		<cfscript>
-			fail("This is a placeholder test for tests that need to be added.");
-		</cfscript>  
-	</cffunction>
 </cfcomponent>
+
 
