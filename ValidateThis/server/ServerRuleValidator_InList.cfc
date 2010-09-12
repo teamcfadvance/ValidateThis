@@ -17,7 +17,7 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
-        <cfset var theVal = arguments.validation.getObjectValue()/>
+		<cfset var theVal = arguments.validation.getObjectValue()/>
 		<cfset var theList = ""/>
 		<cfset var theDelim= ","/>
 		<cfset var parameterMessages = ""/>

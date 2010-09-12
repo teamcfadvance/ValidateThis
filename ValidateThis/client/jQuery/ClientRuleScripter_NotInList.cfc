@@ -56,8 +56,12 @@
 		</cfif>
 
 		<cfif arguments.validation.hasParameter("list")>
-			<cfset options = {list=arguments.validation.getParameterValue("list")} />
+			<cfset options = structNew()/>
+			<cfset options['list'] = arguments.validation.getParameterValue("list")/>
 			<cfset arguments.customMessage = arguments.customMessage & " #arguments.validation.getParameterValue('list')#"/>
+			<cfif arguments.validation.hasParameter("delmin")>
+				<cfset options['delim'] = arguments.validation.getParameterValue("delim",",")/>
+			</cfif>
 		</cfif>
 		
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
