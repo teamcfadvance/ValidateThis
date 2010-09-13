@@ -1,26 +1,24 @@
 <!--- 
-DoesNotContainOtherProperties:
-	ServerRuleValidator Implmenetation By Marc Esher:
-	ClientRuleScripter Implementation By Adam Drew
+DoesNotContain:
 
 Definition Usage Example:
 
-<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your first or last name." >
+<rule type="DoesNotContain" failuremessage="Password may not contain your first or last name." >
 	<param name="propertyNames" value="firstName,LastName"/>
 </rule>
-<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your username.">
+<rule type="DoesNotContain" failuremessage="Password may not contain your username.">
 	<param name="propertyNames" value="username" />
 </rule>
-<rule type="DoesNotContainOtherProperties" failuremessage="Password may not contain your email address." >
+<rule type="DoesNotContain" failuremessage="Password may not contain your email address." >
 	<param name="propertyNames" value="emailAddress"/>
 </rule>
-<rule type="DoesNotContainOtherProperties" failuremessage="This better be ignored!" >
+<rule type="DoesNotContain" failuremessage="This better be ignored!" >
 	<param name="propertyNames" value"="thisPropertyDoesNotExist"/>
 </rule>
 
 --->
 
-<cfcomponent name="ClientRuleScripter_DoesNotContainOtherValues" extends="AbstractClientRuleScripter" hint="Fails if the validated property contains the value of another property">
+<cfcomponent name="ClientRuleScripter_DoesNotContain" extends="AbstractClientRuleScripter" hint="Fails if the validated property contains the value of another property">
 	
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="The value cannot not contain the value of another property.">
