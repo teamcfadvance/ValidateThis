@@ -59,7 +59,7 @@
 			validation.setup(ValidateThis,obj);
 			paramStruct = {value="getMetadata(this).name",type="expression"};
 			parameter.load(paramStruct);
-			assertEquals("validatethis.tests.fixture.aplaincfc_fixture",parameter.getValue());
+			assertEquals(true,parameter.getValue() contains "aplaincfc_fixture");
 		</cfscript>
 	</cffunction>
 
