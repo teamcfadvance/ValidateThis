@@ -167,7 +167,6 @@
 			
 			SRV.validate(validation);
 			validation.verifyTimes(arrayLen(objectValue)).setIsSuccess(false); 
-			debug(validation.debugmock());
 		</cfscript>  
 	</cffunction>
 	
@@ -182,7 +181,6 @@
 			
 			SRV.validate(validation);
 			validation.verifyTimes(arrayLen(objectValue)).setIsSuccess(false); 
-			debug(validation.debugmock());
 		</cfscript>  
 	</cffunction>
 
@@ -235,7 +233,6 @@
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
-			debug(validation.debugmock());
 		</cfscript>  
 	</cffunction>
 	
@@ -262,7 +259,6 @@
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
-			debug(validation.debugmock());
 		</cfscript>  
 	</cffunction>
 	

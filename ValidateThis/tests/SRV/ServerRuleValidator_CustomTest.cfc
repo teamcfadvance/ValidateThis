@@ -82,7 +82,6 @@
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
-			debug(validation.debugMock());
 			validation.verifyTimes(1).setFailureMessage("A custom validator failed."); 
 		</cfscript>  
 	</cffunction>
@@ -112,7 +111,6 @@
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
-			debug(validation.debugMock());
 			validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
 	</cffunction>

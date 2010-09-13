@@ -28,7 +28,6 @@
 	<cffunction name="getValidatorFromAnnotatedCFCReturnsCorrectValidator" access="public" returntype="void">
 		<cfscript>
 			BOValidator = createBOVFromCFC();
-			debug(BOValidator);
 			isBOVCorrect(BOValidator);
 		</cfscript>  
 	</cffunction>

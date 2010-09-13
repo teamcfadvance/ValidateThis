@@ -42,7 +42,6 @@
 			assertEquals("expression",parameters.min.type);
 			assertEquals(10,parameters.max.value);
 			assertEquals("value",parameters.max.type);
-			debug(validations);
 		</cfscript>  
 	</cffunction>
 
