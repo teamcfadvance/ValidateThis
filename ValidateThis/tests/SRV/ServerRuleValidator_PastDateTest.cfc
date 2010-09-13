@@ -76,7 +76,6 @@
             objectValue = arguments.value;
             validationMockup();
 			
-			debug(arguments.value);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

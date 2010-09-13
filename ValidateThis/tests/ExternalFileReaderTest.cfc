@@ -75,7 +75,6 @@
 		<cfscript>
 			defPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/json";
 			validations = externalFileReader.loadRulesFromExternalFile(className,defPath).validations;
-			debug(validations);
 			val = validations.contexts.Profile[1];
 			assertEquals("UserName",val.propertyName);
 			assertEquals("required",val.valType);

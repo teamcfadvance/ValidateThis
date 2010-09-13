@@ -57,7 +57,6 @@
 			annotationTypeReader.processContexts(md.vtContexts);
 			injectMethod(annotationTypeReader, this, "getContexts", "getContexts");
 			contexts = annotationTypeReader.getContexts();
-			debug(contexts);
 		</cfscript>  
 	</cffunction>
 
@@ -68,7 +67,6 @@
 			annotationTypeReader.processContexts(md.vtContexts);
 			injectMethod(annotationTypeReader, this, "getContexts", "getContexts");
 			contexts = annotationTypeReader.getContexts();
-			debug(contexts);
 		</cfscript>  
 	</cffunction>
 
@@ -84,7 +82,6 @@
 			annotationTypeReader.processConditions(md.vtConditions);
 			injectMethod(annotationTypeReader, this, "getConditions", "getConditions");
 			Conditions = annotationTypeReader.getConditions();
-			debug(Conditions);
 		</cfscript>  
 	</cffunction>
 
@@ -95,7 +92,6 @@
 			annotationTypeReader.processConditions(md.vtConditions);
 			injectMethod(annotationTypeReader, this, "getConditions", "getConditions");
 			Conditions = annotationTypeReader.getConditions();
-			debug(Conditions);
 		</cfscript>  
 	</cffunction>
 
@@ -112,7 +108,6 @@
 			annotationTypeReader.processPropertyDescs(annotationTypeReader.reformatProperties(md.properties));
 			injectMethod(annotationTypeReader, this, "getPropertyDescs", "getPropertyDescs");
 			PropertyDescs = annotationTypeReader.getPropertyDescs();
-			debug(PropertyDescs);
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>

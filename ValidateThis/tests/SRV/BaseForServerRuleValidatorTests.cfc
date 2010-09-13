@@ -79,7 +79,6 @@
 			
 			if (mockfacade eq true){
 				srvs = validation.getValidateThis().getServerRuleValidators();
-				debug(structCount(srvs));
 				assertTrue(structCount(srvs) gt 0);
 				assertTrue(structCount(srvs) eq 29);
 				assertTrue(structCount(validation.getValidateThis().getServerRuleValidators()) gt 0);
