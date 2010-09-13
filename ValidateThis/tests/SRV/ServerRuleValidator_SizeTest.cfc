@@ -26,13 +26,12 @@
 			parameters={};
 			objectValue = "t";
 			isRequired = true;
-			hasMin = false;
-			hasMax = false;
-			hasLength = true;
+			hasMin = true;
+			hasMax = false;	
 			
 			defaultMin = 1;
 			defaultMax = 10;
-			defaultLength = 1;
+			
 		</cfscript>
 	</cffunction>
 	
@@ -41,12 +40,12 @@
 			
 			super.validationMockup();
 			
-			validation.hasParameter("length").returns(hasLength);
 			validation.hasParameter("min").returns(hasMin);
 			validation.hasParameter("max").returns(hasMax);
-			
-			validation.getParameterValue("length",0).returns(defaultLength);
+			validation.getParameterValue("min").returns(defaultMin);
+			validation.getParameterValue("max").returns(defaultMax);
 			validation.getParameterValue("min",0).returns(defaultMin);
+			validation.getParameterValue("min",1).returns(defaultMin);
 			validation.getParameterValue("max",0).returns(defaultMax);
 			
 		</cfscript>
@@ -56,10 +55,9 @@
 		<cfscript>
 			objectValue = [{test="test"},{test2="test2"}];	
 			isRequired=true;
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
-			parameters={length="1"};
+			parameters={min="1"};
 			
 			validationMockup();
 			
@@ -71,8 +69,7 @@
 	<cffunction name="validateReturnsTrueForCorrectArrayLength" access="public" returntype="void">
 		<cfscript>
 			objectValue = [{test="test"}];	
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			
 			validationMockup();
@@ -85,8 +82,7 @@
 	<cffunction name="validateReturnsFalseForIncorrectArrayLength" access="public" returntype="void">
 		<cfscript>
 			objectValue = [{test2="test2"},{test="test"}];
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			
 			validationMockup();
@@ -99,8 +95,7 @@
 	<cffunction name="validateReturnsTrueForCorrectStructCount" access="public" returntype="void">
 		<cfscript>
 			objectValue = {name="test"};
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			
 			validationMockup();
@@ -113,8 +108,7 @@
 	<cffunction name="validateReturnsFalseForIncorrectStructCount" access="public" returntype="void">
 		<cfscript>
 			objectValue = {test="name",name="test"};
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			
 			validationMockup();
@@ -127,8 +121,7 @@
 	<cffunction name="validateReturnsTrueForCorrectStringLength" access="public" returntype="void">
 		<cfscript>
 			objectValue  = "t";
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			
 			validationMockup();
@@ -141,8 +134,7 @@
 	<cffunction name="validateReturnsFalseForIncorrectStringLength" access="public" returntype="void">
 		<cfscript>
 			objectValue = "tt";
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			
 			validationMockup();
@@ -156,8 +148,7 @@
 		<cfscript>
 			isRequired = true;
 			objectValue = [];			
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			
 			validationMockup();
@@ -171,8 +162,7 @@
 		<cfscript>
 			isRequired = true;
 			objectValue = {};
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			
 			validationMockup();
@@ -185,8 +175,7 @@
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
 			objectValue = "";
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			isRequired = false;
 			
@@ -200,8 +189,7 @@
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
 		<cfscript>
 			objectValue = "";
-			hasLength=true;
-			hasMin = false;
+			hasMin = true;
 			hasMax = false;
 			isRequired = true;
 			
@@ -218,7 +206,7 @@
 			parameters={min=1,max=10};
 			hasMin = true;
 			hasMax = true;
-			hasLength = false;
+			
 			
 			validationMockup();
 			
@@ -233,7 +221,7 @@
 			parameters={min=1,max=10};
 			hasMin = true;
 			hasMax = true;
-			hasLength = false;
+			
 			
 			validationMockup();
 			
@@ -248,7 +236,6 @@
 			parameters={min=1,max=10};
 			hasMin = true;
 			hasMax = true;
-			hasLength = false;
 			
 			validationMockup();
 			

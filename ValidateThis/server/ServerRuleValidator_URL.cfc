@@ -2,7 +2,8 @@
 	<cfscript>
 		function validate(validation){
 			var theValue = arguments.validation.getObjectValue();
-			if (shouldTest(arguments.validation) and not isValid("URL",theValue)) {
+			if (not shouldTest(arguments.validation)) return;
+			if (not isValid("URL",theValue)) {
 				fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid URL."));
 			}
 		}

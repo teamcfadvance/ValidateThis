@@ -27,6 +27,10 @@
 			context="*";
 			objectValue = {};
 			isRequired = true;
+			theObjectType="";
+			hasObjectType=false;
+			
+			// Mockups
 			validUserMockup();
 			invalidUserMockup();
 			validCompanyMockup();
@@ -42,6 +46,9 @@
 			super.validationMockup();
 			validation.getParameterValue("context","*").returns(context);
 			validation.getParameterValue("context").returns(context);
+			validation.getParameterValue("objectType").returns(theObjectType);
+			validation.hasParameter("objectType").returns(hasObjectType);			
+			validation.getParameterValue("objectType","#theObjectType#").returns(theObjectType);
 		</cfscript>
 	</cffunction>
 	
@@ -179,7 +186,6 @@
 		</cfscript>  
 	</cffunction>
 
-	<!--- Integration Tests!!! --->
 	<cffunction name="validateReturnsTrueForValidObjectWithNoValidationParameters" access="public" returntype="void">
 		<cfscript>
 			objectValue = validCompany;

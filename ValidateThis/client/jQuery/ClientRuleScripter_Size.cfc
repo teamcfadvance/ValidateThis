@@ -17,21 +17,18 @@
 <cfcomponent output="false" name="ClientRuleScripter_Size" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the Size validation.">
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
-		<cfargument name="defaultMessage" type="string" required="false" default="value was not the right size.">
+		<cfargument name="defaultMessage" type="string" required="false" default="value does not match the size requirement.">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">function(value,element,options) {
 			var isValid = true;
 			value = $(element).val();
-			
 			if (value.length){
-				if (options.length){
-					isValid = (value.length==options.length);
+				if (options.min && !options.max){
+					isValid = (value.length==options.min);
 				} else {
-					if (options.min){
-						isValid = (value.length >= options.min);
-					}
+					isValid = (value.length >= options.min);
 					if (isValid && options.max){
 						return (value.length <= options.max);
 					} else {
