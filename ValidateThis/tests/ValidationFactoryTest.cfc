@@ -38,7 +38,6 @@
 			injectMethod(validationFactory, this, "getBOVs", "getBOVs");
 			validationFactory.createBOVsFromCFCs();
 			BOVs = validationFactory.getBOVs();
-			debug(BOVs);
 		</cfscript>
 	</cffunction>
 

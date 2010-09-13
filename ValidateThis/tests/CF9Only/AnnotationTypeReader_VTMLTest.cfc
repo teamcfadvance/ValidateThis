@@ -80,7 +80,6 @@
 		<cfscript>
 			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithVTML");
 			PropertyRules = annotationTypeReader.getValidations(md);
-			debug(PropertyRules);
 			
 			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['___DEFAULT']) eq 12 ,"Inncorect Rule count in DEFAULT context");
 			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['Profile']) eq 15 ,"Inncorect Rule count in Profile context");

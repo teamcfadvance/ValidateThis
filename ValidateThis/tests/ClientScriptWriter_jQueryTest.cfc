@@ -380,7 +380,6 @@
 			valStruct.ValType = "noHTML";
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
-			debug(script);
 			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{email: true});}",Script);
 			*/
 		</cfscript>  
