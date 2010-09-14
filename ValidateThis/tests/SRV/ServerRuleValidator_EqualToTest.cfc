@@ -20,30 +20,48 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("Min");
-			parameters = {Min=5};
-			
+			SRV = getSRV("equalTo");
 		</cfscript>
 	</cffunction>
-	
-	<cffunction name="validateReturnsTrueForValidMin" access="public" returntype="void">
-		<cfscript>
-			objectValue = 5;
+
+	<cffunction name="configureValidationMock" access="private">
+        <cfscript>
             
+           super.configureValidationMock();
+            
+           validation.getParameterValue("ComparePropertyName").returns("VerifyPassword");
+           validation.getParameterValue("ComparePropertyDesc").returns("Verify The Password");
+           validation.getObjectValue("VerifyPassword").returns(otherObjectValue);
+
+        </cfscript>
+    </cffunction>
+
+	<cffunction name="validateReturnsTrueWhenPropertiesAreEqual" access="public" returntype="void">
+		<cfscript>
+			objectValue = "12345";
+			otherObjectValue = "12345";
             configureValidationMock();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForInvalidMin" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseWhenPropertiesAreNotEqual" access="public" returntype="void">
 		<cfscript>
-			objectValue = 1;
-            
+			objectValue = "12345";
+			otherObjectValue = "";
             configureValidationMock();
+			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void" hint="This test is not applicable to this SRV">
+	</cffunction>
+	
+	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="This test is not applicable to this SRV">
 	</cffunction>
 	
 </cfcomponent>

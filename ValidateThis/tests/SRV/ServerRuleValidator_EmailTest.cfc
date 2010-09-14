@@ -28,7 +28,7 @@
 		<cfscript>
 			objectValue = "bob.silverberg@gmail.com";
             
-            validationMockup();
+            configureValidationMock();
             
 			
 			SRV.validate(validation);
@@ -40,7 +40,7 @@
 		<cfscript>
 			objectValue = "bob.silverberg";
             
-            validationMockup();
+            configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

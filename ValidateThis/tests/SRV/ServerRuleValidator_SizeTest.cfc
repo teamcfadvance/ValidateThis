@@ -22,7 +22,7 @@
 			super.setup();
 			SRV = getSRV("Size");
 			
-			// Define Validation Mockup Test Values
+			// Define Validation mock Test Values
 			parameters={};
 			objectValue = "t";
 			isRequired = true;
@@ -36,10 +36,10 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
 		<cfscript>
 			
-			super.validationMockup();
+			super.configureValidationMock();
 			
 			validation.hasParameter("length").returns(hasLength);
 			validation.hasParameter("min").returns(hasMin);
@@ -61,7 +61,7 @@
 			hasMax = false;
 			parameters={length="1"};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -75,7 +75,7 @@
 			hasMin = false;
 			hasMax = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -89,7 +89,7 @@
 			hasMin = false;
 			hasMax = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -103,7 +103,7 @@
 			hasMin = false;
 			hasMax = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -117,7 +117,7 @@
 			hasMin = false;
 			hasMax = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -131,7 +131,7 @@
 			hasMin = false;
 			hasMax = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -145,7 +145,7 @@
 			hasMin = false;
 			hasMax = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -160,7 +160,7 @@
 			hasMin = false;
 			hasMax = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -175,7 +175,7 @@
 			hasMin = false;
 			hasMax = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -190,7 +190,7 @@
 			hasMax = false;
 			isRequired = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -205,7 +205,7 @@
 			hasMax = false;
 			isRequired = true;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -220,7 +220,7 @@
 			hasMax = true;
 			hasLength = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false);
@@ -235,7 +235,7 @@
 			hasMax = true;
 			hasLength = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false);
@@ -250,7 +250,7 @@
 			hasMax = true;
 			hasLength = false;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false);

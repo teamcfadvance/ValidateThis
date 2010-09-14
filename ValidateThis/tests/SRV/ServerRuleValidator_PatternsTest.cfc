@@ -35,8 +35,7 @@
 			setup();
             objectValue = arguments.value;
 
-            validationMockup();
-			validation.hasParameter("minMatches").returns(true);
+            configureValidationMock();
 			validation.getParameterValue("minMatches",1).returns(0);
 			validation.getParameterValue("pattern_Name").returns("[a-z]]");
 			SRV.validate(validation);
@@ -50,9 +49,8 @@
 			setup();
 			objectValue = arguments.value;
 
-            validationMockup();
+            configureValidationMock();
 
-			validation.hasParameter("minMatches").returns(true);
 			validation.getParameterValue("minMatches",1).returns(1);
 			validation.getParameterValue("pattern_Name").returns("test");
 
@@ -66,9 +64,8 @@
 			objectValue = "";
 			isRequired = true;
             
-            validationMockup();
+            configureValidationMock();
             
-            validation.hasParameter("minMatches").returns(true);
             validation.getParameterValue("minMatches",1).returns(1);
             validation.getParameterValue("pattern_Name").returns("^(test)");
             

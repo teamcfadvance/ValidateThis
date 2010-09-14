@@ -30,9 +30,9 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
         <cfscript>
-           super.validationMockup();
+           super.configureValidationMock();
            validation.hasParameter("after").returns(hasAfter);
            validation.getParameterValue("after").returns(defaultAfter);      
         </cfscript>
@@ -46,7 +46,7 @@
 			parameters = structNew();
 			hasAfter = false;
 			
-			validationMockup();			
+			configureValidationMock();			
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -62,7 +62,7 @@
             hasAfter = true;
             defaultAfter="12/29/1969";
             
-            validationMockup();                     			
+            configureValidationMock();                     			
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -78,7 +78,7 @@
             hasAfter = true;
             defaultAfter="12/29/1969";
             
-            validationMockup(); 
+            configureValidationMock(); 
                    
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -93,7 +93,7 @@
             defaultAfter="12/29/1969";
             isRequired=false;
             
-            validationMockup();  
+            configureValidationMock();  
                   
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -108,7 +108,7 @@
             defaultAfter="12/29/1969";
             isRequired=true;
             
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

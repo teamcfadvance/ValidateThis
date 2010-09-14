@@ -31,7 +31,7 @@
 			theObject.setUserName(2);
 			parameters = {expression="getUserId() eq getUserName()"};
 
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -45,7 +45,7 @@
 			theObject.setUserName(1);
 			parameters = {expression="getUserId() eq getUserName()"};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -59,7 +59,7 @@
 			theObject.setup(theStruct);
 			parameters = {expression="getValue('UserId') eq getValue('UserName')"};
             
-            validationMockup();
+            configureValidationMock();
 
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -73,7 +73,7 @@
 			theObject.setup(theStruct);
 			parameters = {expression="getValue('UserId') eq getValue('UserName')"};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -87,7 +87,7 @@
 			theObject.setup(theStruct);
 			parameters = {expression="UserId eq UserName"};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -101,7 +101,7 @@
 			theObject.setup(theStruct);
 			parameters = {expression="UserId eq UserName"};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
