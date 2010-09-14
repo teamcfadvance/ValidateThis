@@ -21,14 +21,11 @@
 		<cfscript>
 			
 			// What needs to be mocked to test SRVs?
-			ObjectChecker = mock(); 	// see  util/ObjectChecker.cfc
 			validation = mock();		// see  core/Validation.cfc
 			theObject = mock(); 		// see 			
-			validateThis = mock();
+			validateThis = "";
 			
 			mockFacade=false;
-			
-			ObjectChecker.findGetter("{*}").returns("getFirstName()");
 			
 			//Default Validation Mock Values
 			propertyDesc="PropertyDesc";
