@@ -21,14 +21,11 @@
 		<cfscript>
 			
 			// What needs to be mocked to test SRVs?
-			ObjectChecker = mock(); 	// see  util/ObjectChecker.cfc
 			validation = mock();		// see  core/Validation.cfc
 			theObject = mock(); 		// see 			
-			validateThis = mock();
-
-			mockFacade=false;
+			validateThis = "";
 			
-			ObjectChecker.findGetter("{*}").returns("getFirstName()");
+			mockFacade=false;
 			
 			//Default Validation Mock Values
 			propertyDesc="PropertyDesc";
@@ -48,7 +45,8 @@
 		<cfscript>
   		   // Integration Testing
 			VTConfig = {definitionPath="/validatethis/tests/Fixture/models/cf9"};
-			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);	
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+			
 		</cfscript>
 	</cffunction>
 	
