@@ -18,9 +18,16 @@
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var otherVal = arguments.validation.getObjectValue(arguments.validation.getParameterValue("ComparePropertyName")) />
+		<cfset var otherPropertyName = arguments.validation.getParameterValue("ComparePropertyName") />
+		<cfset var otherVal = arguments.validation.getObjectValue(otherPropertyName) />
+		<cfset var otherDesc = arguments.validation.getParameterValue("ComparePropertyDesc","") />
+		<cfset request.debug(otherDesc) />
+		<cfif len(otherDesc) eq 0>
+			<cfset otherDesc = arguments.validation.getValidateThis().getPropertyDescription(objectType=arguments.validation.getObjectType(),propertyName="otherPropertyName") />
+		</cfif>
+		<cfset request.debug(otherDesc) />
 		<cfif arguments.validation.getObjectValue() NEQ otherVal>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as the #arguments.validation.getParameterValue('ComparePropertyDesc')#.")) />
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as the #otherDesc#.")) />
 		</cfif>
 	</cffunction>
 

@@ -30,7 +30,6 @@
            super.configureValidationMock();
             
            validation.getParameterValue("ComparePropertyName").returns("VerifyPassword");
-           validation.getParameterValue("ComparePropertyDesc").returns("Verify The Password");
            validation.getObjectValue("VerifyPassword").returns(otherObjectValue);
 
         </cfscript>
@@ -38,6 +37,7 @@
 
 	<cffunction name="validateReturnsTrueWhenPropertiesAreEqual" access="public" returntype="void">
 		<cfscript>
+           validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
 			objectValue = "12345";
 			otherObjectValue = "12345";
             configureValidationMock();
@@ -49,6 +49,32 @@
 	
 	<cffunction name="validateReturnsFalseWhenPropertiesAreNotEqual" access="public" returntype="void">
 		<cfscript>
+           validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
+			objectValue = "12345";
+			otherObjectValue = "";
+            configureValidationMock();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateSetsFailureMessageFromDescParameterWhenADescParamaterIsProvided" access="public" returntype="void">
+		<cfscript>
+           validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
+			objectValue = "12345";
+			otherObjectValue = "";
+            configureValidationMock();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateSetsFailureMessageWithCorrectDescFromMetadataWhenNoDescParamaterIsProvided" access="public" returntype="void">
+		<cfscript>
+			needsFacade = true;
+           validation.getParameterValue("ComparePropertyDesc","").returns("");
 			objectValue = "12345";
 			otherObjectValue = "";
             configureValidationMock();
