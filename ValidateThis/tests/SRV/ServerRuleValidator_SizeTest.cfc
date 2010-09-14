@@ -131,12 +131,26 @@
 		</cfscript>  
 	</cffunction>	
 	
-	<cffunction name="validateReturnsFalseForIncorrectStringLength" access="public" returntype="void">
+	<cffunction name="validateReturnsTrueForCorrectListLength" access="public" returntype="void">
 		<cfscript>
-			objectValue = "tt";
+			objectValue  = "t,e,s,t";
 			hasMin = true;
 			hasMax = false;
+			defaultMin=4;
 			
+			validationMockup();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(0).setIsSuccess(false); 
+		</cfscript>  
+	</cffunction>	
+	
+	<cffunction name="validateReturnsFalseForIncorrectListLength" access="public" returntype="void">
+		<cfscript>
+			objectValue = "t,t";
+			hasMin = true;
+			hasMax = false;
+			defaultMin=1;
 			validationMockup();
 			
 			SRV.validate(validation);
