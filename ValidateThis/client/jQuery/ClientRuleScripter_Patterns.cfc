@@ -12,7 +12,7 @@ Example Usage:
 
  --->
 
-<cfcomponent  name="ClientRuleScripter_Patterns" extends="AbstractClientRuleScripter" hint="Fails if the validated property does not match at least 1 or the specficied ammount of regex patterns defined.">
+<cfcomponent output="false" name="ClientRuleScripter_Patterns" extends="AbstractClientRuleScripter" hint="Fails if the validated property does not match at least 1 or the specficied ammount of regex patterns defined.">
 	
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="Value did not match the pattern requirements.">

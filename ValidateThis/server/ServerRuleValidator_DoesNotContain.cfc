@@ -18,7 +18,7 @@ Definition Usage Example:
 
 --->
 
-<cfcomponent extends="AbstractServerRuleValidator" hint="Fails if the validated property contains the values of nother properties">
+<cfcomponent output="false" extends="AbstractServerRuleValidator" hint="Fails if the validated property contains the values of nother properties">
 	<cfscript>
 		function validate(validation){
 			var value = arguments.validation.getObjectValue();

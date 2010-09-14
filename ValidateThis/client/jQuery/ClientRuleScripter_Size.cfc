@@ -53,10 +53,11 @@
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var valType = getValType() />       
 		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
-		<cfset var options = {length=1}/>
+		<cfset var options = structNew()/>
 		<cfset var messageScript = "" />
 
-		<cfset options = validation.getParameters()/>
+		<cfset options['length'] = 1/>
+		<cfset structAppend(options,validation.getParameters(),true) />
 		
 		<cfif Len(arguments.customMessage) eq 0>
 			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# does not match the size requirement."/>
