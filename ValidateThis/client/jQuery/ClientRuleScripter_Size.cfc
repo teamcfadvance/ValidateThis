@@ -62,7 +62,7 @@
 		<cfset options = validation.getParameters()/>
 		
 		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# does not match the size requirement."/>
+			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the size requirement.") />
 		</cfif>
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
 		

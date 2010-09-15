@@ -124,4 +124,9 @@
 		<cfreturn lcase(ListLast(getMetadata(this).name,"_")) />
 	</cffunction>
 	
+	<cffunction name="createDefaultFailureMessage" returntype="string" access="private" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">
+		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to add to." />
+		<cfreturn variables.defaultFailureMessagePrefix & arguments.FailureMessage />
+	</cffunction>
+
 </cfcomponent>

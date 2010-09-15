@@ -53,7 +53,7 @@
         </cfif>
         
         <cfif Len(arguments.customMessage) eq 0>
-            <cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# does not match the specified pattern."/>
+            <cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the specified pattern.") />
         </cfif>
         <cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
         

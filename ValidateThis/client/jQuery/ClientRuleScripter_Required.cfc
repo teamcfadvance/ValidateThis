@@ -89,12 +89,12 @@
                 <cfset ConditionDesc = " if you specify a value for the " & DependentInputDesc />
             </cfif>
 			<cfif len(arguments.customMessage) eq 0>
-                <cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# is required#ConditionDesc#." />
+                <cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#ConditionDesc#.")  />
 			</cfif>
     	</cfif>
 		
 		<cfif Len(arguments.customMessage) eq 0>
-            <cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##validation.getPropertyDesc()# is required."/>
+            <cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required.") />
         </cfif>		
         <cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
 		

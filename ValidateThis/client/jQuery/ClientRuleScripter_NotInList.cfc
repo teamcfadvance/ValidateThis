@@ -52,7 +52,7 @@
 		<cfset var messageScript = "" />
 
 		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# was found in list:"/>
+			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was found in list:") />
 		</cfif>
 
 		<cfif arguments.validation.hasParameter("list")>

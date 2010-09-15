@@ -51,7 +51,7 @@
         <cfset var messageScript = "" />
 		
         <cfif Len(arguments.customMessage) eq 0>
-            <cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must be a date in the future."/>
+            <cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the future.") />
         </cfif>
 		 <cfif arguments.validation.hasParameter("after")>
 			<cfset options = {after=arguments.validation.getParameterValue("after")}>
