@@ -21,7 +21,6 @@
 		<cfset var otherPropertyName = arguments.validation.getParameterValue("ComparePropertyName") />
 		<cfset var otherVal = arguments.validation.getObjectValue(otherPropertyName) />
 		<cfset var otherDesc = arguments.validation.getParameterValue("ComparePropertyDesc","") />
-		<cfset request.debug(otherDesc) />
 		<cfif len(otherDesc) eq 0>
 			<cfset otherDesc = arguments.validation.getValidateThis().getPropertyDescription(objectType=arguments.validation.getObjectType(),propertyName="otherPropertyName") />
 		</cfif>

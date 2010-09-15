@@ -26,22 +26,21 @@
 
 	<cffunction name="configureValidationMock" access="private">
         <cfscript>
-            //TODO: Need to mock getObjectType() but not sure what to set it to. SRV tests by default point to /fixture/models/cf9
 			
-           super.configureValidationMock();
-            
-           validation.getParameterValue("ComparePropertyName").returns("VerifyPassword");
-           validation.getObjectValue("VerifyPassword").returns(otherObjectValue);
+			super.configureValidationMock();
+			
+			validation.getParameterValue("ComparePropertyName").returns("VerifyPassword");
+			validation.getObjectValue("VerifyPassword").returns(otherObjectValue);
 
         </cfscript>
     </cffunction>
 
 	<cffunction name="validateReturnsTrueWhenPropertiesAreEqual" access="public" returntype="void">
 		<cfscript>
-           validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
+			validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
 			objectValue = "12345";
 			otherObjectValue = "12345";
-            configureValidationMock();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -50,10 +49,10 @@
 	
 	<cffunction name="validateReturnsFalseWhenPropertiesAreNotEqual" access="public" returntype="void">
 		<cfscript>
-           validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
+			validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
 			objectValue = "12345";
 			otherObjectValue = "";
-            configureValidationMock();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -62,11 +61,11 @@
 
 	<cffunction name="validateSetsFailureMessageFromDescParameterWhenADescParamaterIsProvided" access="public" returntype="void">
 		<cfscript>
-           validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
-		   failureMessage = "The PropertyDesc must be the same as the Verify The Password.";
+			validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
+			failureMessage = "The PropertyDesc must be the same as the Verify The Password.";
 			objectValue = "12345";
 			otherObjectValue = "";
-            configureValidationMock();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -76,15 +75,16 @@
 
 	<cffunction name="validateSetsFailureMessageWithCorrectDescFromMetadataWhenNoDescParamaterIsProvided" access="public" returntype="void">
 		<cfscript>
-			needsFacade = true;
-           validation.getParameterValue("ComparePropertyDesc","").returns("");
-		   failureMessage = "The PropertyDesc must be the same as the Verify Password.";
+			ValidateThis = mock();
+			ValidateThis.getPropertyDescription(objectType="mockObjectType",propertyName="otherPropertyName").returns("mock description");
+			validation.getObjectType().returns("mockObjectType");
+			validation.getParameterValue("ComparePropertyDesc","").returns("");
+			failureMessage = "The PropertyDesc must be the same as the mock description.";
 			objectValue = "12345";
 			otherObjectValue = "";
             configureValidationMock();
 			
 			SRV.validate(validation);
-			
 			validation.verifyTimes(1).setIsSuccess(false); 
 			validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
