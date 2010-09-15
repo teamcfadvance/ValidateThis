@@ -26,7 +26,8 @@
 
 	<cffunction name="configureValidationMock" access="private">
         <cfscript>
-            
+            //TODO: Need to mock getObjectType() but not sure what to set it to. SRV tests by default point to /fixture/models/cf9
+			
            super.configureValidationMock();
             
            validation.getParameterValue("ComparePropertyName").returns("VerifyPassword");
@@ -62,12 +63,14 @@
 	<cffunction name="validateSetsFailureMessageFromDescParameterWhenADescParamaterIsProvided" access="public" returntype="void">
 		<cfscript>
            validation.getParameterValue("ComparePropertyDesc","").returns("Verify The Password");
+		   failureMessage = "The PropertyDesc must be the same as the Verify The Password.";
 			objectValue = "12345";
 			otherObjectValue = "";
             configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
 	</cffunction>
 
@@ -75,12 +78,15 @@
 		<cfscript>
 			needsFacade = true;
            validation.getParameterValue("ComparePropertyDesc","").returns("");
+		   failureMessage = "The PropertyDesc must be the same as the Verify Password.";
 			objectValue = "12345";
 			otherObjectValue = "";
             configureValidationMock();
 			
 			SRV.validate(validation);
+			debug(validation.debugmock());
 			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
 	</cffunction>
 
