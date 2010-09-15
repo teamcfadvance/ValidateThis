@@ -29,13 +29,10 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
         <cfscript>
             
-           super.validationMockup();
-            
-           validation.hasParameter("from").returns(true);
-           validation.hasParameter("until").returns(true);
+           super.configureValidationMock();
             
            validation.getParameterValue("from").returns("12/30/1968");
            validation.getParameterValue("until").returns("1/1/1969");
@@ -50,7 +47,7 @@
 			setup();
 			objectValue = arguments.value;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -63,7 +60,7 @@
 			setup();
 			objectValue = arguments.value;
 
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -75,7 +72,7 @@
 			objectValue = "";
 			isRequired = true;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

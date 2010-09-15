@@ -40,10 +40,10 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
 		<cfscript>
-			mockfacade = true;
-			super.validationMockup();
+			needsFacade = true;
+			super.configureValidationMock();
 			validation.getParameterValue("context","*").returns(context);
 			validation.getParameterValue("context").returns(context);
 			validation.getParameterValue("objectType").returns(theObjectType);
@@ -90,7 +90,7 @@
 			objectValue = {}; // I know an empty struct should fail here. but does it?	
 			isRequired=true;
 
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -101,7 +101,7 @@
 		<cfscript>
 			objectValue = {};	
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -112,7 +112,7 @@
 		<cfscript>
 			objectValue = [];	
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -123,7 +123,7 @@
 		<cfscript>			
 			objectValue = [validCompany,invalidCompany];	
 
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -136,7 +136,7 @@
 			//validCompany2.setCompanyName("Majik Solutions");
 			objectValue = [validCompany,validCompany2];	
 
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -150,7 +150,7 @@
 			
 			objectValue = [validCompany,validUser,validCompany2,validUser2];	
 
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -163,7 +163,7 @@
 			invalidCompany2  = duplicate(invalidCompany);
 			objectValue = [invalidCompany,invalidCompany2];	
 
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(arrayLen(objectValue)).setIsSuccess(false); 
@@ -177,7 +177,7 @@
 			
 			objectValue = [invalidCompany,invalidUser,invalidCompany2,invalidUser2];	
 
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(arrayLen(objectValue)).setIsSuccess(false); 
@@ -190,7 +190,7 @@
 			
 			parameters={};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -203,7 +203,7 @@
 			
 			parameters={};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -216,7 +216,7 @@
 			
 			parameters={};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -229,7 +229,7 @@
 			
 			parameters={};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -242,7 +242,7 @@
 			
 			parameters={};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -255,7 +255,7 @@
 			
 			parameters={};
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

@@ -240,6 +240,14 @@
 		<cfreturn variables.instance.propertyDescs />
 	</cffunction>
 	
+	<cffunction name="getPropertyDescription" access="public" output="false" returntype="string" hint="Returns the descriptive name of a property">
+		<cfargument name="propertyName" required="true" type="string" />
+		<cfif structKeyExists(variables.instance.propertyDescs,arguments.propertyName)>
+			<cfreturn variables.instance.propertyDescs[arguments.propertyName] />
+		</cfif>
+		<cfreturn determineLabel(arguments.propertyName) />
+	</cffunction>
+	
 	<cffunction name="getRequiredPropertiesAndDescs" access="public" output="false" returntype="any">
 		<cfargument name="context" required="false" type="string" default="">
 		<cfset var RequiredPropertyDescs = {}/>

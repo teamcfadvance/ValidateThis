@@ -39,7 +39,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 		<cfscript>
 			objectValue = "abc";
 
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -49,7 +49,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 		<cfscript>
 			objectValue = mock();
 
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -59,7 +59,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 		<cfscript>
 			objectValue = "";
 			
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

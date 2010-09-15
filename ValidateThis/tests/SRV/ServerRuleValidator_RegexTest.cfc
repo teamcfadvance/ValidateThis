@@ -28,7 +28,7 @@
 	<cffunction name="validateReturnsTrueForValidRegex" access="public" returntype="void">
 		<cfscript>
 			objectValue= "Mr.";
-			validationMockup();
+			configureValidationMock();
 
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -38,7 +38,7 @@
 	<cffunction name="validateReturnsFalseForInvalidRegex" access="public" returntype="void">
 		<cfscript>
 			objectValue= 1;
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -48,7 +48,7 @@
 		<cfscript>
             objectValue= 1;
 			parameters = {ServerRegex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  

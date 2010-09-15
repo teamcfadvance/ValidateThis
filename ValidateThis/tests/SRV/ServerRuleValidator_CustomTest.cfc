@@ -29,11 +29,10 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
         <cfscript>
-           super.validationMockup();           
+           super.configureValidationMock();           
            validation.hasParameter("methodName").returns(hasMethod);
-           validation.hasParameter("remoteURL").returns(hasRemote);
            validation.getParameterValue("methodName").returns(defaultMethod);
            validation.getParameterValue("remoteURL").returns(defaultRemoteURL);        
         </cfscript>
@@ -51,7 +50,7 @@
 			theObject.myMethod().returns(customResult);
             objectValue="";
             
-            validationMockup();
+            configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -64,7 +63,7 @@
 			theObject.myMethod().returns(customResult);
 			objectValue="";            
 			
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -78,7 +77,7 @@
 			objectValue="";
 			failureMessage = "A custom validator failed.";
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -92,7 +91,7 @@
 			theObject.myMethod().returns(customResult);
 			objectValue = "";
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -107,7 +106,7 @@
 			objectValue = "";
 			failureMessage = "A custom failure message.";
             
-            validationMockup();
+            configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -122,7 +121,7 @@
 			objectValue = "";
 			isRequired = false;
             
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -136,7 +135,7 @@
 			objectValue = "";
             isRequired = true;
             
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

@@ -202,6 +202,27 @@
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="getPropertyDescriptionReturnsCorrectPropertyDescriptionFromMetadata" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals("Email Address",BOValidator.getPropertyDescription("UserName"));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="getPropertyDescriptionReturnsFormattedPropertyDescriptionWhenPropertyDoesNotExistInMetadata" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals("I Dont Exist",BOValidator.getPropertyDescription("IDontExist"));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="getPropertyDescriptionReturnsFormattedPropertyDescriptionWhenPropertyDoesExistInMetadata" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals("First Name",BOValidator.getPropertyDescription("FirstName"));
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="createDefaultBOV" access="private" returntype="any">
 		<cfscript>
 			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac

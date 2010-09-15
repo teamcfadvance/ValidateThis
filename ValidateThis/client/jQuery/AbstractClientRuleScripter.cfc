@@ -124,4 +124,8 @@
 		<cfreturn lcase(ListLast(getMetadata(this).name,"_")) />
 	</cffunction>
 	
+	<cffunction name="buildOptionStructure" returntype="struct" access="private" output="false">
+		
+	</cffunction>
+	
 </cfcomponent>

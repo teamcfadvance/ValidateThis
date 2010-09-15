@@ -198,6 +198,16 @@
 		<cfreturn variables.Instance.IsRequired />
 	</cffunction>
 
+	<cffunction name="setObjectType" returntype="void" access="public" output="false">
+		<cfargument name="ObjectType" type="string" required="true" />
+		<cfset variables.Instance.ObjectType = arguments.ObjectType />
+	</cffunction>
+	<cffunction name="getObjectType" access="public" output="false" returntype="string">
+		<cfreturn variables.Instance.ObjectType />
+	</cffunction>
+
+	<!--- TODO: Make sure object type gets populated! --->
+	
 </cfcomponent>
 	
 

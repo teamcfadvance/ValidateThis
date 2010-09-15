@@ -22,61 +22,58 @@
 			super.setup();
 			SRV = getSRV("DoesNotContain");
 			parameters = {propertyNames="name"};
-			hasPropertyNames = true;
+            hasPropertyNames = true;
 			shouldPass = ["goodStuff"];
-			shouldFail = ["badStuff"];		
+			shouldFail = ["badStuff"];			
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
-		<cfscript>
-			super.validationMockup();
-			validation.getObjectValue("name").returns("badStuff");
-			validation.hasParameter("propertyNames").returns(hasPropertyNames);
-			
-			validation.getParameterValue("propertyNames").returns(parameters.propertyNames);
-			validation.hasParameter("delim").returns(true);
-			validation.getParameterValue("delim").returns(",");
-		</cfscript>
-	</cffunction>
+	<cffunction name="configureValidationMock" access="private">
+        <cfscript>
+           super.configureValidationMock();
+           validation.getObjectValue("name").returns("badStuff");            
+           validation.getParameterValue("propertyNames").returns(parameters.propertyNames);      
+           validation.hasParameter("delim").returns(true);
+		   validation.getParameterValue("delim").returns(",");
+        </cfscript>
+    </cffunction>
 	
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			objectValue = arguments.value;
-			validationMockup();
-			
+			configureValidationMock();
+            
 			makePublic(SRV,"shouldTest");
-			assertEquals(true,SRV.shouldTest(validation));
-			
+            assertEquals(true,SRV.shouldTest(validation));
+            
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
-	
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
-		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
-		<cfscript>
-			objectValue = arguments.value;
-			isRequired = false;
-			validationMockup();
-			
-			makePublic(SRV,"shouldTest");
-			assertEquals(true,SRV.shouldTest(validation));
-			
-			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
+        <cfargument name="value" hint="each item in the shouldFail dataprovider array" />
+        <cfscript>
+            objectValue = arguments.value;
+            isRequired = false;
+            configureValidationMock();
+            
+            makePublic(SRV,"shouldTest");
+            assertEquals(true,SRV.shouldTest(validation));
+            
+            SRV.validate(validation);
+            validation.verifyTimes(1).setIsSuccess(false); 
+        </cfscript>  
+    </cffunction>
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
 		<cfscript>
 			objectValue = "";
 			isRequired = true;
-			validationMockup();
+            configureValidationMock();
 			
 			makePublic(SRV,"shouldTest");
-			assertEquals(true,SRV.shouldTest(validation));
+            assertEquals(true,SRV.shouldTest(validation));
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -84,18 +81,17 @@
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
-		<cfscript>
+        <cfscript>
 			objectValue = "";
-			isRequired = false;
-			validationMockup();
-			
-			makePublic(SRV,"shouldTest");
-			assertEquals(false,SRV.shouldTest(validation));
-			
-			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
+            isRequired = false;
+            configureValidationMock();
 
+            makePublic(SRV,"shouldTest");
+            assertEquals(false,SRV.shouldTest(validation));
+            
+            SRV.validate(validation);
+            validation.verifyTimes(0).setIsSuccess(false); 
+        </cfscript>  
+    </cffunction>
+		
 </cfcomponent>
