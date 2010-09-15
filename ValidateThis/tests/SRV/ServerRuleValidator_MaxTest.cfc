@@ -28,7 +28,7 @@
 	<cffunction name="validateReturnsTrueForValidMax" access="public" returntype="void">
 		<cfscript>
 			objectValue = 1;
-            validationMockup();
+            configureValidationMock();
 						
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -38,7 +38,7 @@
 	<cffunction name="validateReturnsFalseForInvalidMax" access="public" returntype="void">
 		<cfscript>
 			objectValue = 6;
-            validationMockup();		
+            configureValidationMock();		
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

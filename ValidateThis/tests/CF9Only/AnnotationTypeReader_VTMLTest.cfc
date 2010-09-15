@@ -71,7 +71,7 @@
 	<cffunction name="loadRulesReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
 			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithVTML");
-			PropertyDescs = annotationTypeReader.getValidations(md).PropertyDescs;
+			PropertyDescs = annotationTypeReader.getValidations("User_WithVTML",md).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
@@ -79,7 +79,7 @@
 	<cffunction name="loadRulesReturnsCorrectPropertyRules" access="public" returntype="void">
 		<cfscript>
 			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithVTML");
-			PropertyRules = annotationTypeReader.getValidations(md);
+			PropertyRules = annotationTypeReader.getValidations("User_WithVTML",md);
 			
 			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['___DEFAULT']) eq 12 ,"Inncorect Rule count in DEFAULT context");
 			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['Profile']) eq 15 ,"Inncorect Rule count in Profile context");

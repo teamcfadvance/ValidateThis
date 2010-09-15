@@ -72,7 +72,7 @@ Definition Usage Example:
 		<cfset var messageScript = "" />
 		
 		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#."/>
+			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#.") />
 		</cfif>
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
 

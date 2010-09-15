@@ -33,7 +33,7 @@
         <cfif arguments.validation.hasParameter('remoteURL')>
 		
 			<cfif Len(arguments.customMessage) eq 0>
-				<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# custom validation failed."/>
+				<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# custom validation failed.") />
 			</cfif>	
 			<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
 		

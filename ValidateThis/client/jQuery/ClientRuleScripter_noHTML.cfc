@@ -46,7 +46,7 @@
 		<cfset var messageScript = "" />
 		
 		<cfif len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# cannot contain HTML tags."/>
+			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# cannot contain HTML tags.") />
 		</cfif>
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
 		

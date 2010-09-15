@@ -88,7 +88,7 @@
 			<cfset fileName = locateRulesFile(arguments.objectType,arguments.definitionPath,fileType) />
 			<cfif len(fileName) NEQ 0>
 				<cfset fileReader = variables.transientFactory.create("FileReader_" & fileType) />
-				<cfset rulesStruct = fileReader.getValidations(fileName) />
+				<cfset rulesStruct = fileReader.getValidations(arguments.objectType,fileName) />
 				<cfbreak />
 			</cfif>
 		</cfloop>

@@ -25,7 +25,7 @@
 			theObject = mock(); 		// see 			
 			validateThis = "";
 			
-			mockFacade=false;
+			needsFacade=false;
 			
 			//Default Validation Mock Values
 			propertyDesc="PropertyDesc";
@@ -41,7 +41,7 @@
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
-	<cffunction name="facadeMockup" access="private">
+	<cffunction name="createRealFacade" access="private">
 		<cfscript>
   		   // Integration Testing
 			VTConfig = {definitionPath="/validatethis/tests/Fixture/models/cf9"};
@@ -50,11 +50,11 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
 		<cfscript>
 
-			if (mockfacade eq true){
-				facadeMockup();
+			if (needsFacade eq true){
+				createRealFacade();
 			}
 
 			validation.setIsSuccess(false).returns();
@@ -70,19 +70,6 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockupReturnsValidateThisWithOtherSRVSLoaded" access="public" returntype="void">
-		<cfscript>
-			validationMockup();
-			
-			if (mockfacade eq true){
-				srvs = validation.getValidateThis().getServerRuleValidators();
-				assertTrue(structCount(srvs) gt 0);
-				assertTrue(structCount(srvs) eq 29);
-				assertTrue(structCount(validation.getValidateThis().getServerRuleValidators()) gt 0);
-			}
-		</cfscript>  
-	</cffunction>
-	
 	<!--- These two tests will be identical for each SRV, but should be run for each --->
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
@@ -91,7 +78,7 @@
 			isRequired=false;
 			failureMessage = "";
 			
-			validationMockup();			
+			configureValidationMock();			
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -104,7 +91,7 @@
 			isRequired = true;
 			failureMessage = "";
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);			
 			validation.verifyTimes(1).setIsSuccess(false); 

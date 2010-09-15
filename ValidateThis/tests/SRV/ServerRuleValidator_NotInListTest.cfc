@@ -27,9 +27,9 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
         <cfscript>
-           super.validationMockup();
+           super.configureValidationMock();
            validation.hasParameter("delim").returns(true);
            validation.getParameterValue("delim").returns(",");
         </cfscript>
@@ -41,7 +41,7 @@
 			setup();
 			objectValue = arguments.value;
 
-            validationMockup();
+            configureValidationMock();
             
             validation.hasParameter("list").returns(true);
             validation.getParameterValue("list").returns(parameters.list);
@@ -57,7 +57,7 @@
 			setup();
 			objectValue = arguments.value;
 
-            validationMockup();
+            configureValidationMock();
             
             validation.hasParameter("list").returns(true);
             validation.getParameterValue("list").returns(parameters.list);
@@ -72,7 +72,7 @@
 			objectValue = "";
             isRequired= false;
             
-            validationMockup();
+            configureValidationMock();
             
             validation.hasParameter("list").returns(true);
             validation.getParameterValue("list").returns(parameters.list);
@@ -86,7 +86,7 @@
 			objectValue = "";
             isRequired= true;
             
-            validationMockup();
+            configureValidationMock();
             
             validation.hasParameter("list").returns(true);
             validation.getParameterValue("list").returns(parameters.list);

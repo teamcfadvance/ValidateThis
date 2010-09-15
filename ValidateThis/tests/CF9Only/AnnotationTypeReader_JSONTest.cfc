@@ -40,7 +40,7 @@
 	<cffunction name="loadRulesReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
 			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
-			PropertyDescs = annotationTypeReader.getValidations(md).PropertyDescs;
+			PropertyDescs = annotationTypeReader.getValidations("user",md).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
@@ -48,7 +48,7 @@
 	<cffunction name="loadRulesReturnsCorrectValidations" access="public" returntype="void">
 		<cfscript>
 			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
-			Validations = annotationTypeReader.getValidations(md).Validations;
+			Validations = annotationTypeReader.getValidations("user",md).Validations;
 			assertEquals(StructCount(Validations),1);
 			assertEquals(StructCount(Validations.Contexts),3);
 			Rules = Validations.Contexts.Register;

@@ -28,11 +28,10 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
         <cfscript>
-           super.validationMockup();
+           super.configureValidationMock();
            validation.getObjectValue("name").returns("badStuff");            
-           validation.hasParameter("propertyNames").returns(hasPropertyNames);
            validation.getParameterValue("propertyNames").returns(parameters.propertyNames);      
         </cfscript>
     </cffunction>
@@ -41,7 +40,7 @@
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			objectValue = arguments.value;
-			validationMockup();
+			configureValidationMock();
             
 			makePublic(SRV,"shouldTest");
             assertEquals(true,SRV.shouldTest(validation));
@@ -55,7 +54,7 @@
         <cfscript>
             objectValue = arguments.value;
             isRequired = false;
-            validationMockup();
+            configureValidationMock();
             
             makePublic(SRV,"shouldTest");
             assertEquals(true,SRV.shouldTest(validation));
@@ -69,7 +68,7 @@
 		<cfscript>
 			objectValue = "";
 			isRequired = true;
-            validationMockup();
+            configureValidationMock();
 			
 			makePublic(SRV,"shouldTest");
             assertEquals(true,SRV.shouldTest(validation));
@@ -83,7 +82,7 @@
         <cfscript>
 			objectValue = "";
             isRequired = false;
-            validationMockup();
+            configureValidationMock();
 
             makePublic(SRV,"shouldTest");
             assertEquals(false,SRV.shouldTest(validation));

@@ -87,8 +87,9 @@
 	</cffunction>
 
 	<cffunction name="processPropertyRules" returnType="any" access="private" output="false" hint="I simply pass the call on to my parent">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="theProperties" type="any" required="true" />
-		<cfset super.processPropertyRules(arguments.theProperties) />
+		<cfset super.processPropertyRules(arguments.objectType,arguments.theProperties) />
 	</cffunction>
 
 	<cffunction name="normalizeValidations" returnType="struct" access="private" output="false" hint="I take the rules and post-process them using other property metadata">
@@ -98,6 +99,7 @@
 	</cffunction>
 
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I take the metadata and reformat it into a struct">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="metadataSource" type="any" required="true" hint="the object metadata" />
 		
 		<cfthrow type="ValidateThis.core.annotationTypeReaders.BaseAnnotationTypeReader.MissingImplementation" detail="The loadRules method must be implemented in a concrete AnnotationTypeReader object" />

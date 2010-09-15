@@ -57,7 +57,7 @@ Example Usage:
 		
 		<cfset var messageScript = "" />
 		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "Did not match the patterns for #validation.getPropertyDesc()#"/>
+			<cfset arguments.customMessage = "Did not match the patterns for #lCase(arguments.defaultFailureMessagePrefix)##validation.getPropertyDesc()#"/>
 		</cfif>
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
 			

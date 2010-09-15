@@ -46,7 +46,7 @@
         
         <cfset var messageScript = "" />
         <cfif Len(arguments.customMessage) eq 0>
-            <cfset arguments.customMessage = "#arguments.validation.getPropertyDesc()# must be a false boolean."/>
+            <cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a false boolean.") />
         </cfif>
         <cfset messageScript = '"' & variables.Translator.translate(arguments.customMessage,arguments.locale) & '"' />
 

@@ -28,7 +28,7 @@
 		<cfscript>
 			objectValue = true;
             
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -38,7 +38,7 @@
 		<cfscript>
 			objectValue = false;
             
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -48,7 +48,7 @@
 0		<cfscript>
 			objectValue = "abc";
             
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
