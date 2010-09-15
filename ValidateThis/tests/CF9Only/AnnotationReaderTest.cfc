@@ -31,7 +31,7 @@
 	<cffunction name="loadRulesFromAnnotationsReturnsEmptyStructIfNoValidAnnotationFormatFound" access="public" returntype="void">
 		<cfscript>
 			theObject = createObject("component","validatethis.tests.Fixture.User");
-			PropertyDescs = annotationReader.loadRulesFromAnnotations(theObject=theObject,componentPath="").PropertyDescs;
+			PropertyDescs = annotationReader.loadRulesFromAnnotations(objectType="user",theObject=theObject,componentPath="").PropertyDescs;
 			assertTrue(structIsEmpty(PropertyDescs));
 		</cfscript>  
 	</cffunction>
@@ -39,7 +39,7 @@
 	<cffunction name="loadRulesFromAnnotationsReturnsCorrectPropertyDescsForObjectWithJSON" access="public" returntype="void">
 		<cfscript>
 			theObject = createObject("component","validatethis.tests.Fixture.AnnotatedBOs.User");
-			PropertyDescs = annotationReader.loadRulesFromAnnotations(theObject=theObject,componentPath="").PropertyDescs;
+			PropertyDescs = annotationReader.loadRulesFromAnnotations(objectType="user",theObject=theObject,componentPath="").PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
 	</cffunction>
@@ -47,7 +47,7 @@
 	<cffunction name="loadRulesReturnsCorrectValidationsForObjectWithJSON" access="public" returntype="void">
 		<cfscript>
 			theObject = createObject("component","validatethis.tests.Fixture.AnnotatedBOs.User");
-			Validations = annotationReader.loadRulesFromAnnotations(theObject=theObject,componentPath="").Validations;
+			Validations = annotationReader.loadRulesFromAnnotations(objectType="user",theObject=theObject,componentPath="").Validations;
 			assertEquals(StructCount(Validations),1);
 			assertEquals(StructCount(Validations.Contexts),3);
 			Rules = Validations.Contexts.Register;

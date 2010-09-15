@@ -50,7 +50,7 @@
 		<cfset variables.definitionPath = listPrepend(arguments.definitionPath,arguments.specificDefinitionPath) />
 		
 		<cfif isObject(arguments.theObject) or len(arguments.componentPath) gt 0>
-			<cfset loadRulesFromAnnotations(arguments.theObject,arguments.componentPath) />
+			<cfset loadRulesFromAnnotations(arguments.objectType,arguments.theObject,arguments.componentPath) />
 		</cfif>
 		
 		<cfset loadRulesFromExternalFile(arguments.objectType,variables.definitionPath) />
@@ -60,10 +60,11 @@
 	</cffunction>
 
 	<cffunction name="loadRulesFromAnnotations" returnType="void" access="private" output="false" hint="I ask the externalFileReader to read the validations XML file and reformat it into a struct">
+		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="componentPath" type="any" required="true" />
 
-		<cfset var theStruct = variables.annotationReader.loadRulesFromAnnotations(argumentCollection=arguments) />
+		<cfset var theStruct = variables.annotationReader.loadRulesFromAnnotations(objectType=arguments.objectType,theObject=arguments.theObject,componentPath=arguments.componentPath) />
 		<cfset loadRulesFromStruct(theStruct) />
 		
 	</cffunction>
@@ -72,7 +73,7 @@
 		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="definitionPath" type="any" required="true" />
 
-		<cfset var theStruct = variables.externalFileReader.loadRulesFromExternalFile(arguments.objectType,arguments.definitionPath) />
+		<cfset var theStruct = variables.externalFileReader.loadRulesFromExternalFile(objectType=arguments.objectType,definitionPath=arguments.definitionPath) />
 		<cfset loadRulesFromStruct(theStruct) />
 		
 	</cffunction>
@@ -192,6 +193,7 @@
 		</cfif>
 		<!--- Put the object into the result so it can be retrieved from there --->
 		<cfset arguments.Result.setTheObject(arguments.theObject) />
+		<!--- TODO: pass the objectType (from getObjectType()) into the ServerValidator.validate() method so it can be passed into the Validation object --->
 		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result) />
 		<cfreturn arguments.Result />
 		
@@ -204,6 +206,7 @@
 		<cfargument name="JSLib" type="any" required="false" default="#variables.defaultJSLib#" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
+		<!--- TODO: pass the objectType (from getObjectType()) into the ClientValidator.getValidationScript() method so it can be passed into the Validation object --->
 		<cfreturn variables.ClientValidator.getValidationScript(getValidations(arguments.Context),arguments.formName,arguments.JSLib,arguments.locale) />
 
 	</cffunction>

@@ -24,6 +24,7 @@
 	</cffunction>
 	
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I read the validations XML file and reformat it into a struct">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="metadataSource" type="any" required="true" hint="the path to the file to read" />
 		
 		<cfthrow type="ValidateThis.core.fileReaders.BaseFileReader.MissingImplementation" detail="The loadRules method must be implemented in a concrete FileReader object" />

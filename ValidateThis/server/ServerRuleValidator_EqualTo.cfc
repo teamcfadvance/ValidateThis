@@ -24,7 +24,6 @@
 		<cfif len(otherDesc) eq 0>
 			<cfset otherDesc = arguments.validation.getValidateThis().getPropertyDescription(objectType=arguments.validation.getObjectType(),propertyName="otherPropertyName") />
 		</cfif>
-		<cfset request.debug(otherDesc) />
 		<cfif arguments.validation.getObjectValue() NEQ otherVal>
 			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as the #otherDesc#.")) />
 		</cfif>

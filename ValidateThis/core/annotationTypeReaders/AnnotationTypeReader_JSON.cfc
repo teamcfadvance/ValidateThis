@@ -27,6 +27,7 @@
 	</cffunction>
 
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I take the object metadta and reformat it into private properties">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="metadataSource" type="any" required="true" hint="the object metadata" />
 		<cfset var properties = {}/>
 		<cfif structKeyExists(arguments.metadataSource,"vtConditions")>
@@ -38,7 +39,7 @@
 		<cfif structKeyExists(arguments.metadataSource,"properties")>
 			<cfset properties = reformatProperties(arguments.metadataSource.properties)>
 			<cfset processPropertyDescs(properties) />
-			<cfset processPropertyRules(properties) />
+			<cfset processPropertyRules(arguments.objectType,properties) />
 		</cfif>
 
 	</cffunction>

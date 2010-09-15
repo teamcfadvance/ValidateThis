@@ -27,6 +27,7 @@
 	</cffunction>
 	
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I read the validations XML file and reformat it into a struct">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="metadataSource" type="any" required="true" />
 		
 		<cfthrow type="ValidateThis.core.BaseMetadataProcessor.MissingImplementation" detail="The loadRules method must be implemented in a concrete object" />
@@ -34,11 +35,12 @@
 	</cffunction>
 	
 	<cffunction name="getValidations" returnType="struct" access="public" output="false" hint="I return the processed metadata in a struct that is expected by the BOValidator">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="metadataSource" type="any" required="true" hint="the source of the metadata - may be a filename or a metadata struct" />
 		
 		<cfset var returnStruct = 0 />
 		
-		<cfset loadRules(arguments.metadataSource) />
+		<cfset loadRules(arguments.objectType,arguments.metadataSource) />
 		<cfset returnStruct = {propertyDescs=variables.propertyDescs,clientFieldDescs=variables.clientFieldDescs,formContexts=variables.formContexts,validations=variables.validations} />
 		<cfreturn returnStruct />
 	</cffunction>
@@ -114,6 +116,7 @@
 	</cffunction>
 
 	<cffunction name="processPropertyRules" returnType="any" access="private" output="false" hint="I process property rules">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="properties" type="any" required="true" />
 		
 		<cfset var theProperty = 0 />
@@ -142,7 +145,8 @@
 		<cfloop array="#arguments.properties#" index="theProperty">
 			<cfif structKeyExists(theProperty,"rules")>
 				<cfloop array="#theProperty.rules#" index="theRule">
-					<cfset theVal = {propertyName = theProperty.name, valType = theRule.type, parameters = structNew()} />
+					<!--- TODO: add the objectType into the theVal struct here, which should make it available to the Validation object --->
+					<cfset theVal = {objectType = arguments.objectType, propertyName = theProperty.name, valType = theRule.type, parameters = structNew()} />
 					<cfif StructKeyExists(theProperty,"desc")>
 						<cfset theVal.PropertyDesc = theProperty.desc />
 					<cfelse>
