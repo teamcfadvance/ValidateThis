@@ -166,11 +166,11 @@
 					"formName":"Test"
 				},
 				{"type":"Required","contexts":"Required",
-                    "params" : [
-                        {"name":"DependentPropertyName","value":"TextTest"}
-                    ],
-                    "formName":"Test"
-                }
+					"params" : [
+						{"name":"DependentPropertyName","value":"TextTest"}
+					],
+					"formName":"Test"
+				}
 			]},
 			{"name":"CheckboxTest","desc":"Checkbox Test","clientFieldName":"CheckboxTest","rules":[
 				
@@ -179,13 +179,8 @@
 				{"type":"Boolean","contexts":"Boolean",
 					"params":[],
 					"formName":"Test"
-				},
-				{"type":"Size","contexts":"Size",
-					"params":[
-						{"name":"length","value":"4"}	
-					],
-					"formName":"Test"
 				}
+				
 			]},
 			{"name":"ListBoxTest","desc":"ListBoxTest","clientFieldName":"ListBoxTest","rules":[
 				{"type":"Date","contexts":"Date",
@@ -194,7 +189,7 @@
 				},
 				{"type":"Size","contexts":"Size",
 					"params":[
-						{"name":"length","value":"2"}	
+						{"name":"min","value":"2"}	
 					],
 					"formName":"Test"
 				}
