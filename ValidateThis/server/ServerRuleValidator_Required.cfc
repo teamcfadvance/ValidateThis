@@ -18,22 +18,28 @@
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var Parameters = arguments.validation.getParameters() />
+		<cfset var parameters = arguments.validation.getParameters() />
 		<cfset var theCondition = arguments.validation.getCondition() />
-		<cfset var ConditionDesc = "" />
+		<cfset var conditionDesc = "" />
+		<cfset var propertyDesc = "" />
 		<cfset var theValue = arguments.validation.getObjectValue() />
 		
 		<cfif NOT IsObject(theValue) AND Len(theValue) EQ 0>
 			<cfif StructKeyExists(theCondition,"Desc")>
-				<cfset ConditionDesc = " " & theCondition.Desc />
-			<cfelseif StructKeyExists(Parameters,"DependentPropertyDesc")>
-				<cfif StructKeyExists(Parameters,"DependentPropertyValue")>
-					<cfset ConditionDesc = " based on what you entered for the " & Parameters.DependentPropertyDesc />
+				<cfset conditionDesc =  " " & theCondition.Desc />
+			<cfelseif StructKeyExists(parameters,"DependentPropertyName")>
+				<cfif StructKeyExists(parameters,"DependentPropertyDesc")>
+					<cfset propertyDesc = parameters.DependentPropertyDesc />
 				<cfelse>
-					<cfset ConditionDesc = " if you specify a value for the " & Parameters.DependentPropertyDesc />
+					<cfset propertyDesc = arguments.validation.getValidateThis().getPropertyDescription(objectType=arguments.validation.getObjectType(),propertyName=parameters.DependentPropertyName) />
+				</cfif>
+				<cfif StructKeyExists(parameters,"DependentPropertyValue")>
+					<cfset conditionDesc = " based on what you entered for " & lCase(variables.defaultFailureMessagePrefix) & propertyDesc />
+				<cfelse>
+					<cfset conditionDesc = " if you specify a value for " & lCase(variables.defaultFailureMessagePrefix) & propertyDesc />
 				</cfif>
 			</cfif>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#ConditionDesc#.")) />
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#conditionDesc#.")) />
 		</cfif>
 	</cffunction>
 	
