@@ -20,7 +20,7 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("DoesNotContainOtherValues");
+			SRV = getSRV("DoesNotContain");
 			parameters = {propertyNames="name"};
             hasPropertyNames = true;
 			shouldPass = ["goodStuff"];
@@ -33,6 +33,8 @@
            super.configureValidationMock();
            validation.getObjectValue("name").returns("badStuff");            
            validation.getParameterValue("propertyNames").returns(parameters.propertyNames);      
+           validation.hasParameter("delim").returns(true);
+		   validation.getParameterValue("delim").returns(",");
         </cfscript>
     </cffunction>
 	
@@ -91,7 +93,5 @@
             validation.verifyTimes(0).setIsSuccess(false); 
         </cfscript>  
     </cffunction>
-	
-	
 		
 </cfcomponent>

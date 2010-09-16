@@ -18,9 +18,10 @@
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var Parameters = arguments.validation.getParameters() />
+		<cfset var parameters = arguments.validation.getParameters() />
 		<cfset var theVal = arguments.validation.getObjectValue()/>
 		<cfset var context = arguments.validation.getParameterValue("context","*")/>
+		<cfset var objectType = arguments.validation.getParameterValue("objectType","") >
 		<cfset var toCheck = []/>
 		<cfset var theObject = 0/>
 		<cfset var theResult = arguments.validation.getValidateThis().newResult()/>
@@ -40,6 +41,8 @@
 		<cfif isStruct(theVal) and (not isObject(theVal) and structCount(theVal) eq 0)>
 			<cfset fail(arguments.validation,createDefaultFailureMessage("validation failed because a valid structure cannot be empty.")) />
 			<cfreturn/>
+		<cfelseif isStruct(theVal) and arguments.validation.hasParameter("objectType")>
+			<cfset objectType = arguments.validation.getParameterValue("objectType")>
 		</cfif>
 		
 		<cfif  isArray(theVal) and arrayLen(theVal) eq 0>
@@ -52,8 +55,13 @@
 		</cfif>
 		
 		<cfloop array="#toCheck#" index="theObject">
-			<!--- Now Lets Actually Try TO Validate This Apparent Objects --->
-			<cfset theResult = arguments.validation.getValidateThis().validate(theObject=theObject,context=context,theResult=theResult)/>
+			<!--- try to validate any apparent objects --->
+			<cfif isSimpleValue(objectType) and len(objectType) gt 0>
+				<cfset theResult = arguments.validation.getValidateThis().validate(theObject=theObject,objectType=objectType,context=context,theResult=theResult)/>
+			<cfelse>
+				<cfset theResult = arguments.validation.getValidateThis().validate(theObject=theObject,context=context,theResult=theResult)/>
+			</cfif>
+			
 			<cfif not theResult.getIsSuccess()>
 				<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is invalid: #theResult.getFailuresAsString()#")) />
 			</cfif>

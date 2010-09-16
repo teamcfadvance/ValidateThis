@@ -12,7 +12,7 @@ Example Usage:
 
  --->
 
-<cfcomponent extends="AbstractServerRuleValidator" hint="Evaluates each regex pattern. Any parameter starting with the word 'pattern' is considered. Validation fails if at least X patterns match, where 'X' is specified as the 'minMatches' parameter">
+<cfcomponent output="false" extends="AbstractServerRuleValidator" hint="Evaluates each regex pattern. Any parameter starting with the word 'pattern' is considered. Validation fails if at least X patterns match, where 'X' is specified as the 'minMatches' parameter">
 	<cfscript>
 		function validate(validation){
 			var value = arguments.validation.getObjectValue();

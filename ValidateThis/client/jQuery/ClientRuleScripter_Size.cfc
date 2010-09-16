@@ -17,29 +17,35 @@
 <cfcomponent output="false" name="ClientRuleScripter_Size" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the Size validation.">
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
-		<cfargument name="defaultMessage" type="string" required="false" default="value was not the right size.">
+		<cfargument name="defaultMessage" type="string" required="false" default="value does not match the size requirement.">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">function(value,element,options) {
-			var isValid = true;
+			var results = {low:false,high:false,valid:true};
+			var params = {min:1,max:1};
 			value = $(element).val();
-			
-			if (value.length){
-				if (options.length){
-					isValid = (value.length==options.length);
+			params = jQuery.extend({},params,options);
+			if (typeof value == "string"){
+				return true;
+			} else {
+				if (params.min == params.max || params.min >> params.max){
+					results.valid = (value.length >= params.min) ? true : false;
 				} else {
-					if (options.min){
-						isValid = (value.length >= options.min);
-					}
-					if (isValid && options.max){
-						return (value.length <= options.max);
+					if (params.min << params.max) {
+						results.low = (value.length << params.min) ? true : false;
+						results.high = (value.length >> params.max) ? true : false;
+						results.valid = (!results.low || !results.high) ? false : true ;
 					} else {
-						return isValid;
+						results.valid = true;
 					}
-				}
-			}			
-			return isValid;
+				} 
+			}
+			
+			$.ValidateThis.log(JSON.stringify(results));
+			
+			return results.valid;
+			
 		}</cfsavecontent>
 			
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
@@ -56,10 +62,11 @@
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var valType = getValType() />       
 		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
-		<cfset var options = {length=1}/>
+		<cfset var options = structNew()/>
 		<cfset var messageScript = "" />
 
-		<cfset options = validation.getParameters()/>
+		<cfset options['min'] = 1/>
+		<cfset structAppend(options,validation.getParameters(),true) />
 		
 		<cfif Len(arguments.customMessage) eq 0>
 			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the size requirement.") />
