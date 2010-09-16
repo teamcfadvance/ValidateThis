@@ -1,7 +1,9 @@
 <!--- 
-DoesNotContain:
+DoesNotContain: (OtherPropertiesOrValues)
+	@Marc Escher
+	@Adam Drew
 
-Definition Usage Example:
+Usage Example:
 
 <rule type="DoesNotContain" failuremessage="Password may not contain your first or last name." >
 	<param name="propertyNames" value="firstName,LastName"/>

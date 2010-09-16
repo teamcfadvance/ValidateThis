@@ -22,21 +22,30 @@
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">function(value,element,options) {
-			var isValid = true;
+			var results = {low:false,high:false,valid:true};
+			var params = {min:1,max:1};
 			value = $(element).val();
-			if (value.length){
-				if (options.min && !options.max){
-					isValid = (value.length==options.min);
+			params = jQuery.extend({},params,options);
+			if (typeof value == "string"){
+				return true;
+			} else {
+				if (params.min == params.max || params.min >> params.max){
+					results.valid = (value.length >= params.min) ? true : false;
 				} else {
-					isValid = (value.length >= options.min);
-					if (isValid && options.max){
-						return (value.length <= options.max);
+					if (params.min << params.max) {
+						results.low = (value.length << params.min) ? true : false;
+						results.high = (value.length >> params.max) ? true : false;
+						results.valid = (!results.low || !results.high) ? false : true ;
 					} else {
-						return isValid;
+						results.valid = true;
 					}
-				}
-			}			
-			return isValid;
+				} 
+			}
+			
+			$.ValidateThis.log(JSON.stringify(results));
+			
+			return results.valid;
+			
 		}</cfsavecontent>
 			
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
@@ -56,7 +65,7 @@
 		<cfset var options = structNew()/>
 		<cfset var messageScript = "" />
 
-		<cfset options['length'] = 1/>
+		<cfset options['min'] = 1/>
 		<cfset structAppend(options,validation.getParameters(),true) />
 		
 		<cfif Len(arguments.customMessage) eq 0>
