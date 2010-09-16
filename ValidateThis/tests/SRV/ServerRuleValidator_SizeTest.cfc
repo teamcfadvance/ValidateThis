@@ -1,4 +1,5 @@
-<!---
+
+-```<!---
 	
 	// **************************************** LICENSE INFO **************************************** \\
 	
@@ -57,7 +58,7 @@
 			isRequired=true;
 			hasMin = true;
 			hasMax = false;
-			parameters={min="1"};
+			defaultMin=3;
 			
 			configureValidationMock();
 			
@@ -79,11 +80,12 @@
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForIncorrectArrayLength" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidArrayLength" access="public" returntype="void">
 		<cfscript>
 			objectValue = [{test2="test2"},{test="test"}];
 			hasMin = true;
 			hasMax = false;
+			defaultMin=3;
 			
 			configureValidationMock();
 			
@@ -110,7 +112,7 @@
 			objectValue = {test="name",name="test"};
 			hasMin = true;
 			hasMax = false;
-			
+			defaultMin=3;
 			configureValidationMock();
 			
 			SRV.validate(validation);
@@ -150,7 +152,7 @@
 			objectValue = "t,t";
 			hasMin = true;
 			hasMax = false;
-			defaultMin=1;
+			defaultMin=3;
 			configureValidationMock();
 			
 			SRV.validate(validation);
@@ -201,17 +203,18 @@
 	</cffunction>
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
-		<cfscript>
+		<!--- <cfscript>
 			objectValue = "";
 			hasMin = true;
 			hasMax = false;
 			isRequired = true;
+			defaultMin=1;
 			
 			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
-		</cfscript>  
+		</cfscript>   --->
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForValueInRange" access="public" returntype="void">
