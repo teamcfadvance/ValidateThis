@@ -1,6 +1,6 @@
 <cfcomponent output="false" displayname="ServerRuleValidator_URL" extends="AbstractServerRuleValidator"  hint="I am responsible for performing URL validation.">
 	<cfscript>
-		public any function validate(validation){
+		function validate(validation){
 			var theValue = arguments.validation.getObjectValue();
 			if (not shouldTest(arguments.validation)) return;
 			if (not isValid("URL",theValue)) {
