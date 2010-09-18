@@ -15,11 +15,10 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTestsWithDataproviders" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			SRV = getSRV("Patterns");
 			parameters = {minMatches=1,pattern_Name="[a-z]]"};
 			shouldPass = ["a"];
@@ -32,7 +31,7 @@
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
-			setup();
+			super.setup();
             objectValue = arguments.value;
 
             configureValidationMock();
@@ -46,7 +45,7 @@
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
-			setup();
+			super.setup();
 			objectValue = arguments.value;
 
             configureValidationMock();
@@ -61,6 +60,7 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
+			super.setup();
 			objectValue = "";
 			isRequired = true;
             
@@ -75,3 +75,4 @@
 	</cffunction>
 	
 </cfcomponent>
+

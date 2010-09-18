@@ -20,12 +20,14 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			
-			// What needs to be mocked to test SRVs?
+			// local variables used by common tests and methods
+			needsFacade=false;
+			emptyValueShouldFail = true;
+			
+			// mocks used
 			validation = mock();		// see  core/Validation.cfc
 			theObject = mock(); 		// see 			
 			validateThis = "";
-			
-			needsFacade=false;
 			
 			//Default Validation Mock Values
 			propertyDesc="PropertyDesc";
@@ -93,8 +95,12 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);			
-			validation.verifyTimes(1).setIsSuccess(false); 
+			SRV.validate(validation);
+			if (emptyValueShouldFail) {
+				validation.verifyTimes(1).setIsSuccess(false);
+			} else { 
+				validation.verifyTimes(0).setIsSuccess(false); 
+			}	
 		</cfscript>  
 	</cffunction>
 	

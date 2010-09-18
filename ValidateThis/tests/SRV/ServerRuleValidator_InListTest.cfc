@@ -15,13 +15,11 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTestsWithDataproviders" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			SRV = getSRV("InList");
-			parameters = {list="milk,cookies,ice cream",delim=","};
 			shouldFail = ["beer","burgers","cheese","chips"];
 			shouldPass = ["milk","cookies","ice cream"];
 		</cfscript>
@@ -29,6 +27,7 @@
 	
 	<cffunction name="configureValidationMock" access="private">
         <cfscript>
+			parameters = {list="milk,cookies,ice cream",delim=","};
            super.configureValidationMock();
            validation.hasParameter("delim").returns(true);
            validation.getParameterValue("delim").returns(",");
@@ -38,7 +37,7 @@
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
-			setup();
+			super.setup();
 			objectValue = arguments.value;
 
             configureValidationMock();
@@ -54,7 +53,7 @@
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
-			setup();
+			super.setup();
 			objectValue = arguments.value;
 
 			configureValidationMock();
@@ -69,6 +68,7 @@
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			objectValue = "";
 			isRequired= false;
 			
@@ -84,6 +84,7 @@
 
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
+			super.setup();
 			objectValue = "";
             isRequired= true;
             
@@ -98,3 +99,4 @@
 	</cffunction>
 	
 </cfcomponent>
+
