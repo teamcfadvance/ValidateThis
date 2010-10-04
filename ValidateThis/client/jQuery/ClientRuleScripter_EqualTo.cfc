@@ -16,28 +16,28 @@
 <cfcomponent output="false" name="ClientRuleScripter_equalTo" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the equalTo validation.">
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
-		<cfargument name="formName" type="Any" required="yes" />
-		<cfargument name="defaultFailureMessagePrefix" type="Any" required="yes" />
-		<cfargument name="customMessage" type="Any" required="no" default="" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="selector" type="string" required="no" default="" />
+		<cfargument name="customMessage" type="string" required="no" default="" />
+		<cfargument name="locale" type="string" required="no" default="" />
+
 
 		<cfset var theScript = "" />
-		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
-		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 		<cfset var options = true/>
-		<cfset var messageScript = "" />
+		<cfset var messageScript =""/>
 		<cfset var propertyName=arguments.validation.getParameterValue('ComparePropertyName')>
 		<cfset var propertyDesc=arguments.validation.getParameterValue('ComparePropertyDesc')>
+		<cfset var failureMessage = createDefaultFailureMessage("#validation.getPropertyDesc()# must be the same as #variables.defaultFailureMessagePrefix##propertyDesc#.",arguments.locale) />
 		
-		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = createDefaultFailureMessage("#validation.getPropertyDesc()# must be the same as #lCase(arguments.defaultFailureMessagePrefix)##propertyDesc#.") />
-		</cfif>
-		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
+		<cfif Len(arguments.customMessage) gt 0>
+			<cfset failureMessage = arguments.customMessage />
+		</cfif>		
+		
+		<cfset messageScript = getMessageDef(failureMessage,"equalTo",arguments.locale)>
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		#fieldSelector#.rules("add",{equalTo:":input[name='#propertyName#']",messages:{equalTo:"#messageScript#"}});
+		#arguments.selector#.rules("add",{equalTo:":input[name='#propertyName#']"#messageScript#});
 		</cfsavecontent>
 		</cfoutput>
 

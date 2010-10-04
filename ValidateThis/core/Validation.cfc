@@ -16,12 +16,13 @@
 <cfcomponent displayname="Validation" output="false" hint="I am a transient validation object.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I am the constructor">
-
 		<cfargument name="objectChecker" type="any" required="yes" hint="A component used to distinguish object types" />
 		<cfargument name="parameter" type="any" required="yes" hint="A reusable transient Parameter object" />
+		
 		<cfset variables.objectChecker = arguments.objectChecker />
 		<cfset variables.parameter = arguments.parameter />
 		<cfset variables.parameter.setup(this) />
+		
 		<cfreturn this />
 
 	</cffunction>
@@ -29,15 +30,18 @@
 	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
 		<cfargument name="ValidateThis" type="any" required="yes" hint="The ValidateThis.cfc facade object" />
 		<cfargument name="theObject" type="any" required="no" default="" hint="The object being validated" />
+		
 		<cfset variables.ValidateThis = arguments.ValidateThis />
 		<cfset variables.theObject = arguments.theObject />
+		<cfset varibales.locale = arguments.ValidateThis.getValidateThisConfig().defaultLocale>
+		
 		<cfreturn this />
+		
 	</cffunction>
 
 	<cffunction name="load" access="Public" returntype="any" output="false" hint="I load a fresh validation rule into the validation object, which allows it to be reused">
-
 		<cfargument name="ValStruct" type="any" required="yes" hint="The validation struct from the xml file" />
-
+		
 		<cfset variables.instance = Duplicate(arguments.ValStruct) />
 		<cfset variables.instance.IsSuccess = true />
 		<cfparam name="variables.instance.FailureMessage" default="" />
@@ -189,6 +193,9 @@
 	<cffunction name="getFailureMessage" access="public" output="false" returntype="any">
 		<cfreturn variables.Instance.FailureMessage />
 	</cffunction>
+	<cffunction name="hasFailureMessage" access="public" output="false" returntype="any">
+		<cfreturn len(variables.Instance.FailureMessage) gt 0 />
+	</cffunction>
 
 	<cffunction name="setIsRequired" returntype="void" access="public" output="false">
 		<cfargument name="IsRequired" type="any" required="true" />
@@ -204,6 +211,14 @@
 	</cffunction>
 	<cffunction name="getObjectType" access="public" output="false" returntype="string">
 		<cfreturn variables.Instance.ObjectType />
+	</cffunction>
+	
+	<cffunction name="setLocale" access="public" output="false" returntype="any">
+		<cfargument name="locale" type="string" required="false" default="" />
+		<cfset variables.locale = arguments.locale/>
+	</cffunction>
+	<cffunction name="getLocale" access="public" output="false" returntype="any">
+		<cfreturn variables.locale/>
 	</cffunction>
 
 	<!--- TODO: Make sure object type gets populated! --->

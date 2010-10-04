@@ -22,20 +22,20 @@
 			SRV = getSRV("DoesNotContain");
             hasPropertyNames = true;
 			shouldPass = ["goodStuff"];
-			shouldFail = ["badStuff"];			
+			shouldFail = ["badStuff"];
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="configureValidationMock" access="private">
-        <cfscript>
+		<cfscript>
 			parameters = {propertyNames="name"};
-           super.configureValidationMock();
-           validation.getObjectValue("name").returns("badStuff");            
-           validation.getParameterValue("propertyNames").returns(parameters.propertyNames);      
-           validation.hasParameter("delim").returns(true);
-		   validation.getParameterValue("delim").returns(",");
-        </cfscript>
-    </cffunction>
+			super.configureValidationMock();
+			validation.getObjectValue("name").returns("badStuff");
+			validation.getParameterValue("propertyNames").returns(parameters.propertyNames);
+			validation.hasParameter("delim").returns(true);
+			validation.getParameterValue("delim").returns(",");
+		</cfscript>
+	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />

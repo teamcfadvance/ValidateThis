@@ -44,7 +44,6 @@
 	</cffunction>
 
 	<!--- These two tests will be identical for each SRV, but should be run for each --->
-	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
 			super.setup();

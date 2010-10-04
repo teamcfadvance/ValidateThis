@@ -42,7 +42,8 @@
 	
 	<cffunction name="configureValidationMock" access="private">
 		<cfscript>
-			needsFacade = true;
+			//needsFacade = true;
+			createRealFacade();
 			super.configureValidationMock();
 			validation.getParameterValue("context","*").returns(context);
 			validation.getParameterValue("context").returns(context);

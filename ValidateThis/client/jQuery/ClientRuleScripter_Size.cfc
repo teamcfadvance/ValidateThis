@@ -40,12 +40,8 @@
 						results.valid = true;
 					}
 				} 
-			}
-			
-			$.ValidateThis.log(JSON.stringify(results));
-			
+			}			
 			return results.valid;
-			
 		}</cfsavecontent>
 			
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
@@ -53,15 +49,13 @@
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="formName" type="Any" required="yes" />
-		<cfargument name="defaultFailureMessagePrefix" type="Any" required="yes" />
-		<cfargument name="customMessage" type="Any" required="no" default="" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="selector" type="string" required="no" default="" />
+		<cfargument name="customMessage" type="string" required="no" default="" />
+		<cfargument name="locale" type="string" required="no" default="" />
+
 		
 		<cfset var theScript = "" />
-		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var valType = getValType() />       
-		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 		<cfset var options = structNew()/>
 		<cfset var messageScript = "" />
 
@@ -75,7 +69,7 @@
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		#fieldSelector#.rules("add", {
+		#arguments.selector#.rules("add", {
 			"#valType#" : #serializeJSON(options)#,
 			messages: {"#valType#": "#messageScript#"}
 		});
