@@ -18,7 +18,7 @@
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I am the constructor">
 		<cfargument name="objectChecker" type="any" required="yes" hint="A component used to distinguish object types" />
 		<cfargument name="parameter" type="any" required="yes" hint="A reusable transient Parameter object" />
-		
+
 		<cfset variables.objectChecker = arguments.objectChecker />
 		<cfset variables.parameter = arguments.parameter />
 		<cfset variables.parameter.setup(this) />
@@ -34,6 +34,7 @@
 		<cfset variables.ValidateThis = arguments.ValidateThis />
 		<cfset variables.theObject = arguments.theObject />
 		<cfset varibales.locale = arguments.ValidateThis.getValidateThisConfig().defaultLocale>
+		<cfset varibales.context = "">
 		
 		<cfreturn this />
 		
@@ -49,7 +50,7 @@
 		<cfreturn this />
 
 	</cffunction>
-
+	
 	<cffunction name="getObjectValue" access="public" output="false" returntype="any" hint="I return the value from the stored object that corresponds to the field being validated.">
 		<cfargument name="propertyName" type="any" required="false" default="#getPropertyName()#" />
 		<cfset var theValue = "" />
@@ -219,6 +220,14 @@
 	</cffunction>
 	<cffunction name="getLocale" access="public" output="false" returntype="any">
 		<cfreturn variables.locale/>
+	</cffunction>
+	
+	<cffunction name="setContext" access="public" output="false" returntype="any">
+		<cfargument name="context" type="string" required="false" default="" />
+		<cfset variables.context = arguments.context/>
+	</cffunction>
+	<cffunction name="getContext" access="public" output="false" returntype="any">
+		<cfreturn variables.context/>
 	</cffunction>
 
 	<!--- TODO: Make sure object type gets populated! --->

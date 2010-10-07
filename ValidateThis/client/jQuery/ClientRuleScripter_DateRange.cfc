@@ -56,7 +56,7 @@
 
 
         <cfset var theScript = "" />
-        <cfset var valType = this.getValType() />       
+        <cfset var valType = getValType() />       
         <cfset var params = arguments.validation.getParameters()/>
         <cfset var messageScript = "" />
         
