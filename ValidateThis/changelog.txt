@@ -180,31 +180,50 @@ Version 0.97
 
 Version 0.98
 --------------
+- !!compatibility!! - changed parameter element definitions to allow dynamic parameters that can now be a value, expression, or property
+- added a defaultFailureMessagePrefix configuration option
+- updated Custom validation type to allow for methods that simply return a boolean, rather than a struct
+- exposed additional methods through the framework facade (for debugging & testing, administration, and extension)
+- fixed a bug with overriding failure messages for the custom validation type
+- removed jQuery.noConflict()
+- added a getRequiredPropertiesAndDescs(context) method in the BOValidator.
+- updated Range validation type to allow for date ranges
+- added a createWrapper(struct|object) function to the ValidationFactory and exposed it through the facade to allow a developer to prepare objects|structures for validation using a BOValidator directly.
+- updated jquery/ClientScriptWriter_jQuery - removed hardcoded addMethod() usage in getInitializationScript() - Now checks all ClientRuleScripters for an optional generateInitMethod() to provide the custom validation initialization.
+- added an addParameter(name,value,type) method to the Validation object
+- bug fix in rules/context ordering  	
+- updated jquery/AbstractClientRuleScripter - added getValType() and refactored the generateAddMethod() to eliminate addClassRules() usage. 
+- updated jquery/ClientRuleScripter_[ValType] - added the optional generateInitScript() check to provide custom methods for the getInitializationScript()
+- added a hasParameter(name) method to the Validation object
+- updated the Custom validation type to make a call via cfhttp to remoteURL if a methodName parameter has not been provided
+- added a loadValidators() method to the ValidationFactory object
+- changed the location of the tests and sample apps in the repo
+- the VT facade is now available inside the Validation object - can be used for development of new validation types
+- updated the EqualTo validation to pick up the ComparePropertyDesc from the validation metadata if it is not explicitly specified 
+- changed Numeric validation type to use isNumeric() instead of isValid("Numeric")
+- changed Date validation type to use isDate() instead of isValid("Date")
 
-BS - !!compatibility!! - changed parameter element definitions to allow dynamic parameters that can now be an value, expression, or property
-BS - updated Validation object for addParameter(name,value,type) usage
-BS - bug fix in rules/context ordering  	
-BS - updated end-to-end tests
-BS - updated test cases
 
-AD - exposed additional methods through the framework facade (for debugging & testing, administration, and extension)
-AD - added a getRequiredPropertiesAndDescs(context) method in the BOValidator.
-AD - added a createWrapper(struct|object) function to the ValidationFactory and exposed it through the facade to allow a developer to prepare objects|structures for validation using a BOValidator directly.
-AD - updated Validation object with hasParameter(name)
-AD - updated jquery/ClientScriptWriter_jQuery - removed hardcoded addMethod() usage in getInitializationScript() - Now checks all ClientRuleScripters for an optional generateInitMethod() to provide the custom validation initialization.
-AD - updated jquery/AbstractClientRuleScripter - added getValType() and refactored the generateAddMethod() to eliminate addClassRules() usage. 
-AD - updated jquery/ClientRuleScripter_[ValType] - added the optional generateInitScript() check to provide custom methods for the getInitializationScript()
-AD - updates and bug fixes to most jquery CRS types
-AD - added a bunch of new SRV + CRS validation types to the framework:
-		URL();
-		AssertFalse();
-		AssertTrue();
-		DatePast([before=1/1/1970]);
-		DateFuture([after=12/31/1969]);
-		DateRange(from=1/1/1970,until=1/1/2012);
-		noHTML();
-		Patterns(patterns_name=/regex/ [,patterns_anotherName=/regex/, .... ],[minMatches=1]);
-		DoesNotContainOtherValues(propertyNames="list,of,properties");
-		Expression(expr);
-		InList(list,[delim=","]);
-		NotInList(list,[delim=","]);
+- added new validation types:
+  - DoesNotContainOtherProperties(propertyName="list,of,properties")
+  - URL()
+  - noHTML()
+  - Patterns(patterns_name=/regex/ [,patterns_anotherName=/regex/, .... ],[minMatches=1])
+  - Expression(expression_that_evaluates_to_true_or_false) - ** Server-only **
+  - AssertTrue()
+  - AssertFalse()
+  - PastDate([before=1/1/1970])
+  - FutureDate([after=12/31/1969])
+  - DateRange(from=1/1/1970,until=1/1/2012)
+  - InList(list,[delim=","])
+  - NotInList(list,[delim=","])
+  - Size(min=2,[max=5])
+  
+  
+WIP?
+----
+
+- VTML
+- IsValidObject Validation Type
+- property descriptions being picked up from metadata via injected facade object in Validation object 
+

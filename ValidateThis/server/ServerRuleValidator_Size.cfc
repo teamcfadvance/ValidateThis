@@ -15,7 +15,7 @@
 		</rule>
 		<rule type="size" context="Business" failuremessage="This company can have anywhere from 2 to 100 acccounts.">
 			<param name="min" value="2"/>
-			<param name="min" value="100"/>
+			<param name="max" value="100"/>
 		</rule>	
 	</property>
 	
