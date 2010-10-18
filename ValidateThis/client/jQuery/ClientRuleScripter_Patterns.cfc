@@ -16,6 +16,7 @@ Example Usage:
 	
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="Value did not match the pattern requirements.">
+		<cfargument name="locale" type="Any" required="no" default="" />
 		<cfset var theScript="">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		<!--- JAVASCRIPT VALIDATION METHOD --->
@@ -37,7 +38,7 @@ Example Usage:
 		}
 		</cfsavecontent>
 			
-		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
+		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage,arguments.locale)/>
 	</cffunction>
 	
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
