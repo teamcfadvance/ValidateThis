@@ -36,7 +36,7 @@
 		check for ValidateThis setting defined in Coldbox.cfc or Coldbox.xml.cfm 
 		
 		Coldbox.cfc settings should be in the format:
-			setting = {
+			settings = {
 				ValidateThisConfig = {JSRoot='/js/',defaultFormName='formToValidate'}
 			}
 		
@@ -71,7 +71,28 @@
 				<cfset ValidateThisConfig.definitionPath = ListAppend(ValidateThisConfig.definitionPath, getSetting("ModelsExternalLocation")) />
 			</cfif>
 		</cfif>
+		
+		<!--- check if ColdBox is using a resource bundle --->
+		<cfif settingExists("defaultLocale") AND getSetting("defaultLocale") neq "">
+			<!--- a custom translator hasn't been set so use ValidateThis.extras.ColdBoxRBTranslator --->
+			<cfif NOT StructKeyExists(ValidateThisConfig,"translatorPath")>
+				<cfset ValidateThisConfig.translatorPath = "ValidateThis.extras.ColdBoxRBTranslator" />
+			</cfif>
+		</cfif>
+		
 		<cfset variables.ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
+		<cfset log.debug("ValidateThis loaded")>
+		
+		<cfif settingExists("defaultLocale") AND getSetting("defaultLocale") neq "">
+			<!--- inject the ColdBox resource bundle into the translator, this does assume that if a custom translator has been defined it will have a setResourceBundle() method --->
+			<cftry>
+				<cfset variables.ValidateThis.getBean("Translator").setResourceBundle(getPlugin("ResourceBundle"))>
+				<cfcatch>
+					<cfset log.debug("ValidateThisCB3Plugin error: setResourceBundle method not found")>
+				</cfcatch>
+			</cftry>
+		</cfif>
+		
 		<cfreturn this>
 	</cffunction>
 
