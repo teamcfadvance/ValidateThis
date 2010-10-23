@@ -195,7 +195,6 @@ Version 0.98
 - updated jquery/AbstractClientRuleScripter - added getValType() and refactored the generateAddMethod() to eliminate addClassRules() usage. 
 - updated jquery/ClientRuleScripter_[ValType] - added the optional generateInitScript() check to provide custom methods for the getInitializationScript()
 - added a hasParameter(name) method to the Validation object
-- updated the Custom validation type to make a call via cfhttp to remoteURL if a methodName parameter has not been provided
 - added a loadValidators() method to the ValidationFactory object
 - changed the location of the tests and sample apps in the repo
 - the VT facade is now available inside the Validation object - can be used for development of new validation types
@@ -210,8 +209,8 @@ Version 0.98
   - noHTML()
   - Patterns(patterns_name=/regex/ [,patterns_anotherName=/regex/, .... ],[minMatches=1])
   - Expression(expression_that_evaluates_to_true_or_false) - ** Server-only **
-  - AssertTrue()
-  - AssertFalse()
+  - True()
+  - False()
   - PastDate([before=1/1/1970])
   - FutureDate([after=12/31/1969])
   - DateRange(from=1/1/1970,until=1/1/2012)
@@ -225,5 +224,5 @@ WIP?
 
 - VTML
 - IsValidObject Validation Type
-- property descriptions being picked up from metadata via injected facade object in Validation object 
+- updated the Custom validation type to make a call via cfhttp to remoteURL if a methodName parameter has not been provided
 
