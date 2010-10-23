@@ -32,7 +32,7 @@
 	
 	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
 		<cfscript>
-			assertEquals("0.97",ValidateThis.getVersion());
+			assertEquals("0.98",ValidateThis.getVersion());
 		</cfscript>  
 	</cffunction>
 

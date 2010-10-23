@@ -20,7 +20,7 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("AssertFalse");
+			SRV = getSRV("False");
 		</cfscript>
 	</cffunction>
 	

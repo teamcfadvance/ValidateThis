@@ -19,7 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			SRV = getSRV("DoesNotContain");
+			SRV = getSRV("DoesNotContainOtherProperties");
             hasPropertyNames = true;
 			shouldPass = ["goodStuff"];
 			shouldFail = ["badStuff"];			
