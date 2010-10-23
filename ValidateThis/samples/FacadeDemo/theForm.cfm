@@ -39,7 +39,7 @@
 	</cfloop>
 	<!--- Validate the object using ValidateThis --->
 	<cfset result = application.ValidateThis.validate(objectType="User",theObject=user,Context=Form.Context) />
-	<cfset validationErrors = result.getFailuresByField() />
+	<cfset validationErrors = result.getFailureMessagesByField(delimiter="<br/>") />
 	<!--- If validations passed, save the record --->
 	<cfif result.getIsSuccess()>
 		<cfset user.save() />
