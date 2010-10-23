@@ -181,6 +181,42 @@
 	<cffunction name="getCommunicationMethod" access="public" returntype="any">
 		<cfreturn variables.communicationMethod />
 	</cffunction>
-	
+
+<cffunction name="setMustBeTrue" access="public" returntype="any">
+	<cfargument name="mustBeTrue" />
+	<cfset variables.mustBeTrue = arguments.mustBeTrue />
+	<cfreturn this />
+</cffunction>
+<cffunction name="getMustBeTrue" access="public" returntype="any">
+	<cfreturn variables.mustBeTrue />
+</cffunction>
+<cffunction name="setMustBeFalse" access="public" returntype="any">
+	<cfargument name="mustBeFalse" />
+	<cfset variables.mustBeFalse = arguments.mustBeFalse />
+	<cfreturn this />
+</cffunction>
+<cffunction name="getMustBeFalse" access="public" returntype="any">
+	<cfreturn variables.mustBeFalse />
+</cffunction>
+<cffunction name="setFutureDate" access="public" returntype="any">
+	<cfargument name="futureDate" />
+	<cfset variables.futureDate = arguments.futureDate />
+	<cfreturn this />
+</cffunction>
+<cffunction name="getFutureDate" access="public" returntype="any">
+	<cfreturn variables.futureDate />
+</cffunction>
+<cffunction name="setPastDate" access="public" returntype="any">
+	<cfargument name="pastDate" />
+	<cfset variables.pastDate = arguments.pastDate />
+	<cfreturn this />
+</cffunction>
+<cffunction name="getPastDate" access="public" returntype="any">
+	<cfreturn variables.pastDate />
+</cffunction>
+
+
+
+
 </cfcomponent>
 

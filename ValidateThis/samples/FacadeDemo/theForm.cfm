@@ -186,6 +186,30 @@
 			</select>
 			<p class="formHint">Validations: Required if Allow Communication? is true.</p>
 		</div>
+		<div class="ctrlHolder">
+			#isErrorMsg("MustBeTrue")#
+			<label for="MustBeTrue">#isRequired("MustBeTrue")#This must be true</label>
+			<input name="MustBeTrue" id="MustBeTrue" value="#user.getMustBeTrue()#" size="35" maxlength="50" type="text" class="textInput" />
+			<p class="formHint">Validations: Must contain a true value (true, yes, numeric != 0)</p>
+		</div>
+		<div class="ctrlHolder">
+			#isErrorMsg("MustBeFalse")#
+			<label for="MustBeFalse">#isRequired("MustBeFalse")#This must be false</label>
+			<input name="MustBeFalse" id="MustBeFalse" value="#user.getMustBeFalse()#" size="35" maxlength="50" type="text" class="textInput" />
+			<p class="formHint">Validations: Must contain a false value (false, no, 0)</p>
+		</div>
+		<div class="ctrlHolder">
+			#isErrorMsg("FutureDate")#
+			<label for="FutureDate">#isRequired("FutureDate")#A date in the past</label>
+			<input name="FutureDate" id="FutureDate" value="#user.getFutureDate()#" size="35" maxlength="50" type="text" class="textInput" />
+			<p class="formHint">Validations: Must be a date in the past.</p>
+		</div>
+		<div class="ctrlHolder">
+			#isErrorMsg("PastDate")#
+			<label for="PastDate">#isRequired("PastDate")#A date in the future</label>
+			<input name="PastDate" id="PastDate" value="#user.getPastDate()#" size="35" maxlength="50" type="text" class="textInput" />
+			<p class="formHint">Validations: Must be a date in the future.</p>
+		</div>
 	</fieldset>
 
 	<div class="buttonHolder">
