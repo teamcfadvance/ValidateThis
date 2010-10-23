@@ -19,7 +19,6 @@
 	singleton="true">
 
 	<cffunction name="init" access="public" returntype="any" output="false">
-		
 		<cfset var key = 0 />
 		<cfset var setting = 0 />
 		<cfset var ValidateThisConfig = StructNew() />
@@ -29,8 +28,6 @@
 		<cfset setpluginDescription("I allow ValidateThis to be accessed easily from within Coldbox 3.0.") />
 		<cfset setPluginAuthor("Bob Silverberg") />
 		<cfset setPluginAuthorURL("http://www.silverwareconsulting.com/") />
-		
-		
 		
 		<!--- 
 		check for ValidateThis setting defined in Coldbox.cfc or Coldbox.xml.cfm 
@@ -117,7 +114,7 @@
 		<cfset var HTMLHelper = getPlugin('HTMLHelper') />
 		<cfset var object = 0 />
 		<cfif arguments.loadMainLibrary>
-			<cfset HTMLHelper.addAsset(file='jquery-1.3.2.min.js') />
+			<cfset HTMLHelper.addAsset(file='jquery-1.4.2.min.js') />
 		</cfif>
 		<cfset HTMLHelper.addAsset('jquery.field.min.js') />
 		<cfset HTMLHelper.addAsset('jquery.validate.pack.js') />
@@ -192,7 +189,6 @@
 		<cfreturn variables.ValidateThis.addRule(argumentCollection=arguments) />
 	</cffunction>
 
-
 	<cffunction name="onMissingMethod" access="public" output="false" returntype="Any" hint="I am used to pass all method calls to the composed ValidateThis object.">
 		<cfargument name="missingMethodName" type="any" required="true" />
 		<cfargument name="missingMethodArguments" type="any" required="true" />
@@ -208,6 +204,13 @@
 		
 	</cffunction>
 
+	<cffunction name="loadValidators" returnType="void" access="public" output="false" hint="I am used to add a rule via CFML code">
+		<cfargument name="objectList" type="string" required="true" />
+		
+		<cfreturn variables.ValidateThis.loadValidators(argumentCollection=arguments) />
+		
+	</cffunction>
+	
 </cfcomponent>
 	
 
