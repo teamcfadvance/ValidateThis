@@ -14,7 +14,7 @@
 	
 --->
 
-<cfcomponent displayname="user" output="false" extends="AbstractTransferDecorator">
+<cfcomponent displayname="user" output="false">
 	
 	<cffunction name="init" access="public" returntype="any">
 		<cfargument name="userId" required="true" type="any" />
@@ -25,6 +25,7 @@
 					<cfset variables[right(i,len(i)-3)] = "" />
 				</cfif>
 			</cfloop>
+			<cfset variables.userGroup = createObject("component","userGroup").init() />
 		<cfelse>
 			<cfscript>
 				// set values for a "real" record here

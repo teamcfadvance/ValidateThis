@@ -38,16 +38,17 @@
 		</cfif>
 	</cfloop>
 	<!--- Validate the object using ValidateThis --->
-	<cfset Result = application.ValidateThis.validate(objectType="User",theObject=user,Context=Form.Context) />
-	<cfset validationErrors = Result.getFailuresForUniForm(locale="fr_FR") />
+	<cfset result = application.ValidateThis.validate(objectType="User",theObject=user,Context=Form.Context) />
+	<cfset validationErrors = result.getFailuresByField() />
 	<!--- If validations passed, save the record --->
-	<cfif Result.getIsSuccess()>
+	<cfif result.getIsSuccess()>
 		<cfset user.save() />
-		<cfset SuccessMessage = "The User has been saved!" />
+		<cfset successMessage = "The User has been saved!" />
 	<cfelse>
-		<cfset SuccessMessage = "" />
+		<cfset successMessage = "" />
 	</cfif>
 </cfif>
+
 <cfset UserGroupId = user.getUserGroup().getUserGroupId() />
 
 <!--- Get the list of required fields to use to dynamically add asterisks in front of each field --->
@@ -78,7 +79,7 @@
 </cfif>
 
 <cfoutput>
-<h1>ValidateThis Simple Integration Demo - with Reactor</h1>
+<h1>ValidateThis Facade Demo</h1>
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>)</h3>
 <cfif Len(SuccessMessage)><h3>#SuccessMessage#</h3></cfif>
 <div class="formContainer">
