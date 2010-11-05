@@ -16,7 +16,7 @@
 
 <cfcomponent displayname="user" output="false">
 	
-	<cffunction name="init" access="public" returntype="any">
+	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="userId" required="true" type="any" />
 		
 		<cfif arguments.userId neq 1>
@@ -41,10 +41,13 @@
 		
 		<cfloop collection="#arguments.data#" item="i">
 			<cfif structKeyExists(this,"set" & i)>
-				<cfset variables[i] = arguments.data[i] />
+				<cfset variables[i] = trim(arguments.data[i]) />
 			</cfif>
 		</cfloop>
 		
+    </cffunction>
+
+	<cffunction name="save" access="public" output="false" returntype="void" hint="An empty method as this is just a demo">
     </cffunction>
 
 	<cffunction name="CheckDupNickname" access="public" output="false" returntype="any" hint="Checks for a duplicate UserName.">
@@ -69,154 +72,118 @@
 	</cffunction>
 
 	<!--- property getters and setters --->	
-	<cffunction name="setUserId" access="public" returntype="any">
+	<cffunction name="setUserId" access="public" returntype="any" output="false">
 		<cfargument name="userId" />
 		<cfset variables.userId = arguments.userId />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getUserId" access="public" returntype="any">
+	<cffunction name="getUserId" access="public" returntype="any" output="false">
 		<cfreturn variables.userId />
 	</cffunction>
-	<cffunction name="setNickname" access="public" returntype="any">
+	<cffunction name="setNickname" access="public" returntype="any" output="false">
 		<cfargument name="nickname" />
 		<cfset variables.nickname = arguments.nickname />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getNickname" access="public" returntype="any">
+	<cffunction name="getNickname" access="public" returntype="any" output="false">
 		<cfreturn variables.nickname />
 	</cffunction>
-	<cffunction name="setUserName" access="public" returntype="any">
+	<cffunction name="setUserName" access="public" returntype="any" output="false">
 		<cfargument name="userName" />
 		<cfset variables.userName = arguments.userName />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getUserName" access="public" returntype="any">
+	<cffunction name="getUserName" access="public" returntype="any" output="false">
 		<cfreturn variables.userName />
 	</cffunction>
-	<cffunction name="setUserPass" access="public" returntype="any">
+	<cffunction name="setUserPass" access="public" returntype="any" output="false">
 		<cfargument name="userPass" />
 		<cfset variables.userPass = arguments.userPass />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getUserPass" access="public" returntype="any">
+	<cffunction name="getUserPass" access="public" returntype="any" output="false">
 		<cfreturn variables.userPass />
 	</cffunction>
-	<cffunction name="setUserGroup" access="public" returntype="any">
+	<cffunction name="setUserGroup" access="public" returntype="any" output="false">
 		<cfargument name="userGroup" />
 		<cfset variables.userGroup = arguments.userGroup />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getUserGroup" access="public" returntype="any">
+	<cffunction name="getUserGroup" access="public" returntype="any" output="false">
 		<cfreturn variables.userGroup />
 	</cffunction>
-	<cffunction name="setSalutation" access="public" returntype="any">
+	<cffunction name="setSalutation" access="public" returntype="any" output="false">
 		<cfargument name="salutation" />
 		<cfset variables.salutation = arguments.salutation />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getSalutation" access="public" returntype="any">
+	<cffunction name="getSalutation" access="public" returntype="any" output="false">
 		<cfreturn variables.salutation />
 	</cffunction>
-	<cffunction name="setFirstName" access="public" returntype="any">
+	<cffunction name="setFirstName" access="public" returntype="any" output="false">
 		<cfargument name="firstName" />
 		<cfset variables.firstName = arguments.firstName />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getFirstName" access="public" returntype="any">
+	<cffunction name="getFirstName" access="public" returntype="any" output="false">
 		<cfreturn variables.firstName />
 	</cffunction>
-	<cffunction name="setLastName" access="public" returntype="any">
+	<cffunction name="setLastName" access="public" returntype="any" output="false">
 		<cfargument name="lastName" />
 		<cfset variables.lastName = arguments.lastName />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getLastName" access="public" returntype="any">
+	<cffunction name="getLastName" access="public" returntype="any" output="false">
 		<cfreturn variables.lastName />
 	</cffunction>
-	<cffunction name="setLikeOther" access="public" returntype="any">
+	<cffunction name="setLikeOther" access="public" returntype="any" output="false">
 		<cfargument name="likeOther" />
 		<cfset variables.likeOther = arguments.likeOther />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getLikeOther" access="public" returntype="any">
+	<cffunction name="getLikeOther" access="public" returntype="any" output="false">
 		<cfreturn variables.likeOther />
 	</cffunction>
-	<cffunction name="setHowMuch" access="public" returntype="any">
+	<cffunction name="setHowMuch" access="public" returntype="any" output="false">
 		<cfargument name="howMuch" />
 		<cfset variables.howMuch = arguments.howMuch />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getHowMuch" access="public" returntype="any">
+	<cffunction name="getHowMuch" access="public" returntype="any" output="false">
 		<cfreturn variables.howMuch />
 	</cffunction>
-	<cffunction name="setLikeChocolate" access="public" returntype="any">
+	<cffunction name="setLikeChocolate" access="public" returntype="any" output="false">
 		<cfargument name="likeChocolate" />
 		<cfset variables.likeChocolate = arguments.likeChocolate />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getLikeChocolate" access="public" returntype="any">
+	<cffunction name="getLikeChocolate" access="public" returntype="any" output="false">
 		<cfreturn variables.likeChocolate />
 	</cffunction>
-	<cffunction name="setLikeCheese" access="public" returntype="any">
+	<cffunction name="setLikeCheese" access="public" returntype="any" output="false">
 		<cfargument name="likeCheese" />
 		<cfset variables.likeCheese = arguments.likeCheese />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getLikeCheese" access="public" returntype="any">
+	<cffunction name="getLikeCheese" access="public" returntype="any" output="false">
 		<cfreturn variables.likeCheese />
 	</cffunction>
-	<cffunction name="setAllowCommunication" access="public" returntype="any">
+	<cffunction name="setAllowCommunication" access="public" returntype="any" output="false">
 		<cfargument name="allowCommunication" />
 		<cfset variables.allowCommunication = arguments.allowCommunication />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getAllowCommunication" access="public" returntype="any">
+	<cffunction name="getAllowCommunication" access="public" returntype="any" output="false">
 		<cfreturn variables.allowCommunication />
 	</cffunction>
-	<cffunction name="setCommunicationMethod" access="public" returntype="any">
+	<cffunction name="setCommunicationMethod" access="public" returntype="any" output="false">
 		<cfargument name="communicationMethod" />
 		<cfset variables.communicationMethod = arguments.communicationMethod />
 		<cfreturn this />
 	</cffunction>
-	<cffunction name="getCommunicationMethod" access="public" returntype="any">
+	<cffunction name="getCommunicationMethod" access="public" returntype="any" output="false">
 		<cfreturn variables.communicationMethod />
 	</cffunction>
-
-<cffunction name="setMustBeTrue" access="public" returntype="any">
-	<cfargument name="mustBeTrue" />
-	<cfset variables.mustBeTrue = arguments.mustBeTrue />
-	<cfreturn this />
-</cffunction>
-<cffunction name="getMustBeTrue" access="public" returntype="any">
-	<cfreturn variables.mustBeTrue />
-</cffunction>
-<cffunction name="setMustBeFalse" access="public" returntype="any">
-	<cfargument name="mustBeFalse" />
-	<cfset variables.mustBeFalse = arguments.mustBeFalse />
-	<cfreturn this />
-</cffunction>
-<cffunction name="getMustBeFalse" access="public" returntype="any">
-	<cfreturn variables.mustBeFalse />
-</cffunction>
-<cffunction name="setFutureDate" access="public" returntype="any">
-	<cfargument name="futureDate" />
-	<cfset variables.futureDate = arguments.futureDate />
-	<cfreturn this />
-</cffunction>
-<cffunction name="getFutureDate" access="public" returntype="any">
-	<cfreturn variables.futureDate />
-</cffunction>
-<cffunction name="setPastDate" access="public" returntype="any">
-	<cfargument name="pastDate" />
-	<cfset variables.pastDate = arguments.pastDate />
-	<cfreturn this />
-</cffunction>
-<cffunction name="getPastDate" access="public" returntype="any">
-	<cfreturn variables.pastDate />
-</cffunction>
-
-
-
 
 </cfcomponent>
 

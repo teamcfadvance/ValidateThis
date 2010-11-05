@@ -92,13 +92,13 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("UserName")#
 			<label for="UserName">#isRequired("UserName")#Email Address</label>
-			<input name="UserName" id="UserName" value="#user.getUserName()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="UserName" id="UserName" value="#trim(user.getUserName())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required, Must be a valid Email Address.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("Nickname")#
 			<label for="Nickname">#isRequired("Nickname")#Nickname</label>
-			<input name="Nickname" id="Nickname" value="#user.getNickname()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="Nickname" id="Nickname" value="#trim(user.getNickname())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Custom - must be unique. Try 'BobRules'.</p>
 		</div>
 		<div class="ctrlHolder">
@@ -130,19 +130,19 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("Salutation")#
 			<label for="Salutation">#isRequired("Salutation")#Salutation</label>
-			<input name="Salutation" id="Salutation" value="#user.getSalutation()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="Salutation" id="Salutation" value="#trim(user.getSalutation())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: A regex ensures that only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("FirstName")#
 			<label for="FirstName">#isRequired("FirstName")#First Name</label>
-			<input name="FirstName" id="FirstName" value="#user.getFirstName()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="FirstName" id="FirstName" value="#trim(user.getFirstName())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required on Update.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("LastName")#
 			<label for="LastName">#isRequired("LastName")#Last Name</label>
-			<input name="LastName" id="LastName" value="#user.getLastName()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="LastName" id="LastName" value="#trim(user.getLastName())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required on Update OR if a First Name has been specified during Register.</p>
 		</div>
 		<div class="ctrlHolder">
@@ -160,13 +160,13 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("LikeOther")#
 			<label for="LikeOther">#isRequired("LikeOther")#What do you like?</label>
-			<input name="LikeOther" id="LikeOther" value="#user.getLikeOther()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="LikeOther" id="LikeOther" value="#trim(user.getLikeOther())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required if neither Do you like Cheese? nor Do you like Chocolate? are true.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("HowMuch")#
 			<label for="HowMuch">#isRequired("HowMuch")#How much money would you like?</label>
-			<input name="HowMuch" id="HowMuch" value="#user.getHowMuch()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="HowMuch" id="HowMuch" value="#trim(user.getHowMuch())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Numeric - notice that an invalid value is redisplayed upon server side validation failure.</p>
 		</div>
 		<div class="ctrlHolder">
@@ -185,30 +185,6 @@
 				<option value="Pony Express"<cfif user.getCommunicationMethod() EQ "Pony Express"> selected="selected"</cfif>>Pony Express</option>
 			</select>
 			<p class="formHint">Validations: Required if Allow Communication? is true.</p>
-		</div>
-		<div class="ctrlHolder">
-			#isErrorMsg("MustBeTrue")#
-			<label for="MustBeTrue">#isRequired("MustBeTrue")#This must be true</label>
-			<input name="MustBeTrue" id="MustBeTrue" value="#user.getMustBeTrue()#" size="35" maxlength="50" type="text" class="textInput" />
-			<p class="formHint">Validations: Must contain a true value (true, yes, numeric != 0)</p>
-		</div>
-		<div class="ctrlHolder">
-			#isErrorMsg("MustBeFalse")#
-			<label for="MustBeFalse">#isRequired("MustBeFalse")#This must be false</label>
-			<input name="MustBeFalse" id="MustBeFalse" value="#user.getMustBeFalse()#" size="35" maxlength="50" type="text" class="textInput" />
-			<p class="formHint">Validations: Must contain a false value (false, no, 0)</p>
-		</div>
-		<div class="ctrlHolder">
-			#isErrorMsg("FutureDate")#
-			<label for="FutureDate">#isRequired("FutureDate")#A date in the past</label>
-			<input name="FutureDate" id="FutureDate" value="#user.getFutureDate()#" size="35" maxlength="50" type="text" class="textInput" />
-			<p class="formHint">Validations: Must be a date in the past.</p>
-		</div>
-		<div class="ctrlHolder">
-			#isErrorMsg("PastDate")#
-			<label for="PastDate">#isRequired("PastDate")#A date in the future</label>
-			<input name="PastDate" id="PastDate" value="#user.getPastDate()#" size="35" maxlength="50" type="text" class="textInput" />
-			<p class="formHint">Validations: Must be a date in the future.</p>
 		</div>
 	</fieldset>
 

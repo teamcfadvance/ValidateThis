@@ -62,6 +62,19 @@
 				
 			</ul>
 			
+			<h3>Demo</h3>
+	
+			<ul class="sidemenu">
+				<li>
+					<a href="/validatethis/samples/FacadeDemo/index.cfm">Client and Server-Side Validations</a>
+				</li>
+				<!---
+				<li>
+					<a href="/validatethis/samples/i18nDemo/index.cfm">Internationalization (i18n) Demo</a>
+				</li>
+				--->
+			</ul>
+			
 			<h3>Documentation</h3>
 	
 			<ul class="sidemenu">
@@ -81,19 +94,6 @@
 				<li><a href="http://jamiekrug.com/blog/" target="_blank">Jamie Krug</a></li>
 				<li><a href="http://blog.mxunit.org/" target="_blank">Marc Esher</a></li>
 				<li><a href="http://chris.m0nk3y.net/" target="_blank">Chris Blackwell</a></li>
-			</ul>
-			
-			<h3>Demos</h3>
-	
-			<ul class="sidemenu">
-				<li>
-					<a href="/validatethis/samples/StructureDemo/index.cfm">Client and Server-Side Validations</a>
-				</li>
-				<!---
-				<li>
-					<a href="/validatethis/samples/i18nDemo/index.cfm">Internationalization (i18n) Demo</a>
-				</li>
-				--->
 			</ul>
 			
 			<h3>Presentations</h3>
