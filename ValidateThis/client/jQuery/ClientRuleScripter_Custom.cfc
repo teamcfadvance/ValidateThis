@@ -17,16 +17,14 @@
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="formName" type="Any" required="yes" />
-		<cfargument name="defaultFailureMessagePrefix" type="Any" required="yes" />
-		<cfargument name="customMessage" type="Any" required="no" default="" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="selector" type="string" required="no" default="" />
+		<cfargument name="customMessage" type="string" required="no" default="" />
+		<cfargument name="locale" type="string" required="no" default="" />
+
 		
 		<cfset var theScript = "" />
-		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var valType = getValType() />       
 		<cfset var params = arguments.validation.getParameters()/>
-		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 		<cfset var options = true/>
 		<cfset var messageScript = "" />
 
@@ -39,7 +37,7 @@
 		
 			<cfoutput>
 			<cfsavecontent variable="theScript">
-				#fieldSelector#.rules("add",{"remote":"#arguments.validation.getParameterValue('remoteURL')#",messages:{"remote":"#messageScript#"}});
+				#arguments.selector#.rules("add",{"remote":"#arguments.validation.getParameterValue('remoteURL')#",messages:{"remote":"#messageScript#"}});
 			</cfsavecontent>
 			</cfoutput>
 			

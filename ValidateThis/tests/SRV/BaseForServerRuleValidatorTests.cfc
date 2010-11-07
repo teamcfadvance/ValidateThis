@@ -26,7 +26,7 @@
 			
 			// mocks used
 			validation = mock();		// see  core/Validation.cfc
-			theObject = mock(); 		// see 			
+			theObject = mock();
 			validateThis = "";
 			
 			//Default Validation Mock Values
@@ -63,6 +63,7 @@
 			validation.getValidateThis().returns(ValidateThis);
 			validation.getPropertyDesc().returns(propertyDesc);
 			validation.getPropertyName().returns(propertyName);
+			validation.getClientFieldName().returns(propertyName);
 			validation.getFailureMessage().returns(failureMessage);
 			validation.setFailureMessage(failureMessage).returns();
 			validation.getIsRequired().returns(isRequired);

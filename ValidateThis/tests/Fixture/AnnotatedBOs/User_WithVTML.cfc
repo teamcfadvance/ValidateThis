@@ -30,12 +30,12 @@ component persistent="true" table="tblUser_A"
 	property name="userPass" displayName="Password" 
 		vtRules='
 			required();
-			rangelength(minlength=5,maxLength=10);
+			rangelength(minlength=5|maxLength=10);
 		';
 	
 	property name="nickname" 
 		vtRules='
-			custom(methodName=CheckDupNickname,remoteURL=CheckDupNickName.cfm) "That Nickname is already taken. Please try a different Nickname.";
+			custom(methodName=CheckDupNickname|remoteURL=CheckDupNickName.cfm) "That Nickname is already taken. Please try a different Nickname.";
 		';
 		
 	property name="salutation" 
@@ -68,7 +68,7 @@ component persistent="true" table="tblUser_A"
 
 	property name="communicationMethod" 
 		vtRules='
-			required(DependentPropertyName=AllowCommunication,DependentPropertyValue=1) "If you are allowing communication, you must choose a communication method.";
+			required(DependentPropertyName=AllowCommunication|DependentPropertyValue=1) "If you are allowing communication, you must choose a communication method.";
 		';
 		
 	property name="howMuch" displayName="How much money would you like?" ormtype="double" default="0" 

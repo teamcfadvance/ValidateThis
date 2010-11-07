@@ -26,31 +26,63 @@
 			parameters = {MethodName=defaultMethod};
 			hasMethod = true;
 			hasRemote = false;
+			proxied = false;
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="configureValidationMock" access="private">
-        <cfscript>
-           super.configureValidationMock();           
-           validation.hasParameter("methodName").returns(hasMethod);
-           validation.getParameterValue("methodName").returns(defaultMethod);
-           validation.getParameterValue("remoteURL").returns(defaultRemoteURL);        
-        </cfscript>
-    </cffunction>
-	
-	<cffunction name="placeholderForTestsForRemoteURLThatAdamAdded" access="public" returntype="void">
 		<cfscript>
-			fail("This is a placeholder test for tests that need to be added.");
-		</cfscript>  
+			super.configureValidationMock();
+			validation.hasParameter("methodName").returns(hasMethod);
+			validation.hasParameter("remoteURL").returns(hasRemote);
+			validation.getParameterValue("methodName").returns(defaultMethod);
+			validation.getParameterValue("remoteURL").returns(defaultRemoteURL);
+			validation.getParameterValue("proxied","false").returns(proxied);
+		</cfscript>
+	</cffunction>
+	
+	<cffunction name="validateReturnsTrueForValidRemoteURLCall" access="public" returntype="void">
+		<cfscript>
+			defaultMethod = "isValid";
+			defaultRemoteURL = "/validatethis/samples/remotedemo/remoteproxy.cfc";
+			hasMethod = true;
+			hasRemote = true;
+			proxied = true;
+			objectValue="";
+			
+			parameters = {remoteURL=defaultRemoteURL};
+
+			configureValidationMock();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(0).setIsSuccess(false); 
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="validateReturnsFalseForInvalidRemoteURLCall" access="public" returntype="void">
+		<cfscript>
+			defaultMethod = "isInvalid";
+			defaultRemoteURL = "/validatethis/samples/remotedemo/remoteproxy.cfc";
+			parameters = {remoteURL=defaultRemoteURL};
+			hasMethod = true;
+			hasRemote = true;
+			proxied = true;
+			objectValue="";
+			
+			configureValidationMock();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false); 
+		</cfscript>
 	</cffunction>
 
 	<cffunction name="validateReturnsFalseWhenMethodReturnsFailure" access="public" returntype="void">
 		<cfscript>
 			customResult = {IsSuccess=false,FailureMessage="A custom validator failed."};
 			theObject.myMethod().returns(customResult);
-            objectValue="";
-            
-            configureValidationMock();
+			objectValue="";
+			
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

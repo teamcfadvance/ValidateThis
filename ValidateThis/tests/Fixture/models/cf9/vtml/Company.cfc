@@ -18,6 +18,6 @@ component accessors="true" vtContexts='[]' vtConditions='[]' {
 	property displayName="Company Name" hint="legal name of this business"  name="companyName" type="string"
 		 vtRules='
 			 required()":displayName is required.";
-			 rangelength(minlength=2,maxlength=10);
+			 rangelength(minlength=2|maxlength=10);
 		 ';
 }
