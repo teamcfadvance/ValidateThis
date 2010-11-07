@@ -3,11 +3,11 @@
 Example Usage:
 
 <rule type="Patterns">
-	<param minMatches="3" />
-	<param pattern_lowerCaseLetter="[a-z]" />
-	<param pattern_upperCaseLetter="[A-Z]" />
-	<param pattern_digit="[\d]" />
-	<param pattern_punct="[[:punct:]]" />
+	<param name="minMatches" value="3" />
+	<param name="pattern_lowerCaseLetter" value="[a-z]" />
+	<param name="pattern_upperCaseLetter" value="[A-Z]" />
+	<param name="pattern_digit" value="[\d]" />
+	<param name="pattern_punct" value="[[:punct:]]" />
 </rule>
 
  --->

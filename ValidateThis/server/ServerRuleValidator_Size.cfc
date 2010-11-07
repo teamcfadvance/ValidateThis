@@ -3,7 +3,7 @@
 	@adam drew, 2010
 	
 	notes: 
-	use Size to check the min, max, or range of the length for a multi list selection or some other javascript collection on the client, and the length of arrays, lists, and struct counts on the server.
+	use Size to check the min and/or max of the length for a multi list selection or some other javascript collection on the client, and the length of arrays, lists, and struct counts on the server.
 	for String length input size use the Range validator.
 	
 	example usage:
