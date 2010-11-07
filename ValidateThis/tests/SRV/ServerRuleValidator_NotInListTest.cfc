@@ -92,7 +92,7 @@
             validation.hasParameter("list").returns(true);
             validation.getParameterValue("list").returns(parameters.list);
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
