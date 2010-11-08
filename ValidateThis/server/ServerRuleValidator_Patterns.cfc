@@ -31,7 +31,7 @@ Example Usage:
 			}
 			
 			if(complexity LT minMatches){
-				fail(validation,"#complexity# patterns were matched but #minMatches# were required");
+				fail(validation,"#complexity# patterns were matched but #minMatches# were required.");
 			}
 		}
 	</cfscript>

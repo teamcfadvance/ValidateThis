@@ -23,7 +23,7 @@
 		
 		<cfif arguments.validation.hasParameter("before")>
 			<cfset theDate = arguments.validation.getParameterValue("before")/>
-			<cfset parameterMessages = " The date entered must come before #theDate#">
+			<cfset parameterMessages = " The date entered must come before #theDate#.">
 		</cfif>
 		
 		<cfif shouldTest(arguments.validation) AND (not isValid("date",theVal) OR (isValid("date",theVal) AND not dateCompare(theVal,theDate) eq -1))>
