@@ -130,7 +130,13 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("Salutation")#
 			<label for="Salutation">#isRequired("Salutation")#Salutation</label>
-			<input name="Salutation" id="Salutation" value="#trim(user.getSalutation())#" size="35" maxlength="50" type="text" class="textInput" />
+			<select name="Salutation" id="Salutation" class="selectInput" multiple="multiple">
+				<option value="Mr.">Mr.</option>
+				<option value="Mrs.">Mrs.</option>
+				<option value="Ms.">Ms.</option>
+				<option value="Dr.">Dr.</option>
+				<option value="Miss">Miss</option>
+			</select>
 			<p class="formHint">Validations: A regex ensures that only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.</p>
 		</div>
 		<div class="ctrlHolder">

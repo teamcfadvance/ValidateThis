@@ -46,7 +46,7 @@
 		<cfif arguments.validation.hasParameter("before")>
 			<cfset options = {}/>
 			<cfset options["before"] = arguments.validation.getParameterValue("before") />
-			<cfset failureMessage = failureMessage & " The date entered must come before #arguments.validation.getParameterValue('before')#" />
+			<cfset failureMessage = failureMessage & " The date entered must come before #arguments.validation.getParameterValue('before')#." />
 		</cfif>
 		
 		<cfset failureMessage = translate(failureMessage,arguments.locale) />

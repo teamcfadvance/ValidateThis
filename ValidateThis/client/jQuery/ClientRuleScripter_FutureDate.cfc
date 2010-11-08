@@ -46,7 +46,7 @@
 		<cfif arguments.validation.hasParameter("after")>
 			<cfset options = {}/>
 			<cfset options["after"] = arguments.validation.getParameterValue("after") />
-			<cfset arguments.customMessage = arguments.customMessage & " The date entered must come after #arguments.validation.getParameterValue('after')#" />
+			<cfset arguments.customMessage = arguments.customMessage & " The date entered must come after #arguments.validation.getParameterValue('after')#." />
 		</cfif>
 		
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />

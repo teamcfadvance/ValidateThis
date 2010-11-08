@@ -12,20 +12,32 @@
 		<property name="UserName" desc="Email Address">
 			<rule type="required" contexts="*" />
 			<rule type="daterange" contexts="newValidations">
-				<param name="from" value="2001-01-01" />
-				<param name="until" value="2010-12-31" />
+				<param name="from" value="2010-01-01" />
+				<param name="until" value="2011-12-31" />
 			</rule>
 			<rule type="futureDate" contexts="newValidations">
 				<param name="after" value="2010-12-31" />
 			</rule>
+			<rule type="pastDate" contexts="newValidations">
+				<param name="before" value="2011-02-01" />
+			</rule>
 			<rule type="inList" contexts="newValidations">
-				<param name="list" value="a,b,c" />
+				<param name="list" value="2011-01-30,2011-01-29" />
 			</rule>
 			<rule type="notInList" contexts="newValidations">
-				<param name="list" value="a,b,c" />
+				<param name="list" value="2011-01-29,2011-01-28" />
 			</rule>
-			<rule type="pastDate" contexts="newValidations">
-				<param name="before" value="2010-12-31" />
+		</property>
+		<property name="Nickname">
+			<!-- 
+			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname.">
+				<param name="methodname" value="CheckDupNickname" />
+				<param name="remoteURL" value="CheckDupNickname.cfm" />
+			</rule>
+			 -->
+			<rule type="noHTML" contexts="newValidations" />
+			<rule type="doesnotcontainotherproperties" contexts="newValidations">
+				<param name="propertyNames" value="UserName,UserPass" />
 			</rule>
 			<rule type="patterns" contexts="newValidations">
 				<param name="minMatches" value="3" />
@@ -36,18 +48,9 @@
 			</rule>
 			<rule type="URL" contexts="newValidations" />
 		</property>
-		<property name="Nickname">
-			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname."> <!-- Specifying no context is the same as specifying a context of "*" -->
-				<param name="methodname" value="CheckDupNickname" />
-				<param name="remoteURL" value="CheckDupNickname.cfm" />
-			</rule>
-			<rule type="doesnotcontainotherproperties" contexts="newValidations">
-				<param name="propertyNames" value="username,userpass" />
-			</rule>
-			<rule type="noHTML" contexts="newValidations" />
-		</property>
 		<property name="UserPass" desc="Password">
-			<rule type="boolean" contexts="newValidations" />
+			<rule type="required" contexts="*" />
+			<!-- <rule type="boolean" contexts="newValidations" /> -->
 			<rule type="true" contexts="newValidations" />
 			<rule type="false" contexts="newValidations" />
 		</property>
@@ -64,6 +67,10 @@
 			</rule>
 		</property>
 		<property name="Salutation">
+			<rule type="size" contexts="newValidations">
+				<param name="min" value="2" />
+				<param name="max" value="3" />
+			</rule>
 		</property>
 		<property name="FirstName">
 		</property>
