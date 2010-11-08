@@ -47,6 +47,10 @@
 		
     </cffunction>
 
+	<cffunction name="getMemento" access="public" output="false" returntype="any">
+		<cfreturn variables />
+    </cffunction>
+
 	<!--- property getters and setters --->	
 	<cffunction name="setUserGroupId" access="public" returntype="any">
 		<cfargument name="userGroupId" />

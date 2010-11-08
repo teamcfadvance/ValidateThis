@@ -23,7 +23,7 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>UserPass</td>
+	<td>UserName</td>
 	<td></td>
 </tr>
 <tr>
@@ -39,67 +39,27 @@
 <tr>
 	<td>assertText</td>
 	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
-	<td>The Email Address is required.<br />Hey, buddy, you call that an Email Address?</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
-	<td>The Password is required.<br />The Password must be between 5 and 10 characters long.<br />The password must be between 5 and 10 characters long (expression).</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
-	<td>The Verify Password is required.</td>
+	<td>The Email Address is required.<br />The Email Address must be a date between 2001-01-01 and 2010-12-31.<br />The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address was not found in the list: a,b,c. <br />The Email Address must be a date in the past. The date entered must come before 2010-12-31.<br />0 patterns were matched but 3 were required.<br />The Email Address must be a valid URL.</td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>//form[@id='frm-Main2']/fieldset[1]/div[5]/p[1]</td>
-	<td>The User Group is required.</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[6]/p[1]</td>
-	<td>If you don't like Cheese and you don't like Chocolate, you must like something!</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>Nickname</td>
-	<td>BobRules</td>
+	<td>The User Group is invalid: The User Group Name is required.</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>UserName</td>
-	<td>aaa</td>
+	<td>b</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>abcd</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>UserPass</td>
-	<td>aaa</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>VerifyPassword</td>
-	<td>zzz</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>Salutation</td>
-	<td>aa</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>FirstName</td>
-	<td>aaa</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>HowMuch</td>
-	<td>aaa</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>AllowCommunication-1</td>
-	<td></td>
+	<td>c</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -107,109 +67,124 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>ValidateThis Demo Page</td>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
+	<td>The Nickname must not contain the values of properties named: username,userpass.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address must be a date between 2001-01-01 and 2010-12-31.<br />The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address was found in the list: a,b,c. <br />The Email Address must be a date in the past. The date entered must come before 2010-12-31.<br />1 patterns were matched but 3 were required.<br />The Email Address must be a valid URL.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>&lt;input&gt;</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
+	<td>The Nickname cannot contain HTML tags.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2010-01-01</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
-	<td>Hey, buddy, you call that an Email Address?</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
-	<td>That Nickname has already been used. Try to be more original!</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
-	<td>The Password must be between 5 and 10 characters long.<br />The password must be between 5 and 10 characters long (expression).</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
-	<td>The Verify Password must be the same as the Password.</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[1]/p[1]</td>
-	<td>Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[7]/p[1]</td>
-	<td>exact:The contents of the How much money would you like? field must be a valid numeric value.</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[9]/p[1]</td>
-	<td>If you are allowing communication, you must choose a communication method.</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[3]/p[1]</td>
-	<td>The Last Name is required if you specify a value for the First Name.</td>
+	<td>The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address was not found in the list: a,b,c. <br />2 patterns were matched but 3 were required.<br />The Email Address must be a valid URL.</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>UserName</td>
-	<td>bob.silverberg@gmail.com</td>
+	<td>2011-01-01</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address must be a date between 2001-01-01 and 2010-12-31.<br />The Email Address was not found in the list: a,b,c. <br />The Email Address must be a date in the past. The date entered must come before 2010-12-31.<br />2 patterns were matched but 3 were required.<br />The Email Address must be a valid URL.</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>Nickname</td>
-	<td>different</td>
+	<td>UserName</td>
+	<td>http://www.ABC.com</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address must be a date between 2001-01-01 and 2010-12-31.<br />The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address was not found in the list: a,b,c. <br />The Email Address must be a date in the past. The date entered must come before 2010-12-31.</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>UserPass</td>
-	<td>aaaaa</td>
+	<td>abc</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password must be a valid boolean.<br />The Password must be a true boolean.<br />The Password must be a false boolean.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td>yes</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password must be a false boolean.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password must be a true boolean.</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>VerifyPassword</td>
-	<td>aaaaa</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>UserGroupId</td>
-	<td>label=Member</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>Salutation</td>
-	<td>Mr</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>LastName</td>
-	<td>aaa</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>LikeCheese-1</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>HowMuch</td>
-	<td>999</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>AllowCommunication-2</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>AllowCommunication-1</td>
-	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>CommunicationMethod</td>
-	<td>label=Email</td>
+	<td>ab</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -217,84 +192,29 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>ValidateThis Demo Page</td>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password size is not between 3 and 10.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>VerifyPassword</td>
+	<td>abc</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
 	<td></td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
-	<td>The Email Address is required.<br />Hey, buddy, you call that an Email Address?</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
-	<td>That Nickname has already been used. Try to be more original!</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
-	<td>The Password is required.<br />The Password must be between 5 and 10 characters long.</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
 	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
-	<td>The Verify Password is required.</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[5]/p[1]</td>
-	<td>The User Group is required.</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[1]/p[1]</td>
-	<td>Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[3]/p[1]</td>
-	<td>The Last Name is required if you specify a value for the First Name.</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[6]/p[1]</td>
-	<td>If you don't like Cheese and you don't like Chocolate, you must like something!</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[7]/p[1]</td>
-	<td>exact:The contents of the How much money would you like? field must be a valid numeric value.</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[9]/p[1]</td>
-	<td>If you are allowing communication, you must choose a communication method.</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//div[@id='content']/h3[2]</td>
-	<td>OK, the User record has been saved.</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Edit an Existing User</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTitle</td>
-	<td>ValidateThis Demo Page</td>
-	<td></td>
+	<td>The Verify Password size is not between 3 and 10.</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>FirstName</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>LastName</td>
-	<td></td>
+	<td>VerifyPassword</td>
+	<td>a,b</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -302,29 +222,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>ValidateThis Demo Page</td>
-	<td></td>
-</tr>
-<tr>
 	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[2]/p[1]</td>
-	<td>The First Name is required.</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[3]/p[1]</td>
-	<td>The Last Name is required.</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password size is not between 3 and 10.</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>FirstName</td>
-	<td>bob</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>LastName</td>
-	<td>bob</td>
+	<td>VerifyPassword</td>
+	<td>a,b,c</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -332,26 +237,70 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>ValidateThis Demo Page</td>
+	<td>assertNotText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password size is not between 3 and 10.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>VerifyPassword</td>
+	<td>structbad</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password size is not between 3 and 10.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>VerifyPassword</td>
+	<td>structok</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[2]/p[1]</td>
-	<td>The First Name is required.</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[2]/div[3]/p[1]</td>
-	<td>The Last Name is required.</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password size is not between 3 and 10.</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>UserPass</td>
-	<td>aaa</td>
+	<td>VerifyPassword</td>
+	<td>arraybad</td>
 </tr>
-
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password size is not between 3 and 10.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>VerifyPassword</td>
+	<td>arrayok</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password size is not between 3 and 10.</td>
+</tr>
 </tbody></table>
 </body>
 </html>

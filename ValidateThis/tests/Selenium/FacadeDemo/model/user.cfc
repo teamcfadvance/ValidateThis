@@ -50,6 +50,10 @@
 		
     </cffunction>
 
+	<cffunction name="getMemento" access="public" output="false" returntype="any">
+		<cfreturn variables />
+    </cffunction>
+
 	<cffunction name="save" access="public" output="false" returntype="void" hint="An empty method as this is just a demo">
     </cffunction>
 
@@ -68,7 +72,17 @@
 
 	<cffunction name="setVerifyPassword" returntype="void" access="public" output="false">
 		<cfargument name="VerifyPassword" type="any" required="true" />
-		<cfset variables.VerifyPassword = arguments.VerifyPassword />
+		<cfif arguments.VerifyPassword eq "structok">
+			<cfset variables.VerifyPassword = {a=1,b=2,c=3} />
+		<cfelseif arguments.verifypassword eq "structbad">
+			<cfset variables.VerifyPassword = {a=1} />
+		<cfelseif arguments.verifypassword eq "arrayok">
+			<cfset variables.VerifyPassword = [1,2,3] />
+		<cfelseif arguments.verifypassword eq "arraybad">
+			<cfset variables.VerifyPassword = [1] />
+		<cfelse>
+			<cfset variables.VerifyPassword = arguments.VerifyPassword />
+		</cfif>
 	</cffunction>
 	<cffunction name="getVerifyPassword" access="public" output="false" returntype="any">
 		<cfreturn variables.VerifyPassword />

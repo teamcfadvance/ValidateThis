@@ -6,30 +6,21 @@
 			clientTest="$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;" />
 	</conditions>
 	<contexts>
-		<context name="Register" formName="frmMain" />
-		<context name="Profile" formName="frmMain" />
 		<context name="newValidations" formName="frm-Main2" />
 	</contexts>
 	<objectProperties>
 		<property name="UserName" desc="Email Address">
 			<rule type="required" contexts="*" />
-			<rule type="email" contexts="*" failureMessage="Hey, buddy, you call that an Email Address?" />
-			<rule type="boolean" contexts="newValidations" />
 			<rule type="daterange" contexts="newValidations">
 				<param name="from" value="2001-01-01" />
 				<param name="until" value="2010-12-31" />
 			</rule>
-			<rule type="doesnotcontainotherproperties" contexts="newValidations">
-				<param name="propertyNames" value="nickname,userpass" />
-			</rule>
-			<rule type="false" contexts="newValidations" />
 			<rule type="futureDate" contexts="newValidations">
 				<param name="after" value="2010-12-31" />
 			</rule>
 			<rule type="inList" contexts="newValidations">
 				<param name="list" value="a,b,c" />
 			</rule>
-			<rule type="noHTML" contexts="newValidations" />
 			<rule type="notInList" contexts="newValidations">
 				<param name="list" value="a,b,c" />
 			</rule>
@@ -43,11 +34,6 @@
 				<param name="pattern_digit" value="[\d]" />
 				<param name="pattern_punct" value="[[:punct:]]" />
 			</rule>
-			<rule type="size" contexts="newValidations">
-				<param name="min" value="3" />
-				<param name="max" value="10" />
-			</rule>
-			<rule type="true" contexts="newValidations" />
 			<rule type="URL" contexts="newValidations" />
 		</property>
 		<property name="Nickname">
@@ -55,21 +41,20 @@
 				<param name="methodname" value="CheckDupNickname" />
 				<param name="remoteURL" value="CheckDupNickname.cfm" />
 			</rule>
+			<rule type="doesnotcontainotherproperties" contexts="newValidations">
+				<param name="propertyNames" value="username,userpass" />
+			</rule>
+			<rule type="noHTML" contexts="newValidations" />
 		</property>
 		<property name="UserPass" desc="Password">
-			<rule type="required" contexts="*" />
-			<rule type="rangelength" contexts="*">
-				<param name="minlength" value="5" />
-				<param name="maxlength" value="10" />
-			</rule>
-			<rule type="expression" contexts="*" failureMessage="The password must be between 5 and 10 characters long (expression).">
-				<param name="expression" value="len(getUserPass()) GE 5 and len(getUserPass()) LE 10" />
-			</rule>
+			<rule type="boolean" contexts="newValidations" />
+			<rule type="true" contexts="newValidations" />
+			<rule type="false" contexts="newValidations" />
 		</property>
 		<property name="VerifyPassword">
-			<rule type="required" contexts="*" />
-			<rule type="equalTo" contexts="*">
-				<param name="ComparePropertyName" value="UserPass" />
+			<rule type="size" contexts="newValidations">
+				<param name="min" value="3" />
+				<param name="max" value="10" />
 			</rule>
 		</property>
 		<property name="UserGroup" clientfieldname="UserGroupId">
@@ -79,36 +64,17 @@
 			</rule>
 		</property>
 		<property name="Salutation">
-			<rule type="required" contexts="Profile" />
-			<rule type="regex" contexts="*"
-				failureMessage="Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.">
-				<param name="Regex" value="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
-			</rule>
 		</property>
 		<property name="FirstName">
-			<rule type="required" contexts="Profile" />
 		</property>
 		<property name="LastName">
-			<rule type="required" contexts="Profile" />
-			<rule type="required" contexts="Register">
-				<param name="DependentPropertyName" value="FirstName" />
-			</rule>
 		</property>
 		<property name="LikeOther" desc="What do you like?">
-			<rule type="required" contexts="*" condition="MustLikeSomething"
-				failureMessage="If you don't like Cheese and you don't like Chocolate, you must like something!">
-			</rule>
 		</property>
 		<property name="HowMuch" desc="How much money would you like?">
-			<rule type="numeric" contexts="*" />
 		</property>
 		<property name="AllowCommunication" />
 		<property name="CommunicationMethod">
-			<rule type="required" contexts="*"
-				failureMessage="If you are allowing communication, you must choose a communication method.">
-				<param name="DependentPropertyName" value="AllowCommunication" />
-				<param name="DependentPropertyValue" value="1" />
-			</rule>
 		</property>
 	</objectProperties>
 </validateThis>
