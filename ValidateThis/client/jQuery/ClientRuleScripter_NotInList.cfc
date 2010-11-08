@@ -43,10 +43,8 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 		
 		<cfset var theScript = "" />
-		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
 		<cfset var valType = getValType() />       
 		<cfset var params = arguments.validation.getParameters()/>
-		<cfset var fieldSelector = "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 		<cfset var options = true/>
 		<cfset var messageScript = "" />
 

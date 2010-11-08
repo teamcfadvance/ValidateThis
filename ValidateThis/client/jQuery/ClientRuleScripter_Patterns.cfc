@@ -51,12 +51,12 @@ Example Usage:
 
 
 		<cfset var theScript = "" />
-		<cfset var valType = this.getValType() />		
+		<cfset var valType = getValType() />		
 		<cfset var params = arguments.validation.getParameters()/>
 		
 		<cfset var messageScript = "" />
 		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "Did not match the patterns for #lCase(arguments.defaultFailureMessagePrefix)##validation.getPropertyDesc()#"/>
+			<cfset arguments.customMessage = "Did not match the patterns for #lCase(variables.defaultFailureMessagePrefix)##validation.getPropertyDesc()#"/>
 		</cfif>
 		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
 			

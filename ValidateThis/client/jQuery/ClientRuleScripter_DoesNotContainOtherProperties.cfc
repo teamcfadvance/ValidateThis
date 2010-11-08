@@ -60,7 +60,7 @@ Definition Usage Example:
 		<cfargument name="locale" type="string" required="no" default="" />
 
 		<cfset var theScript = "" />
-		<cfset var valType = this.getValType() />		
+		<cfset var valType = getValType() />		
 		<cfset var params = arguments.validation.getParameters()/>
 		<cfset var messageScript = "" />
 		
