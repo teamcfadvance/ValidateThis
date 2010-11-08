@@ -45,7 +45,7 @@
 	</cffunction>
 	
 	<cffunction name="validateReturnsFalseForInvalidBoolean" access="public" returntype="void">
-0		<cfscript>
+		<cfscript>
 			objectValue = "abc";
             
             configureValidationMock();

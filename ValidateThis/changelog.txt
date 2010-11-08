@@ -201,6 +201,7 @@ Version 0.98
 - updated the EqualTo validation to pick up the ComparePropertyDesc from the validation metadata if it is not explicitly specified 
 - changed Numeric validation type to use isNumeric() instead of isValid("Numeric")
 - changed Date validation type to use isDate() instead of isValid("Date")
+- the validate() method can now accept a JSON string in addition to a struct
 
 
 - added new validation types:
