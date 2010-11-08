@@ -25,7 +25,6 @@
 					<cfset variables[right(i,len(i)-3)] = "" />
 				</cfif>
 			</cfloop>
-			<cfset variables.userGroup = createObject("component","userGroup").init() />
 		<cfelse>
 			<cfloop collection="#this#" item="i">
 				<cfif left(i,3) eq "set">
@@ -47,6 +46,9 @@
 				<cfset variables[i] = trim(arguments.data[i]) />
 			</cfif>
 		</cfloop>
+		<cfif structKeyExists (arguments.data,"userGroupId") and val(arguments.data.userGroupId) neq 0>
+			<cfset variables.userGroup = createObject("component","userGroup").init(1) />
+		</cfif>
 		
     </cffunction>
 

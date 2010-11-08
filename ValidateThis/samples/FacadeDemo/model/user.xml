@@ -2,7 +2,7 @@
 <validateThis xsi:noNamespaceSchemaLocation="http://www.validatethis.org/validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<conditions>
 		<condition name="MustLikeSomething" 
-			serverTest="getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0"
+			serverTest="val(getLikeCheese()) EQ 0 AND val(getLikeChocolate()) EQ 0"
 			clientTest="$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;" />
 	</conditions>
 	<contexts>

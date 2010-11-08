@@ -30,6 +30,8 @@
 <!--- Are we processing the form? --->
 <cfif StructKeyExists(Form,"Processing")>
 	<!--- Populate the object from the form scope --->
+	<cfset user.populate(form) />
+	<!---
 	<cfloop collection="#form#" item="fld">
 		<cfif StructKeyExists(user,"set" & fld)>
 			<cfinvoke component="#user#" method="set#fld#">
@@ -37,6 +39,7 @@
 			</cfinvoke>
 		</cfif>
 	</cfloop>
+	--->
 	<!--- Validate the object using ValidateThis --->
 	<cfset result = application.ValidateThis.validate(objectType="User",theObject=user,Context=Form.Context) />
 	<cfset validationErrors = result.getFailureMessagesByField(delimiter="<br/>") />
@@ -49,7 +52,11 @@
 	</cfif>
 </cfif>
 
-<cfset UserGroupId = user.getUserGroup().getUserGroupId() />
+<cfif Form.UserId eq 0>
+	<cfset UserGroupId = 0 />
+<cfelse>
+	<cfset UserGroupId = user.getUserGroup().getUserGroupId() />
+</cfif>
 
 <!--- Get the list of required fields to use to dynamically add asterisks in front of each field --->
 <cfset RequiredFields = application.ValidateThis.getRequiredFields(objectType="User",Context=Form.Context) />
