@@ -329,7 +329,6 @@
 			valStruct.Parameters.ComparePropertyDesc = {value=ComparePropertyDesc,type="value"};
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
-			debug(script);
 			assertTrue(Script contains "$form_frmMain.find("":input[name='FirstName']"").rules(""add"",{equalto:"":input[name='LastName']"",messages:{equalto:'The First Name must be the same as the Last Name.'}});");
 		</cfscript>
 	</cffunction>
