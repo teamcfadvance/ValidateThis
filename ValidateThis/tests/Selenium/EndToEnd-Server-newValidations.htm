@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>http://localhost/validatethis/tests/selenium/FacadeDemo/index.cfm?init=true&amp;noJS=true&amp;context=newValidations</td>
+	<td>http://localhost/validatethis/tests/selenium/FacadeDemo/index.cfm?init=true&amp;noJS=true&amp;context=newValidations-server</td>
 	<td></td>
 </tr>
 <tr>
@@ -24,6 +24,11 @@
 <tr>
 	<td>type</td>
 	<td>UserName</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
 	<td></td>
 </tr>
 <tr>
@@ -38,8 +43,13 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
-	<td>The Email Address is required.<br />The Email Address must be a date between 2001-01-01 and 2010-12-31.<br />The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address was not found in the list: a,b,c. <br />The Email Address must be a date in the past. The date entered must come before 2010-12-31.<br />0 patterns were matched but 3 were required.<br />The Email Address must be a valid URL.</td>
+	<td>error-UserName</td>
+	<td>The Email Address is required.<br />The Email Address must be a date between 2010-01-01 and 2011-12-31.<br />The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address must be a date in the past. The date entered must come before 2011-02-01.<br />The Email Address was not found in the list: 2011-01-30,2011-01-29.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>error-UserPass</td>
+	<td>The Password is required.<br />The Password must be a valid boolean.<br />The Password must be a true boolean.<br />The Password must be a false boolean.</td>
 </tr>
 <tr>
 	<td>assertText</td>
@@ -69,17 +79,97 @@
 <tr>
 	<td>assertText</td>
 	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
-	<td>The Nickname must not contain the values of properties named: username,userpass.</td>
+	<td>The Nickname must not contain the values of properties named: UserName,UserPass.<br />1 patterns were matched but 3 were required.<br />The Nickname must be a valid URL.</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
-	<td>The Email Address must be a date between 2001-01-01 and 2010-12-31.<br />The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address was found in the list: a,b,c. <br />The Email Address must be a date in the past. The date entered must come before 2010-12-31.<br />1 patterns were matched but 3 were required.<br />The Email Address must be a valid URL.</td>
+	<td>error-UserName</td>
+	<td>The Email Address must be a date between 2010-01-01 and 2011-12-31.<br />The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address must be a date in the past. The date entered must come before 2011-02-01.<br />The Email Address was not found in the list: 2011-01-30,2011-01-29.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2010-02-02</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>error-UserName</td>
+	<td>The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address was not found in the list: 2011-01-30,2011-01-29.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2011-02-02</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>error-UserName</td>
+	<td>The Email Address must be a date in the past. The date entered must come before 2011-02-01.<br />The Email Address was not found in the list: 2011-01-30,2011-01-29.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2011-01-31</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>error-UserName</td>
+	<td>The Email Address was not found in the list: 2011-01-30,2011-01-29.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2011-01-29</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>error-UserName</td>
+	<td>The Email Address was found in the list: 2011-01-29,2011-01-28.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2011-01-30</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>error-UserName</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2011-01-29</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>Nickname</td>
-	<td>&lt;input&gt;</td>
+	<td>&lt;a href=2011-01-29&gt;</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -89,12 +179,12 @@
 <tr>
 	<td>assertText</td>
 	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
-	<td>The Nickname cannot contain HTML tags.</td>
+	<td>The Nickname cannot contain HTML tags.<br />The Nickname must not contain the values of properties named: UserName,UserPass.<br />The Nickname must be a valid URL.</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>UserName</td>
-	<td>2010-01-01</td>
+	<td>Nickname</td>
+	<td>2011-01-29</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -103,13 +193,13 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
-	<td>The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address was not found in the list: a,b,c. <br />2 patterns were matched but 3 were required.<br />The Email Address must be a valid URL.</td>
+	<td>error-Nickname</td>
+	<td>The Nickname must not contain the values of properties named: UserName,UserPass.<br />2 patterns were matched but 3 were required.<br />The Nickname must be a valid URL.</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>UserName</td>
-	<td>2011-01-01</td>
+	<td>Nickname</td>
+	<td>http://www.Abc.com</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -117,24 +207,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
-	<td>The Email Address must be a date between 2001-01-01 and 2010-12-31.<br />The Email Address was not found in the list: a,b,c. <br />The Email Address must be a date in the past. The date entered must come before 2010-12-31.<br />2 patterns were matched but 3 were required.<br />The Email Address must be a valid URL.</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>UserName</td>
-	<td>http://www.ABC.com</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//button[@type='submit']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
-	<td>The Email Address must be a date between 2001-01-01 and 2010-12-31.<br />The Email Address must be a date in the future. The date entered must come after 2010-12-31.<br />The Email Address was not found in the list: a,b,c. <br />The Email Address must be a date in the past. The date entered must come before 2010-12-31.</td>
+	<td>assertElementNotPresent</td>
+	<td>error-Nickname</td>
+	<td>The Nickname must not contain the values of properties named: UserName,UserPass.<br />2 patterns were matched but 3 were required.<br />The Nickname must be a valid URL.</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -207,9 +282,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
-	<td>The Verify Password size is not between 3 and 10.</td>
+	<td>assertElementNotPresent</td>
+	<td>error-VerifyPassword</td>
+	<td></td>
 </tr>
 <tr>
 	<td>type</td>
@@ -237,9 +312,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
-	<td>The Verify Password size is not between 3 and 10.</td>
+	<td>assertElementNotPresent</td>
+	<td>error-VerifyPassword</td>
+	<td></td>
 </tr>
 <tr>
 	<td>type</td>
@@ -267,9 +342,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
-	<td>The Verify Password size is not between 3 and 10.</td>
+	<td>assertElementNotPresent</td>
+	<td>error-VerifyPassword</td>
+	<td></td>
 </tr>
 <tr>
 	<td>type</td>
@@ -297,9 +372,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>//form[@id='frm-Main2']/fieldset[1]/div[4]/p[1]</td>
-	<td>The Verify Password size is not between 3 and 10.</td>
+	<td>assertElementNotPresent</td>
+	<td>error-VerifyPassword</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>

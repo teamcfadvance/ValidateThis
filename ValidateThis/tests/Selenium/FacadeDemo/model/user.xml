@@ -45,11 +45,10 @@
 		</property>
 		<property name="UserPass" desc="Password">
 			<rule type="required" contexts="*" />
-			<!-- TODO: boolean, true and false don't seem to be working!
-			<rule type="boolean" contexts="*" />
-			<rule type="true" contexts="*" />
-			<rule type="false" contexts="*" />
-			-->
+			<!-- TODO: boolean, true and false don't seem to be working on the client-side -->
+			<rule type="boolean" contexts="newValidations-server" />
+			<rule type="true" contexts="newValidations-server" />
+			<rule type="false" contexts="newValidations-server" />
 		</property>
 		<property name="VerifyPassword">
 			<rule type="size" contexts="newValidations-server">
