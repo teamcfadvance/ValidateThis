@@ -6,71 +6,70 @@
 			clientTest="$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;" />
 	</conditions>
 	<contexts>
-		<context name="newValidations" formName="frm-Main2" />
+		<context name="newValidations-client" formName="frm-Main2" />
+		<context name="newValidations-server" formName="frm-Main2" />
 	</contexts>
 	<objectProperties>
 		<property name="UserName" desc="Email Address">
 			<rule type="required" contexts="*" />
-			<rule type="daterange" contexts="newValidations">
+			<rule type="daterange" contexts="*">
 				<param name="from" value="2010-01-01" />
 				<param name="until" value="2011-12-31" />
 			</rule>
-			<rule type="futureDate" contexts="newValidations">
+			<rule type="futureDate" contexts="*">
 				<param name="after" value="2010-12-31" />
 			</rule>
-			<rule type="pastDate" contexts="newValidations">
+			<rule type="pastDate" contexts="*">
 				<param name="before" value="2011-02-01" />
 			</rule>
-			<rule type="inList" contexts="newValidations">
+			<rule type="inList" contexts="*">
 				<param name="list" value="2011-01-30,2011-01-29" />
 			</rule>
-			<rule type="notInList" contexts="newValidations">
+			<rule type="notInList" contexts="*">
 				<param name="list" value="2011-01-29,2011-01-28" />
 			</rule>
 		</property>
 		<property name="Nickname">
-			<!-- 
-			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname.">
-				<param name="methodname" value="CheckDupNickname" />
-				<param name="remoteURL" value="CheckDupNickname.cfm" />
-			</rule>
-			 -->
-			<rule type="noHTML" contexts="newValidations" />
-			<rule type="doesnotcontainotherproperties" contexts="newValidations">
+			<rule type="noHTML" contexts="*" />
+			<rule type="doesnotcontainotherproperties" contexts="*">
 				<param name="propertyNames" value="UserName,UserPass" />
 			</rule>
-			<rule type="patterns" contexts="newValidations">
+			<rule type="patterns" contexts="*">
 				<param name="minMatches" value="3" />
 				<param name="pattern_lowerCaseLetter" value="[a-z]" />
 				<param name="pattern_upperCaseLetter" value="[A-Z]" />
 				<param name="pattern_digit" value="[\d]" />
 				<param name="pattern_punct" value="[[:punct:]]" />
 			</rule>
-			<rule type="URL" contexts="newValidations" />
+			<rule type="URL" contexts="*" />
 		</property>
 		<property name="UserPass" desc="Password">
 			<rule type="required" contexts="*" />
-			<!-- <rule type="boolean" contexts="newValidations" /> -->
-			<rule type="true" contexts="newValidations" />
-			<rule type="false" contexts="newValidations" />
+			<!-- TODO: boolean, true and false don't seem to be working!
+			<rule type="boolean" contexts="*" />
+			<rule type="true" contexts="*" />
+			<rule type="false" contexts="*" />
+			-->
 		</property>
 		<property name="VerifyPassword">
-			<rule type="size" contexts="newValidations">
+			<rule type="size" contexts="newValidations-server">
 				<param name="min" value="3" />
 				<param name="max" value="10" />
 			</rule>
 		</property>
 		<property name="UserGroup" clientfieldname="UserGroupId">
 			<rule type="required" contexts="*" />
-			<rule type="isValidObject" contexts="newValidations">
+			<rule type="isValidObject" contexts="newValidations-server">
 				<param name="objectType" value="UserGroup" />
 			</rule>
 		</property>
 		<property name="Salutation">
-			<rule type="size" contexts="newValidations">
+			<!-- TODO: size isn't working and actually breaks the validation plugin - form still submits with invalid fields with this in place
+			<rule type="size" contexts="newValidations-client">
 				<param name="min" value="2" />
 				<param name="max" value="3" />
 			</rule>
+			 -->
 		</property>
 		<property name="FirstName">
 		</property>

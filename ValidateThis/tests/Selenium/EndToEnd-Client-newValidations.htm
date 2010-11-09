@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>http://localhost/validatethis/tests/selenium/FacadeDemo/index.cfm?init=true&amp;context=newValidations</td>
+	<td>http://localhost/validatethis/tests/selenium/FacadeDemo/index.cfm?init=true&amp;context=newValidations-client</td>
 	<td></td>
 </tr>
 <tr>
@@ -210,6 +210,21 @@
 	<td>assertNotText</td>
 	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
 	<td>Please enter a valid URL.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password is required.</td>
 </tr>
 </tbody></table>
 </body>
