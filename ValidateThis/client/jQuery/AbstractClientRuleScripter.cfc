@@ -15,8 +15,6 @@
 --->
 <cfcomponent output="false" name="AbstractClientRuleScripter" hint="I am a base object which all concrete ClientRuleScripters extend.">
 	
-	<cfproperty name="defaultFailureMessage" type="string" default=""/>
-	
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
 		<cfargument name="Translator" type="Any" required="yes" />
 		<cfargument name="getSafeFormName" type="Any" required="yes" />
@@ -60,9 +58,9 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 		
 		<cfset var safeSelectorScript = getSafeSelectorScript(argumentCollection=arguments) />
-		<cfset var translatedCustomMessage = getCustomFailureMessage(argumentCollection=arguments) />
+		<!---<cfset var translatedCustomMessage = getCustomFailureMessage(argumentCollection=arguments) />--->
 		
-		<cfset var theScript = "if (#safeSelectorScript#.length) { #generateRuleScript(validation=arguments.validation,selector=safeSelectorScript,customMessage=translatedCustomMessage)#}" />
+		<cfset var theScript = "if (#safeSelectorScript#.length) { #generateRuleScript(validation=arguments.validation,selector=safeSelectorScript,locale=arguments.locale)#}" />
 		
 		<cfreturn theScript />
 	</cffunction>
@@ -70,7 +68,7 @@
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="selector" type="Any" required="yes" />
-		<cfargument name="customMessage" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 		
 		<cfreturn generateAddRule(argumentCollection=arguments) />
 	</cffunction>
@@ -78,12 +76,18 @@
 	<cffunction name="generateAddRule" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="selector" type="Any" required="yes" />
-		<cfargument name="customMessage" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfset var theScript = ""/>
+		<cfset var failureMessage = getCustomFailureMessage(validation=arguments.validation) />
+		<cfset var theScript = "" />
 		<cfset var ruleDef = getRuleDef(arguments.validation) />
-		<cfset var messageDef = getMessageDef(arguments.customMessage,getValType())/>
-		
+		<cfset var messageDef = "" />
+
+		<cfif len(failureMessage) eq 0>
+			<cfset failureMessage = getDefaultFailureMessage(arguments.validation) />
+		</cfif>		
+		<cfset messageDef = getMessageDef(failureMessage,getValType(),arguments.locale)/>
+
 		<cfif len(ruleDef) GT 0>
 			<cfset theScript = "#arguments.selector#.rules('add',{#ruleDef##messageDef#});" />
 		</cfif>
@@ -152,20 +156,19 @@
 		<cfreturn "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 	</cffunction>	
 	
-	<cffunction name="getCustomFailureMessage" returntype="any" access="private" output="false" hint="I return the translated custom failure message from the validation object.">
+	<cffunction name="getCustomFailureMessage" returntype="any" access="private" output="false" hint="I return the custom failure message from the validation object.">
 		<cfargument name="validation" type="any" default=""/>
-		<cfargument name="locale" type="string" default=""/>
-		<cfset var failureMessage = ""/>		
 		<cfif arguments.validation.hasFailureMessage()>
-			<cfset failureMessage = translate(arguments.validation.getFailureMessage(),arguments.locale) />
+			<cfreturn arguments.validation.getFailureMessage() />
 		</cfif>		
-		<cfreturn failureMessage/>
+		<cfreturn "" />
 	</cffunction>
 	
+	<!--- TODO: Need to override getDefaultFailureMessage in CRS to set message --->
+	
 	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false" hint="I return the translated default failure message from the validation object.">
-		<cfargument name="defaultMessage" type="string" default="property value is invalid."/>
-		<cfargument name="locale" type="string" default=""/>
-		<cfreturn translate(createDefaultFailureMessage(arguments.defaultMessage),arguments.locale) />
+		<cfargument name="validation" type="any"/>
+		<cfreturn "" />
 	</cffunction>
 
 	<cffunction name="createDefaultFailureMessage" returntype="string" access="private" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">
