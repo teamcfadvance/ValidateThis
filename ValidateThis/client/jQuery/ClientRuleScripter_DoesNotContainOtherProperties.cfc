@@ -53,33 +53,19 @@ Definition Usage Example:
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 	
-	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="selector" type="string" required="no" default="" />
-		<cfargument name="customMessage" type="string" required="no" default="" />
-		<cfargument name="locale" type="string" required="no" default="" />
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
 
-		<cfset var theScript = "" />
-		<cfset var valType = getValType() />		
-		<cfset var params = arguments.validation.getParameters()/>
-		<cfset var messageScript = "" />
-		
-		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#.") />
-		</cfif>
-		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
-
-		<cfif StructKeyExists(params,"propertyNames")>
-			<cfoutput>
-				<cfsavecontent variable="theScript">
-					#arguments.selector#.rules("add", {
-						 #valType# : #serializeJSON(listToArray(trim(params.propertyNames)))#,
-						 messages: {"#valType#": "#messageScript#"}
-					});
-			</cfsavecontent>
-			</cfoutput>
-			
-		</cfif>
-		<cfreturn theScript/>
+        <cfset var params = arguments.validation.getParameters()/>
+		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#.") />
 	</cffunction>
+
+	<cffunction name="getParameterDef" returntype="string" access="public" output="false" hint="I generate the JS script required to pass the appropriate paramters to the validator method.">
+		<cfargument name="validation" type="any"/>
+		
+		<cfset var params = arguments.validation.getParameters() />
+		<cfreturn serializeJSON(listToArray(trim(params.propertyNames))) />
+		
+	</cffunction>
+
 </cfcomponent>

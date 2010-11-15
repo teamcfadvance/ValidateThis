@@ -36,43 +36,26 @@
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 
-	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="selector" type="string" required="no" default="" />
-		<cfargument name="customMessage" type="string" required="no" default="" />
-		<cfargument name="locale" type="string" required="no" default="" />
-		
-		<cfset var theScript = "" />
-		<cfset var valType = getValType() />       
-		<cfset var params = arguments.validation.getParameters()/>
-		<cfset var options = true/>
-		<cfset var messageScript = "" />
-
-		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was not found in list:") />
-		</cfif>
-
+	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfset var options = true />
 		<cfif arguments.validation.hasParameter("list")>
-			<cfset options = structNew()/>
-			<cfset options['list'] = arguments.validation.getParameterValue("list")/>
-			<cfset arguments.customMessage = arguments.customMessage & " #arguments.validation.getParameterValue('list')#"/>
-			<cfif arguments.validation.hasParameter("delmin")>
+			<cfset options = {}/>
+			<cfset options["list"] = arguments.validation.getParameterValue("list") />
+			<cfif arguments.validation.hasParameter("delim")>
 				<cfset options['delim'] = arguments.validation.getParameterValue("delim",",")/>
 			</cfif>
 		</cfif>
-		
-		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
-		
-		<cfoutput>
-		<cfsavecontent variable="theScript">
-		#arguments.selector#.rules("add", {
-			#valType# : #serializeJSON(options)#,
-			messages: {"#valType#": "#messageScript#"}
-		});
-		</cfsavecontent>
-		</cfoutput>
-		
-		<cfreturn theScript/>
+		<cfreturn serializeJSON(options) />
+	</cffunction>
+
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfset var failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was not found in list:") />
+		<cfif arguments.validation.hasParameter("list")>
+			<cfset failureMessage = failureMessage & " (#arguments.validation.getParameterValue('list')#)." />
+		</cfif>
+		<cfreturn failureMessage />
 	</cffunction>
 
 </cfcomponent>

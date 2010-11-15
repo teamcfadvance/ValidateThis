@@ -58,7 +58,6 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 		
 		<cfset var safeSelectorScript = getSafeSelectorScript(argumentCollection=arguments) />
-		<!---<cfset var translatedCustomMessage = getCustomFailureMessage(argumentCollection=arguments) />--->
 		
 		<cfset var theScript = "if (#safeSelectorScript#.length) { #generateRuleScript(validation=arguments.validation,selector=safeSelectorScript,locale=arguments.locale)#}" />
 		
@@ -78,15 +77,10 @@
 		<cfargument name="selector" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
-		<cfset var failureMessage = getCustomFailureMessage(validation=arguments.validation) />
+		<cfset var failureMessage = determineFailureMessage(validation=arguments.validation) />
+		<cfset var messageDef = getMessageDef(failureMessage,getValType(),arguments.locale)/>
 		<cfset var theScript = "" />
 		<cfset var ruleDef = getRuleDef(arguments.validation) />
-		<cfset var messageDef = "" />
-
-		<cfif len(failureMessage) eq 0>
-			<cfset failureMessage = getDefaultFailureMessage(arguments.validation) />
-		</cfif>		
-		<cfset messageDef = getMessageDef(failureMessage,getValType(),arguments.locale)/>
 
 		<cfif len(ruleDef) GT 0>
 			<cfset theScript = "#arguments.selector#.rules('add',{#ruleDef##messageDef#});" />
@@ -106,7 +100,7 @@
 	<cffunction name="getParameterDef" returntype="string" access="public" output="false" hint="I generate the JS script required to pass the appropriate paramters to the validator method.">
 		<cfargument name="validation" type="any"/>
 		
-		<cfset var paramterDef = ""/>
+		<cfset var parameterDef = ""/>
 		<cfset var paramName = "" />
 		<cfset var paramList = "" />
 		<cfset var parameters = arguments.validation.getParameters() />
@@ -115,15 +109,15 @@
 			<cfif structCount(parameters) EQ 1>
 				<cfset paramName = structKeyArray(parameters) />
 				<cfset paramName = paramName[1] />
-				<cfset paramterDef &= parameters[paramName] />
+				<cfset parameterDef &= parameters[paramName] />
 			<cfelse>
 				<cfset parameterDef = serializeJSON(parameters)/>
 			</cfif>
 		<cfelse>
-			<cfset paramterDef &= "true" />
+			<cfset parameterDef &= "true" />
 		</cfif>
 		
-		<cfreturn paramterDef/>
+		<cfreturn parameterDef/>
 		
 	</cffunction>
 	
@@ -155,6 +149,15 @@
 		<cfset var safeFieldName = arguments.validation.getClientFieldName()/>
 		<cfreturn "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
 	</cffunction>	
+	
+	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I return the failure message to be used.">
+		<cfargument name="validation" type="any" default=""/>
+		<cfset var failureMessage = getCustomFailureMessage(arguments.validation) />
+		<cfif len(failureMessage) eq 0>
+			<cfset failureMessage = getDefaultFailureMessage(arguments.validation) />
+		</cfif>		
+		<cfreturn failureMessage />
+	</cffunction>
 	
 	<cffunction name="getCustomFailureMessage" returntype="any" access="private" output="false" hint="I return the custom failure message from the validation object.">
 		<cfargument name="validation" type="any" default=""/>
