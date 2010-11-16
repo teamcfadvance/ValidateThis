@@ -27,7 +27,8 @@
 	
 	<cffunction name="setupStruct" access="private" returntype="void">
 		<cfscript>
-			sw.setup({a=1,b=2});
+			struct = {a=1,b=2};
+			sw.setup(struct);
 		</cfscript>
 	</cffunction>
 	
