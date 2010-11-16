@@ -24,7 +24,7 @@
 		<cfset var propertyDesc = "" />
 		<cfset var theValue = arguments.validation.getObjectValue() />
 		
-		<cfif NOT IsObject(theValue) AND Len(theValue) EQ 0>
+		<cfif isSimpleValue(theValue) AND Len(theValue) EQ 0>
 			<cfif StructKeyExists(theCondition,"Desc")>
 				<cfset conditionDesc =  " " & theCondition.Desc />
 			<cfelseif StructKeyExists(parameters,"DependentPropertyName")>
@@ -44,5 +44,3 @@
 	</cffunction>
 	
 </cfcomponent>
-	
-
