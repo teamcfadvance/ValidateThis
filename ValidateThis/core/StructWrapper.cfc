@@ -20,8 +20,13 @@
 	</cffunction>
 
 	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
-		<cfargument name="theStruct" type="struct" required="yes" hint="The struct to be wrapped" />
-		<cfset structAppend(variables,arguments.theStruct,true) />
+		<cfargument name="theStruct" type="any" required="yes" hint="The struct to be wrapped" />
+		<cfif isJSON(arguments.theStruct)>
+			<cfset arguments.theStruct = deserializeJSON(arguments.theStruct) />
+		</cfif>
+		<cfif isStruct(arguments.theStruct)>
+			<cfset structAppend(variables,arguments.theStruct,true) />
+		</cfif>
 	</cffunction>
 
 	<cffunction name="getValue" access="public" output="false" returntype="Any" hint="An abstract getter">
@@ -58,11 +63,7 @@
 			<cfset propertyName = right(arguments.missingMethodName,(len(arguments.missingMethodName)-len("get")))>
 		</cfif>
 				
-		<cfif structKeyExists(variables.theStruct,propertyName)>
-			<cfreturn getValue(propertyName) />
-		<cfelse>
-			<cfreturn "" />
-		</cfif>
+		<cfreturn getValue(propertyName) />
 
 	</cffunction>
 

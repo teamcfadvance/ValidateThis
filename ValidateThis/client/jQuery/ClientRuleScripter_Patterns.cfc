@@ -16,6 +16,7 @@ Example Usage:
 	
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="Value did not match the pattern requirements.">
+		<cfargument name="locale" type="Any" required="no" default="" />
 		<cfset var theScript="">
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		<!--- JAVASCRIPT VALIDATION METHOD --->
@@ -37,37 +38,12 @@ Example Usage:
 		}
 		</cfsavecontent>
 			
-		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
+		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage,arguments.locale)/>
 	</cffunction>
 	
-	
-	
-	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="selector" type="string" required="no" default="" />
-		<cfargument name="customMessage" type="string" required="no" default="" />
-		<cfargument name="locale" type="string" required="no" default="" />
-
-
-		<cfset var theScript = "" />
-		<cfset var valType = this.getValType() />		
-		<cfset var params = arguments.validation.getParameters()/>
-		
-		<cfset var messageScript = "" />
-		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = "Did not match the patterns for #lCase(arguments.defaultFailureMessagePrefix)##validation.getPropertyDesc()#"/>
-		</cfif>
-		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale)/>
-			
-		<cfoutput>
-			<cfsavecontent variable="theScript">
-				#arguments.selector#.rules("add", {
-					 #valType# : #serializeJSON(params)#,
-					 messages: {"#valType#": "#messageScript#"}
-				});
-			</cfsavecontent>
-		</cfoutput>
-		<cfreturn theScript/>
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfreturn "Did not match the patterns for #lCase(variables.defaultFailureMessagePrefix)##validation.getPropertyDesc()#." />
 	</cffunction>
-	
+
 </cfcomponent>

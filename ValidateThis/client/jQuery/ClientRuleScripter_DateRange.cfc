@@ -47,35 +47,13 @@
     
         <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
     </cffunction>
-    
-    <cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-       <cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="selector" type="string" required="no" default="" />
-		<cfargument name="customMessage" type="string" required="no" default="" />
-		<cfargument name="locale" type="string" required="no" default="" />
 
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
 
-        <cfset var theScript = "" />
-        <cfset var valType = getValType() />       
         <cfset var params = arguments.validation.getParameters()/>
-        <cfset var messageScript = "" />
-        
-		<cfif Len(arguments.customMessage) eq 0>
-            <cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must contain a date between #params['from']# and #params['until']#.") />
-        </cfif>
-        <cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
-
-         <cfoutput>
-         <cfsavecontent variable="theScript">
-             #arguments.selector#.rules("add", {
-                  #valType# : #serializeJSON(params)#,
-                  messages: {"#valType#": "#messageScript#"}
-             });
-         </cfsavecontent>
-         </cfoutput>
-            
-        <cfreturn theScript/>
-    </cffunction>
+		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must contain a date between #params['from']# and #params['until']#.") />
+	</cffunction>
 
 </cfcomponent>
 

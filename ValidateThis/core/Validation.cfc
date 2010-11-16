@@ -33,8 +33,8 @@
 		
 		<cfset variables.ValidateThis = arguments.ValidateThis />
 		<cfset variables.theObject = arguments.theObject />
-		<cfset varibales.locale = arguments.ValidateThis.getValidateThisConfig().defaultLocale>
-		<cfset varibales.context = "">
+		<cfset variables.currentLocale = arguments.ValidateThis.getValidateThisConfig().defaultLocale />
+		<cfset variables.context = "" />
 		
 		<cfreturn this />
 		
@@ -214,12 +214,12 @@
 		<cfreturn variables.Instance.ObjectType />
 	</cffunction>
 	
-	<cffunction name="setLocale" access="public" output="false" returntype="any">
-		<cfargument name="locale" type="string" required="false" default="" />
-		<cfset variables.locale = arguments.locale/>
+	<cffunction name="setCurrentLocale" access="public" output="false" returntype="any">
+		<cfargument name="currentLocale" type="string" required="false" default="" />
+		<cfset variables.currentLocale = arguments.currentLocale/>
 	</cffunction>
-	<cffunction name="getLocale" access="public" output="false" returntype="any">
-		<cfreturn variables.locale/>
+	<cffunction name="getCurrentLocale" access="public" output="false" returntype="any">
+		<cfreturn variables.currentLocale/>
 	</cffunction>
 	
 	<cffunction name="setContext" access="public" output="false" returntype="any">

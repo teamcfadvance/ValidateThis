@@ -62,6 +62,19 @@
 				
 			</ul>
 			
+			<h3>Demo</h3>
+	
+			<ul class="sidemenu">
+				<li>
+					<a href="/validatethis/samples/FacadeDemo/index.cfm">Client and Server-Side Validations</a>
+				</li>
+				<!---
+				<li>
+					<a href="/validatethis/samples/i18nDemo/index.cfm">Internationalization (i18n) Demo</a>
+				</li>
+				--->
+			</ul>
+			
 			<h3>Documentation</h3>
 	
 			<ul class="sidemenu">
@@ -79,29 +92,8 @@
 				<li><a href="http://www.aliaspooryorik.com/blog/" target="_blank">John Whish</a></li>
 				<li>TJ Downes</li>
 				<li><a href="http://jamiekrug.com/blog/" target="_blank">Jamie Krug</a></li>
-			</ul>
-			
-			<h3>Demos</h3>
-	
-			<ul class="sidemenu">
-				<li>
-					<a href="/validatethis/samples/StructureDemo/index.cfm"><strong>New!</strong> - Validating a Structure, rather than an Object</a>
-				</li>
-				<li>
-					<a href="/validatethis/samples/TransferSample_ValidateThis/index.cfm">Integration via a Coldbox Plugin</a>
-				</li>
-				<li>
-					<a href="/validatethis/samples/ServiceDemo/index.cfm">Simple integration via the ValidateThis object, using Reactor</a>
-				</li>
-				<li>
-					<a href="/validatethis/samples/BODemo/index.cfm">Integrated Business Objects, using Transfer</a>
-				</li>
-				<li>
-					<a href="/validatethis/samples/i18nDemo/index.cfm">Internationalization (i18n) Demo</a>
-				</li>
-				<li>
-					<a href="/validatethis/samples/BODemo/index.cfm?cfU=_cfU">Integrated Business Objects, using Transfer and cfUniForm</a>
-				</li>
+				<li><a href="http://blog.mxunit.org/" target="_blank">Marc Esher</a></li>
+				<li><a href="http://chris.m0nk3y.net/" target="_blank">Chris Blackwell</a></li>
 			</ul>
 			
 			<h3>Presentations</h3>

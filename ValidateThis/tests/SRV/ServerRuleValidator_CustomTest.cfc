@@ -43,7 +43,7 @@
 	
 	<cffunction name="validateReturnsTrueForValidRemoteURLCall" access="public" returntype="void">
 		<cfscript>
-			defaultMethod = "isValid";
+			defaultMethod = "isIndeedValid";
 			defaultRemoteURL = "/validatethis/samples/remotedemo/remoteproxy.cfc";
 			hasMethod = true;
 			hasRemote = true;

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validateThis xsi:noNamespaceSchemaLocation="http://www.validatethis.org/validateThis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<objectProperties>
+		<property name="UserName" desc="Email Address">
+			<rule type="required" />
+			<!-- TODO: boolean, true and false don't seem to be working on the client-side
+			<rule type="boolean" />
+			<rule type="true"  />
+			 -->
+			<rule type="false" />
+		</property>
+	</objectProperties>
+</validateThis>
