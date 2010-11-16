@@ -102,7 +102,7 @@
 			you will need to write your own testCondition method into your BOs. You may consider doing this 
 			by adding the method to a base BO class. I am not certain this can even be done in Java, as I do 
 			not believe Java supports runtime evaluation. --->
-		<cfif not isObject(arguments.theObject) and isStruct(arguments.theObject)>
+		<cfif not isObject(arguments.theObject) and (isStruct(arguments.theObject) or isJSON(arguments.theObject))>
 			<cfset arguments.theObject = getBean("TransientFactory").newStructWrapper(arguments.theObject) />
 		</cfif>
 		

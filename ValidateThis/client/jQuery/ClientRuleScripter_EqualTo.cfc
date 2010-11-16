@@ -15,33 +15,20 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_equalTo" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the equalTo validation.">
 
-	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="selector" type="string" required="no" default="" />
-		<cfargument name="customMessage" type="string" required="no" default="" />
-		<cfargument name="locale" type="string" required="no" default="" />
+	<cffunction name="getValType" returntype="any" access="public" output="false" hint="I override the val type because jQuery requires the valtype to be 'equalTo' with that case.">
+		<cfreturn "equalTo" />
+	</cffunction>	
 
+	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfset var params = arguments.validation.getParameters() />
+		<cfreturn """:input[name='#params.ComparePropertyName#']""" />
+	</cffunction>
 
-		<cfset var theScript = "" />
-		<cfset var options = true/>
-		<cfset var messageScript =""/>
-		<cfset var propertyName=arguments.validation.getParameterValue('ComparePropertyName')>
-		<cfset var propertyDesc=arguments.validation.getParameterValue('ComparePropertyDesc')>
-		<cfset var failureMessage = createDefaultFailureMessage("#validation.getPropertyDesc()# must be the same as #variables.defaultFailureMessagePrefix##propertyDesc#.",arguments.locale) />
-		
-		<cfif Len(arguments.customMessage) gt 0>
-			<cfset failureMessage = arguments.customMessage />
-		</cfif>		
-		
-		<cfset messageScript = getMessageDef(failureMessage,"equalTo",arguments.locale)>
-		
-		<cfoutput>
-		<cfsavecontent variable="theScript">
-		#arguments.selector#.rules("add",{equalTo:":input[name='#propertyName#']"#messageScript#});
-		</cfsavecontent>
-		</cfoutput>
-
-		<cfreturn trim(theScript)/>
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfset var params = arguments.validation.getParameters() />
+		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as #variables.defaultFailureMessagePrefix##params.ComparePropertyDesc#.") />
 	</cffunction>
 
 </cfcomponent>

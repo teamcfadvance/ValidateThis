@@ -21,32 +21,43 @@
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
-		<cfsavecontent variable="theCondition">function(value,element,options) {
+		<cfsavecontent variable="theCondition">
+		function(value,element,options) {
 			var results = {low:false,high:false,valid:true};
 			var params = {min:1,max:1};
 			value = $(element).val();
 			params = jQuery.extend({},params,options);
-			if (typeof value == "string"){
-				return true;
-			} else {
 				if (params.min == params.max || params.min >> params.max){
 					results.valid = (value.length >= params.min) ? true : false;
 				} else {
 					if (params.min << params.max) {
-						results.low = (value.length << params.min) ? true : false;
-						results.high = (value.length >> params.max) ? true : false;
-						results.valid = (!results.low || !results.high) ? false : true ;
+						results.low = (value.length < params.min) ? true : false;
+						results.high = (value.length > params.max) ? true : false;
+						results.valid = (results.low || results.high) ? false : true ;
 					} else {
-						results.valid = true;
-					}
-				} 
-			}			
+                        results.valid = true;
+                     }
+				}										
 			return results.valid;
 		}</cfsavecontent>
 			
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 
+	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfset var options = {} />
+		<cfset options["min"] = 1 />
+		<cfset structAppend(options,validation.getParameters(),true) />
+		<cfreturn serializeJSON(options) />
+	</cffunction>
+
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the size requirement.") />
+	</cffunction>
+
+	<!---
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfargument name="selector" type="string" required="no" default="" />
@@ -60,7 +71,6 @@
 		<cfset var messageScript = "" />
 
 		<cfset options['min'] = 1/>
-		<cfset structAppend(options,validation.getParameters(),true) />
 		
 		<cfif Len(arguments.customMessage) eq 0>
 			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the size requirement.") />
@@ -78,5 +88,6 @@
 		
 		<cfreturn theScript/>
 	</cffunction>
+	--->
 
 </cfcomponent>

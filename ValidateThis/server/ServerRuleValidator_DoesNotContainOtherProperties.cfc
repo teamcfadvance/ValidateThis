@@ -31,10 +31,8 @@ Usage Example:
 			var propertyNames = "";
 			var theDelim= ",";
 
-		 	if (not shouldTest(arguments.validation)) {
+		 	if (not shouldTest(arguments.validation) or len(value) eq 0) {
 			   return;
-			} else if (len(value) eq 0){
-				fail(validation, createDefaultFailureMessage(arguments.validation.getFailureMessage()));
 			}
 
 			if (arguments.validation.hasParameter("delim")){

@@ -27,37 +27,23 @@
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage) />
 	</cffunction>
 
-	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="selector" type="Any" required="no" default="" />
-		<cfargument name="customMessage" type="Any" required="no" default="" />
-		<cfargument name="locale" type="Any" required="no" default="" />
-		<cfset var theScript = "" />
-		<cfset var valType = getValType() />
-		<cfset var params = arguments.validation.getParameters() />
+	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfset var options = true />
-		<cfset var failureMessage = "" />
-		
-		
-		<cfif Len(arguments.customMessage) eq 0>
-			<cfset failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the past.") />
-		</cfif>
-		
 		<cfif arguments.validation.hasParameter("before")>
 			<cfset options = {}/>
 			<cfset options["before"] = arguments.validation.getParameterValue("before") />
-			<cfset failureMessage = failureMessage & " The date entered must come before #arguments.validation.getParameterValue('before')#" />
 		</cfif>
-		
-		<cfset failureMessage = translate(failureMessage,arguments.locale) />
-		
-		<cfoutput>
-			<cfsavecontent variable="theScript">
-				#arguments.selector#.rules("add", { #valType# : #serializeJSON(options)##getMessageDef(failureMessage,valtype)# }); 
-			</cfsavecontent>
-		</cfoutput>
-		
-		<cfreturn theScript />
+		<cfreturn serializeJSON(options) />
+	</cffunction>
+
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfset var failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the past.") />
+		<cfif arguments.validation.hasParameter("before")>
+			<cfset failureMessage = failureMessage & " The date entered must come before #arguments.validation.getParameterValue('before')#." />
+		</cfif>
+		<cfreturn failureMessage />
 	</cffunction>
 
 </cfcomponent>

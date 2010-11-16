@@ -28,36 +28,23 @@
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage) />
 	</cffunction>
 	
-	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="selector" type="string" required="no" default="" />
-		<cfargument name="customMessage" type="string" required="no" default="" />
-		<cfargument name="locale" type="string" required="no" default="" />
-		<cfset var theScript = "" />
-		<cfset var valType = getValType() />
-		<cfset var params = arguments.validation.getParameters() />
+	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfset var options = true />
-		<cfset var messageScript = "" />
-		
-		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the future.") />
-		</cfif>
-		
 		<cfif arguments.validation.hasParameter("after")>
 			<cfset options = {}/>
 			<cfset options["after"] = arguments.validation.getParameterValue("after") />
-			<cfset arguments.customMessage = arguments.customMessage & " The date entered must come after #arguments.validation.getParameterValue('after')#" />
 		</cfif>
-		
-		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
-		
-		<cfoutput>
-			<cfsavecontent variable="theScript">
-				#arguments.selector#.rules("add", { #valType# : #serializeJSON(options)#, messages: {"#valType#": "#messageScript#"} }); 
-			</cfsavecontent>
-		</cfoutput>
-		
-		<cfreturn theScript />
+		<cfreturn serializeJSON(options) />
+	</cffunction>
+
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfset var failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the future.") />
+		<cfif arguments.validation.hasParameter("after")>
+			<cfset failureMessage = failureMessage & " The date entered must come after #arguments.validation.getParameterValue('after')#." />
+		</cfif>
+		<cfreturn failureMessage />
 	</cffunction>
 
 </cfcomponent>

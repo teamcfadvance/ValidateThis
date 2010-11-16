@@ -31,38 +31,9 @@
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 
-	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="selector" type="Any" required="no" default="" />
-		<cfargument name="customMessage" type="Any" required="no" default="" />
-		<cfargument name="locale" type="Any" required="no" default="" />
-
-		<cfset var theScript = "" />
-		<cfset var params = arguments.validation.getParameters()/>
-		<cfset var options = true/>
-		<cfset var messageScript = "" />
-		
-		<cfif len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# cannot contain HTML tags.") />
-		</cfif>
-		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
-		
-		<cfif structCount(params) gt 0>
-			<cfset options=params>
-		</cfif>
-
-		<cfoutput>
-		<cfsavecontent variable="theScript">
-		#arguments.selector#.rules("add", {
-			#getValType()# : #serializeJSON(options)#,
-			messages: {
-				#getValType()#: "#messageScript#"
-			} 
-		});
-		</cfsavecontent>
-		</cfoutput>
-
-		<cfreturn theScript/>
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# cannot contain HTML tags.") />
 	</cffunction>
 
 </cfcomponent>
