@@ -27,7 +27,7 @@
 	<cffunction name="validateReturnsTrueForValidBoolean" access="public" returntype="void">
 		<cfscript>
 			objectValue = true;
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -37,7 +37,7 @@
 	<cffunction name="validateReturnsFalseForInvalidBoolean" access="public" returntype="void">
 		<cfscript>
 			objectValue = "abc";
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -48,7 +48,7 @@
 		<cfscript>
 			objectValue = "abc";
             failureMessage = "The PropertyDesc must be a valid boolean.";
-            validationMockup();
+            configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setFailureMessage(failureMessage); 
@@ -60,7 +60,7 @@
 			SRV = getSRV("Boolean","");
 			objectValue = "abc";
             failureMessage = "PropertyDesc must be a valid boolean.";
-            validationMockup();
+            configureValidationMock();
 
 			SRV.validate(validation);
 			validation.verifyTimes(1).setFailureMessage(failureMessage); 

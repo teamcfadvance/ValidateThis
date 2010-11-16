@@ -15,35 +15,14 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTestsWithDataproviders" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			SRV = getSRV("date");
+			shouldPass = ["2010-01-01","Jan 1, 2010"];
+			shouldFail = ["a"];
 		</cfscript>
 	</cffunction>
-	
-	<cffunction name="validateReturnsTrueForValidDate" access="public" returntype="void">
-		<cfscript>
-			
-			objectValue = Now();
-            validationMockup();
-            
-			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
-	<cffunction name="validateReturnsFalseForInvalidDate" access="public" returntype="void">
-		<cfscript>
-			
-			objectValue = "abc";
-            validationMockup();
-
-			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
+		
 </cfcomponent>

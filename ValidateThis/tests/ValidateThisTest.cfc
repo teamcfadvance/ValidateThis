@@ -32,7 +32,7 @@
 	
 	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
 		<cfscript>
-			assertEquals("0.97",ValidateThis.getVersion());
+			assertEquals("0.98",ValidateThis.getVersion());
 		</cfscript>  
 	</cffunction>
 
@@ -135,7 +135,6 @@
 			result = ValidateThis.validate(theObject=theStruct,context="Profile");
 			AssertFalse(result.getIsSuccess());
 			Failures = result.getFailures();
-			debug(Failures);
 			assertEquals(10,ArrayLen(Failures));
 			Failure = Failures[1];
 			assertEquals(Failure.Type,"required");
@@ -226,7 +225,6 @@
 			theObject = createObject("component","Fixture.APlainCFC_Fixture_cfm");
 			BOValidator = ValidateThis.getValidator(theObject=theObject);
 			allContexts = BOValidator.getAllContexts();
-			debug(allContexts);
 			assertEquals(true,structKeyExists(allContexts,"___Default"));
 			assertEquals("firstName",allContexts.___Default[1].propertyName);
 			assertEquals("lastName",allContexts.___Default[2].propertyName);

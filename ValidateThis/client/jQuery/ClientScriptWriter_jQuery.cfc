@@ -49,6 +49,7 @@
 	</cffunction>
 
 	<cffunction name="generateVTSetupScript" returntype="any" access="public" output="false" hint="I generate the JS to do some initial setup.">
+		<cfargument name="locale" type="Any" required="no" default="" />
 		<cfset var scripter = "" />
 		<cfset var theScript = "" />
 		<cfset var scripters = this.getRuleScripters()/>
@@ -59,7 +60,7 @@
 			jQuery(document).ready(function() {
 			<cfloop collection="#scripters#" item="scripter">
 				<cfif structKeyExists(scripters[scripter],"generateInitScript")>
-					#scripters[scripter].generateInitScript()#
+					#scripters[scripter].generateInitScript(arguments.locale)#
 				</cfif>
 			</cfloop>
 			});

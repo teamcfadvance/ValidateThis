@@ -19,37 +19,60 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			ObjectChecker = mock();
-			ObjectChecker.findGetter("{*}").returns("getFirstName()");
-
-			// Define Validation Mockup Test Values
+			
+			// local variables used by common tests and methods
+			needsFacade=false;
+			emptyValueShouldFail = true;
+			
+			// mocks used
+			validation = mock();		// see  core/Validation.cfc
+			theObject = mock();
+			validateThis = "";
+			
+			//Default Validation Mock Values
+			propertyDesc="PropertyDesc";
+			propertyName="PropertyName";
 			parameters={};
 			objectValue = "";
 			isRequired = true;
 			failureMessage = "";
-            
-            theObject = mock();
-            validation = mock();
-            
+			
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
-		<cfscript>			
-            validation.setIsSuccess(false).returns();
-            validation.getPropertyDesc().returns("PropertyDesc");
-            validation.getFailureMessage().returns(failureMessage);
-            validation.setFailureMessage(failureMessage).returns();
+	<cffunction name="createRealFacade" access="private">
+		<cfscript>
+  		   // Integration Testing
+			VTConfig = {definitionPath="/validatethis/tests/Fixture/models/cf9"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+			
+		</cfscript>
+	</cffunction>
+	
+	<cffunction name="configureValidationMock" access="private">
+		<cfscript>
+
+			if (needsFacade eq true){
+				createRealFacade();
+			}
+
+			validation.setIsSuccess(false).returns();
+			validation.getValidateThis().returns(ValidateThis);
+			validation.getPropertyDesc().returns(propertyDesc);
+			validation.getPropertyName().returns(propertyName);
+			validation.getClientFieldName().returns(propertyName);
+			validation.getFailureMessage().returns(failureMessage);
+			validation.setFailureMessage(failureMessage).returns();
 			validation.getIsRequired().returns(isRequired);
 			validation.getParameters().returns(parameters);
 			validation.getObjectValue().returns(objectValue);
-	        validation.getTheObject().returns(theObject);
+			validation.getTheObject().returns(theObject);
 		</cfscript>
 	</cffunction>
-
+	
 	<!--- These two tests will be identical for each SRV, but should be run for each --->
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
@@ -58,7 +81,7 @@
 			isRequired=false;
 			failureMessage = "";
 			
-			validationMockup();			
+			configureValidationMock();			
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -71,10 +94,14 @@
 			isRequired = true;
 			failureMessage = "";
 			
-			validationMockup();
+			configureValidationMock();
 			
-			SRV.validate(validation);			
-			validation.verifyTimes(1).setIsSuccess(false); 
+			SRV.validate(validation);
+			if (emptyValueShouldFail) {
+				validation.verifyTimes(1).setIsSuccess(false);
+			} else { 
+				validation.verifyTimes(0).setIsSuccess(false); 
+			}	
 		</cfscript>  
 	</cffunction>
 	
@@ -87,5 +114,3 @@
 	</cffunction>
 
 </cfcomponent>
-
-

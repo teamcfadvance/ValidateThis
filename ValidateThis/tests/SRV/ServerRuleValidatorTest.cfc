@@ -21,7 +21,7 @@
 			objectValue = "";
 			failureMessage = "The PropertyDesc is required.";
             
-            validationMockup();			
+            configureValidationMock();			
             
 			SRV.validate(validation);
 			validation.verifyTimes(1).setFailureMessage(failureMessage); 
@@ -34,7 +34,7 @@
 			objectValue = "";
             failureMessage = "PropertyDesc is required.";
             
-            validationMockup();         
+            configureValidationMock();         
             
             SRV.validate(validation);
             validation.verifyTimes(1).setFailureMessage(failureMessage); 

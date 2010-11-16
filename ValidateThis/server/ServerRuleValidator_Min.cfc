@@ -19,7 +19,7 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
 		<cfset var Parameters = arguments.validation.getParameters() />
-		<cfif shouldTest(arguments.validation) AND Val(arguments.validation.getObjectValue()) LT Parameters.Min>
+		<cfif shouldTest(arguments.validation) and Val(arguments.validation.getObjectValue()) LT Parameters.Min>
 			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be at least #Parameters.Min#.")) />
 		</cfif>
 	</cffunction>

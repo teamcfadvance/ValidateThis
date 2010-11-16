@@ -2,7 +2,7 @@
 	
 	// **************************************** LICENSE INFO **************************************** \\
 	
-	Copyright 2010, Adam Drew
+	Copyright 2010, Bob Silverberg
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -15,13 +15,11 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTestsWithDataproviders" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			SRV = getSRV("PastDate");
-			parameters = {before="12/29/1968"};
 			defaultBefore="12/29/1968";
             hasBefore = true;
 			shouldPassDefault = ["12/21/1920","Dec. 21 1920"];
@@ -30,9 +28,10 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
         <cfscript>
-           super.validationMockup();
+			if (not isDefined("parameters")) {parameters = {before="12/29/1968"};}
+           super.configureValidationMock();
            validation.hasParameter("before").returns(hasBefore);
            validation.getParameterValue("before").returns(defaultBefore);      
         </cfscript>
@@ -41,11 +40,11 @@
 	<cffunction name="validateReturnsTrueForDateWithNoBeforeParam" access="public" returntype="void" mxunit:dataprovider="shouldPassDefault">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
-			setup();
+			super.setup();
 			parameters = structNew();
 			hasBefore = false;
 			objectValue = arguments.value;
-			validationMockup();
+			configureValidationMock();
 
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -55,12 +54,12 @@
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
-			setup();
+			super.setup();
 			
             hasBefore = true;
             defaultBefore = "1/2/1969";
             objectValue = arguments.value;
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -70,13 +69,12 @@
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
-			setup();
+			super.setup();
 			
 			hasBefore = true;
             objectValue = arguments.value;
-            validationMockup();
+            configureValidationMock();
 			
-			debug(arguments.value);
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
@@ -84,11 +82,12 @@
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			hasBefore = true;
             objectValue = "";
             isRequired=false;
             
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -97,11 +96,12 @@
 
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
+			super.setup();
 			hasBefore = true;
             objectValue = "";
             isRequired=true;
             
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

@@ -18,11 +18,11 @@ VTML
 		
 		<cfset variables.VTML = structNew() />
 		<!--- Default VTML REGEX MATCHER --->
-		<cfset variables.VTML.RulePattern = '^[\w].*[\([\w=?\w,?]+]?\)]?.*[\[.*\]]?.*[{.*}]?.*[".*"]?.*[\w]?\|?[\w]?[:\w]?(\+|;)?(\s|\n)?' />
+		<cfset variables.VTML.RulePattern = '^[\w].*[\([\w=?\w\|?]+]?\)]?.*[\[.*\]]?.*[{.*}]?.*[".*"]?.*[\w]?\|?[\w]?[:\w]?(\+|;)?(\s|\n)?' />
 		<!--- start with the valType --->
 		<cfset variables.VTML.ValType = {Test='^\w+'} />
 		<!--- match for () parameter group --->
-		<cfset variables.VTML.Parameters = {Test='\(.*\)'} />
+		<cfset variables.VTML.Parameters = {Test='\(.*\)',Getter='\(|\)',Splitter='\|',ListDelim=',',ParamTest='(\w+=\w+)'} />
 		<!--- match for [] context list--->
 		<cfset variables.VTML.Contexts =  {Test='\[.*\]'} />
 		<!--- match for {} condition block with optional crap before it --->
@@ -62,6 +62,7 @@ VTML
 			</cfif>	
 			
 			<cfcatch>
+				<!--- <cfthrow object="#cfcatch#"/> --->
 				<cfthrow type="Custom" extendedinfo="#cfcatch.message#" detail="#localSource.toString()#" errorcode="ValidateThis.core.AnnotationReader.InvalidMarkup" message="The annotation format is invalid. #arguments.theSource#" />
 			</cfcatch>
 		</cftry>
@@ -107,7 +108,7 @@ VTML
 
 						if (test.HasParameters){
 							pos.Parameters = reFind(variables.VTML.Parameters.Test,theRule,0,true);
-							theParameters = getElementFromVTMLRule(theRule,pos.Parameters,"\(|\)");
+							theParameters = getElementFromVTMLRule(theRule,pos.Parameters,variables.VTML.Parameters.Getter);
 							if (len(theParameters)){
 								rule.params = createParametersArray(theParameters);
 							}
@@ -133,9 +134,11 @@ VTML
 							// why are we here?
 						}
 				</cfscript>
+				
 				<cfset structInsert(result.Tests,theRule,test) />
 				<cfset structInsert(result.Positions,theRule,pos) />
 				<cfset arrayAppend(result.Rules,rule) />
+				
 			</cfloop>
 			<cfcatch>
 				<cfthrow message="#cfcatch.message#" type="ValidateThis.core.AnnotationReader.VTMLConversionError" detail="#cfcatch.detail#" />
@@ -167,12 +170,14 @@ VTML
 		<cfset var splitPairs = 0 />
 		<cfset var pair = 0 />
 		<cfset var splitParams = 0 />
+		<cfset var vtml = variables.VTML.Parameters/>
 		<cftry>
-			<cfset test = reFind("(\w+=\w+),?",arguments.theString) />
+			<cfset test = reFind("#vtml.ParamTest##vtml.splitter#?",arguments.theString) />
 			<cfif test>
-				<cfset splitPairs =  arguments.theString.split(",") />
+				<cfset splitPairs =  arguments.theString.split(vtml.Splitter) />
 				<cfif isArray(splitPairs) and ArrayLen(splitPairs) gt 0>
 					<cfloop array="#splitPairs#" index="pair">
+						<cfset param = structNew()/>
 						<cfset splitParams = pair.split("=") />
 						<cfif isArray(splitParams) and ArrayLen(splitParams) eq 2>
 							<cfset structInsert(param,"name",splitParams[1],true) />
@@ -274,6 +279,7 @@ VTML
 	</cffunction>
 
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I take the object metadta and reformat it into private properties">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="metadataSource" type="any" required="true" hint="the object metadata" />
 		<cfset var properties = {}/>
 		<cfif structKeyExists(arguments.metadataSource,"vtConditions")>
@@ -285,7 +291,7 @@ VTML
 		<cfif structKeyExists(arguments.metadataSource,"properties")>
 			<cfset properties = reformatProperties(arguments.metadataSource.properties)>
 			<cfset processPropertyDescs(properties) />
-			<cfset processPropertyRules(properties) />
+			<cfset processPropertyRules(arguments.objectType,properties) />
 		</cfif>
 
 	</cffunction>

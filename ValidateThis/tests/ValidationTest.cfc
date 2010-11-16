@@ -41,6 +41,7 @@
 			valStruct.PropertyDesc = "First Name";
 			valStruct.Parameters = StructNew();
 			valStruct.Parameters.Param1 = {type="value",value="1"};
+			valStruct.ObjectType = "user";
 			theValue = "Bob";
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
 			Validation.setup(ValidateThis,obj);
@@ -54,6 +55,7 @@
 			assertTrue(IsObject(Validation.getTheObject()));
 			assertEquals(theValue,Validation.getObjectValue());
 			assertTrue(Validation.getIsSuccess());
+			assertEquals("user",Validation.getObjectType());
 		</cfscript>  
 	</cffunction>
 
@@ -331,6 +333,20 @@
 			parameters = validation.getParameters();
 			assertEquals(2,structCount(parameters));
 			assertEquals(9,parameters.Param2);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getObjectTypeReturnsLoadedObjectType" access="public" returntype="void">
+		<cfscript>
+			objectChecker = mock();
+			objectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			valStruct.objectType = "user";
+			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.load(valStruct);
+			assertEquals("user",validation.getObjectType());
 		</cfscript>  
 	</cffunction>
 

@@ -15,33 +15,14 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTestsWithDataproviders" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			SRV = getSRV("Numeric");
+			shouldPass = [1,-1,0,1234567890,-1234567890,1.1,-1.1,123456789.0,-123456789.0];
+			shouldFail = ["a","5a","2010-01-01","5:25pm"];
 		</cfscript>
-	</cffunction>
-	
-	<cffunction name="validateReturnsTrueForValidNumeric" access="public" returntype="void">
-		<cfscript>
-			objectValue = 1;
-            
-            validationMockup();
-			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
-	<cffunction name="validateReturnsFalseForInvalidNumeric" access="public" returntype="void">
-		<cfscript>
-			objectValue = "abc";
-            
-            validationMockup();
-			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-		</cfscript>  
 	</cffunction>
 	
 </cfcomponent>

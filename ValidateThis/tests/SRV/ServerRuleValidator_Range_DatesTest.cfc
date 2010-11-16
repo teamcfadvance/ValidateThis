@@ -30,7 +30,7 @@
 		<cfscript>
 			objectValue = "2010-12-19";
 			
-			validationMockup();
+			configureValidationMock();
 
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -41,7 +41,7 @@
 		<cfscript>
             objectValue = "2010-2-19";
             
-            validationMockup();
+            configureValidationMock();
 
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

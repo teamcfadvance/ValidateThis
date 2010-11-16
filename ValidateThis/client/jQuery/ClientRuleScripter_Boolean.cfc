@@ -34,13 +34,11 @@
 		
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
-	
-	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 
-		<cfreturn "#getValType()#: true" />
-		
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid boolean value.") />
 	</cffunction>
-	
+
 </cfcomponent>
 

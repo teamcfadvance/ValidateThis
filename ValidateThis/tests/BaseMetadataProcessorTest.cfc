@@ -34,7 +34,7 @@
 	<cffunction name="processPropertyRulesShouldPickupTypeAttribute" access="public" returntype="void">
 		<cfscript>
 			properties = [{name="theName",rules=[{type="required",params=[{name="min",value=5,type="expression"},{name="max",value=10,type="value"}]}]}];
-			baseMetadataProcessor.processPropertyRules(properties);
+			baseMetadataProcessor.processPropertyRules("user",properties);
 			validations = baseMetadataProcessor.getVariables().validations;
 			parameters = validations.contexts.___default[1].parameters;
 			assertEquals(true,isStruct(parameters.min));
@@ -42,7 +42,17 @@
 			assertEquals("expression",parameters.min.type);
 			assertEquals(10,parameters.max.value);
 			assertEquals("value",parameters.max.type);
-			debug(validations);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="processPropertyRulesShouldAddObjectTypeToEachValidation" access="public" returntype="void">
+		<cfscript>
+			properties = [{name="theName",rules=[{type="required"},{type="email"}]}];
+			baseMetadataProcessor.processPropertyRules("user",properties);
+			validations = baseMetadataProcessor.getVariables().validations;
+			validations = validations.contexts.___default;
+			assertEquals("user",validations[1].objectType);
+			assertEquals("user",validations[2].objectType);
 		</cfscript>  
 	</cffunction>
 

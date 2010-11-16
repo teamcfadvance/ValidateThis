@@ -13,9 +13,11 @@
 	
 */
 component persistent="true" table="tblUser_A" 
-	vtContexts=''
-	vtConditions='' 
-{
+	vtContexts='[{"name":"Register","formName":"frmRegister"},{"name":"Profile","formName":"frmProfile"}]'
+	vtConditions='[{"name":"mustLikeSomething", 
+		"serverTest":"getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0",
+		"clientTest":"$(\"[name=''likeCheese'']\").getValue() == 0 && $(\"[name=''likeChocolate'']\").getValue() == 0;"}]' {
+
 	
 	property name="userId" type="numeric" fieldtype="id" generator="native";
 	
@@ -28,12 +30,12 @@ component persistent="true" table="tblUser_A"
 	property name="userPass" displayName="Password" 
 		vtRules='
 			required();
-			rangelength(minlength=5,maxLength=10);
+			rangelength(minlength=5|maxLength=10);
 		';
 	
 	property name="nickname" 
 		vtRules='
-			custom(methodName=CheckDupNickname,remoteURL=CheckDupNickName.cfm) "That Nickname is already taken. Please try a different Nickname.";
+			custom(methodName=CheckDupNickname|remoteURL=CheckDupNickName.cfm) "That Nickname is already taken. Please try a different Nickname.";
 		';
 		
 	property name="salutation" 
@@ -66,7 +68,7 @@ component persistent="true" table="tblUser_A"
 
 	property name="communicationMethod" 
 		vtRules='
-			required(DependentPropertyName=AllowCommunication,DependentPropertyValue=1) "If you are allowing communication, you must choose a communication method.";
+			required(DependentPropertyName=AllowCommunication|DependentPropertyValue=1) "If you are allowing communication, you must choose a communication method.";
 		';
 		
 	property name="howMuch" displayName="How much money would you like?" ormtype="double" default="0" 

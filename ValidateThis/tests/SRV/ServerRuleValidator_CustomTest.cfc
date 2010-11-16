@@ -26,32 +26,63 @@
 			parameters = {MethodName=defaultMethod};
 			hasMethod = true;
 			hasRemote = false;
+			proxied = false;
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
-        <cfscript>
-           super.validationMockup();           
-           validation.hasParameter("methodName").returns(hasMethod);
-           validation.hasParameter("remoteURL").returns(hasRemote);
-           validation.getParameterValue("methodName").returns(defaultMethod);
-           validation.getParameterValue("remoteURL").returns(defaultRemoteURL);        
-        </cfscript>
-    </cffunction>
-	
-	<cffunction name="placeholderForTestsForRemoteURLThatAdamAdded" access="public" returntype="void">
+	<cffunction name="configureValidationMock" access="private">
 		<cfscript>
-			fail("This is a placeholder test for tests that need to be added.");
-		</cfscript>  
+			super.configureValidationMock();
+			validation.hasParameter("methodName").returns(hasMethod);
+			validation.hasParameter("remoteURL").returns(hasRemote);
+			validation.getParameterValue("methodName").returns(defaultMethod);
+			validation.getParameterValue("remoteURL").returns(defaultRemoteURL);
+			validation.getParameterValue("proxied","false").returns(proxied);
+		</cfscript>
+	</cffunction>
+	
+	<cffunction name="validateReturnsTrueForValidRemoteURLCall" access="public" returntype="void">
+		<cfscript>
+			defaultMethod = "isIndeedValid";
+			defaultRemoteURL = "/validatethis/samples/remotedemo/remoteproxy.cfc";
+			hasMethod = true;
+			hasRemote = true;
+			proxied = true;
+			objectValue="";
+			
+			parameters = {remoteURL=defaultRemoteURL};
+
+			configureValidationMock();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(0).setIsSuccess(false); 
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="validateReturnsFalseForInvalidRemoteURLCall" access="public" returntype="void">
+		<cfscript>
+			defaultMethod = "isInvalid";
+			defaultRemoteURL = "/validatethis/samples/remotedemo/remoteproxy.cfc";
+			parameters = {remoteURL=defaultRemoteURL};
+			hasMethod = true;
+			hasRemote = true;
+			proxied = true;
+			objectValue="";
+			
+			configureValidationMock();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(1).setIsSuccess(false); 
+		</cfscript>
 	</cffunction>
 
 	<cffunction name="validateReturnsFalseWhenMethodReturnsFailure" access="public" returntype="void">
 		<cfscript>
 			customResult = {IsSuccess=false,FailureMessage="A custom validator failed."};
 			theObject.myMethod().returns(customResult);
-            objectValue="";
-            
-            validationMockup();
+			objectValue="";
+			
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -64,7 +95,7 @@
 			theObject.myMethod().returns(customResult);
 			objectValue="";            
 			
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -78,11 +109,10 @@
 			objectValue="";
 			failureMessage = "A custom validator failed.";
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
-			debug(validation.debugMock());
 			validation.verifyTimes(1).setFailureMessage("A custom validator failed."); 
 		</cfscript>  
 	</cffunction>
@@ -93,7 +123,7 @@
 			theObject.myMethod().returns(customResult);
 			objectValue = "";
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
@@ -108,11 +138,10 @@
 			objectValue = "";
 			failureMessage = "A custom failure message.";
             
-            validationMockup();
+            configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
-			debug(validation.debugMock());
 			validation.verifyTimes(1).setFailureMessage(failureMessage); 
 		</cfscript>  
 	</cffunction>
@@ -124,7 +153,7 @@
 			objectValue = "";
 			isRequired = false;
             
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
@@ -138,7 +167,7 @@
 			objectValue = "";
             isRequired = true;
             
-            validationMockup();
+            configureValidationMock();
             
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

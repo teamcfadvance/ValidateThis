@@ -15,27 +15,23 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTestsWithDataproviders" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			SRV = getSRV("dateRange");
 			parameters = {from="12/29/1968",until="1/1/1969"};
 
 			
 			shouldPass = ["12/31/1968",dateFormat("12/31/1968"),"Dec. 31 1968","12/31/68","31/12/1968","1968-12-31"];
-			shouldFail = ["12/28/1969","12/29/1968","1/2/1969","01/02/1969","12/31/1969","2010-12-31"];
+			shouldFail = ["12/28/1969","12/29/1968","1/2/1969","01/02/1969","12/31/1969","2010-12-31","abc",-1];
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="validationMockup" access="private">
+	<cffunction name="configureValidationMock" access="private">
         <cfscript>
             
-           super.validationMockup();
-            
-           validation.hasParameter("from").returns(true);
-           validation.hasParameter("until").returns(true);
+           super.configureValidationMock();
             
            validation.getParameterValue("from").returns("12/30/1968");
            validation.getParameterValue("until").returns("1/1/1969");
@@ -43,39 +39,13 @@
         </cfscript>
     </cffunction>
     
-	
-	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
-		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
-		<cfscript>
-			setup();
-			objectValue = arguments.value;
-			
-			validationMockup();
-			
-			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
-	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
-		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
-		<cfscript>
-			setup();
-			objectValue = arguments.value;
-
-			validationMockup();
-			
-			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-		</cfscript>  
-	</cffunction>
-	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
+			super.setup();
 			objectValue = "";
 			isRequired = true;
 			
-			validationMockup();
+			configureValidationMock();
 			
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 

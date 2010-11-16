@@ -20,7 +20,7 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("AssertFalse");
+			SRV = getSRV("False");
 		</cfscript>
 	</cffunction>
 	
@@ -28,7 +28,7 @@
 		<cfscript>
 			objectValue = false;
             
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(0).setIsSuccess(false); 
 		</cfscript>  
@@ -38,17 +38,17 @@
 		<cfscript>
 			objectValue = true;
             
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
 	</cffunction>
 	
 	<cffunction name="validateReturnsFalseForInvalidBoolean" access="public" returntype="void">
-0		<cfscript>
+		<cfscript>
 			objectValue = "abc";
             
-            validationMockup();
+            configureValidationMock();
 			SRV.validate(validation);
 			validation.verifyTimes(1).setIsSuccess(false); 
 		</cfscript>  
