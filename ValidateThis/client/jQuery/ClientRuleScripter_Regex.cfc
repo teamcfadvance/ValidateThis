@@ -13,32 +13,38 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ClientRuleScripter_Regex" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the regex validation.">
+<cfcomponent output="false" name="ClientRuleScripter_regex" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the regex validation.">
 
-	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="formName" type="Any" required="yes" />
-		<cfargument name="defaultFailureMessagePrefix" type="Any" required="yes" />
-		<cfargument name="customMessage" type="Any" required="no" default="" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
+		<cfargument name="defaultMessage" type="string" required="false" default="The value entered does not match the specified pattern ({0})">
+		<cfset theScript="">
+		
+		<!--- JAVASCRIPT VALIDATION METHOD --->
+		<cfsavecontent variable="theCondition">function(value, element, param) {
+			var re = param;
+			return this.optional(element) || re.test(value);
+		}</cfsavecontent>
 
-		<cfset var theRegex = "" />
-		<cfset var parameters = arguments.validation.getParameters() />
+		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
+	</cffunction>
+	
+	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfset var options = "" />
+        <cfif arguments.validation.hasParameter("Regex")>
+            <cfset options = arguments.validation.getParameterValue("Regex") />
+        <cfelseif arguments.validation.hasParameter("ServerRegex")>
+            <cfset options = arguments.validation.getParameterValue("ServerRegex")/>
+        <cfelse>            
+            <cfthrow type="validatethis.client.jQuery.ClientRuleScripter_Regex.missingParameter"
+            message="Either a regex or a serverRegex parameter must be defined for a regex rule type." />
+        </cfif>
+		<cfreturn "/#options#/" />
+	</cffunction>
 
-		<cfif StructKeyExists(parameters,"ServerRegex")>
-			<cfset theRegex = parameters.ServerRegex />
-		<cfelseif StructKeyExists(parameters,"Regex")>
-			<cfset theRegex = parameters.Regex />
-		</cfif>
-
-		<cfif len(arguments.customMessage) EQ 0>
-			<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# does not match the specified pattern." />
-		</cfif>
-
-		<cfreturn generateAddMethod(arguments.validation,arguments.formName,"/#theRegex#/",arguments.customMessage,arguments.locale) />
-
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the specified pattern.") />
 	</cffunction>
 
 </cfcomponent>
-
-

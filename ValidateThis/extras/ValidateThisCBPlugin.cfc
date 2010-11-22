@@ -157,7 +157,6 @@
 		<cfreturn variables.ValidateThis.addRule(argumentCollection=arguments) />
 	</cffunction>
 
-
 	<cffunction name="onMissingMethod" access="public" output="false" returntype="Any" hint="I am used to pass all method calls to the composed ValidateThis object.">
 		<cfargument name="missingMethodName" type="any" required="true" />
 		<cfargument name="missingMethodArguments" type="any" required="true" />
@@ -173,6 +172,13 @@
 		
 	</cffunction>
 
+	<cffunction name="loadValidators" returnType="void" access="public" output="false" hint="I am used to add a rule via CFML code">
+		<cfargument name="objectList" type="string" required="true" />
+		
+		<cfreturn variables.ValidateThis.loadValidators(argumentCollection=arguments) />
+		
+	</cffunction>
+	
 </cfcomponent>
 	
 

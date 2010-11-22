@@ -16,12 +16,16 @@
 <cfcomponent output="false" name="ServerRuleValidator_EqualTo" extends="AbstractServerRuleValidator" hint="I am responsible for performing the EqualTo validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var Parameters = arguments.valObject.getParameters() />
-		<cfset var otherVal = arguments.valObject.getObjectValue(Parameters.ComparePropertyName) />
-		<cfif arguments.valObject.getObjectValue() NEQ otherVal>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must be the same as the #Parameters.ComparePropertyDesc#.")) />
+		<cfset var otherPropertyName = arguments.validation.getParameterValue("ComparePropertyName") />
+		<cfset var otherVal = arguments.validation.getObjectValue(otherPropertyName) />
+		<cfset var otherDesc = arguments.validation.getParameterValue("ComparePropertyDesc","") />
+		<cfif len(otherDesc) eq 0>
+			<cfset otherDesc = arguments.validation.getValidateThis().getPropertyDescription(objectType=arguments.validation.getObjectType(),propertyName="otherPropertyName") />
+		</cfif>
+		<cfif arguments.validation.getObjectValue() NEQ otherVal>
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as #lCase(variables.defaultFailureMessagePrefix)##otherDesc#.")) />
 		</cfif>
 	</cffunction>
 

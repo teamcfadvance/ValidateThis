@@ -60,6 +60,7 @@
 	</cffunction>
 
 	<cffunction name="loadRulesFromAnnotations" returnType="any" access="public" output="false" hint="I read the validation metadata from external files and reformat it into a struct">
+		<cfargument name="objectType" type="any" required="true" />
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="componentPath" type="any" required="true" />
 
@@ -71,7 +72,7 @@
 			<cfset annotationFormat = determineAnnotationFormat(md.properties) />
 			<cfif len(annotationFormat) gt 1>
 				<cfset annotationTypeReader = variables.transientFactory.create("AnnotationTypeReader_" & annotationFormat) />
-				<cfset rulesStruct = annotationTypeReader.getValidations(md) />
+				<cfset rulesStruct = annotationTypeReader.getValidations(arguments.objectType,md) />
 			</cfif>
 		</cfif>
 		

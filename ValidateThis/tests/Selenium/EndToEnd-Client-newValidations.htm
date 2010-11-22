@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost/validatethis/tests/selenium/FacadeDemo/index.cfm?init=true" />
+<title>EndToEnd-Client-newValidations</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">EndToEnd-Client-newValidations</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>http://localhost/validatethis/tests/selenium/FacadeDemo/index.cfm?init=true&amp;context=newValidations-client</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ValidateThis Demo Page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>a</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address must contain a date between 2010-01-01 and 2011-12-31.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2010-02-02</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address must be a date in the future. The date entered must come after 2010-12-31.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2011-02-02</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address must be a date in the past. The date entered must come before 2011-02-01.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2011-01-31</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address was not found in list: (2011-01-30,2011-01-29).</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>2011-01-29</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address was found in list: (2011-01-29,2011-01-28).</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>&lt;input&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
+	<td>The Nickname cannot contain HTML tags.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>something 2011-01-29 something else</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
+	<td>The Nickname must not contain the values of properties named: UserName,UserPass.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>something thePass something else</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td>thePass</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
+	<td>The Nickname must not contain the values of properties named: UserName,UserPass.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>a</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
+	<td>Did not match the patterns for the Nickname.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>aB1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
+	<td>Please enter a valid URL.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>http://aB1.com</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[2]/p[1]</td>
+	<td>Please enter a valid URL.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td>@</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password must be a valid boolean value.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password must be false.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td>no</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password must be true.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frm-Main2']/fieldset[2]/div[1]/p[1]</td>
+	<td>The Salutation does not match the size requirement.</td>
+</tr>
+</tbody></table>
+</body>
+</html>

@@ -38,7 +38,12 @@
 			<cfset objNames = variables.fileSystem.listFiles(actualPath)/>
 			<cfloop list="#objNames#" index="obj">
 				<cfif ListLast(obj,".") EQ "cfc" AND obj CONTAINS arguments.fileNamePrefix>
-					<cfset arguments.childCollection[replaceNoCase(ListLast(obj,"_"),".cfc","")] = CreateObject("component",componentPath & ReplaceNoCase(obj,".cfc","")).init(argumentCollection=arguments.initArguments) />
+					<cftry>
+						<cfset arguments.childCollection[replaceNoCase(ListLast(obj,"_"),".cfc","")] = CreateObject("component",componentPath & ReplaceNoCase(obj,".cfc","")).init(argumentCollection=arguments.initArguments) />
+						<cfcatch type="any">
+							<cfthrow type="ValidateThis.core.ChildObjectFactory.ErrorCreatingChildObject" message="Error creating #componentPath & obj# : #cfcatch.message#" />
+						</cfcatch>
+					</cftry>
 				</cfif>
 			</cfloop>
 		</cfloop>
@@ -47,5 +52,7 @@
 	</cffunction>
 	
 </cfcomponent>
+
+
 	
 

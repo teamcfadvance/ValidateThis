@@ -16,26 +16,33 @@
 <cfcomponent displayname="Validation" output="false" hint="I am a transient validation object.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I am the constructor">
-
 		<cfargument name="objectChecker" type="any" required="yes" hint="A component used to distinguish object types" />
 		<cfargument name="parameter" type="any" required="yes" hint="A reusable transient Parameter object" />
+
 		<cfset variables.objectChecker = arguments.objectChecker />
 		<cfset variables.parameter = arguments.parameter />
 		<cfset variables.parameter.setup(this) />
+		
 		<cfreturn this />
 
 	</cffunction>
 
 	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
+		<cfargument name="ValidateThis" type="any" required="yes" hint="The ValidateThis.cfc facade object" />
 		<cfargument name="theObject" type="any" required="no" default="" hint="The object being validated" />
+		
+		<cfset variables.ValidateThis = arguments.ValidateThis />
 		<cfset variables.theObject = arguments.theObject />
+		<cfset variables.currentLocale = arguments.ValidateThis.getValidateThisConfig().defaultLocale />
+		<cfset variables.context = "" />
+		
 		<cfreturn this />
+		
 	</cffunction>
 
 	<cffunction name="load" access="Public" returntype="any" output="false" hint="I load a fresh validation rule into the validation object, which allows it to be reused">
-
 		<cfargument name="ValStruct" type="any" required="yes" hint="The validation struct from the xml file" />
-
+		
 		<cfset variables.instance = Duplicate(arguments.ValStruct) />
 		<cfset variables.instance.IsSuccess = true />
 		<cfparam name="variables.instance.FailureMessage" default="" />
@@ -43,7 +50,7 @@
 		<cfreturn this />
 
 	</cffunction>
-
+	
 	<cffunction name="getObjectValue" access="public" output="false" returntype="any" hint="I return the value from the stored object that corresponds to the field being validated.">
 		<cfargument name="propertyName" type="any" required="false" default="#getPropertyName()#" />
 		<cfset var theValue = "" />
@@ -76,7 +83,12 @@
 
 	<cffunction name="getParameterValue" access="public" output="false" returntype="any">
 		<cfargument name="parameterName" type="string" required="true" />
-		<cfreturn getParameter(arguments.parameterName).getValue() />
+		<cfargument name="defaultValue" type="any" required="false" default="" />
+		<cfset var theVal = arguments.defaultValue/>
+		<cfif hasParameter(arguments.parameterName)>
+			<cfset theVal = getParameter(arguments.parameterName).getValue() />
+		</cfif>
+		<cfreturn theVal/>
 	</cffunction>
 
 	<cffunction name="getParameters" access="public" output="false" returntype="any" hint="This will process the Parameters struct to return just values.">
@@ -97,9 +109,18 @@
 		<cfset variables.instance.Parameters[arguments.name] = {value=arguments.value,type=arguments.type} />
 		
 	</cffunction>
+	
+	<cffunction name="hasParameter" access="public" output="false" returntype="boolean">
+		<cfargument name="name" type="string" required="true" />
+		<cfreturn structKeyExists(variables.instance.Parameters,arguments.name) />		
+	</cffunction>
 
 	<cffunction name="hasObject" access="public" output="false" returntype="boolean">
 		<cfreturn structKeyExists(variables,"theObject") />		
+	</cffunction>
+
+	<cffunction name="getValidateThis" access="public" output="false" returntype="any">
+		<cfreturn variables.ValidateThis />
 	</cffunction>
 
 	<cffunction name="getMemento" access="public" output="false" returntype="any">
@@ -138,11 +159,11 @@
 		<cfset variables.instance.PropertyDesc = arguments.PropertyDesc />
 	</cffunction>
 
-	<cffunction name="setParameters" returntype="void" access="private" output="false">
+	<cffunction name="setParameters" returntype="void" access="public" output="false">
 		<cfargument name="Parameters" type="any" required="true" />
 		<cfset variables.instance.Parameters = arguments.Parameters />
 	</cffunction>
-	<cffunction name="setCondition" returntype="void" access="private" output="false">
+	<cffunction name="setCondition" returntype="void" access="public" output="false">
 		<cfargument name="Condition" type="any" required="true" />
 		<cfset variables.instance.Condition = arguments.Condition />
 	</cffunction>
@@ -173,6 +194,9 @@
 	<cffunction name="getFailureMessage" access="public" output="false" returntype="any">
 		<cfreturn variables.Instance.FailureMessage />
 	</cffunction>
+	<cffunction name="hasFailureMessage" access="public" output="false" returntype="any">
+		<cfreturn len(variables.Instance.FailureMessage) gt 0 />
+	</cffunction>
 
 	<cffunction name="setIsRequired" returntype="void" access="public" output="false">
 		<cfargument name="IsRequired" type="any" required="true" />
@@ -182,6 +206,32 @@
 		<cfreturn variables.Instance.IsRequired />
 	</cffunction>
 
+	<cffunction name="setObjectType" returntype="void" access="public" output="false">
+		<cfargument name="ObjectType" type="string" required="true" />
+		<cfset variables.Instance.ObjectType = arguments.ObjectType />
+	</cffunction>
+	<cffunction name="getObjectType" access="public" output="false" returntype="string">
+		<cfreturn variables.Instance.ObjectType />
+	</cffunction>
+	
+	<cffunction name="setCurrentLocale" access="public" output="false" returntype="any">
+		<cfargument name="currentLocale" type="string" required="false" default="" />
+		<cfset variables.currentLocale = arguments.currentLocale/>
+	</cffunction>
+	<cffunction name="getCurrentLocale" access="public" output="false" returntype="any">
+		<cfreturn variables.currentLocale/>
+	</cffunction>
+	
+	<cffunction name="setContext" access="public" output="false" returntype="any">
+		<cfargument name="context" type="string" required="false" default="" />
+		<cfset variables.context = arguments.context/>
+	</cffunction>
+	<cffunction name="getContext" access="public" output="false" returntype="any">
+		<cfreturn variables.context/>
+	</cffunction>
+
+	<!--- TODO: Make sure object type gets populated! --->
+	
 </cfcomponent>
 	
 

@@ -16,11 +16,11 @@
 <cfcomponent output="false" name="ServerRuleValidator_Regex" extends="AbstractServerRuleValidator" hint="I am responsible for performing the Regex validation.">
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
-		<cfargument name="valObject" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
-		<cfset var Parameters = arguments.valObject.getParameters() />
+		<cfset var Parameters = arguments.validation.getParameters() />
 		<cfset var theRegex = "" />
-		<cfset var theValue = arguments.valObject.getObjectValue() />
+		<cfset var theValue = arguments.validation.getObjectValue() />
 		<cfif StructKeyExists(Parameters,"serverRegex")>
 			<cfset theRegex = Parameters.serverRegex />
 		<cfelseif StructKeyExists(Parameters,"regex")>
@@ -29,8 +29,8 @@
 			<cfthrow type="validatethis.server.ServerRuleValidator_Regex.missingParameter"
 			message="Either a regex or a serverRegex parameter must be defined for a regex rule type." />
 		</cfif>
-		<cfif shouldTest(arguments.valObject) AND REFind(theRegex,theValue) EQ 0>
-			<cfset fail(arguments.valObject,createDefaultFailureMessage("#arguments.valObject.getPropertyDesc()# must match the specified pattern.")) />
+		<cfif shouldTest(arguments.validation) AND REFind(theRegex,theValue) EQ 0>
+			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must match the specified pattern.")) />
 		</cfif>
 	</cffunction>
 	

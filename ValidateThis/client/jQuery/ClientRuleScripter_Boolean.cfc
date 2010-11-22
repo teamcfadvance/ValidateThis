@@ -13,7 +13,32 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="ClientRuleScripter_Boolean" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the boolean validation.">
+<cfcomponent output="false" name="ClientRuleScripter_boolean" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the boolean validation.">
+
+	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
+		<cfargument name="defaultMessage" type="string" required="false" default="The value entered must be a boolean">
+		<cfset var theCondition="function(value,element,options) { return true; }"/>
+		<!--- JAVASCRIPT VALIDATION METHOD --->
+		<cfsavecontent variable="theCondition">function(value, element, options) {
+			if ( value==null ) 
+				{
+					return false
+				}
+			else 
+			{
+				var tocheck = value.toString().toLowerCase();
+				var pattern = /^((-){0,1}[0-9]{1,}(\.([0-9]{1,})){0,1}|(true)|(false)|(yes)|(no))$/;
+				return tocheck.match( pattern ) == null ? false : true;
+			}
+		}</cfsavecontent>
+		
+		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
+	</cffunction>
+
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid boolean value.") />
+	</cffunction>
 
 </cfcomponent>
 

@@ -17,54 +17,90 @@
 
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="formName" type="Any" required="yes" />
-		<cfargument name="defaultFailureMessagePrefix" type="Any" required="yes" />
-		<cfargument name="customMessage" type="Any" required="no" default="" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="selector" type="string" required="no" default="" />
+		<cfargument name="locale" type="string" required="no" default="" />
 
-		<cfset var theCondition = "" />
+		<cfset var theCondition = "true" />
 		<cfset var ConditionDesc = "" />
 		<cfset var theScript = "" />
-		<cfset var DependentFieldName = "" />
-		<cfset var safeFormName = variables.getSafeFormName(arguments.formName) />
+		
+		<cfset var DependentInputName = "" />
+		<cfset var DependentInputDesc = "" />
+		<cfset var DependentInputValue = "" />		
+		
+		<cfset var valType = getValType() /> 
 		<cfset var parameters = arguments.validation.getParameters() />
-
+		<cfset var failureMessage = determineFailureMessage(validation=arguments.validation) />
+        
 		<!--- Deal with various conditions --->
 		<cfif StructKeyExists(arguments.validation.getCondition(),"ClientTest")>
 			<cfset theCondition = "function(element) { return #arguments.validation.getCondition().ClientTest# }" />
-		<cfelse>
-			<cfif StructKeyExists(parameters,"DependentFieldName")>
-				<cfset DependentFieldName = parameters.DependentFieldName />
-			<cfelseif StructKeyExists(parameters,"DependentPropertyName")>
-				<cfset DependentFieldName = parameters.DependentPropertyName />
-			</cfif>
-		</cfif>
-		<cfif len(DependentFieldName) GT 0>
-			<cfif StructKeyExists(parameters,"DependentPropertyValue")>
-				<cfset theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentFieldName#']"").getValue() == '#parameters.DependentPropertyValue#'; }" />
-			<cfelse>
-				<cfset theCondition = "function(element) { return $form_#safeFormName#.find("":input[name='#DependentFieldName#']"").getValue().length > 0; }" />
-			</cfif>
-		</cfif>
+		<cfelse>			
+			<cfif arguments.validation.hasParameter("DependentFieldName")>
+				<cfset DependentInputName = arguments.validation.getParameterValue("DependentFieldName") />
+			<cfelseif arguments.validation.hasParameter("DependentPropertyName")>
+				<cfset DependentInputName = arguments.validation.getParameterValue("DependentPropertyName") />
+			</cfif>					
+        </cfif>
 		
-		<cfif Len(theCondition)>
-			<cfif len(arguments.customMessage) EQ 0 AND StructKeyExists(parameters,"DependentPropertyDesc")>
-				<cfif StructKeyExists(parameters,"DependentPropertyValue")>
-					<cfset ConditionDesc = " based on what you entered for the " & parameters.DependentPropertyDesc />
-				<cfelse>
-					<cfset ConditionDesc = " if you specify a value for the " & parameters.DependentPropertyDesc />
-				</cfif>
-				<cfset arguments.customMessage = "#arguments.defaultFailureMessagePrefix##arguments.validation.getPropertyDesc()# is required#ConditionDesc#." />
+		<cfif arguments.validation.hasParameter('DependentPropertyValue')>
+          <cfif isSimpleValue(arguments.validation.getParameterValue('DependentPropertyValue'))>
+              <cfif isNumeric(arguments.validation.getParameterValue('DependentPropertyValue'))>
+                  <cfset DependentInputValue = "#arguments.validation.getParameterValue('DependentPropertyValue')#" />
+              <cfelse>
+                  <cfset DependentInputValue = "'#arguments.validation.getParameterValue('DependentPropertyValue')#'" />
+              </cfif>
+          </cfif>
+        </cfif>
+		
+		<cfif arguments.validation.hasParameter('DependentFieldValue')>
+          <cfif isSimpleValue(arguments.validation.getParameterValue('DependentFieldValue'))>
+              <cfif isNumeric(arguments.validation.getParameterValue('DependentFieldValue'))>
+                  <cfset DependentInputValue = "#arguments.validation.getParameterValue('DependentFieldValue')#" />
+              <cfelse>
+                  <cfset DependentInputValue = "'#arguments.validation.getParameterValue('DependentFieldValue')#'" />
+              </cfif>
+          </cfif>
+        </cfif>
+        
+        <cfif len(DependentInputName) GT 0>
+            <cfif len(DependentInputValue) gt 0>
+                <cfset theCondition = "function(element) { return $("":input[name='#DependentInputName#']"").getValue() == " & DependentInputValue & "; }" />
+            <cfelse>
+                <cfset theCondition = "function(element) { return $("":input[name='#DependentInputName#']"").getValue().length > 0; }" />
+            </cfif>
+			
+			<cfif arguments.validation.hasParameter("DependentPropertyDesc")>
+	            <cfset DependentInputDesc = arguments.validation.getParameterValue("DependentPropertyDesc")>
+	        <cfelse>
+	            <cfset DependentInputDesc = arguments.validation.getParameterValue("DependentPropertyName",DependentInputName)>
+	        </cfif>				
+        </cfif>
+		
+		<cfif len(DependentInputDesc) gt 0>
+             <cfif len(DependentInputValue) gt 0>
+                <cfset ConditionDesc = " based on what you entered for the " & DependentInputDesc />
+            <cfelse>
+                <cfset ConditionDesc = " if you specify a value for the " & DependentInputDesc />
+            </cfif>
+			<cfif len(failureMessage) eq 0>
+                <cfset failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#ConditionDesc#.")  />
 			</cfif>
-			<cfset theScript = generateAddMethod(arguments.validation,arguments.formName,theCondition,arguments.customMessage,arguments.locale) />
-		<cfelse>
-			<cfset theScript = generateAddRule(argumentCollection=arguments) />
-		</cfif>
+    	</cfif>
+		
+		<cfif Len(failureMessage) eq 0>
+            <cfset failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required.") />
+        </cfif>		
+        <cfset failureMessage = variables.Translator.translate(failureMessage,arguments.locale)/>
+		
+		<cfoutput>
+		<cfsavecontent variable="theScript">
+		    #arguments.selector#.rules("add", { #valType# : #theCondition#, messages: {#valType#: "#failureMessage#"} });
+		</cfsavecontent>
+		</cfoutput>		
 
-		<cfreturn theScript />
+		<cfreturn trim(theScript) />
 
 	</cffunction>
 
 </cfcomponent>
-
-

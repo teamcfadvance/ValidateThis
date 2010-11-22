@@ -44,6 +44,7 @@
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
 		<cfset variables.TransientFactory = getBean("TransientFactory") />
+		<cfset variables.TransientFactory.setValidateThis(this) />
 		
 		<cfset variables.ValidationFactory.createBOVsFromCFCs() />
 		
@@ -63,6 +64,11 @@
 		
 	</cffunction>
 	
+	<cffunction name="createWrapper" access="public" output="false" returntype="any">
+		<cfargument name="theObject" type="any" required="true"/>
+		<cfreturn variables.ValidationFactory.createWrapper(arguments.theObject)/>
+	</cffunction>
+	
 	<cffunction name="validate" access="public" output="false" returntype="any">
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="objectType" type="any" required="false" default="" />
@@ -70,23 +76,9 @@
 		<cfargument name="Result" type="any" required="false" default="" />
 
 		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
-		<!--- Inject testCondition if needed --->
-		<!--- Notes for Java/Groovy objects:
-			If you're using Groovy, 
-			you will need to write your own testCondition and evaluateExpression methods into your BOs. You may consider doing this 
-			by adding the method to a base BO class. I am not certain this can even be done in Java, as I do 
-			not believe Java supports runtime evaluation. --->
-		<cfif not isObject(arguments.theObject) and isStruct(arguments.theObject)>
-			<cfset arguments.theObject = variables.TransientFactory.newStructWrapper(arguments.theObject) />
-		</cfif>
-		<cfif getBean("ObjectChecker").isCFC(arguments.theObject)>
-			<cfif NOT StructKeyExists(arguments.theObject,"testCondition")>
-				<cfset arguments.theObject["testCondition"] = this["testCondition"] />
-			</cfif>
-			<cfif NOT StructKeyExists(arguments.theObject,"evaluateExpression")>
-				<cfset arguments.theObject["evaluateExpression"] = this["evaluateExpression"] />
-			</cfif>
-		</cfif>
+		
+		<cfset arguments.theObject = createWrapper(arguments.theObject)/>
+
 		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result) />
 		
 		<cfreturn arguments.Result />
@@ -167,11 +159,49 @@
 	</cffunction>
 	
 	<cffunction name="getVersion" access="public" output="false" returntype="any">
-
+		
 		<cfreturn getBean("Version").getVersion() />
+				
+	</cffunction>
+		
+	<cffunction name="getValidateThisConfig" access="public" output="false" returntype="any">
+        
+		<cfreturn variables.ValidateThisConfig />
+				
+    </cffunction>
+	
+	<cffunction name="getServerRuleValidators" access="public" output="false" returntype="any">
+		<cfargument name="validator" required="false" default=""/>
+		<cfreturn variables.ValidationFactory.getServerRuleValidators(argumentCollection=arguments) />
+	</cffunction>
+	<cffunction name="getSRV" access="public" output="false" returntype="any">
+		<cfargument name="validator" required="true"/>
+		<cfreturn this.getServerRuleValidators(argumentCollection=arguments) />
+	</cffunction>
+	
+	<cffunction name="getClientRuleScripters" access="public" output="false" returntype="any">
+
+		<cfreturn variables.ValidationFactory.getClientRuleScripters(variables.ValidateThisConfig.DefaultJSLib) />
+		
+	</cffunction>
+		
+	<cffunction name="loadValidators" access="public" output="false" returntype="any">
+		<cfargument name="objectList" type="any" required="true"/>
+		
+		<cfreturn variables.ValidationFactory.loadValidators(objectList)/>
 		
 	</cffunction>
 	
-</cfcomponent>
-	
+	<cffunction name="clearValidators" access="public" output="false" returntype="void">
+		
+		<cfset variables.ValidationFactory.clearValidators() />
 
+	</cffunction>
+		
+	<cffunction name="getValidatorNames" access="public" output="false" returntype="any">
+
+		<cfreturn variables.ValidationFactory.getValidatorNames() />
+		
+	</cffunction>
+		
+</cfcomponent>

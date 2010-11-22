@@ -13,21 +13,33 @@
 	License.
 
 --->
-<cfcomponent output="false" name="ClientRuleScripter_Custom" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the custom validation.">
+<cfcomponent output="false" name="ClientRuleScripter_remote" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the custom validation.">
 
-	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
+	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-
-		<cfset var parameters = arguments.validation.getParameters() />
+		<cfargument name="selector" type="string" required="no" default="" />
+		<cfargument name="locale" type="string" required="no" default="" />
 		
-		<cfif StructKeyExists(parameters,"remoteURL")>
-			<cfreturn "remote: '#parameters.remoteURL#'" />
-		<cfelse>
-			<cfreturn "" />
+        <cfif arguments.validation.hasParameter('remoteURL')>
+			<cfreturn generateAddRule(argumentCollection=arguments) />
 		</cfif>
+		
+		<cfreturn "" />
+		
+	</cffunction>
 
+	<cffunction name="getValType" returntype="any" access="public" output="false" hint="I override the val type because jQuery uses the built-in 'remote' type for this.">
+		<cfreturn "remote" />
+	</cffunction>	
+
+	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfreturn """#arguments.validation.getParameterValue('remoteURL')#""" />
+	</cffunction>
+
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+		<cfargument name="validation" type="any"/>
+		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# custom validation failed.") />
 	</cffunction>
 
 </cfcomponent>
-
-

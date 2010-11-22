@@ -1,6 +1,4 @@
-== Validation Types Supported By ValidateThis ==
-
-ValidateThis comes bundled with a number of validation types, and you can also add your own validation types. This page describes all of the built-in validation types.
+== The ValidateThis Facade Object ==
 
 The ValidateThis Facade Object is an object that you create in your application code, and which you subsequently use to interact with the framework. It is a cfc named ''ValidateThis.cfc'', which resides in the root of the ''ValidateThis'' folder.
 
@@ -71,7 +69,7 @@ Use the ''validate()'' method to perform server-side validations on an object.
 
 ==== Arguments ====
 It accepts the following arguments:
-* ''theObject'' The actual object to validate.
+* ''theObject'' The actual object to validate. Note that this can also be a structure.
 * ''objectType (optional)'' The name of the object type as defined to the framework. For more information on when this argument is optional, see the section on [[Specifying the objectType on a Method Call]].
 * ''context (optional)'' The name of a context used in the object's rules definition file.
 ** If passed, the object will be validated using the specified context. Only rules assigned to that context will be evaluated.
@@ -253,21 +251,19 @@ The ''newResult()'' method returns a ''Result'' object.  More details on the Res
 <cfset Result = application.ValidateThis.newResult() />
 </source>
 
-== Methods not yet Implemented ==
 
 <br/>
-=== The newBusinessObjectWrapper() Method ===
-The ''newBusinessObjectWrapper()'' method can be used to return a ''BusinessObjectWrapper'' object, which will be wrapped around a business object. It can be used  to store invalid data during validation processing. For more information see the section on [[Working with the BusinessObjectWrapper Object]].
+=== The getVersion() Method ===
+The ''getVersion()'' method will return the version number of the framework. This can be useful when reporting problems with the framework.
 
 ==== Arguments ====
-''theObject'' The business object to wrap.
+This method accepts no arguments.
 
 ==== Return Value ====
-The ''newBusinessObjectWrapper()'' method returns a ''BusinessObjectWrapper'' object.  More details on the BusinessObjectWrapper object can be found in the [[Working with the BusinessObjectWrapper Object]] section.
+The ''getVersion()'' method returns a string giving you the number of the installed version.
 
 ==== Example ====
 <source lang="coldfusion">
-<cfset myWrapper = application.ValidateThis.newBusinessObjectWrapper(myObject) />
+<cfdump var="#application.ValidateThis.getVersion()#" />
 </source>
 
-<br/>

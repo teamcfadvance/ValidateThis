@@ -27,8 +27,9 @@
 	</cffunction>
 
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I take the object metadta and reformat it into private properties">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="metadataSource" type="any" required="true" hint="the object metadata" />
-		
+		<cfset var properties = {}/>
 		<cfif structKeyExists(arguments.metadataSource,"vtConditions")>
 			<cfset processConditions(arguments.metadataSource.vtConditions) />
 		</cfif>
@@ -36,8 +37,9 @@
 			<cfset processContexts(arguments.metadataSource.vtContexts) />
 		</cfif>
 		<cfif structKeyExists(arguments.metadataSource,"properties")>
-			<cfset processPropertyDescs(arguments.metadataSource.properties) />
-			<cfset processPropertyRules(arguments.metadataSource.properties) />
+			<cfset properties = reformatProperties(arguments.metadataSource.properties)>
+			<cfset processPropertyDescs(properties) />
+			<cfset processPropertyRules(arguments.objectType,properties) />
 		</cfif>
 
 	</cffunction>
@@ -69,20 +71,6 @@
 			<cfset arrayAppend(theProperties,newProperty) />
 		</cfloop>
 		<cfreturn theProperties />
-	</cffunction>
-
-	<cffunction name="processPropertyDescs" returnType="any" access="private" output="false" hint="I translate metadata into an array of properties to be used by the BaseMetadataProcessor">
-		<cfargument name="properties" type="any" required="true" />
-		
-		<cfset super.processPropertyDescs(reformatProperties(arguments.properties)) />
-
-	</cffunction>
-	
-	<cffunction name="processPropertyRules" returnType="any" access="private" output="false" hint="I translate metadata into an array of properties to be used by the BaseMetadataProcessor">
-		<cfargument name="properties" type="any" required="true" />
-		
-		<cfset super.processPropertyRules(reformatProperties(arguments.properties)) />
-
 	</cffunction>
 
 </cfcomponent>

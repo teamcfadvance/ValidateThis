@@ -29,11 +29,28 @@
 		<cfargument name="transientName" type="string" required="true">
 		<cfargument name="afterCreateArgs" type="struct" required="false" default="#structNew()#">
 		
+		<cfset var temp = ''/>
+		<cfset var key = ''/>
 		<cfset var obj = variables.lightWire.getTransient(arguments.transientName) />
 		<cfif StructKeyExists(obj,variables.afterCreateMethod)>
+			<!--- TODO: http://groups.google.com/group/validatethis/browse_thread/thread/8c72b46ed61de4c4 --->
+			<cfloop collection="#arguments.afterCreateArgs#" item="key">
+		        <cfset temp = arguments.afterCreateArgs[key] />
+		        <cfset StructDelete(arguments.afterCreateArgs, key) />
+		        <cfset arguments.afterCreateArgs[JavaCast('string', key)] = temp />
+			</cfloop> 
 			<cfinvoke component="#obj#" method="#variables.afterCreateMethod#" argumentcollection="#arguments.afterCreateArgs#" />
 		</cfif>
 		<cfreturn obj>
+	</cffunction>
+
+	<cffunction name="newValidation" access="public" output="false" returntype="any" hint="a concrete method to allow for the ValidateThis facade object to be injected into a validation">
+		<cfargument name="theObject" type="any" required="no" default="" hint="The object being validated" />
+		
+		<cfset var validation = variables.lightWire.getTransient("Validation") />
+		<cfset validation.setup(ValidateThis=variables.validateThis,theObject=arguments.theObject) />
+		<cfreturn validation>
+		
 	</cffunction>
 
 	<cffunction name="onMissingMethod" access="public" output="false" returntype="any" hint="provides virtual api [new{transientName}] for any registered transient.">
@@ -44,4 +61,10 @@
 		</cfif>
 	</cffunction>
 
+	<cffunction name="setValidateThis" access="public" returntype="any">
+		<cfargument name="validateThis" />
+		<cfset variables.validateThis = arguments.validateThis />
+		<cfreturn this />
+	</cffunction>
+	
 </cfcomponent>

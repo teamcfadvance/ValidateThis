@@ -20,8 +20,13 @@
 	</cffunction>
 
 	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
-		<cfargument name="theStruct" type="struct" required="yes" hint="The struct to be wrapped" />
-		<cfset structAppend(variables,arguments.theStruct,true) />
+		<cfargument name="theStruct" type="any" required="yes" hint="The struct to be wrapped" />
+		<cfif isJSON(arguments.theStruct)>
+			<cfset arguments.theStruct = deserializeJSON(arguments.theStruct) />
+		</cfif>
+		<cfif isStruct(arguments.theStruct)>
+			<cfset structAppend(variables,arguments.theStruct,true) />
+		</cfif>
 	</cffunction>
 
 	<cffunction name="getValue" access="public" output="false" returntype="Any" hint="An abstract getter">
@@ -38,6 +43,27 @@
 		<cfargument name="Condition" type="any" required="true" />
 		
 		<cfreturn Evaluate(arguments.Condition)>
+
+	</cffunction>
+	
+	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">
+		<cfargument name="expression" type="any" required="true" />
+		
+		<cfreturn Evaluate(arguments.expression)>
+
+	</cffunction>
+	
+	<cffunction name="onMissingMethod" access="public" output="false" returntype="Any" hint="An abstract getter">
+		<cfargument name="missingMethodName" type="any" required="true" />
+		<cfargument name="missingMethodArguments" type="any" required="true" />
+
+		<cfset var propertyName = arguments.missingMethodName>
+		
+		<cfif left(arguments.missingMethodName,3) eq "get">
+			<cfset propertyName = right(arguments.missingMethodName,(len(arguments.missingMethodName)-len("get")))>
+		</cfif>
+				
+		<cfreturn getValue(propertyName) />
 
 	</cffunction>
 

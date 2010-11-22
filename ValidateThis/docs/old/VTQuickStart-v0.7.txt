@@ -43,10 +43,10 @@ To run the demo applications you need:
 To setup the demo:
 1. Make sure you have met the requirements listed above.
 2. Unzip all of the files from the download to the webroot from which you wish to run the demo.
-3. Create a DSN in ColdFusion called VTDemo that points to the database that you created (see requirements above).  You can change the DSN that the demo points to by editing /VTDemo/BODemo/model/config/datasource.xml.cfm and/or /VTDemo/ServiceDemo/model/config/datasource.xml.cfm
+3. Create a DSN in ColdFusion called VTDemo that points to the database that you created (see requirements above).  You can change the DSN that the demo points to by editing /validatethis/samples/BODemo/model/config/datasource.xml.cfm and/or /validatethis/samples/ServiceDemo/model/config/datasource.xml.cfm
 4. Browse to the webroot in which you installed the demo and you should be presented with a page that will allow you to run both demos.
 
-Note that the folders /VTDemo/commonassets and /VTDemo/BODemo/tags hold files related to the cfUniForm custom tag library developed by Matt Quackenbush which is not part of the framework.  More info on that library can be found here:
+Note that the folders /validatethis/samples/commonassets and /validatethis/samples/BODemo/tags hold files related to the cfUniForm custom tag library developed by Matt Quackenbush which is not part of the framework.  More info on that library can be found here:
 http://cfuniform.riaforge.org/
 
 The Framework Files
@@ -183,7 +183,7 @@ Creating the Validation Rules
 
 Quick Steps
 
-Create an xml file for each of your domain objects that require validations.  Name the xml file the same as your Transfer class name (e.g., user.user.xml).  Follow the schema found in /ValidateThis/validateThis.xsd.  A sample file is available in /VTDemo/model/user.user.xml.
+Create an xml file for each of your domain objects that require validations.  Name the xml file the same as your Transfer class name (e.g., user.user.xml).  Follow the schema found in /ValidateThis/validateThis.xsd.  A sample file is available in /validatethis/samples/model/user.user.xml.
 
 The Details
 
@@ -210,7 +210,7 @@ Integrating the Framework with Your Domain objects
 
 Quick Steps
 
-Make your Transfer decorators resemble /VTDemo/model/AbstractTransferDecorator.cfc.  Make your Coldspring beans for Transfer resemble the ones in /VTDemo/config/Coldspring.xml.cfm. You may need to look at The Details for this one. 
+Make your Transfer decorators resemble /validatethis/samples/model/AbstractTransferDecorator.cfc.  Make your Coldspring beans for Transfer resemble the ones in /validatethis/samples/config/Coldspring.xml.cfm. You may need to look at The Details for this one. 
 
 The Details
 

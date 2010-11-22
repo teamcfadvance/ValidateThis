@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost/validatethis/tests/selenium/FacadeDemo/index.cfm?init=true" />
+<title>EndToEnd-Server</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">EndToEnd-Server</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>http://localhost/validatethis/samples/FacadeDemo/index.cfm?init=true&amp;noJS=true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ValidateThis Demo Page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ValidateThis Demo Page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address is required.<br />Hey, buddy, you call that an Email Address?</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password is required.<br />The Password must be between 5 and 10 characters long.<br />The password must be between 5 and 10 characters long (expression).</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password is required.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[5]/p[1]</td>
+	<td>The User Group is required.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[6]/p[1]</td>
+	<td>If you don't like Cheese and you don't like Chocolate, you must like something!</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>BobRules</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>aaa</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td>aaa</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>VerifyPassword</td>
+	<td>zzz</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Salutation</td>
+	<td>aa</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FirstName</td>
+	<td>aaa</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>HowMuch</td>
+	<td>aaa</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>AllowCommunication-1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ValidateThis Demo Page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[1]/p[1]</td>
+	<td>Hey, buddy, you call that an Email Address?</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[2]/p[1]</td>
+	<td>That Nickname has already been used. Try to be more original!</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password must be between 5 and 10 characters long.<br />The password must be between 5 and 10 characters long (expression).</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password must be the same as the Password.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[1]/p[1]</td>
+	<td>Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[7]/p[1]</td>
+	<td>The How much money would you like? must be a number.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[9]/p[1]</td>
+	<td>If you are allowing communication, you must choose a communication method.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[3]/p[1]</td>
+	<td>The Last Name is required if you specify a value for the First Name.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserName</td>
+	<td>bob.silverberg@gmail.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Nickname</td>
+	<td>different</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td>aaaaa</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>VerifyPassword</td>
+	<td>aaaaa</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>UserGroupId</td>
+	<td>label=Member</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Salutation</td>
+	<td>Mr</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>LastName</td>
+	<td>aaa</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>LikeCheese-1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>HowMuch</td>
+	<td>999</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>AllowCommunication-2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>AllowCommunication-1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>CommunicationMethod</td>
+	<td>label=Email</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ValidateThis Demo Page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[1]/p[1]</td>
+	<td>The Email Address is required.<br />Hey, buddy, you call that an Email Address?</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[2]/p[1]</td>
+	<td>That Nickname has already been used. Try to be more original!</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[3]/p[1]</td>
+	<td>The Password is required.<br />The Password must be between 5 and 10 characters long.</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[4]/p[1]</td>
+	<td>The Verify Password is required.</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[1]/div[5]/p[1]</td>
+	<td>The User Group is required.</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[1]/p[1]</td>
+	<td>Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[3]/p[1]</td>
+	<td>The Last Name is required if you specify a value for the First Name.</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[6]/p[1]</td>
+	<td>If you don't like Cheese and you don't like Chocolate, you must like something!</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[7]/p[1]</td>
+	<td>exact:The contents of the How much money would you like? field must be a valid numeric value.</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[9]/p[1]</td>
+	<td>If you are allowing communication, you must choose a communication method.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='content']/h3[2]</td>
+	<td>The User has been saved!</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit an Existing User</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ValidateThis Demo Page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FirstName</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>LastName</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ValidateThis Demo Page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[2]/p[1]</td>
+	<td>The First Name is required.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[3]/p[1]</td>
+	<td>The Last Name is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>FirstName</td>
+	<td>bob</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>LastName</td>
+	<td>bob</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ValidateThis Demo Page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[2]/p[1]</td>
+	<td>The First Name is required.</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>//form[@id='frmMain']/fieldset[2]/div[3]/p[1]</td>
+	<td>The Last Name is required.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>UserPass</td>
+	<td>aaa</td>
+</tr>
+</tbody></table>
+</body>
+</html>

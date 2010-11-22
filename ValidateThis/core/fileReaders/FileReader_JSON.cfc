@@ -16,6 +16,7 @@
 <cfcomponent output="false" extends="BaseFileReader" hint="I am a responsible for reading and processing a JSON file.">
 
 	<cffunction name="loadRules" returnType="void" access="public" output="false" hint="I read the validations JSON file and reformat it into private properties">
+		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="metadataSource" type="any" required="true" hint="the path to the file to read" />
 
 		<cfset var jsonStruct = 0 />
@@ -34,7 +35,7 @@
 				</cfif>
 				<cfif structKeyExists(VT,"objectProperties")>
 					<cfset processPropertyDescs(VT.objectProperties) />
-					<cfset processPropertyRules(VT.objectProperties) />
+					<cfset processPropertyRules(arguments.objectType,VT.objectProperties) />
 				</cfif>
 			<cfelse>
 				<cfthrow type="ValidateThis.core.fileReaders.Filereader_JSON.invalidJSON" detail="The json object in the file #arguments.metadataSource# does not contain a validateThis struct." />

@@ -49,36 +49,23 @@
 	</cffunction>
 
 	<cffunction name="generateVTSetupScript" returntype="any" access="public" output="false" hint="I generate the JS to do some initial setup.">
-
+		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfset var scripter = "" />
 		<cfset var theScript = "" />
+		<cfset var scripters = this.getRuleScripters()/>
 
 		<cfsavecontent variable="theScript">
-			<cfoutput>
-				<script type="text/javascript">
-					jQuery(document).ready(function() {
-						jQuery.validator.addMethod("regex", function(value, element, param) {
-							var re = param;
-							return this.optional(element) || re.test(value);
-						}, jQuery.format("The value entered does not match the specified pattern ({0})"));
-						jQuery.validator.addMethod("boolean", function(value, element) {
-							return this.optional(element) || isCFBoolean(value);
-						}, jQuery.format("The value entered must be a boolean"));
-					});
-					function isCFBoolean( value )
-					{
-						if ( value==null )
-						{
-							return false
-						}
-						else 
-						{
-							var tocheck = value.toString();
-							var pattern = /^((-){0,1}[0-9]{1,}(\.([0-9]{1,})){0,1}|true|false|yes|no)$/gi;
-							return tocheck.match( pattern ) == null ? false : true;
-						}
-					}
-				</script>
-			</cfoutput>
+		<cfoutput>
+		<script type="text/javascript">
+			jQuery(document).ready(function() {
+			<cfloop collection="#scripters#" item="scripter">
+				<cfif structKeyExists(scripters[scripter],"generateInitScript")>
+					#scripters[scripter].generateInitScript(arguments.locale)#
+				</cfif>
+			</cfloop>
+			});
+		</script>
+		</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />
 
