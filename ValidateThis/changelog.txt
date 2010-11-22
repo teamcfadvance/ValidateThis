@@ -205,25 +205,25 @@ Version 0.98
 
 
 - added new validation types:
-  - DoesNotContainOtherProperties(propertyName="list,of,properties")
-  - URL()
-  - noHTML()
-  - Patterns(patterns_name=/regex/ [,patterns_anotherName=/regex/, .... ],[minMatches=1])
-  - Expression(expression_that_evaluates_to_true_or_false) - ** Server-only **
-  - True()
-  - False()
-  - PastDate([before=1/1/1970])
-  - FutureDate([after=12/31/1969])
   - DateRange(from=1/1/1970,until=1/1/2012)
+  - DoesNotContainOtherProperties(propertyName="list,of,properties")
+  - False()
+  - FutureDate([after=12/31/1969])
   - InList(list,[delim=","])
+  - IsValidObject([objectType=""],[context="*"])
+  - noHTML()
   - NotInList(list,[delim=","])
+  - PastDate([before=1/1/1970])
+  - Patterns(patterns_name=/regex/ [,patterns_anotherName=/regex/, .... ],[minMatches=1])
   - Size(min=2,[max=5])
+  - True()
+  - URL()
+  - Expression(expression_that_evaluates_to_true_or_false) - ** Server-only **
   
   
-WIP?
-----
+WIP
+---
 
 - VTML
-- IsValidObject Validation Type
 - updated the Custom validation type to make a call via cfhttp to remoteURL if a methodName parameter has not been provided
 
