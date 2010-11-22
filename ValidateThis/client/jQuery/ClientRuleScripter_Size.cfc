@@ -27,17 +27,20 @@
 			var params = {min:1,max:1};
 			value = $(element).val();
 			params = jQuery.extend({},params,options);
-				if (params.min == params.max || params.min >> params.max){
-					results.valid = (value.length >= params.min) ? true : false;
+			if (value == null && params.min > 0){
+				return false;
+			}
+			if (params.min == params.max || params.min >> params.max){
+				results.valid = (value.length >= params.min) ? true : false;
+			} else {
+				if (params.min << params.max) {
+					results.low = (value.length < params.min) ? true : false;
+					results.high = (value.length > params.max) ? true : false;
+					results.valid = (results.low || results.high) ? false : true ;
 				} else {
-					if (params.min << params.max) {
-						results.low = (value.length < params.min) ? true : false;
-						results.high = (value.length > params.max) ? true : false;
-						results.valid = (results.low || results.high) ? false : true ;
-					} else {
-                        results.valid = true;
-                     }
-				}										
+                    results.valid = true;
+                 }
+			}										
 			return results.valid;
 		}</cfsavecontent>
 			
@@ -56,38 +59,5 @@
 		<cfargument name="validation" type="any"/>
 		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the size requirement.") />
 	</cffunction>
-
-	<!---
-	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfargument name="selector" type="string" required="no" default="" />
-		<cfargument name="customMessage" type="string" required="no" default="" />
-		<cfargument name="locale" type="string" required="no" default="" />
-
-		
-		<cfset var theScript = "" />
-		<cfset var valType = getValType() />       
-		<cfset var options = structNew()/>
-		<cfset var messageScript = "" />
-
-		<cfset options['min'] = 1/>
-		
-		<cfif Len(arguments.customMessage) eq 0>
-			<cfset arguments.customMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the size requirement.") />
-		</cfif>
-		<cfset messageScript = variables.Translator.translate(arguments.customMessage,arguments.locale) />
-		
-		<cfoutput>
-		<cfsavecontent variable="theScript">
-		#arguments.selector#.rules("add", {
-			"#valType#" : #serializeJSON(options)#,
-			messages: {"#valType#": "#messageScript#"}
-		});
-		</cfsavecontent>
-		</cfoutput>
-		
-		<cfreturn theScript/>
-	</cffunction>
-	--->
 
 </cfcomponent>

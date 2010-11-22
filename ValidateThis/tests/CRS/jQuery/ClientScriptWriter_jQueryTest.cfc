@@ -71,8 +71,7 @@
 			valStruct.ValType = "boolean";
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
-			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{boolean: true});}",Script);
-			
+			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{boolean: true,messages:{boolean:'the first name must be a valid boolean value.'}});}",Script);
 		</cfscript>  
 	</cffunction>
 
