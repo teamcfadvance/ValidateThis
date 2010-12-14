@@ -79,6 +79,7 @@
 						<cfset theFailure.PropertyName = v.PropertyName />
 						<cfset theFailure.ClientFieldName = v.ClientFieldName />
 						<cfset theFailure.Type = v.ValType />
+						<!--- TODO: Check for a result and merge it instead of adding a failure --->
 						<cfset theFailure.Message = determineFailureMessage(v,theVal) />
 						<cfset arguments.Result.addFailure(theFailure) />
 					</cfif>

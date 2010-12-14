@@ -246,23 +246,38 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="addResultShouldAppendFailuresFromAPassedInResultObject" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			assertEquals(3,arrayLen(result.getFailures()));
+			debug(result.getRawFailures());
+			result2 = CreateObject("component","ValidateThis.util.Result").init(MockTranslator);
+			addMultipleFailures(result2);
+			debug(result2.getRawFailures());
+			result.addResult(result2);
+			debug(result.getRawFailures());
+			assertEquals(6,arrayLen(result.getFailures()));
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="addMultipleFailures" access="private" returntype="void">
+		<cfargument name="toResult" required="false" default="#result#" >
 		<cfscript>
 			failure = StructNew();
 			failure.Message = "First Message";
 			failure.PropertyName = "propertyA";
 			failure.ClientFieldName = "fieldA";
-			result.addFailure(failure);
+			arguments.toResult.addFailure(failure);
 			failure = StructNew();
 			failure.Message = "Second Message";
 			failure.PropertyName = "propertyA";
 			failure.ClientFieldName = "fieldA";
-			result.addFailure(failure);
+			arguments.toResult..addFailure(failure);
 			failure = StructNew();
 			failure.Message = "Third Message";
 			failure.PropertyName = "propertyB";
 			failure.ClientFieldName = "fieldB";
-			result.addFailure(failure);
+			arguments.toResult..addFailure(failure);
 		</cfscript>
 	</cffunction>
 
