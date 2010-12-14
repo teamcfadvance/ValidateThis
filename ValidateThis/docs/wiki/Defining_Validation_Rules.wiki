@@ -2,9 +2,9 @@
 
 There are currently three means of defining the validation rules for your objects, in an external ''Rules Definition File'', using annotations on property tags and via ColdFusion code.
 
-=== Rules Definition File ===
+=== Using a Rules Definition File ===
 
-Three formats of rules definition files are supported: XML, JSON and ValidateThis Markup Language (VTML). Some advantages to recording your rule metadata in an external file (i.e., not inside your business object), include:
+Two formats of rules definition files are supported: XML and JSON. Some advantages to recording your rule metadata in an external file (i.e., not inside your business object), include:
 <ul>
 	<li>The definitions of the validation rules are kept separate from the code of the object itself.<br />
 		This provides a couple of benefits:
@@ -21,9 +21,14 @@ Details of the metadata that is recorded in a rules definition file can be found
 
 Details of all of the validation types available can be found in the [[Validation Types Supported By ValidateThis]] section.
 
-Sample rules definition files, in XML, JSON and VTML format, can be found on the [[Sample Rules Definition File]] page.
+Sample rules definition files, in XML and JSON format, can be found on the [[Sample Rules Definition File]] page.
 
 More details on where to place your rules definition files can be found in the [[How ValidateThis Finds Your Rules Definition Files]] section.
+
+<br/>
+=== Using Property Annotations ===
+
+You can add annotations to properties of your objects to define validation rules. These annotations can be in one of three formats: XML, JSON and ValidateThis Markup Language (VTML). More documentation on defining rules using annotations is in the works.
 
 <br/>
 === The addRule() Method ===
@@ -52,4 +57,4 @@ Please see the [[Rules Definition File | Rules Definition File reference]] for a
 The framework has been designed to allow for additional ways in which to supply the validation metadata. The addition of the JSON and VTML formats makes use of these extensibility features. 
 If you are interested in using an alternate form of metadata, please [http://groups.google.ca/group/validatethis contact us] and we'd be happy to help you achieve your goal.
 
-We are currently looking at ways of specifying validation metadata dynamically via CFML.
+We are currently looking at ways of specifying validation metadata dynamically via CFML. 
