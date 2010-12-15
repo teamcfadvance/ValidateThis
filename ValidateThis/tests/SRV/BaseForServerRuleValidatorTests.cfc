@@ -59,13 +59,17 @@
 				createRealFacade();
 			}
 
-			validation.setIsSuccess(false).returns();
+			//validation.setIsSuccess(false).returns();
 			validation.getValidateThis().returns(ValidateThis);
 			validation.getPropertyDesc().returns(propertyDesc);
 			validation.getPropertyName().returns(propertyName);
 			validation.getClientFieldName().returns(propertyName);
 			validation.getFailureMessage().returns(failureMessage);
-			validation.setFailureMessage(failureMessage).returns();
+			if (len(failureMessage)) {
+				validation.fail(failureMessage).returns();
+			} else {
+				validation.fail("{*}").returns();
+			}
 			validation.getIsRequired().returns(isRequired);
 			validation.getParameters().returns(parameters);
 			validation.getObjectValue().returns(objectValue);
@@ -84,7 +88,7 @@
 			configureValidationMock();			
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -97,10 +101,11 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
+			debug(validation.debugMock());
 			if (emptyValueShouldFail) {
-				validation.verifyTimes(1).setIsSuccess(false);
+				validation.verifyTimes(1).fail("{*}");
 			} else { 
-				validation.verifyTimes(0).setIsSuccess(false); 
+				validation.verifyTimes(0).fail("{*}");
 			}	
 		</cfscript>  
 	</cffunction>

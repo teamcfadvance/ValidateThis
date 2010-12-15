@@ -38,7 +38,7 @@
 			validation.getParameterValue("minMatches",1).returns(0);
 			validation.getParameterValue("pattern_Name").returns("[a-z]]");
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -54,7 +54,7 @@
 			validation.getParameterValue("pattern_Name").returns("test");
 
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -70,7 +70,7 @@
             validation.getParameterValue("pattern_Name").returns("^(test)");
             
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	

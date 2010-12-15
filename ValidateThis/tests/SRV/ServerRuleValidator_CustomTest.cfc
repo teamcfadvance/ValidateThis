@@ -55,7 +55,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>
 	</cffunction>
 
@@ -72,7 +72,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>
 	</cffunction>
 
@@ -85,7 +85,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -98,7 +98,7 @@
             configureValidationMock();
             
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -112,8 +112,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-			validation.verifyTimes(1).setFailureMessage("A custom validator failed."); 
+			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	
@@ -126,7 +125,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -141,8 +140,7 @@
             configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-			validation.verifyTimes(1).setFailureMessage(failureMessage); 
+			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	
@@ -156,7 +154,7 @@
             configureValidationMock();
             
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -170,7 +168,7 @@
             configureValidationMock();
             
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 

@@ -24,7 +24,7 @@
             configureValidationMock();			
             
 			SRV.validate(validation);
-			validation.verifyTimes(1).setFailureMessage(failureMessage); 
+			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
 
@@ -37,7 +37,7 @@
             configureValidationMock();         
             
             SRV.validate(validation);
-            validation.verifyTimes(1).setFailureMessage(failureMessage); 
+            validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	

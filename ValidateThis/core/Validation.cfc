@@ -48,11 +48,26 @@
 		<cfset variables.instance = Duplicate(arguments.ValStruct) />
 		<cfset variables.instance.IsSuccess = true />
 		<cfparam name="variables.instance.FailureMessage" default="" />
+		<cfparam name="variables.instance.result" default="" />
 		
 		<cfreturn this />
 
 	</cffunction>
+
+	<cffunction name="fail" returntype="void" access="public" output="false" hint="I do what needs to be done when a validation fails.">
+		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to store." />
 	
+		<cfset setIsSuccess(false) />
+		<cfset setFailureMessage(arguments.FailureMessage) />
+	</cffunction>
+
+	<cffunction name="failWithResult" returntype="void" access="public" output="false" hint="I do what needs to be done when a validation fails.">
+		<cfargument name="result" type="any" required="yes" hint="A Failure message to store." />
+	
+		<cfset setIsSuccess(false) />
+		<cfset setResult(arguments.result) />
+	</cffunction>
+
 	<cffunction name="getObjectValue" access="public" output="false" returntype="any" hint="I return the value from the stored object that corresponds to the field being validated.">
 		<cfargument name="propertyName" type="any" required="false" default="#getPropertyName()#" />
 		<cfset var theValue = "" />
@@ -234,6 +249,17 @@
 	</cffunction>
 	<cffunction name="getContext" access="public" output="false" returntype="any">
 		<cfreturn variables.context/>
+	</cffunction>
+
+	<cffunction name="setResult" access="public" output="false" returntype="any">
+		<cfargument name="result" type="any" required="false" default="" />
+		<cfset variables.Instance.result = arguments.result/>
+	</cffunction>
+	<cffunction name="getResult" access="public" output="false" returntype="any">
+		<cfreturn variables.Instance.result/>
+	</cffunction>
+	<cffunction name="hasResult" access="public" output="false" returntype="boolean">
+		<cfreturn isObject(variables.Instance.result) />
 	</cffunction>
 
 </cfcomponent>

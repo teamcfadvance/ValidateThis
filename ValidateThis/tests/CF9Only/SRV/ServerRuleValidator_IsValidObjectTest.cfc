@@ -52,6 +52,7 @@
 			validation.getParameterValue("objectType").returns(theObjectType);
 			validation.hasParameter("objectType").returns(hasObjectType);			
 			validation.getParameterValue("objectType","#theObjectType#").returns(theObjectType);
+			validation.failWithResult("{*}").returns();
 		</cfscript>
 	</cffunction>
 	
@@ -99,7 +100,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 	--->
@@ -112,8 +113,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-			validation.verifyTimes(1).setFailureMessage(failureMessage); 
+			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	
@@ -125,8 +125,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-			validation.verifyTimes(1).setFailureMessage(failureMessage); 
+			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	
@@ -138,8 +137,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
-			validation.verifyTimes(1).setFailureMessage(failureMessage); 
+			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	
@@ -153,8 +151,7 @@
 			
 			SRV.validate(validation);
 			validation.verifyTimes(arrayLen(objectValue)).setIsSuccess(false); 
-			debug(validation.debugMock());
-			validation.verifyTimes(1).setFailureMessage(failureMessage); 
+			validation.verifyTimes(1).failWithResult(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	
@@ -166,8 +163,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false);
-			validation.verifyTimes(1).setFailureMessage(failureMessage); 
+			validation.verifyTimes(1).failWithResult(failureMessage); 
 		</cfscript>  
 	</cffunction>
 	
@@ -179,7 +175,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -193,7 +189,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 			
 		</cfscript>  
 	</cffunction>
@@ -208,7 +204,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(arrayLen(objectValue)).setIsSuccess(false); 
+			validation.verifyTimes(arrayLen(objectValue)).failWithResult("{*}");
 		</cfscript>  
 	</cffunction>
 
@@ -221,7 +217,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -234,7 +230,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -247,7 +243,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -260,7 +256,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -273,7 +269,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -286,8 +282,37 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
-	
+
+	<cffunction name="recursiveTest" access="public" returntype="void">
+		<cfscript>
+			setupRecursion();
+			objectValue = companyA;
+			
+			parameters={};
+			
+			configureValidationMock();
+			
+			SRV.validate(validation);
+			debug(validation.debugMock());
+			validation.verifyTimes(1).failWithResult("{*}"); 
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="setupRecursion" access="private" returntype="void">
+		<cfscript>
+			companyA = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.Company_With_User");
+			userA = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.User_With_Company");
+			companyB = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.Company_With_User");
+			userB = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.User_With_Company");
+			
+			companyA.setUser(userA);
+			userA.setCompany(companyB);
+			companyB.setUser(userB);
+			//userB.setCompany(companyA);
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>

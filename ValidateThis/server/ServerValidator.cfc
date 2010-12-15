@@ -80,13 +80,16 @@
 						<cfset variables.RuleValidators[v.ValType].validate(theVal) />
 						<cfif NOT theVal.getIsSuccess()>
 							<cfset arguments.Result.setIsSuccess(false) />
-							<cfset theFailure = StructNew() />
-							<cfset theFailure.PropertyName = v.PropertyName />
-							<cfset theFailure.ClientFieldName = v.ClientFieldName />
-							<cfset theFailure.Type = v.ValType />
-							<!--- TODO: Check for a result and merge it instead of adding a failure --->
-							<cfset theFailure.Message = determineFailureMessage(v,theVal) />
-							<cfset arguments.Result.addFailure(theFailure) />
+							<cfif not theVal.hasResult()>
+								<cfset theFailure = StructNew() />
+								<cfset theFailure.PropertyName = v.PropertyName />
+								<cfset theFailure.ClientFieldName = v.ClientFieldName />
+								<cfset theFailure.Type = v.ValType />
+								<cfset theFailure.Message = determineFailureMessage(v,theVal) />
+								<cfset arguments.Result.addFailure(theFailure) />
+							<cfelse>
+								<cfset arguments.Result.addResult(theVal.getResult()) />
+							</cfif>
 						</cfif>
 					</cfif>
 				</cfloop>

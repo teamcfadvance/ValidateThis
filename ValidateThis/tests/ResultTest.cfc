@@ -281,6 +281,36 @@
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="equalsTest" access="public" returntype="void">
+		<cfscript>
+//get the current classloader
+classLoader = getClass().getClassLoader();
+//load the class for java.lang.Object
+objectClass = classLoader.loadClass("java.lang.Object");
+//get the equals method
+arr = [objectClass];
+equalsMethod = objectClass.getMethod("equals", arr);
+
+foo1 = {};
+foo2 = {a=1};
+
+arr2 = [foo2];
+test = equalsMethod.invoke(foo1,arr2);
+
+debug(test);
+		
+		//var arr = [objectClass];
+		//var equalsMethod = objectClass.getMethod("equals", arr);
+		
+		
+		/*
+		//if not, try this:
+		var equalsMethod = objectClass.getMethod("equals", [objectClass]);
+
+		*/		
+		</cfscript>
+	</cffunction>
+
 
 </cfcomponent>
 
