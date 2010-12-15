@@ -30,9 +30,11 @@
 	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
 		<cfargument name="ValidateThis" type="any" required="yes" hint="The ValidateThis.cfc facade object" />
 		<cfargument name="theObject" type="any" required="no" default="" hint="The object being validated" />
+		<cfargument name="objectList" type="any" required="no" default="#arrayNew(1)#" hint="A list of objects already validated" />
 		
 		<cfset variables.ValidateThis = arguments.ValidateThis />
 		<cfset variables.theObject = arguments.theObject />
+		<cfset variables.objectList = arguments.objectList />
 		<cfset variables.currentLocale = arguments.ValidateThis.getValidateThisConfig().defaultLocale />
 		<cfset variables.context = "" />
 		
@@ -121,6 +123,10 @@
 
 	<cffunction name="getValidateThis" access="public" output="false" returntype="any">
 		<cfreturn variables.ValidateThis />
+	</cffunction>
+
+	<cffunction name="getObjectList" access="public" output="false" returntype="array">
+		<cfreturn variables.objectList />
 	</cffunction>
 
 	<cffunction name="getMemento" access="public" output="false" returntype="any">
@@ -230,8 +236,6 @@
 		<cfreturn variables.context/>
 	</cffunction>
 
-	<!--- TODO: Make sure object type gets populated! --->
-	
 </cfcomponent>
 	
 

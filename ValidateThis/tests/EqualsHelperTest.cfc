@@ -21,6 +21,7 @@
 			equalsHelper = CreateObject("component","ValidateThis.util.EqualsHelper").init();
 			obj1 = CreateObject("component","fixture.APlainCFC_Fixture").init();
 			obj2 = CreateObject("component","fixture.APlainCFC_Fixture").init();
+			obj3 = CreateObject("component","fixture.APlainCFC_Fixture").init();
 		</cfscript>
 	</cffunction>
 	
@@ -37,6 +38,38 @@
 		<cfscript>
 			obj2.setFirstName(now());
 			assertEquals(false,equalsHelper.isEqual(obj1,obj2));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isInArrayShouldReturnTrueWhenIdenticalObjectIsInArray" access="public" returntype="void">
+		<cfscript>
+			thingArray = [obj2];
+			assertEquals(true,equalsHelper.isInArray(obj1,thingArray));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isInArrayShouldReturnTrueWhenIdenticalObjectIsInMultiItemArray" access="public" returntype="void">
+		<cfscript>
+			obj2.setFirstName(now());
+			thingArray = [obj2,obj3];
+			assertEquals(true,equalsHelper.isInArray(obj1,thingArray));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isInArrayShouldReturnFalseWhenIdenticalObjectIsNotInArray" access="public" returntype="void">
+		<cfscript>
+			obj2.setFirstName(now());
+			thingArray = [obj2];
+			assertEquals(false,equalsHelper.isInArray(obj1,thingArray));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isInArrayShouldReturnFalseWhenIdenticalObjectIsNotInMultiItemArray" access="public" returntype="void">
+		<cfscript>
+			obj2.setFirstName(now());
+			obj3.setFirstName(now());
+			thingArray = [obj2,obj3];
+			assertEquals(false,equalsHelper.isInArray(obj1,thingArray));
 		</cfscript>  
 	</cffunction>
 

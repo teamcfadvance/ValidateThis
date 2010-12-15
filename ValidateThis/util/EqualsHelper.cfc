@@ -35,4 +35,19 @@
 		<cfreturn variables.equalsMethod.invoke(arguments.thing1,thing2Array) />
 	</cffunction>
 
+	<cffunction name="isInArray" access="public" returntype="boolean">
+		<cfargument name="theThing" type="any" required="true" hint="The thing that you want to check for in the array" />
+		<cfargument name="thingArray" type="array" required="true" hint="An array of things to check" />
+		
+		<cfset var thing = 0 />
+		<cfset var thingHolder = [] />
+		<cfloop array="#arguments.thingArray#" index="thing">
+			<cfset thingHolder[1] = thing />
+			<cfif variables.equalsMethod.invoke(arguments.theThing,thingHolder)>
+				<cfreturn true />
+			</cfif>
+		</cfloop>
+		<cfreturn false />
+	</cffunction>
+
 </cfcomponent>

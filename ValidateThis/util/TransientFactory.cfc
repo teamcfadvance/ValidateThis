@@ -46,9 +46,10 @@
 
 	<cffunction name="newValidation" access="public" output="false" returntype="any" hint="a concrete method to allow for the ValidateThis facade object to be injected into a validation">
 		<cfargument name="theObject" type="any" required="no" default="" hint="The object being validated" />
+		<cfargument name="objectList" type="any" required="no" default="#arrayNew(1)#" hint="A list of objects already validated" />
 		
 		<cfset var validation = variables.lightWire.getTransient("Validation") />
-		<cfset validation.setup(ValidateThis=variables.validateThis,theObject=arguments.theObject) />
+		<cfset validation.setup(ValidateThis=variables.validateThis,theObject=arguments.theObject,objectList=arguments.objectList) />
 		<cfreturn validation>
 		
 	</cffunction>

@@ -19,6 +19,7 @@
 		<cfargument name="childObjectFactory" type="any" required="true" />
 		<cfargument name="TransientFactory" type="any" required="true" />
 		<cfargument name="ObjectChecker" type="any" required="true" />
+		<cfargument name="EqualsHelper" type="any" required="true" />
 		<cfargument name="ExtraRuleValidatorComponentPaths" type="string" required="true" />
 		<cfargument name="injectResultIntoBO" type="string" required="true" />
 		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
@@ -26,6 +27,7 @@
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.ObjectChecker = arguments.ObjectChecker />
+		<cfset variables.EqualsHelper = arguments.EqualsHelper />
 		<cfset variables.ExtraRuleValidatorComponentPaths = arguments.ExtraRuleValidatorComponentPaths />
 		<cfset variables.injectResultIntoBO = arguments.injectResultIntoBO />
 		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
@@ -40,56 +42,60 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="Context" type="any" required="true" />
 		<cfargument name="Result" type="any" required="true" />
+		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
 
 		<cfset var v = "" />
 		<cfset var theFailure = 0 />
 		<cfset var FailureMessage = 0 />
 		<cfset var Validations = arguments.BOValidator.getValidations(arguments.Context) />
-		<cfset var theVal = variables.TransientFactory.newValidation(arguments.theObject) />
+		<cfset var theVal = variables.TransientFactory.newValidation(arguments.theObject,arguments.objectList) />
 		<cfset var dependentPropertyExpression = 0 />
 		<cfset var dependentPropertyValue = "" />
 		<cfset var conditionPasses = true />
 		
-		<cfif IsArray(Validations) and ArrayLen(Validations)>
-			<!--- Loop through the validations array, creating validation objects and using them --->
-			<cfloop Array="#Validations#" index="v">
-				<cfset theVal.load(v) />
-				<cfset conditionPasses = true />
-				<!--- Deal with various conditions --->
-				<cfif StructKeyExists(v.Condition,"ServerTest")>
-					<cfset conditionPasses = arguments.theObject.testCondition(v.Condition.ServerTest) />
-				<cfelseif StructKeyExists(v.Parameters,"DependentPropertyName")>
-					<cfset dependentPropertyExpression = variables.ObjectChecker.findGetter(arguments.theObject,theVal.getParameterValue("DependentPropertyName")) />
-					<cfset dependentPropertyValue = evaluate("arguments.theObject.#dependentPropertyExpression#") />
-					<cfif not isDefined("dependentPropertyValue")>
-						<cfset dependentPropertyValue = "" />
+		<cfif not variables.equalsHelper.isInArray(arguments.theObject,arguments.objectList)>
+			<cfset arrayAppend(arguments.objectList,arguments.theObject) />
+			<cfif IsArray(Validations) and ArrayLen(Validations)>
+				<!--- Loop through the validations array, creating validation objects and using them --->
+				<cfloop Array="#Validations#" index="v">
+					<cfset theVal.load(v) />
+					<cfset conditionPasses = true />
+					<!--- Deal with various conditions --->
+					<cfif StructKeyExists(v.Condition,"ServerTest")>
+						<cfset conditionPasses = arguments.theObject.testCondition(v.Condition.ServerTest) />
+					<cfelseif StructKeyExists(v.Parameters,"DependentPropertyName")>
+						<cfset dependentPropertyExpression = variables.ObjectChecker.findGetter(arguments.theObject,theVal.getParameterValue("DependentPropertyName")) />
+						<cfset dependentPropertyValue = evaluate("arguments.theObject.#dependentPropertyExpression#") />
+						<cfif not isDefined("dependentPropertyValue")>
+							<cfset dependentPropertyValue = "" />
+						</cfif>
+						<cfif StructKeyExists(v.Parameters,"DependentPropertyValue")>
+							<cfset conditionPasses = dependentPropertyValue EQ theVal.getParameterValue("DependentPropertyValue") />
+						<cfelse>
+							<cfset conditionPasses = len(dependentPropertyValue) GT 0 />
+						</cfif>
 					</cfif>
-					<cfif StructKeyExists(v.Parameters,"DependentPropertyValue")>
-						<cfset conditionPasses = dependentPropertyValue EQ theVal.getParameterValue("DependentPropertyValue") />
-					<cfelse>
-						<cfset conditionPasses = len(dependentPropertyValue) GT 0 />
+					<cfif conditionPasses>
+						<cfset theVal.setIsRequired(arguments.BOValidator.propertyIsRequired(v.PropertyName)) />
+						<cfset variables.RuleValidators[v.ValType].validate(theVal) />
+						<cfif NOT theVal.getIsSuccess()>
+							<cfset arguments.Result.setIsSuccess(false) />
+							<cfset theFailure = StructNew() />
+							<cfset theFailure.PropertyName = v.PropertyName />
+							<cfset theFailure.ClientFieldName = v.ClientFieldName />
+							<cfset theFailure.Type = v.ValType />
+							<!--- TODO: Check for a result and merge it instead of adding a failure --->
+							<cfset theFailure.Message = determineFailureMessage(v,theVal) />
+							<cfset arguments.Result.addFailure(theFailure) />
+						</cfif>
 					</cfif>
+				</cfloop>
+				<!--- inject the Result object into the BO if configured to do so --->
+				<cfif variables.injectResultIntoBO and variables.ObjectChecker.isCFC(arguments.theObject)>
+					<cfset arguments.theObject["setVTResult"] = this["setVTResult"] />
+					<cfset arguments.theObject["getVTResult"] = this["getVTResult"] />
+					<cfset arguments.theObject.setVTResult(arguments.Result) />
 				</cfif>
-				<cfif conditionPasses>
-					<cfset theVal.setIsRequired(arguments.BOValidator.propertyIsRequired(v.PropertyName)) />
-					<cfset variables.RuleValidators[v.ValType].validate(theVal) />
-					<cfif NOT theVal.getIsSuccess()>
-						<cfset arguments.Result.setIsSuccess(false) />
-						<cfset theFailure = StructNew() />
-						<cfset theFailure.PropertyName = v.PropertyName />
-						<cfset theFailure.ClientFieldName = v.ClientFieldName />
-						<cfset theFailure.Type = v.ValType />
-						<!--- TODO: Check for a result and merge it instead of adding a failure --->
-						<cfset theFailure.Message = determineFailureMessage(v,theVal) />
-						<cfset arguments.Result.addFailure(theFailure) />
-					</cfif>
-				</cfif>
-			</cfloop>
-			<!--- inject the Result object into the BO if configured to do so --->
-			<cfif variables.injectResultIntoBO and variables.ObjectChecker.isCFC(arguments.theObject)>
-				<cfset arguments.theObject["setVTResult"] = this["setVTResult"] />
-				<cfset arguments.theObject["getVTResult"] = this["getVTResult"] />
-				<cfset arguments.theObject.setVTResult(arguments.Result) />
 			</cfif>
 		</cfif>
 	</cffunction>
