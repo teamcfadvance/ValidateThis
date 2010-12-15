@@ -30,7 +30,7 @@
 	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
 		<cfargument name="ValidateThis" type="any" required="yes" hint="The ValidateThis.cfc facade object" />
 		<cfargument name="theObject" type="any" required="no" default="" hint="The object being validated" />
-		<cfargument name="objectList" type="any" required="no" default="#arrayNew(1)#" hint="A list of objects already validated" />
+		<cfargument name="objectList" type="array" required="no" default="#arrayNew(1)#" hint="A list of objects already validated" />
 		
 		<cfset variables.ValidateThis = arguments.ValidateThis />
 		<cfset variables.theObject = arguments.theObject />
@@ -140,6 +140,10 @@
 		<cfreturn variables.ValidateThis />
 	</cffunction>
 
+	<cffunction name="setObjectList" access="public" output="false" returntype="void">
+		<cfargument name="objectList" type="array" required="yes" />
+		<cfset variables.objectList = arguments.objectList />
+	</cffunction>
 	<cffunction name="getObjectList" access="public" output="false" returntype="array">
 		<cfreturn variables.objectList />
 	</cffunction>

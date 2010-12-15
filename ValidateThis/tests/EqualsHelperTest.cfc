@@ -73,4 +73,36 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="isInStructShouldReturnTrueWhenIdenticalObjectIsInStruct" access="public" returntype="void">
+		<cfscript>
+			thingStruct = {a=obj2};
+			assertEquals(true,equalsHelper.isInStruct(obj1,thingStruct));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isInStructShouldReturnTrueWhenIdenticalObjectIsInMultiItemStruct" access="public" returntype="void">
+		<cfscript>
+			obj2.setFirstName(now());
+			thingStruct = {a=obj2,b=obj3};
+			assertEquals(true,equalsHelper.isInStruct(obj1,thingStruct));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isInStructShouldReturnFalseWhenIdenticalObjectIsNotInStruct" access="public" returntype="void">
+		<cfscript>
+			obj2.setFirstName(now());
+			thingStruct = {a=obj2};
+			assertEquals(false,equalsHelper.isInStruct(obj1,thingStruct));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="isInStructShouldReturnFalseWhenIdenticalObjectIsNotInMultiItemStruct" access="public" returntype="void">
+		<cfscript>
+			obj2.setFirstName(now());
+			obj3.setFirstName(now());
+			thingStruct = {a=obj2,b=obj3};
+			assertEquals(false,equalsHelper.isInStruct(obj1,thingStruct));
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>

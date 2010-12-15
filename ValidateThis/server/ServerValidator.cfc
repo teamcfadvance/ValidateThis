@@ -54,7 +54,8 @@
 		<cfset var conditionPasses = true />
 		
 		<cfif not variables.equalsHelper.isInArray(arguments.theObject,arguments.objectList)>
-			<cfset arrayAppend(arguments.objectList,arguments.theObject) />
+			<cfset arrayAppend(arguments.objectList, arguments.theObject) />
+
 			<cfif IsArray(Validations) and ArrayLen(Validations)>
 				<!--- Loop through the validations array, creating validation objects and using them --->
 				<cfloop Array="#Validations#" index="v">
@@ -86,6 +87,8 @@
 								<cfset theFailure.ClientFieldName = v.ClientFieldName />
 								<cfset theFailure.Type = v.ValType />
 								<cfset theFailure.Message = determineFailureMessage(v,theVal) />
+								<cfset theFailure.theObject = arguments.theObject />
+								<cfset theFailure.objectType = arguments.BOValidator.getObjectType() />
 								<cfset arguments.Result.addFailure(theFailure) />
 							<cfelse>
 								<cfset arguments.Result.addResult(theVal.getResult()) />

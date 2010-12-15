@@ -50,4 +50,19 @@
 		<cfreturn false />
 	</cffunction>
 
+	<cffunction name="isInStruct" access="public" returntype="boolean">
+		<cfargument name="theThing" type="any" required="true" hint="The thing that you want to check for in the array" />
+		<cfargument name="thingStruct" type="struct" required="true" hint="A struct of things to check" />
+		
+		<cfset var thingIndex = 0 />
+		<cfset var thingHolder = [] />
+		<cfloop collection="#arguments.thingStruct#" item="thingIndex">
+			<cfset thingHolder[1] = arguments.thingStruct[thingIndex] />
+			<cfif variables.equalsMethod.invoke(arguments.theThing,thingHolder)>
+				<cfreturn true />
+			</cfif>
+		</cfloop>
+		<cfreturn false />
+	</cffunction>
+
 </cfcomponent>
