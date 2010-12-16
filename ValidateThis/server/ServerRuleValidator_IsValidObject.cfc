@@ -25,6 +25,9 @@
 		<cfset var toCheck = []/>
 		<cfset var theObject = 0/>
 		<cfset var theResult = arguments.validation.getValidateThis().newResult()/>
+		<cfset var validateArgumentCollection = {context=context,theResult=theResult,objectList=arguments.validation.getObjectList()} />
+		
+		<cfdump var="#arguments.validation.getObjectList()#" />
 		
 		<cfif not shouldTest(arguments.validation)><cfreturn/></cfif>
 
@@ -56,12 +59,11 @@
 		
 		<cfloop array="#toCheck#" index="theObject">
 			<!--- try to validate any apparent objects --->
+			<cfset validateArgumentCollection.theObject = theObject />
 			<cfif isSimpleValue(objectType) and len(objectType) gt 0>
-				<cfset theResult = arguments.validation.getValidateThis().validate(theObject=theObject,objectType=objectType,context=context,theResult=theResult)/>
-			<cfelse>
-				<cfset theResult = arguments.validation.getValidateThis().validate(theObject=theObject,context=context,theResult=theResult)/>
+				<cfset validateArgumentCollection.objectType = objectType />
 			</cfif>
-			
+			<cfset theResult = arguments.validation.getValidateThis().validate(argumentCollection=validateArgumentCollection) />
 			<cfif not theResult.getIsSuccess()>
 				<cfset failWithResult(arguments.validation,theResult) />
 			</cfif>

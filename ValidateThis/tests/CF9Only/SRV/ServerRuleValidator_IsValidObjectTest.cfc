@@ -52,6 +52,7 @@
 			validation.getParameterValue("objectType").returns(theObjectType);
 			validation.hasParameter("objectType").returns(hasObjectType);			
 			validation.getParameterValue("objectType","#theObjectType#").returns(theObjectType);
+			validation.getObjectList().returns([]);
 			validation.failWithResult("{*}").returns();
 		</cfscript>
 	</cffunction>
@@ -87,11 +88,10 @@
 	<cffunction name="setupInvalidUserFixture" access="private">
 		<cfscript>
 			invalidUser = createObject("component","validatethis.tests.Fixture.models.cf9.json.User").init();
-			invalidUser.setUserName("");
+			invalidUser.setUserName("a");
 		</cfscript>
 	</cffunction>
 	
-	<!--- not sure what this test is for
 	<cffunction name="validateTestIsReliableWithNoFalsePositives" access="public" returntype="void">
 		<cfscript>
 			objectValue = {}; // I know an empty struct should fail here. but does it?	
@@ -100,10 +100,9 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).failWithResult("{*}"); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
-	--->
 	
 	<cffunction name="validateReturnsFalseForNonJSONSimpleValue" access="public" returntype="void">
 		<cfscript>
@@ -141,41 +140,27 @@
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="validateReturnsFalseForTwoInvalidObjectsOfOneObjectTypeInAnArray" access="public" returntype="void">
-		<cfscript>			
-			invalidCompany2  = duplicate(invalidCompany);
-			objectValue = [invalidCompany,invalidCompany2];	
-			failureMessage = "The PropertyDesc is invalid: The Company Name must be between 2 and 10 characters long.";	
-
-			configureValidationMock();
-			
-			SRV.validate(validation);
-			validation.verifyTimes(arrayLen(objectValue)).setIsSuccess(false); 
-			validation.verifyTimes(1).failWithResult(failureMessage); 
-		</cfscript>  
-	</cffunction>
-	
-	<cffunction name="validateReturnsFalseForOneInvalidObjectOfOneObjectTypeInAnArrayOfTwoObjects" access="public" returntype="void">
+	<cffunction name="validateReturnsFalseForInvalidArray" access="public" returntype="void">
 		<cfscript>			
 			objectValue = [validCompany,invalidCompany];	
-			failureMessage = "The PropertyDesc is invalid: The Company Name must be between 2 and 10 characters long.";	
 
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).failWithResult(failureMessage); 
+			validation.verifyTimes(1).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForValidArrayOfOneObjectType" access="public" returntype="void">
 		<cfscript>			
 			validCompany2 = duplicate(validCompany);
+			//validCompany2.setCompanyName("Majik Solutions");
 			objectValue = [validCompany,validCompany2];	
 
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).fail("{*}"); 
+			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -189,8 +174,20 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).fail("{*}"); 
+			validation.verifyTimes(0).failWithResult("{*}"); 
 			
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="validateReturnsFalseForInvalidArrayOfOneObjectType" access="public" returntype="void">
+		<cfscript>			
+			invalidCompany2  = duplicate(invalidCompany);
+			objectValue = [invalidCompany,invalidCompany2];	
+
+			configureValidationMock();
+			
+			SRV.validate(validation);
+			validation.verifyTimes(arrayLen(objectValue)).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -204,7 +201,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(arrayLen(objectValue)).failWithResult("{*}");
+			validation.verifyTimes(arrayLen(objectValue)).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 
@@ -217,7 +214,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).fail("{*}"); 
+			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -230,7 +227,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).fail("{*}"); 
+			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -243,7 +240,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).fail("{*}"); 
+			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -269,7 +266,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(0).fail("{*}"); 
+			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -285,19 +282,46 @@
 			validation.verifyTimes(1).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
-
-	<cffunction name="recursiveTest" access="public" returntype="void">
+	
+	<cffunction name="expectedResultObjectShouldBeReturnedByValidationWith4LevelsContainingThreeUniqueObjects" access="public" returntype="void">
 		<cfscript>
 			setupRecursion();
-			objectValue = companyA;
+			companyA.setCompanyName("a");
+			userA.setUserName("a");
+			companyB.setCompanyName("a");
+			userB.setUserName("a");
 			
-			parameters={};
-			
-			configureValidationMock();
-			
+			createRealFacade();
+			validation = validateThis.getBean("TransientFactory").newValidation(companyA);
+			validation.setObjectList([companyA]);
+			valStruct = {parameters={},propertyName="user"};
+
+			validation.load(valStruct);
+
 			SRV.validate(validation);
-			debug(validation.debugMock());
-			validation.verifyTimes(1).failWithResult("{*}"); 
+			failures = validation.getResult().getFailures();
+			assertEquals(3,arrayLen(failures));
+			expectedStruct = failures[1];
+			assertEquals("userName",expectedStruct.clientFieldName);
+			assertEquals("Hey, buddy, you call that an Email Address?",expectedStruct.message);
+			assertEquals("User_With_Company",expectedStruct.objectType);
+			assertEquals("userName",expectedStruct.propertyName);
+			assertEquals(userA,expectedStruct.theObject);
+			assertEquals("email",expectedStruct.type);
+			expectedStruct = failures[2];
+			assertEquals("companyName",expectedStruct.clientFieldName);
+			assertEquals("The Company Name must be between 2 and 10 characters long.",expectedStruct.message);
+			assertEquals("Company_With_User",expectedStruct.objectType);
+			assertEquals("companyName",expectedStruct.propertyName);
+			assertEquals(companyB,expectedStruct.theObject);
+			assertEquals("rangelength",expectedStruct.type);
+			expectedStruct = failures[3];
+			assertEquals("userName",expectedStruct.clientFieldName);
+			assertEquals("Hey, buddy, you call that an Email Address?",expectedStruct.message);
+			assertEquals("User_With_Company",expectedStruct.objectType);
+			assertEquals("userName",expectedStruct.propertyName);
+			assertEquals(userB,expectedStruct.theObject);
+			assertEquals("email",expectedStruct.type);
 		</cfscript>  
 	</cffunction>
 
@@ -311,7 +335,7 @@
 			companyA.setUser(userA);
 			userA.setCompany(companyB);
 			companyB.setUser(userB);
-			//userB.setCompany(companyA);
+			userB.setCompany(companyA);
 		</cfscript>  
 	</cffunction>
 
