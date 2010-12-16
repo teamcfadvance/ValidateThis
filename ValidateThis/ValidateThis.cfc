@@ -74,12 +74,13 @@
 		<cfargument name="objectType" type="any" required="false" default="" />
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
+		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
 
 		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
 		
 		<cfset arguments.theObject = createWrapper(arguments.theObject)/>
 
-		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result) />
+		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.objectList) />
 		
 		<cfreturn arguments.Result />
 

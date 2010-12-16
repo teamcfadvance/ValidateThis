@@ -54,18 +54,23 @@
 		</cfif>
 	</cffunction>
 
+	<cffunction name="getRawFailures" access="public" output="false" returntype="any" hint="returns the internal array of failure structs">
+		<cfreturn variables.instance.Failures />
+	</cffunction>
+
 	<cffunction name="getFailures" access="public" output="false" returntype="any" hint="returns all failures as an array of structs">
 		<cfargument name="locale" type="Any" required="false" default="" hint="the locale to use to translate the failure messages" />
 		
 		<cfset var failure = 0 />
+		<cfset var failures = getRawFailures() />
 		
 		<cfif Len(arguments.locale)>
-			<cfloop array="#variables.instance.Failures#" index="failure">
+			<cfloop array="#failures#" index="failure">
 				<!--- TODO: This is programming to an implementation, not an interface, but is being done for performance reasons :-( --->
 				<cfset failure.Message = variables.Translator.translate(failure.Message,arguments.locale) />
 			</cfloop>
 		</cfif>
-		<cfreturn variables.instance.Failures />
+		<cfreturn failures />
 	</cffunction>
 
 	<cffunction name="getFailureMessages" access="public" output="false" returntype="array" hint="I return all failure messages as an array of strings.">
@@ -236,6 +241,12 @@
 
 	</cffunction>
 
+	<cffunction name="addResult" output="false" returntype="void" hint="Pass in a Result object and I will add it to the current Result object.">
+		<cfargument name="theResult" type="any" required="true" />
+		<cfset getRawFailures().addAll(arguments.theResult.getRawFailures()) />
+	</cffunction>
+	
+	<!--- Work in progress by Adam
 	<cffunction name="ResultsMerge" output="false" returntype="any">
 		<cfargument name="theData" type="any" />
 		<cfargument name="returnDuplicate" type="boolean" default="true"/>
@@ -291,6 +302,7 @@
 		</cfif>
 		
 	</cffunction>
+	--->
 
 	<!--- An example of a custom method that returns failures in a format expected by an existing application --->
 	<cffunction name="getFailuresForCAYA" access="public" output="false" returntype="any">

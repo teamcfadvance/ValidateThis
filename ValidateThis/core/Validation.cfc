@@ -30,9 +30,11 @@
 	<cffunction name="setup" access="Public" returntype="any" output="false" hint="I am called after the constructor to load data into an instance">
 		<cfargument name="ValidateThis" type="any" required="yes" hint="The ValidateThis.cfc facade object" />
 		<cfargument name="theObject" type="any" required="no" default="" hint="The object being validated" />
+		<cfargument name="objectList" type="array" required="no" default="#arrayNew(1)#" hint="A list of objects already validated" />
 		
 		<cfset variables.ValidateThis = arguments.ValidateThis />
 		<cfset variables.theObject = arguments.theObject />
+		<cfset variables.objectList = arguments.objectList />
 		<cfset variables.currentLocale = arguments.ValidateThis.getValidateThisConfig().defaultLocale />
 		<cfset variables.context = "" />
 		
@@ -46,11 +48,26 @@
 		<cfset variables.instance = Duplicate(arguments.ValStruct) />
 		<cfset variables.instance.IsSuccess = true />
 		<cfparam name="variables.instance.FailureMessage" default="" />
+		<cfparam name="variables.instance.result" default="" />
 		
 		<cfreturn this />
 
 	</cffunction>
+
+	<cffunction name="fail" returntype="void" access="public" output="false" hint="I do what needs to be done when a validation fails.">
+		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to store." />
 	
+		<cfset setIsSuccess(false) />
+		<cfset setFailureMessage(arguments.FailureMessage) />
+	</cffunction>
+
+	<cffunction name="failWithResult" returntype="void" access="public" output="false" hint="I do what needs to be done when a validation fails.">
+		<cfargument name="result" type="any" required="yes" hint="A Failure message to store." />
+	
+		<cfset setIsSuccess(false) />
+		<cfset setResult(arguments.result) />
+	</cffunction>
+
 	<cffunction name="getObjectValue" access="public" output="false" returntype="any" hint="I return the value from the stored object that corresponds to the field being validated.">
 		<cfargument name="propertyName" type="any" required="false" default="#getPropertyName()#" />
 		<cfset var theValue = "" />
@@ -121,6 +138,14 @@
 
 	<cffunction name="getValidateThis" access="public" output="false" returntype="any">
 		<cfreturn variables.ValidateThis />
+	</cffunction>
+
+	<cffunction name="setObjectList" access="public" output="false" returntype="void">
+		<cfargument name="objectList" type="array" required="yes" />
+		<cfset variables.objectList = arguments.objectList />
+	</cffunction>
+	<cffunction name="getObjectList" access="public" output="false" returntype="array">
+		<cfreturn variables.objectList />
 	</cffunction>
 
 	<cffunction name="getMemento" access="public" output="false" returntype="any">
@@ -230,8 +255,17 @@
 		<cfreturn variables.context/>
 	</cffunction>
 
-	<!--- TODO: Make sure object type gets populated! --->
-	
+	<cffunction name="setResult" access="public" output="false" returntype="any">
+		<cfargument name="result" type="any" required="false" default="" />
+		<cfset variables.Instance.result = arguments.result/>
+	</cffunction>
+	<cffunction name="getResult" access="public" output="false" returntype="any">
+		<cfreturn variables.Instance.result/>
+	</cffunction>
+	<cffunction name="hasResult" access="public" output="false" returntype="boolean">
+		<cfreturn isObject(variables.Instance.result) />
+	</cffunction>
+
 </cfcomponent>
 	
 

@@ -38,8 +38,14 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation object being used to perform the validation." />
 		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to store." />
 	
-		<cfset arguments.validation.setIsSuccess(false) />
-		<cfset arguments.validation.setFailureMessage(arguments.FailureMessage) />
+		<cfset arguments.validation.fail(arguments.FailureMessage) />
+	</cffunction>
+
+	<cffunction name="failWithResult" returntype="void" access="private" output="false" hint="I do what needs to be done when a validation fails.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object being used to perform the validation." />
+		<cfargument name="result" type="any" required="yes" hint="A Result to store." />
+	
+		<cfset arguments.validation.failWithResult(arguments.result) />
 	</cffunction>
 
 	<cffunction name="createDefaultFailureMessage" returntype="string" access="private" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">

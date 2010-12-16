@@ -48,7 +48,7 @@
             assertEquals(true,SRV.shouldTest(validation));
             
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
@@ -63,7 +63,7 @@
             assertEquals(true,SRV.shouldTest(validation));
             
             SRV.validate(validation);
-            validation.verifyTimes(1).setIsSuccess(false); 
+            validation.verifyTimes(1).fail("{*}"); 
         </cfscript>  
     </cffunction>
 	
@@ -78,7 +78,7 @@
             assertEquals(true,SRV.shouldTest(validation));
 			
 			SRV.validate(validation);
-            validation.verifyTimes(0).setIsSuccess(false); 
+            validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -93,7 +93,7 @@
             assertEquals(false,SRV.shouldTest(validation));
             
             SRV.validate(validation);
-            validation.verifyTimes(0).setIsSuccess(false); 
+            validation.verifyTimes(0).fail("{*}"); 
         </cfscript>  
     </cffunction>
 		

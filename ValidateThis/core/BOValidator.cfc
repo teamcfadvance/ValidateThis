@@ -187,6 +187,7 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
+		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
 
 		<cfif IsSimpleValue(arguments.Result)>
 			<cfset arguments.Result = newResult() />
@@ -194,7 +195,7 @@
 		<!--- Put the object into the result so it can be retrieved from there --->
 		<cfset arguments.Result.setTheObject(arguments.theObject) />
 		<!--- TODO: pass the objectType (from getObjectType()) into the ServerValidator.validate() method so it can be passed into the Validation object --->
-		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result) />
+		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result,arguments.objectList) />
 		<cfreturn arguments.Result />
 		
 	</cffunction>

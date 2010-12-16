@@ -32,7 +32,7 @@
 		    isRequired = true;
             configureValidationMock();
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	

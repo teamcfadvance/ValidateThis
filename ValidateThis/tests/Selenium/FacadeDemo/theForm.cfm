@@ -114,7 +114,7 @@
 			<p class="formHint">Validations: Required.</p>
 		</div>
 		<div class="ctrlHolder">
-			#isErrorMsg("UserGroupId")#
+			#isErrorMsg("UserGroupName")#
 			<label for="UserGroupId">#isRequired("UserGroupId")#User Group</label>
 			<select name="UserGroupId" id="UserGroupId" class="selectInput">
 				<option value=""<cfif UserGroupId EQ ""> selected="selected"</cfif>>Select one...</option>
