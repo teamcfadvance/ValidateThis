@@ -48,7 +48,7 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	

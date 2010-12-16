@@ -60,4 +60,21 @@
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="newValidationShouldReturnValidationWithActualObjectListInjectedWhenOneIsPassed" access="public" returntype="void">
+		<cfscript>
+			createTransientFactory();
+			objectList = ["a"];
+			validation = transientFactory.newValidation(objectList=objectList);
+			assertEquals(objectList,validation.getObjectList());
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="newValidationShouldReturnValidationWithEmptyObjectListInjectedWhenOneIsNotPassed" access="public" returntype="void">
+		<cfscript>
+			createTransientFactory();
+			validation = transientFactory.newValidation();
+			assertEquals([],validation.getObjectList());
+		</cfscript>
+	</cffunction>
+
 </cfcomponent>

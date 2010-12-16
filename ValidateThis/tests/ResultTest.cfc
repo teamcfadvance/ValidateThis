@@ -246,23 +246,68 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="addResultShouldAppendFailuresFromAPassedInResultObject" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			assertEquals(3,arrayLen(result.getFailures()));
+			debug(result.getRawFailures());
+			result2 = CreateObject("component","ValidateThis.util.Result").init(MockTranslator);
+			addMultipleFailures(result2);
+			debug(result2.getRawFailures());
+			result.addResult(result2);
+			debug(result.getRawFailures());
+			assertEquals(6,arrayLen(result.getFailures()));
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="addMultipleFailures" access="private" returntype="void">
+		<cfargument name="toResult" required="false" default="#result#" >
 		<cfscript>
 			failure = StructNew();
 			failure.Message = "First Message";
 			failure.PropertyName = "propertyA";
 			failure.ClientFieldName = "fieldA";
-			result.addFailure(failure);
+			arguments.toResult.addFailure(failure);
 			failure = StructNew();
 			failure.Message = "Second Message";
 			failure.PropertyName = "propertyA";
 			failure.ClientFieldName = "fieldA";
-			result.addFailure(failure);
+			arguments.toResult..addFailure(failure);
 			failure = StructNew();
 			failure.Message = "Third Message";
 			failure.PropertyName = "propertyB";
 			failure.ClientFieldName = "fieldB";
-			result.addFailure(failure);
+			arguments.toResult..addFailure(failure);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="equalsTest" access="public" returntype="void">
+		<cfscript>
+//get the current classloader
+classLoader = getClass().getClassLoader();
+//load the class for java.lang.Object
+objectClass = classLoader.loadClass("java.lang.Object");
+//get the equals method
+arr = [objectClass];
+equalsMethod = objectClass.getMethod("equals", arr);
+
+foo1 = {};
+foo2 = {a=1};
+
+arr2 = [foo2];
+test = equalsMethod.invoke(foo1,arr2);
+
+debug(test);
+		
+		//var arr = [objectClass];
+		//var equalsMethod = objectClass.getMethod("equals", arr);
+		
+		
+		/*
+		//if not, try this:
+		var equalsMethod = objectClass.getMethod("equals", [objectClass]);
+
+		*/		
 		</cfscript>
 	</cffunction>
 

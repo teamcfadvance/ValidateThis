@@ -63,10 +63,10 @@
 			</cfif>
 			
 			<cfif not theResult.getIsSuccess()>
-				<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is invalid: #theResult.getFailuresAsString()#")) />
+				<cfset failWithResult(arguments.validation,theResult) />
 			</cfif>
 		</cfloop>
 		
 	</cffunction>
-	
+
 </cfcomponent>

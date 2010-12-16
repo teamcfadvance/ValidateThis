@@ -40,7 +40,6 @@
 	<cffunction name="setUpUser" access="private" returntype="any">
 		<cfargument name="emptyUser" type="boolean" required="false" default="false" />
 		<cfscript>
-			// TODO: Address the use of entitynew
 			user = createObject("component","validatethis.tests.Fixture.User").init();
 			if (not arguments.emptyUser) {
 				user.setUserName("bob.silverberg@gmail.com");
@@ -453,6 +452,21 @@
 			failureMessage = serverValidator.determineFailureMessage(v,theVal);
 			assertEquals(customMessage,failureMessage);
 		</cfscript>
+	</cffunction>
+
+	<cffunction name="validateDoesNotValidateTheSameObjectTwice" access="public" returntype="void">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			user.setUserName("AnInvalidEmailAddress");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"Register",Result);
+			assertEquals(1,arrayLen(Result.getFailures()));
+			objectList = [user];
+			serverValidator.validate(BOValidator,user,"Register",Result,objectList);
+			debug(Result.getFailures());
+			assertEquals(1,arrayLen(Result.getFailures()));
+		</cfscript>  
 	</cffunction>
 
 	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">

@@ -30,7 +30,7 @@
             
             configureValidationMock();
 			SRV.validate(validation);
-			validation.verifyTimes(0).setIsSuccess(false); 
+			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -40,7 +40,7 @@
             
             configureValidationMock();
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
@@ -50,7 +50,7 @@
             
             configureValidationMock();
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 
@@ -62,7 +62,7 @@
 			validation.getObjectValue().returns("abc");
 			validation.setFailureMessage("The PropertyDesc must be a valid true boolean.").returns();
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 			validation.verifyTimes(1).setFailureMessage("The PropertyDesc must be a valid true boolean."); 
 		</cfscript>  
 	</cffunction>
@@ -73,7 +73,7 @@
 			validation.getObjectValue().returns("abc");
 			validation.setFailureMessage("PropertyDesc must be a valid true boolean.").returns();
 			SRV.validate(validation);
-			validation.verifyTimes(1).setIsSuccess(false); 
+			validation.verifyTimes(1).fail("{*}"); 
 			validation.verifyTimes(1).setFailureMessage("PropertyDesc must be a valid true boolean."); 
 		</cfscript>  
 	</cffunction> --->
