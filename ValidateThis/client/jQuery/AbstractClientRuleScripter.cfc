@@ -49,19 +49,32 @@
 		</cfoutput>
 
 		<cfreturn trim(theScript)/>
-		
+
 	</cffunction>
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfset var safeSelectorScript = getSafeSelectorScript(argumentCollection=arguments) />
+		<cfset var theScript = "if (#safeSelectorScript#.length) { #generateRuleScript(validation=arguments.validation,selector=safeSelectorScript,locale=arguments.locale)#}" />
+		<cfreturn theScript />
+	</cffunction>
+	
+	<cffunction name="generateValidationJSON" returntype="any" access="public" output="false" hint="I generate the JS JSON object required to implement the validations.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
 		
 		<cfset var safeSelectorScript = getSafeSelectorScript(argumentCollection=arguments) />
+		<cfset var failureMessage = determineFailureMessage(validation=arguments.validation) />
+		<cfset var ruleDef = getRuleDef(arguments.validation) />
+		<cfset var messageDef = getMessageDef(failureMessage,getValType(),arguments.locale)/>
 		
-		<cfset var theScript = "if (#safeSelectorScript#.length) { #generateRuleScript(validation=arguments.validation,selector=safeSelectorScript,locale=arguments.locale)#}" />
+		<cfset var theJSON = '{"#validation.getClientFieldName()#" : {#ruleDef##messageDef#}}' />
+
+		<cfreturn theJSON />
 		
-		<cfreturn theScript />
 	</cffunction>
 	
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
@@ -78,9 +91,26 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var failureMessage = determineFailureMessage(validation=arguments.validation) />
-		<cfset var messageDef = getMessageDef(failureMessage,getValType(),arguments.locale)/>
 		<cfset var theScript = "" />
 		<cfset var ruleDef = getRuleDef(arguments.validation) />
+		<cfset var messageDef = getMessageDef(failureMessage,getValType(),arguments.locale)/>
+		
+		<cfif len(ruleDef) GT 0>
+			<cfset theScript = "#arguments.selector#.rules('add',{#ruleDef##messageDef#});" />
+		</cfif>
+		
+		<cfreturn theScript/>
+		
+	</cffunction>
+	<cffunction name="generateJSONRule" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="selector" type="Any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+
+		<cfset var failureMessage = determineFailureMessage(validation=arguments.validation) />
+		<cfset var theScript = "" />
+		<cfset var ruleDef = getRuleDef(arguments.validation) />
+		<cfset var messageDef = getMessageDef(failureMessage,getValType(),arguments.locale)/>
 
 		<cfif len(ruleDef) GT 0>
 			<cfset theScript = "#arguments.selector#.rules('add',{#ruleDef##messageDef#});" />
@@ -93,7 +123,7 @@
 	<cffunction name="getRuleDef" returntype="any" access="public" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfset var parameterDef = getParameterDef(arguments.validation)/>
-		<cfset var ruleDef = "#getValType()#: #parameterDef#" />
+		<cfset var ruleDef = '"#getValType()#": #parameterDef#' />
 		<cfreturn ruleDef />
 	</cffunction>	
 	
@@ -132,7 +162,7 @@
 			<cfif len(arguments.locale) gt 0>
 				<cfset failureMessage = translate(failureMessage,arguments.locale)/>
 			</cfif>
-			<cfset messageDef = ",messages:{#arguments.valType#:'#JSStringFormat(failureMessage)#'}"/>
+			<cfset messageDef = ',"messages":{"#arguments.valType#":"#JSStringFormat(failureMessage)#"}'/>
 		</cfif>
 		<cfreturn messageDef/>
 	</cffunction>
@@ -147,7 +177,7 @@
 		<cfargument name="formName" type="string" default=""/>
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName)/>
 		<cfset var safeFieldName = arguments.validation.getClientFieldName()/>
-		<cfreturn "$form_#safeFormName#.find("":input[name='#arguments.validation.getClientFieldName()#']"")" />
+		<cfreturn "$("":input[name='#safeFieldName#']"",form_#safeFormName#)" />
 	</cffunction>	
 	
 	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I return the failure message to be used.">

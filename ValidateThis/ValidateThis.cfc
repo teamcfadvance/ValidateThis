@@ -90,7 +90,8 @@
 		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
 		<cfargument name="JSIncludes" type="Any" required="no" default="#variables.ValidateThisConfig.JSIncludes#" />
 		<cfargument name="locale" type="Any" required="no" default="" />
-
+		<cfargument name="format" type="string" required="no" default="script" hint="script|json" />
+		
 		<cfreturn variables.CommonScriptGenerator.getInitializationScript(argumentCollection=arguments) />
 
 	</cffunction>
