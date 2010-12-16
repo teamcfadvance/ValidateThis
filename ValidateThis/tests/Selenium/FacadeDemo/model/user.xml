@@ -62,12 +62,10 @@
 			</rule>
 		</property>
 		<property name="Salutation">
-			<!-- TODO: size isn't working and actually breaks the validation plugin - form still submits with invalid fields with this in place
 			<rule type="size" contexts="newValidations-client">
 				<param name="min" value="2" />
 				<param name="max" value="3" />
 			</rule>
-			 -->
 		</property>
 		<property name="FirstName">
 		</property>

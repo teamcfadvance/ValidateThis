@@ -216,7 +216,7 @@
 <cffunction name="isErrorMsg" returntype="any" output="false" hint="I am used to display error messages for a field.  I only exist for this demo page - there are much better ways of doing this!">
 	<cfargument name="fieldName" type="any" required="yes" />
 	<cfif StructKeyExists(validationErrors,arguments.fieldName)>
-		<cfreturn '<p id="error-UserName" class="errorField bold">#validationErrors[arguments.fieldName]#</p>' />
+		<cfreturn '<p id="error-#arguments.fieldName#" class="errorField bold">#validationErrors[arguments.fieldName]#</p>' />
 	<cfelse>
 		<cfreturn "" />
 	</cfif>

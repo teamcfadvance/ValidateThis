@@ -1,0 +1,106 @@
+package com.example.tests;
+
+import com.thoughtworks.selenium.Selenium;
+import org.openqa.selenium.*;
+import org.openqa.selenium.htmlunit.*;
+import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.ie.*;
+import org.junit.*;
+import static org.junit.Assert.*;
+
+public class EndToEnd-Server {
+
+	WebDriver driver;
+	Selenium selenium;
+
+	@Before
+	public void startSelenium() {
+		driver = new FirefoxDriver();
+		selenium = new WebDriverBackedSelenium(driver, "http://localhost/validatethis/tests/selenium/FacadeDemo/index.cfm?init=true");
+	}
+
+	@After
+	public void stopSelenium() {
+		driver.close();
+	}
+
+	@Test
+	public void testEndToEnd-Server() {
+		selenium.open("http://localhost/validatethis/samples/FacadeDemo/index.cfm?init=true&noJS=true");
+		assertEquals("ValidateThis Demo Page", selenium.getTitle());
+		selenium.type("UserPass", "");
+		selenium.click("//button[@type='submit']");
+		selenium.waitForPageToLoad("30000");
+		assertEquals("ValidateThis Demo Page", selenium.getTitle());
+		assertTrue(selenium.getText("//form[@id='frmMain']/fieldset[1]/div[1]/p[1]").matches("^The Email Address is required\\.\nHey, buddy, you call that an Email Address[\\s\\S]$"));
+		assertEquals("The Password is required.\nThe Password must be between 5 and 10 characters long.\nThe password must be between 5 and 10 characters long (expression).", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[3]/p[1]"));
+		assertEquals("The Verify Password is required.", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[4]/p[1]"));
+		assertEquals("The User Group is required.", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[5]/p[1]"));
+		assertEquals("If you don't like Cheese and you don't like Chocolate, you must like something!", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[6]/p[1]"));
+		selenium.type("Nickname", "BobRules");
+		selenium.type("UserName", "aaa");
+		selenium.type("UserPass", "aaa");
+		selenium.type("VerifyPassword", "zzz");
+		selenium.type("Salutation", "aa");
+		selenium.type("FirstName", "aaa");
+		selenium.type("HowMuch", "aaa");
+		selenium.click("AllowCommunication-1");
+		selenium.click("//button[@type='submit']");
+		selenium.waitForPageToLoad("30000");
+		assertEquals("ValidateThis Demo Page", selenium.getTitle());
+		assertTrue(selenium.getText("//form[@id='frmMain']/fieldset[1]/div[1]/p[1]").matches("^Hey, buddy, you call that an Email Address[\\s\\S]$"));
+		assertEquals("That Nickname has already been used. Try to be more original!", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[2]/p[1]"));
+		assertEquals("The Password must be between 5 and 10 characters long.\nThe password must be between 5 and 10 characters long (expression).", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[3]/p[1]"));
+		assertEquals("The Verify Password must be the same as the Password.", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[4]/p[1]"));
+		assertEquals("Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[1]/p[1]"));
+		assertTrue(selenium.getText("//form[@id='frmMain']/fieldset[2]/div[7]/p[1]").matches("^The How much money would you like[\\s\\S] must be a number\\.$"));
+		assertEquals("If you are allowing communication, you must choose a communication method.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[9]/p[1]"));
+		assertEquals("The Last Name is required if you specify a value for the First Name.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[3]/p[1]"));
+		selenium.type("UserName", "bob.silverberg@gmail.com");
+		selenium.type("Nickname", "different");
+		selenium.type("UserPass", "aaaaa");
+		selenium.type("VerifyPassword", "aaaaa");
+		selenium.select("UserGroupId", "label=Member");
+		selenium.type("Salutation", "Mr");
+		selenium.type("LastName", "aaa");
+		selenium.click("LikeCheese-1");
+		selenium.type("HowMuch", "999");
+		selenium.click("AllowCommunication-2");
+		selenium.click("AllowCommunication-1");
+		selenium.select("CommunicationMethod", "label=Email");
+		selenium.click("//button[@type='submit']");
+		selenium.waitForPageToLoad("30000");
+		assertEquals("ValidateThis Demo Page", selenium.getTitle());
+		assertFalse(selenium.getText("//form[@id='frmMain']/fieldset[1]/div[1]/p[1]").matches("^The Email Address is required\\.\nHey, buddy, you call that an Email Address[\\s\\S]$"));
+		assertNotEquals("That Nickname has already been used. Try to be more original!", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[2]/p[1]"));
+		assertNotEquals("The Password is required.\nThe Password must be between 5 and 10 characters long.", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[3]/p[1]"));
+		assertNotEquals("The Verify Password is required.", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[4]/p[1]"));
+		assertNotEquals("The User Group is required.", selenium.getText("//form[@id='frmMain']/fieldset[1]/div[5]/p[1]"));
+		assertNotEquals("Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[1]/p[1]"));
+		assertNotEquals("The Last Name is required if you specify a value for the First Name.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[3]/p[1]"));
+		assertNotEquals("If you don't like Cheese and you don't like Chocolate, you must like something!", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[6]/p[1]"));
+		assertFalse(selenium.getText("//form[@id='frmMain']/fieldset[2]/div[7]/p[1]").matches("^exact:The contents of the How much money would you like[\\s\\S] field must be a valid numeric value\\.$"));
+		assertNotEquals("If you are allowing communication, you must choose a communication method.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[9]/p[1]"));
+		assertEquals("The User has been saved!", selenium.getText("//div[@id='content']/h3[2]"));
+		selenium.click("link=Edit an Existing User");
+		selenium.waitForPageToLoad("30000");
+		assertEquals("ValidateThis Demo Page", selenium.getTitle());
+		selenium.type("FirstName", "");
+		selenium.type("LastName", "");
+		selenium.click("//button[@type='submit']");
+		selenium.waitForPageToLoad("30000");
+		assertEquals("ValidateThis Demo Page", selenium.getTitle());
+		assertEquals("The First Name is required.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[2]/p[1]"));
+		assertEquals("The Last Name is required.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[3]/p[1]"));
+		selenium.type("FirstName", "bob");
+		selenium.type("LastName", "bob");
+		selenium.click("//button[@type='submit']");
+		selenium.waitForPageToLoad("30000");
+		assertEquals("ValidateThis Demo Page", selenium.getTitle());
+		assertNotEquals("The First Name is required.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[2]/p[1]"));
+		assertNotEquals("The Last Name is required.", selenium.getText("//form[@id='frmMain']/fieldset[2]/div[3]/p[1]"));
+		selenium.type("UserPass", "aaa");
+	}
+
+}

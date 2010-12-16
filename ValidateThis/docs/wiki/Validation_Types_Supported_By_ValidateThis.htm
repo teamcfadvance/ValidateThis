@@ -135,7 +135,7 @@ The ''propertyDescription'' must be the same as the ''comparePropertyDesc''.
 ''' Metadata Example: '''
 <source lang="xml">
 <rule type="equalTo">
-	<param comparePropertyName="anotherProperty" />
+	<param name="comparePropertyName" value="anotherProperty" />
 </rule>
 </source>
 
@@ -250,7 +250,7 @@ The ''propertyDescription'' must be no more than ''max''.
 ''' Metadata Example: '''
 <source lang="xml">
 <rule type="max">
-	<param max="5" />
+	<param name="max" value="5" />
 </rule>
 </source>
 
@@ -269,7 +269,7 @@ The ''propertyDescription'' must be no more than ''maxLength'' characters long.
 ''' Metadata Example: '''
 <source lang="xml">
 <rule type="maxLength">
-	<param maxLength="5" />
+	<param name="maxLength" value="5" />
 </rule>
 </source>
 
@@ -288,7 +288,7 @@ The ''propertyDescription'' must be at least ''min''.
 ''' Metadata Example: '''
 <source lang="xml">
 <rule type="min">
-	<param min="5" />
+	<param name="min" value="5" />
 </rule>
 </source>
 
@@ -307,7 +307,7 @@ The ''propertyDescription'' must be at least ''minLength'' characters long.
 ''' Metadata Example: '''
 <source lang="xml">
 <rule type="minLength">
-	<param minLength="5" />
+	<param name="minLength" value="5" />
 </rule>
 </source>
 
@@ -402,8 +402,8 @@ The ''propertyDescription'' must be between ''min'' and ''max''.
 ''' Metadata Example: '''
 <source lang="xml">
 <rule type="range">
-	<param min="5" />
-	<param max="10" />
+	<param name="min" value="5" />
+	<param name="max" value="10" />
 </rule>
 </source>
 
@@ -423,8 +423,8 @@ The ''propertyDescription'' must be between ''minLength'' and ''maxLength'' char
 ''' Metadata Example: '''
 <source lang="xml">
 <rule type="rangeLength">
-	<param minLength="5" />
-	<param maxLength="10" />
+	<param name="minLength" value="5" />
+	<param name="maxLength" value="10" />
 </rule>
 </source>
 
@@ -444,7 +444,7 @@ The ''propertyDescription'' must match the specified pattern.
 ''' Metadata Example: '''
 <source lang="xml">
 <rule type="regex">
-	<param regex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
+	<param name="regex" value="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$" />
 </rule>
 </source>
 
@@ -479,7 +479,7 @@ The ''propertyDescription'' size is not equal or greater than ''min''.  Or The '
 ''' Metadata Examples: '''
 <source lang="xml">
 <rule type="size">
-	<param min="3" />
+	<param name="min" value="3" />
 </rule>
 </source>
 
@@ -487,8 +487,8 @@ This will ensure that the contents of the property is a collection with at least
 
 <source lang="xml">
 <rule type="size">
-	<param min="1" />
-	<param man="3" />
+	<param name="min" value="1" />
+	<param name="man" value="3" />
 </rule>
 </source>
 
