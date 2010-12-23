@@ -129,6 +129,18 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="getFailuresByFieldShouldWorkWithPassedLocale" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			expected = "translated text";
+			failures = result.getFailuresByField(locale="en_US");
+			assertEquals(2,structCount(failures));
+			assertEquals(expected,failures.fieldA[1].message);
+			assertEquals(expected,failures.fieldA[2].message);
+			assertEquals(expected,failures.fieldB[1].message);
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="getFailuresByPropertyShouldReturnArraysOfFailuresPerPropertyName" access="public" returntype="void">
 		<cfscript>
 			addMultipleFailures();
@@ -137,6 +149,18 @@
 			assertEquals("First Message",failures.propertyA[1].message);
 			assertEquals("Second Message",failures.propertyA[2].message);
 			assertEquals("Third Message",failures.propertyB[1].message);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getFailuresByPropertyShouldWorkWithPassedLocale" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			expected = "translated text";
+			failures = result.getFailuresByProperty(locale="en_US");
+			assertEquals(2,structCount(failures));
+			assertEquals(expected,failures.propertyA[1].message);
+			assertEquals(expected,failures.propertyA[2].message);
+			assertEquals(expected,failures.propertyB[1].message);
 		</cfscript>  
 	</cffunction>
 
@@ -250,12 +274,9 @@
 		<cfscript>
 			addMultipleFailures();
 			assertEquals(3,arrayLen(result.getFailures()));
-			debug(result.getRawFailures());
 			result2 = CreateObject("component","ValidateThis.util.Result").init(MockTranslator);
 			addMultipleFailures(result2);
-			debug(result2.getRawFailures());
 			result.addResult(result2);
-			debug(result.getRawFailures());
 			assertEquals(6,arrayLen(result.getFailures()));
 		</cfscript>  
 	</cffunction>
@@ -278,36 +299,6 @@
 			failure.PropertyName = "propertyB";
 			failure.ClientFieldName = "fieldB";
 			arguments.toResult..addFailure(failure);
-		</cfscript>
-	</cffunction>
-
-	<cffunction name="equalsTest" access="public" returntype="void">
-		<cfscript>
-//get the current classloader
-classLoader = getClass().getClassLoader();
-//load the class for java.lang.Object
-objectClass = classLoader.loadClass("java.lang.Object");
-//get the equals method
-arr = [objectClass];
-equalsMethod = objectClass.getMethod("equals", arr);
-
-foo1 = {};
-foo2 = {a=1};
-
-arr2 = [foo2];
-test = equalsMethod.invoke(foo1,arr2);
-
-debug(test);
-		
-		//var arr = [objectClass];
-		//var equalsMethod = objectClass.getMethod("equals", arr);
-		
-		
-		/*
-		//if not, try this:
-		var equalsMethod = objectClass.getMethod("equals", [objectClass]);
-
-		*/		
 		</cfscript>
 	</cffunction>
 

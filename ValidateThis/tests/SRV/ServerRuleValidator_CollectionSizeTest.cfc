@@ -21,7 +21,7 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			super.setup();
-			SRV = getSRV("Size");
+			SRV = getSRV("CollectionSize");
 			
 			// Define Validation mock Test Values
 			parameters={};

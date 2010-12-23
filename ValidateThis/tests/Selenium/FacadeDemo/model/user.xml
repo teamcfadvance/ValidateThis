@@ -50,7 +50,7 @@
 			<rule type="false" />
 		</property>
 		<property name="VerifyPassword">
-			<rule type="size" contexts="newValidations-server">
+			<rule type="collectionSize" contexts="newValidations-server">
 				<param name="min" value="3" />
 				<param name="max" value="10" />
 			</rule>
@@ -62,10 +62,12 @@
 			</rule>
 		</property>
 		<property name="Salutation">
-			<rule type="size" contexts="newValidations-client">
+			<!-- size validator has been temporarily removed 
+			<rule type="collectionSize" contexts="newValidations-client">
 				<param name="min" value="2" />
 				<param name="max" value="3" />
 			</rule>
+			 -->
 		</property>
 		<property name="FirstName">
 		</property>

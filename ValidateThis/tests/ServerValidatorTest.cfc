@@ -464,7 +464,6 @@
 			assertEquals(1,arrayLen(Result.getFailures()));
 			objectList = [user];
 			serverValidator.validate(BOValidator,user,"Register",Result,objectList);
-			debug(Result.getFailures());
 			assertEquals(1,arrayLen(Result.getFailures()));
 		</cfscript>  
 	</cffunction>

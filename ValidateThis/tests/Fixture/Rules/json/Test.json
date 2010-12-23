@@ -32,7 +32,7 @@
 					],
 					"formName":"Test"
 				},
-				{"type":"Size","contexts":"Size",
+				{"type":"CollectionSize","contexts":"CollectionSize",
 					"params":[
 						{"name":"min","value":"2"},
 						{"name":"max","value":"7"}
@@ -187,7 +187,7 @@
 					"params":[],
 					"formName":"Test"
 				},
-				{"type":"Size","contexts":"Size",
+				{"type":"CollectionSize","contexts":"CollectionSize",
 					"params":[
 						{"name":"min","value":"2"}	
 					],
