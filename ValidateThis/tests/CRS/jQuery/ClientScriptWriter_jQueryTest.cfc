@@ -382,6 +382,19 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="RangeSizeValidationGeneratesCorrectScript" access="public" returntype="void">
+		<cfscript>
+			min = 5;
+			min = 10;
+			valStruct.ValType = "CollectionSize";
+			valStruct.Parameters.min = {value=min,type="value"};
+			valStruct.Parameters.max= {value=max,type="value"};
+			validation.load(valStruct);
+			script = ScriptWriter.generateValidationScript(validation,"frmMain");
+			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules('add',{CollectionSize: [5,10]});}",script);
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="RegexValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "regex";
