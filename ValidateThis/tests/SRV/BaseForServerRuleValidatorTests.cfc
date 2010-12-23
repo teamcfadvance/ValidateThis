@@ -101,7 +101,6 @@
 			configureValidationMock();
 			
 			SRV.validate(validation);
-			debug(validation.debugMock());
 			if (emptyValueShouldFail) {
 				validation.verifyTimes(1).fail("{*}");
 			} else { 

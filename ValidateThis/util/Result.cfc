@@ -108,7 +108,7 @@
 	<cffunction name="getFailuresByField" access="public" output="false" returntype="struct" hint="Returns a structure containing an array of failures for each clientFieldName.">
 		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per field" />
 		<cfargument name="locale" type="Any" required="false" default="" />
-		<cfreturn getFailuresByFieldOrProperty("ClientFieldName",false,arguments.limit,arguments.locale) />
+		<cfreturn getFailuresByFieldOrProperty("ClientFieldName",false,arguments.limit,"",arguments.locale) />
 	</cffunction>
 
 	<cffunction name="getFailureMessagesByField" access="public" output="false" returntype="struct" hint="Returns a structure containing a list of failure messages for each clientFieldName.">
@@ -121,7 +121,7 @@
 	<cffunction name="getFailuresByProperty" access="public" output="false" returntype="struct" hint="Returns a structure containing an array of failures for each propertyName.">
 		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per property" />
 		<cfargument name="locale" type="Any" required="false" default="" />
-		<cfreturn getFailuresByFieldOrProperty("PropertyName",false,arguments.limit,arguments.locale) />
+		<cfreturn getFailuresByFieldOrProperty("PropertyName",false,arguments.limit,"",arguments.locale) />
 	</cffunction>
 
 	<cffunction name="getFailureMessagesByProperty" access="public" output="false" returntype="struct" hint="Returns a structure containing a list of failure messages for each propertyName.">
