@@ -54,7 +54,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="getRawFailures" access="public" output="false" returntype="any" hint="returns the internal array of failure structs">
+	<cffunction name="getRawFailures" access="private" output="false" returntype="any" hint="returns the internal array of failure structs">
 		<cfreturn variables.instance.Failures />
 	</cffunction>
 
@@ -187,7 +187,7 @@
 		<cfreturn getFailuresAsValidationErrorCollection(arguments.locale) />
 	</cffunction>
 	
-	<cffunction name="getFailuresAsValidationErrorCollection" access="public" output="false" returntype="any" hint="I return failures in a format expected from a ModelGlue.util.ValidationErrorCollection">
+	<cffunction name="getFailuresAsValidationErrorCollection" access="private" output="false" returntype="any" hint="I return failures in a format expected from a ModelGlue.util.ValidationErrorCollection">
 		<cfargument name="locale" type="Any" required="false" default="" />
 		<cfset var FailureList = StructNew() />
 		<cfset var Failure = 0 />
@@ -241,7 +241,7 @@
 
 	</cffunction>
 
-	<cffunction name="addResult" output="false" returntype="void" hint="Pass in a Result object and I will add it to the current Result object.">
+	<cffunction name="addResult" access="public" output="false" returntype="void" hint="Pass in a Result object and I will add it to the current Result object.">
 		<cfargument name="theResult" type="any" required="true" />
 		<cfset getRawFailures().addAll(arguments.theResult.getRawFailures()) />
 	</cffunction>
