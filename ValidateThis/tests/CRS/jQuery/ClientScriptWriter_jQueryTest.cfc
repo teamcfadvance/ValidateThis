@@ -382,10 +382,10 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="RangeSizeValidationGeneratesCorrectScript" access="public" returntype="void">
+	<cffunction name="CollectionSizeValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			min = 5;
-			min = 10;
+			max = 10;
 			valStruct.ValType = "CollectionSize";
 			valStruct.Parameters.min = {value=min,type="value"};
 			valStruct.Parameters.max= {value=max,type="value"};
