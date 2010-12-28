@@ -86,6 +86,7 @@
 	        },
 	        {"name":"HowMuch","desc":"How much money would you like?",
 	            "rules" : [
+					{"type":"required","contexts":"*"},
 	                {"type":"numeric", "contexts":"*"}
 	            ]
 	        },
