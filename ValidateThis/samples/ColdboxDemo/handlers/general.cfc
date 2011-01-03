@@ -1,4 +1,4 @@
-component name="General.cfc"
+component 
 {
 	// Dependancy Injection
 	property name="ValidateThis" inject="coldbox:myplugin:ValidateThisCB3Plugin";
@@ -66,14 +66,18 @@ component name="General.cfc"
 		// store Validator in request collection for use in the view
 		rc.Validator = ValidateThis.getValidator( objectType="User" );
 		
-		// include javascript libraries, could do this in the layout if preferred
-		$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery-1.4.4.min.js""></script>" );
-		$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery.validate.min.js""></script>" );
-		$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery.field.min.js""></script>" );
-		// load general client side validation scripts
-		$htmlhead( ValidateThis.getInitializationScript() );
-		// load client side validation specific to the User and context
-		$htmlhead( ValidateThis.getValidationScript( objectType="User", Context=rc.Context ) );
+		// check if javascript validation is enabled
+		if ( !rc.nojs ) 
+		{
+			// include javascript libraries, could do this in the layout if preferred
+			$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery-1.4.4.min.js""></script>" );
+			$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery.validate.min.js""></script>" );
+			$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery.field.min.js""></script>" );
+			// load general client side validation scripts
+			$htmlhead( ValidateThis.getInitializationScript() );
+			// load client side validation specific to the User and context
+			$htmlhead( ValidateThis.getValidationScript( objectType="User", Context=rc.Context ) );
+		}
 		
 		// render the view
 		arguments.event.setView( "general/maintain" );

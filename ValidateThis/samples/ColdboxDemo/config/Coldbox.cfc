@@ -17,7 +17,7 @@ function configure(){
 		
 		//Implicit Events
 		defaultEvent			= "general.index",
-		requestStartHandler		= "",
+		requestStartHandler		= "main.requeststart",
 		requestEndHandler		= "",
 		applicationStartHandler = "",
 		applicationEndHandler	= "",
