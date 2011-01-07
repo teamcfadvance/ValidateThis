@@ -1,9 +1,14 @@
 /**
  * I am a specialised version of the default ValidateThis result object to show you what is possible
+ * If you do want to use your own result object then use the resultPath configuration setting 
  * Using your own ValidationResult object is entirely optional
  */
 component extends="ValidateThis.util.Result" 
 {
+	/**
+	 * I check if the field has an error and if it does then I return
+	 * the specific error as HTML to keep the view nice and clean
+	 */
 	string function renderErrorByField( required string fieldname )
 	{
 		var result = "";
