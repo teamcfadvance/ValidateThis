@@ -1,9 +1,23 @@
+/* 
+
+	Copyright 2011, Bob Silverberg & John Whish
+	
+	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
+	compliance with the License.  You may obtain a copy of the License at 
+	
+		http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software distributed under the License is 
+	distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+	implied.  See the License for the specific language governing permissions and limitations under the 
+	License.
+
+*/
 component 
 {
 	// Dependancy Injection
 	property name="ValidateThis" inject="coldbox:myplugin:ValidateThisCB3Plugin";
 	property name="MessageBox" inject="coldbox:plugin:MessageBox";
-
 
 	
 	/**
@@ -63,7 +77,7 @@ component
 		// validationresult may exists if validation failed
 		arguments.event.paramValue( "ValidationResult", ValidateThis.newResult() );
 		
-		// store Validator in request collection for use in the view
+		// store Validator for this object in request collection for use in the view
 		rc.Validator = ValidateThis.getValidator( objectType="User" );
 		
 		// check if javascript validation is enabled
@@ -105,15 +119,15 @@ component
 		
 		populateModel( model=rc.User, exclude="userid" );
 		
-		// get ValidateThis to validate the entity
+		// get ValidateThis to validate the entity for the given context
 		rc.validationresult = ValidateThis.validate( theObject=rc.User, Context=rc.Context );
 		
 		// check for any errors
 		if ( rc.validationresult.hasErrors() )
 		{
 			// validation has failed so redirect preserving the user and validationresult
-			getPlugin("MessageBox").setMessage( type="error", messageArray=rc.validationresult.getFailureMessages() );
-			flash.persistRC( 'user,validationresult' );
+			getPlugin( "MessageBox" ).setMessage( type="error", messageArray=rc.validationresult.getFailureMessages() );
+			flash.persistRC( "user,validationresult" );
 			setNextEvent( "general.maintain" );
 		}
 		else
@@ -123,7 +137,7 @@ component
 			{
 				EntitySave( rc.User );
 			}
-			getPlugin("MessageBox").setMessage( type="info", message="The User has been saved!" );
+			getPlugin( "MessageBox" ).setMessage( type="info", message="The User has been saved!" );
 			setNextEvent( "general" );
 		}
 	}
