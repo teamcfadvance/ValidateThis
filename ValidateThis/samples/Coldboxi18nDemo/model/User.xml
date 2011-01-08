@@ -18,7 +18,7 @@
 		<property name="Nickname">
 			<rule type="custom" failureMessage="NicknameTaken"> <!-- Specifying no context is the same as specifying a context of "*" -->
 				<param name="methodname" value="CheckDupNickname" />
-				<param name="remoteURL" value="CheckDupNickname.cfm" />
+				<param name="remoteURL" value="ColdBoxProxy.cfc?method=CheckDupNickname&amp;returnformat=plain" />
 			</rule>
 		</property>
 		<property name="UserPass">
