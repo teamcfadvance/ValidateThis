@@ -1,6 +1,6 @@
 <!---
 	
-	Copyright 2009, Bob Silverberg
+	Copyright 2009, Bob Silverberg & John Whish
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -22,7 +22,7 @@
 		<cfset var ValidateThisConfig = StructNew() />
 		<cfset super.Init(arguments.controller) />
 		<cfset setpluginName("ValidateThis Plugin") />
-		<cfset setpluginVersion("0.3") />
+		<cfset setpluginVersion("0.31") />
 		<cfset setpluginDescription("I allow ValidateThis to be accessed easily from within Coldbox.") />
 		
 		<!--- 
@@ -68,6 +68,7 @@
 		<cfargument name="objectType" type="string" required="false" />
 		<cfargument name="Context" type="string" required="false" />
 		<cfargument name="Result" type="any" required="false" />
+		<cfargument name="objectList" type="array" required="false" />
 
 		<cfreturn variables.ValidateThis.validate(argumentCollection=arguments) />
 	</cffunction>
