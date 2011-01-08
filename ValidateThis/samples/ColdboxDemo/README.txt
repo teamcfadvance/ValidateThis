@@ -2,13 +2,13 @@
 Demo requirements:
 --------------------------------------------------------
 
-ColdBox 3 
+ColdBox 3 (currently in RC developement phase)
 - you can download the latest RC from https://github.com/ColdBox/coldbox-platform
 
 ColdFusion 9.01
 - you can download the developer edition from http://www.adobe.com/products/coldfusion/
 
-MySQL or MSSQL
+MySQL or Microsoft SQL Server
 
 --------------------------------------------------------
 Demo setup
