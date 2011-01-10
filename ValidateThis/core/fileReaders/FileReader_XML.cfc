@@ -19,17 +19,28 @@
 		<cfargument name="objectType" type="string" required="true" hint="the type of object for which a BOValidator is being created" />
 		<cfargument name="metadataSource" type="any" required="true" hint="the path to the file to read" />
 
-		<cfset var theXML = XMLParse(arguments.metadataSource) />
-		<cfset var xmlErrors = XMLValidate(theXML, ExpandPath("/validatethis/core/validateThis.xsd"))>
-		<cfset var theProperties = [] />
+		<cfset var theXML = "">
+		<cfset var XmlErrors = {}>
+		<cfset var theProperties = []>
 		
-		<cfif XmlErrors.status eq "NO">
+		<!--- attempt to parse as XML --->
+		<cftry>
+			<cfset theXML = XMLParse(arguments.metadataSource) />		
+			<cfcatch>
+				<cfthrow type="ValidateThis.core.fileReaders.Filereader_XML.invalidXML" detail="The content of the file #arguments.metadataSource# is not valid XML" />
+			</cfcatch>
+		</cftry>
+		
+		<!--- validate against the validateThis.xsd schema --->
+		<cfset xmlErrors = XMLValidate( theXML, ExpandPath( "/validatethis/core/validateThis.xsd" ) )>
+		
+		<cfif !xmlErrors.status>
 			<!--- xml does not validate against the schema --->
 			<cfthrow type="ValidateThis.core.fileReaders.Filereader_XML.invalidXML" detail="The xml in the file #arguments.metadataSource# does not validate against the validateThis.xsd. #SerializeJSON( XmlErrors )#" />
 		</cfif>
 		
 		<cfset theProperties = convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//property")) />
-
+		
 		<cfset processConditions(convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//condition"))) />
 		<cfset processContexts(convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//context"))) />
 		<cfset processPropertyDescs(theProperties) />
