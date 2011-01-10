@@ -20,7 +20,15 @@
 		<cfargument name="metadataSource" type="any" required="true" hint="the path to the file to read" />
 
 		<cfset var theXML = XMLParse(arguments.metadataSource) />
-		<cfset var theProperties = convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//property")) />
+		<cfset var xmlErrors = XMLValidate(theXML, ExpandPath("/validatethis/core/validateThis.xsd"))>
+		<cfset var theProperties = [] />
+		
+		<cfif XmlErrors.status eq "NO">
+			<!--- xml does not validate against the schema --->
+			<cfthrow type="ValidateThis.core.fileReaders.Filereader_XML.invalidXML" detail="The xml in the file #arguments.metadataSource# does not validate against the validateThis.xsd. #SerializeJSON( XmlErrors )#" />
+		</cfif>
+		
+		<cfset theProperties = convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//property")) />
 
 		<cfset processConditions(convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//condition"))) />
 		<cfset processContexts(convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//context"))) />
