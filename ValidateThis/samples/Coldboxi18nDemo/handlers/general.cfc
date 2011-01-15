@@ -16,7 +16,7 @@
 component 
 {
 	// Dependancy Injection
-	property name="ValidateThis" inject="coldbox:myplugin:ValidateThisCB3Plugin";
+	property name="ValidateThis" inject="ocm:ValidateThis";
 	property name="MessageBox" inject="coldbox:plugin:MessageBox";
 
 	/**

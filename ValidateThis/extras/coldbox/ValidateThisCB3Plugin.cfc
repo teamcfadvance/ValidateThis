@@ -13,30 +13,41 @@
 	License.
 	
 --->
-<cfcomponent name="ValidateThisCBPlugin" hint="I am a plugin that allows ValidateThis to be accessed easily from within Coldbox." extends="coldbox.system.plugin" output="false" cache="true" cachetimeout="0">
+<cfcomponent name="ValidateThisCBPlugin" 
+	hint="I am a plugin that allows ValidateThis to be accessed easily from within Coldbox 3.0." 
+	output="false" 
+	singleton="true">
 
 	<cffunction name="init" access="public" returntype="any" output="false">
-		<cfargument name="controller" type="any" required="true">
 		<cfset var key = 0 />
 		<cfset var setting = 0 />
 		<cfset var ValidateThisConfig = StructNew() />
-		<cfset super.Init(arguments.controller) />
+		
 		<cfset setpluginName("ValidateThis Plugin") />
 		<cfset setpluginVersion("0.31") />
-		<cfset setpluginDescription("I allow ValidateThis to be accessed easily from within Coldbox.") />
+		<cfset setpluginDescription("I allow ValidateThis to be accessed easily from within Coldbox 3.0.") />
+		<cfset setPluginAuthor("Bob Silverberg") />
+		<cfset setPluginAuthorURL("http://www.silverwareconsulting.com/") />
 		
 		<!--- 
-		check for ValidateThis setting defined in Coldbox.xml.cfm 
-		this setting should be in the format:
+		check for ValidateThis setting defined in Coldbox.cfc or Coldbox.xml.cfm 
+		
+		Coldbox.cfc settings should be in the format:
+			settings = {
+				ValidateThisConfig = {JSRoot='/js/',defaultFormName='formToValidate'}
+			}
+		
+		Coldbox.xml.cfm settings should be in the format:
 			<Setting name="ValidateThisConfig" value="{JSRoot:'/js/',defaultFormName:'formToValidate'}" />
 		--->
 		<cfif settingExists("ValidateThisConfig")>
 			<!--- settings found so use them to configure ValidateThis --->
 			<cfset ValidateThisConfig = getSetting("ValidateThisConfig") />
 		</cfif>
+
 		
 		<!--- Create a ValidateThisConfig struct from data in the Coldbox settings --->
-		<cfloop list="VT_TranslatorPath,VT_LocaleLoaderPath,VT_BOValidatorPath,VT_DefaultJSLib,VT_JSRoot,VT_defaultFormName,VT_definitionPath,VT_localeMap,VT_defaultLocale,VT_abstractGetterMethod,VT_ExtraRuleValidatorComponentPaths,VT_ExtraClientScriptWriterComponentPaths,VT_ExtraFileReaderComponentPaths,VT_externalFileTypes,VT_injectResultIntoBO,VT_JSIncludes" index="key">
+		<cfloop list="VT_TranslatorPath,VT_LocaleLoaderPath,VT_BOValidatorPath,VT_DefaultJSLib,VT_JSRoot,VT_defaultFormName,VT_definitionPath,VT_localeMap,VT_defaultLocale,VT_abstractGetterMethod,VT_ExtraRuleValidatorComponentPaths,VT_ExtraClientScriptWriterComponentPaths,VT_ExtraFileReaderComponentPaths,VT_externalFileTypes,VT_injectResultIntoBO,VT_JSIncludes,VT_ResultPath,VT_defaultFailureMessagePrefix,VT_boComponentPaths,VT_extraAnnotationTypeReaderComponentPaths" index="key">
 		
 			<cfif settingExists(key)>
 				<cfset setting = Replace(key,"VT_","")>
@@ -50,14 +61,35 @@
 				</cfif>
 			</cfif>
 		</cfloop>
-		<!--- If no definitionPath was defined, use the ModelsPath and (optionally) the ModelsExternalLocationPath from the ColdBox config --->
+		<!--- If no definitionPath was defined, use the ModelsPath and (optionally) the ModelsExternalLocation from the ColdBox config --->
 		<cfif NOT StructKeyExists(ValidateThisConfig,"definitionPath")>
 			<cfset ValidateThisConfig.definitionPath = getSetting("ModelsPath") & "/" />
-			<cfif settingExists("ModelsExternalLocationPath") AND Len(getSetting("ModelsExternalLocationPath"))>
-				<cfset ValidateThisConfig.definitionPath = ListAppend(ValidateThisConfig.definitionPath, getSetting("ModelsExternalLocationPath")) />
+			<cfif settingExists("ModelsExternalLocation") AND Len(getSetting("ModelsExternalLocation"))>
+				<cfset ValidateThisConfig.definitionPath = ListAppend(ValidateThisConfig.definitionPath, getSetting("ModelsExternalLocation")) />
 			</cfif>
 		</cfif>
+		
+		<!--- check if ColdBox is using a resource bundle --->
+		<cfif settingExists("defaultLocale") AND getSetting("defaultLocale") neq "">
+			<!--- a custom translator hasn't been set so use ValidateThis.extras.coldbox.ColdBoxRBTranslator --->
+			<cfif NOT StructKeyExists(ValidateThisConfig,"translatorPath")>
+				<cfset ValidateThisConfig.translatorPath = "ValidateThis.extras.coldbox.ColdBoxRBTranslator" />
+			</cfif>
+		</cfif>
+		
 		<cfset variables.ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
+		<cfset log.debug("ValidateThis loaded")>
+		
+		<cfif settingExists("defaultLocale") AND getSetting("defaultLocale") neq "">
+			<!--- inject the ColdBox resource bundle into the translator, this does assume that if a custom translator has been defined it will have a setResourceBundle() method --->
+			<cftry>
+				<cfset variables.ValidateThis.getBean("Translator").setResourceBundle(getPlugin("ResourceBundle"))>
+				<cfcatch>
+					<cfset log.debug("ValidateThisCB3Plugin error: setResourceBundle method not found")>
+				</cfcatch>
+			</cftry>
+		</cfif>
+		
 		<cfreturn this>
 	</cffunction>
 
@@ -73,25 +105,25 @@
 		<cfreturn variables.ValidateThis.validate(argumentCollection=arguments) />
 	</cffunction>
 
-	<cffunction name="setupValidationSI" access="public" output="false" returntype="void" hint="Creates the default form setup for jQuery validation using the scriptInclude plugin.">
-		<!--- Based on a Plugin created by Craig McDonald --->
-		<!--- Note: This has not been tested --->
-		<cfargument name="objectList" type="any" required="true" hint="One or more objects to validate. As a list" />
+	<cffunction name="setupValidationSI" access="public" output="false" returntype="void" hint="Creates the default form setup for jQuery validation using the HTMLHelper plugin.">
+		<cfargument name="objectList" type="string" required="true" hint="One or more objects to validate. As a list" />
 		<cfargument name="context" type="any" required="false" default="" hint="The context of the form to validate" />
 		<cfargument name="locale" type="Any" required="false" default="" />
 		<cfargument name="formName" type="Any" required="false" default="" />
 		<cfargument name="loadMainLibrary" type="Any" required="false" default="false" />
 
-		<cfset var scriptInclude = getMyPlugin("scriptInclude") />
+		<cfset var HTMLHelper = getPlugin('HTMLHelper') />
 		<cfset var object = 0 />
 		<cfif arguments.loadMainLibrary>
-			<cfset scriptInclude.addResource(file='jquery-1.3.2.min',type='JS',path='') />
+			<cfset HTMLHelper.addAsset(file='jquery-1.4.2.min.js') />
 		</cfif>
-		<cfset scriptInclude.addResource(file='jquery.field.min',type='JS',path='') />
-		<cfset scriptInclude.addResource(file='jquery.validate.pack',type='JS',path='') />
-		<cfset scriptInclude.addScript(script=getInitializationScript(JSLib="jQuery",JSIncludes=false,locale=arguments.locale)) />
-		<cfloop index="object" list="#arguments.objectList#">		
-			<cfset scriptInclude.addScript(script=getValidationScript(JSLib="jQuery",objectType=object,Context=arguments.context,formName=arguments.formName,locale=arguments.locale)) />
+		<cfset HTMLHelper.addAsset('jquery.field.min.js') />
+		<cfset HTMLHelper.addAsset('jquery.validate.pack.js') />
+		
+		<cfhtmlhead text="#getInitializationScript(JSLib="jQuery",JSIncludes=false,locale=arguments.locale)#">		
+		
+		<cfloop index="object" list="#arguments.objectList#">
+			<cfhtmlhead text="#getValidationScript(JSLib="jQuery",objectType=object,Context=arguments.context,formName=arguments.formName,locale=arguments.locale)#">
 		</cfloop>
 	
 	</cffunction>
@@ -114,7 +146,7 @@
 
 		<cfreturn variables.ValidateThis.getInitializationScript(argumentCollection=arguments) />
 	</cffunction>
-
+	
 	<cffunction name="getRequiredProperties" access="public" output="false" returntype="any" hint="I return a structure containing the name of all of the required properties for the given context.">
 		<cfargument name="theObject" type="any" required="false" />
 		<cfargument name="objectType" type="string" required="false" />
@@ -137,7 +169,7 @@
 
 		<cfreturn variables.ValidateThis.getAllContexts(argumentCollection=arguments) />
 	</cffunction>
-
+	
 	<cffunction name="newResult" access="public" output="false" returntype="any" hint="I return a new, empty Result object.">
 		<cfreturn variables.ValidateThis.newResult() />
 	</cffunction>
@@ -145,8 +177,6 @@
 	<cffunction name="addRule" returnType="void" access="public" output="false" hint="I am used to add a rule via CFML code">
 		<cfargument name="propertyName" type="string" required="true" />
 		<cfargument name="valType" type="string" required="true" />
-		<cfargument name="theObject" type="any" required="false" />
-		<cfargument name="objectType" type="string" required="false" />
 		<cfargument name="clientFieldName" type="string" required="false" />
 		<cfargument name="propertyDesc" type="string" required="false" />
 		<cfargument name="condition" type="Struct" required="false" />
@@ -154,7 +184,10 @@
 		<cfargument name="contexts" type="string" required="false" />
 		<cfargument name="failureMessage" type="string" required="false" />
 		<cfargument name="formName" type="string" required="false" />
-
+		<cfargument name="objectType" type="any" required="false" default="" />
+		<cfargument name="definitionPath" type="any" required="false" default="" />
+		<cfargument name="theObject" type="any" required="false" default="" />
+		
 		<cfreturn variables.ValidateThis.addRule(argumentCollection=arguments) />
 	</cffunction>
 

@@ -19,6 +19,7 @@
 
 #getPlugin( "MessageBox" ).renderit()#
 
+<p><a href="#event.buildLink( 'general.maintain' )#">Register a New User</a></p>
 <ul>
 	<cfloop array="#rc.Users#" index="user">
 	<li>
