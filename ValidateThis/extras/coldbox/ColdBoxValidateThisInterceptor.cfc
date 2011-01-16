@@ -76,14 +76,13 @@
 				// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
 				getPlugin("logger").error("ColdBoxValidateThisInterceptor error: setResourceBundle method not found in  #getProperty('translatorPath')#");
 			}
-	
 		}
 			
 		// ValidateThis is loaded and configured so cache it
 		getColdboxOCM().set(getProperty('ValidateThisCacheKey'), ValidateThis, 0);
 		
 		// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
-		getPlugin("logger").info("ValidateThis Interceptor loaded", SerializeJSON(getProperties()));
+		getPlugin("logger").info("ValidateThis " & ValidateThis.getVersion() &  " loaded", SerializeJSON(ValidateThis.getValidateThisConfig()));
 		</cfscript>
 		
 	</cffunction>
