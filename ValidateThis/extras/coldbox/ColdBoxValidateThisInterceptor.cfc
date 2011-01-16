@@ -48,8 +48,6 @@
 			{
 				setProperty('ValidateThisCacheKey',"ValidateThis");
 			}
-			
-			log.debug("ValidateThis Interceptor Configured", getProperties());
 		</cfscript>
 				
 	</cffunction>
@@ -58,7 +56,7 @@
 
 	<!--- After Aspects Load --->
 	<cffunction name="afterAspectsLoad" access="public" returntype="void" output="false" hint="Load ValidateThis after configuration has loaded">
-		<cfargument name="event" 		 required="true" type="coldbox.system.web.context.RequestContext" hint="The event object.">
+		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
 		<cfargument name="interceptData" required="true" type="struct" hint="interceptData of intercepted info.">
 		
 		<cfscript>
@@ -75,14 +73,17 @@
 			}
 			catch(Any exception) 
 			{
-				log.error("ColdBoxValidateThisInterceptor error: setResourceBundle method not found in  #getProperty('translatorPath')#");
+				// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
+				getPlugin("logger").error("ColdBoxValidateThisInterceptor error: setResourceBundle method not found in  #getProperty('translatorPath')#");
 			}
 	
 		}
 			
 		// ValidateThis is loaded and configured so cache it
 		getColdboxOCM().set(getProperty('ValidateThisCacheKey'), ValidateThis, 0);
-		log.info("ValidateThis Interceptor loaded", getProperties());
+		
+		// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
+		getPlugin("logger").info("ValidateThis Interceptor loaded", SerializeJSON(getProperties()));
 		</cfscript>
 		
 	</cffunction>
