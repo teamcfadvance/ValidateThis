@@ -1,6 +1,6 @@
 <!---
 	
-	Copyright 2009, Bob Silverberg
+	Copyright 2009, Bob Silverberg & John Whish
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -13,7 +13,7 @@
 	License.
 	
 --->
-<cfcomponent name="ValidateThisCBPlugin" hint="I am a plugin that allows ValidateThis to be accessed easily from within Coldbox." extends="coldbox.system.plugin" output="false" cache="true" cachetimeout="0">
+<cfcomponent name="ValidateThisCBPlugin" hint="I am a plugin that allows ValidateThis to be accessed easily from within Coldbox 2.6." extends="coldbox.system.plugin" output="false" cache="true" cachetimeout="0">
 
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="controller" type="any" required="true">
@@ -22,8 +22,8 @@
 		<cfset var ValidateThisConfig = StructNew() />
 		<cfset super.Init(arguments.controller) />
 		<cfset setpluginName("ValidateThis Plugin") />
-		<cfset setpluginVersion("0.3") />
-		<cfset setpluginDescription("I allow ValidateThis to be accessed easily from within Coldbox.") />
+		<cfset setpluginVersion("0.31") />
+		<cfset setpluginDescription("I allow ValidateThis to be accessed easily from within Coldbox 2.6.") />
 		
 		<!--- 
 		check for ValidateThis setting defined in Coldbox.xml.cfm 
@@ -36,7 +36,7 @@
 		</cfif>
 		
 		<!--- Create a ValidateThisConfig struct from data in the Coldbox settings --->
-		<cfloop list="VT_TranslatorPath,VT_LocaleLoaderPath,VT_BOValidatorPath,VT_DefaultJSLib,VT_JSRoot,VT_defaultFormName,VT_definitionPath,VT_localeMap,VT_defaultLocale,VT_abstractGetterMethod,VT_ExtraRuleValidatorComponentPaths,VT_ExtraClientScriptWriterComponentPaths,VT_ExtraFileReaderComponentPaths,VT_externalFileTypes,VT_injectResultIntoBO,VT_JSIncludes" index="key">
+		<cfloop list="VT_TranslatorPath,VT_LocaleLoaderPath,VT_BOValidatorPath,VT_DefaultJSLib,VT_JSRoot,VT_defaultFormName,VT_definitionPath,VT_localeMap,VT_defaultLocale,VT_abstractGetterMethod,VT_ExtraRuleValidatorComponentPaths,VT_ExtraClientScriptWriterComponentPaths,VT_ExtraFileReaderComponentPaths,VT_externalFileTypes,VT_injectResultIntoBO,VT_JSIncludes,VT_ResultPath,VT_defaultFailureMessagePrefix,VT_boComponentPaths,VT_extraAnnotationTypeReaderComponentPaths" index="key">
 		
 			<cfif settingExists(key)>
 				<cfset setting = Replace(key,"VT_","")>
@@ -68,6 +68,7 @@
 		<cfargument name="objectType" type="string" required="false" />
 		<cfargument name="Context" type="string" required="false" />
 		<cfargument name="Result" type="any" required="false" />
+		<cfargument name="objectList" type="array" required="false" />
 
 		<cfreturn variables.ValidateThis.validate(argumentCollection=arguments) />
 	</cffunction>
