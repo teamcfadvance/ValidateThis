@@ -58,6 +58,7 @@
 			</rule>
 		</property>
 		<property name="HowMuch" desc="How much money would you like?">
+			<rule type="required" contexts="*" />
 			<rule type="numeric" contexts="*" />
 		</property>
 		<property name="CommunicationMethod" desc="Communication Method">

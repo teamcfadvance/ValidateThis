@@ -220,7 +220,17 @@ Version 0.98
   - True()
   - URL()
   - Expression(expression_that_evaluates_to_true_or_false) - ** Server-only **
+
+Version 0.98.1
+--------------
+Bug fix
   
+Version 0.98.2
+--------------
+- enhanced isValidObject validator to add individual failures to the final result
+- removed Size CRS to address JS bug
+- fixed a bug in Result object when working with locales
+
   
 WIP
 ---

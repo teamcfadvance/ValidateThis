@@ -352,6 +352,14 @@
 	
 	</cffunction>
 
+	<cffunction name="fieldIsRequired" returntype="boolean" access="public" output="false" hint="I determine whether a field is required.">
+		<cfargument name="fieldName" type="any" required="yes" hint="The name of the property." />
+		<cfargument name="context" type="any" required="false" default="" />
+
+		<cfreturn structKeyExists(variables.instance.requiredPropertiesAndFields[fixDefaultContext(arguments.Context)].fields,arguments.fieldName) />
+	
+	</cffunction>
+
 	<cffunction name="getVersion" returnType="any" output="false" hint="I report the current version of the framework">
 		<cfreturn variables.Version.getVersion() />
 	</cffunction>

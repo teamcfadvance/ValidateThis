@@ -180,6 +180,34 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="fieldIsRequiredWithDefaultContextShouldReturnTrueIfFieldIsRequired" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals(true,BOValidator.fieldIsRequired("UserGroupId"));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="fieldIsRequiredWithDefaultContextShouldReturnFalseIfFieldIsNotRequired" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals(false,BOValidator.fieldIsRequired("Nickname"));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="fieldIsRequiredWithSpecificContextShouldReturnTrueIfFieldIsRequired" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals(true,BOValidator.fieldIsRequired("FirstName","Profile"));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="fieldIsRequiredWithSpecificContextShouldReturnFalseIfFieldIsNotRequired" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals(false,BOValidator.fieldIsRequired("FirstName","Register"));
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="getInitializationScriptWithDefaultVTConfigReturnsCorrectScript" returntype="void" access="public">
 		<cfscript>
 			BOValidator = createDefaultBOV();

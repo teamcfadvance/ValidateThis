@@ -54,7 +54,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="getRawFailures" access="public" output="false" returntype="any" hint="returns the internal array of failure structs">
+	<cffunction name="getRawFailures" access="private" output="false" returntype="any" hint="returns the internal array of failure structs">
 		<cfreturn variables.instance.Failures />
 	</cffunction>
 
@@ -108,7 +108,7 @@
 	<cffunction name="getFailuresByField" access="public" output="false" returntype="struct" hint="Returns a structure containing an array of failures for each clientFieldName.">
 		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per field" />
 		<cfargument name="locale" type="Any" required="false" default="" />
-		<cfreturn getFailuresByFieldOrProperty("ClientFieldName",false,arguments.limit,arguments.locale) />
+		<cfreturn getFailuresByFieldOrProperty("ClientFieldName",false,arguments.limit,"",arguments.locale) />
 	</cffunction>
 
 	<cffunction name="getFailureMessagesByField" access="public" output="false" returntype="struct" hint="Returns a structure containing a list of failure messages for each clientFieldName.">
@@ -121,7 +121,7 @@
 	<cffunction name="getFailuresByProperty" access="public" output="false" returntype="struct" hint="Returns a structure containing an array of failures for each propertyName.">
 		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per property" />
 		<cfargument name="locale" type="Any" required="false" default="" />
-		<cfreturn getFailuresByFieldOrProperty("PropertyName",false,arguments.limit,arguments.locale) />
+		<cfreturn getFailuresByFieldOrProperty("PropertyName",false,arguments.limit,"",arguments.locale) />
 	</cffunction>
 
 	<cffunction name="getFailureMessagesByProperty" access="public" output="false" returntype="struct" hint="Returns a structure containing a list of failure messages for each propertyName.">
@@ -187,7 +187,7 @@
 		<cfreturn getFailuresAsValidationErrorCollection(arguments.locale) />
 	</cffunction>
 	
-	<cffunction name="getFailuresAsValidationErrorCollection" access="public" output="false" returntype="any" hint="I return failures in a format expected from a ModelGlue.util.ValidationErrorCollection">
+	<cffunction name="getFailuresAsValidationErrorCollection" access="private" output="false" returntype="any" hint="I return failures in a format expected from a ModelGlue.util.ValidationErrorCollection">
 		<cfargument name="locale" type="Any" required="false" default="" />
 		<cfset var FailureList = StructNew() />
 		<cfset var Failure = 0 />
@@ -241,7 +241,7 @@
 
 	</cffunction>
 
-	<cffunction name="addResult" output="false" returntype="void" hint="Pass in a Result object and I will add it to the current Result object.">
+	<cffunction name="addResult" access="public" output="false" returntype="void" hint="Pass in a Result object and I will add it to the current Result object.">
 		<cfargument name="theResult" type="any" required="true" />
 		<cfset getRawFailures().addAll(arguments.theResult.getRawFailures()) />
 	</cffunction>
