@@ -110,6 +110,14 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="findGetterReturnsGetValueForStructWrapper" access="public" returntype="void">
+		<cfscript>
+			var wrapper = CreateObject("component","validatethis.core.StructWrapper").init();
+			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init("getProperty");
+			assertEquals("getValue('FirstName')",objectChecker.findGetter(wrapper,"FirstName"));
+		</cfscript>
+	</cffunction>
+
 	<cffunction name="findGetterReturnsGetterForExistingMethodInWheelsObject" access="public" returntype="void">
 		<cfscript>
 			var obj = CreateObject("component","models.FakeWheelsObject_Fixture").init();
