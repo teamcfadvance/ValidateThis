@@ -56,10 +56,14 @@
 				<cfset theGetter = "$propertyvalue('#arguments.propertyName#')" />
 			</cfif>
 		<cfelseif isCFC(arguments.theObject)>
-			<cfif structKeyExists(arguments.theObject,"get" & arguments.propertyName)>
-				<cfset theGetter = "get#arguments.propertyName#()" />
-			<cfelseif structKeyExists(arguments.theObject,variables.abstractGetterMethod)>
-				<cfset theGetter = "#variables.abstractGetterMethod#('#arguments.propertyName#')" />
+			<cfif (getMetadata(arguments.theObject).name contains "structWrapper")>
+				<cfset theGetter = "getValue('#arguments.propertyName#')"/>"
+			<cfelse>
+				<cfif structKeyExists(arguments.theObject,"get" & arguments.propertyName)>
+					<cfset theGetter = "get#arguments.propertyName#()" />
+				<cfelseif structKeyExists(arguments.theObject,variables.abstractGetterMethod)>
+					<cfset theGetter = "#variables.abstractGetterMethod#('#arguments.propertyName#')" />
+				</cfif>
 			</cfif>
 		<cfelseif isGroovy(arguments.theObject)>
 			<cfset theProp = arguments.theObject.metaclass.hasProperty(arguments.theObject,arguments.propertyName) />
