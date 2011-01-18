@@ -20,6 +20,23 @@ component
 	property name="MessageBox" inject="coldbox:plugin:MessageBox";
 
 	/**
+	 * I change the locale
+	 */
+	void function changelocale( required event )
+	{
+		var rc = arguments.event.getCollection();
+		
+		// change locale
+		if ( StructKeyExists( rc, "locale" ) )
+		{
+			getPlugin( "i18n" ).setfwLocale( rc.locale );
+		}
+
+		arguments.event.setView( "general/changelocale" );
+	}
+
+
+	/**
 	 * I list users
 	 */
 	void function index( required event )
@@ -86,10 +103,10 @@ component
 			$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery-1.4.4.min.js""></script>" );
 			$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery.validate.min.js""></script>" );
 			$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery.field.min.js""></script>" );
-			// load general client side validation scripts
-			$htmlhead( ValidateThis.getInitializationScript() );
-			// load client side validation specific to the User and context
-			$htmlhead( ValidateThis.getValidationScript( objectType="User", Context=rc.Context ) );
+			// load general client side validation scripts passing in the locale for i18n support
+			$htmlhead( ValidateThis.getInitializationScript( locale=getfwlocale() ) );
+			// load client side validation specific to the User and context passing in the locale for i18n support
+			$htmlhead( ValidateThis.getValidationScript( objectType="User", Context=rc.Context, locale=getfwlocale() ) );
 		}
 		
 		// render the view
@@ -118,14 +135,14 @@ component
 		
 		populateModel( model=rc.User, exclude="userid" );
 		
-		// get ValidateThis to validate the entity for the given context
-		rc.validationresult = ValidateThis.validate( theObject=rc.User, Context=rc.Context );
+		// get ValidateThis to validate the entity for the given context and locale
+		rc.validationresult = ValidateThis.validate( theObject=rc.User, Context=rc.Context, locale=getfwlocale() );
 		
 		// check for any errors
 		if ( rc.validationresult.hasErrors() )
 		{
 			// validation has failed so redirect preserving the user and validationresult
-			getPlugin( "MessageBox" ).setMessage( type="error", messageArray=rc.validationresult.getFailureMessages() );
+			getPlugin( "MessageBox" ).setMessage( type="error", messageArray=rc.validationresult.getFailureMessages( locale=getfwlocale() ) );
 			flash.persistRC( "user,validationresult" );
 			setNextEvent( "general.maintain" );
 		}

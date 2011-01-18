@@ -21,10 +21,10 @@ function configure(){
 	// coldbox directives
 	coldbox = {
 		//Application Setup
-		appName 				= "ValidateThisDemo",
+		appName 				= "ValidateThisi18nDemo",
 		
 		//Development Settings
-		debugMode				= true,
+		debugMode				= false,
 		debugPassword			= "",
 		reinitPassword			= "",
 		handlersIndexAutoReload = true,
@@ -59,6 +59,13 @@ function configure(){
 	settings = {
 	};
 	
+	//i18n & Localisation
+	i18n = {
+		defaultResourceBundle = "includes/i18n/main",
+		defaultLocale = "en_GB",
+		localeStorage = "cookie"
+	};
+	
 	//Register interceptors as an array, we need order
 	interceptors = [
 		//Autowire
@@ -77,7 +84,7 @@ function configure(){
 				boValidatorPath="model.BOValidator"
 			}
 		}
-	];	
+	];
 }
 	
 </cfscript>
