@@ -44,7 +44,6 @@ component extends="approot.test.BaseTestCase"
 		
 		// assert
 		assertTrue( isArray( rc.users ) );
-		debug( CGI );
 	}
 	
 }

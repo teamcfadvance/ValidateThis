@@ -76,6 +76,8 @@ function configure(){
 		{
 			class="validatethis.extras.coldbox.ColdBoxValidateThisInterceptor",
 			properties = {
+				// set ValidateThis to use the same default locale as ColdBox (optional)
+				defaultLocale=i18n.defaultLocale,
 				// Tell VT that I will include Javascript libraries myself (optional)
 				JSIncludes=false,
 				// Tell VT that I want to use a customised version of ValidateThis.util.Result (optional)
