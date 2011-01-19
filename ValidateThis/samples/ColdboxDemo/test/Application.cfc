@@ -16,7 +16,7 @@
 component
 {
 	// Application properties
-	this.name = "ValidateThisColdboxi18nDemoTest";
+	this.name = "ValidateThisColdboxDemoTest";
 	this.sessionManagement = true;
 	this.sessionTimeout = CreateTimeSpan( 0, 0, 30, 0 );
 
