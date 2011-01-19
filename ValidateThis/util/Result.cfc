@@ -54,7 +54,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="getRawFailures" access="private" output="false" returntype="any" hint="returns the internal array of failure structs">
+	<cffunction name="getRawFailures" access="public" output="false" returntype="any" hint="returns the internal array of failure structs">
 		<cfreturn variables.instance.Failures />
 	</cffunction>
 

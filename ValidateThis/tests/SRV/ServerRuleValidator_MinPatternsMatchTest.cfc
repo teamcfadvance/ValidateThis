@@ -19,7 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			SRV = getSRV("Patterns");
+			SRV = getSRV("MinPatternsMatch");
 			parameters = {minMatches=1,pattern_Name="[a-z]]"};
 			shouldPass = ["a"];
 			shouldFail = ["NotAGoodTest","FailTest"];

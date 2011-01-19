@@ -98,7 +98,7 @@
 			<cfoutput>
 				<script type="text/javascript">jQuery(document).ready(function() {
 					$form_#safeFormName# = jQuery("###arguments.formName#");
-					$form_#safeFormName#.validate();
+					$form_#safeFormName#.validate({ignore:'.ignore'});
 			</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />
