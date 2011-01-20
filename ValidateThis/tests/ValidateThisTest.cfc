@@ -53,7 +53,7 @@
 			assertEquals("getValue",VTConfig.abstractGetterMethod);
 			assertEquals("The ",VTConfig.defaultFailureMessagePrefix);
 			assertEquals("frmMain",VTConfig.defaultFormName);
-			assertEquals("en_US",VTConfig.defaultLocale);
+			assertEquals("",VTConfig.defaultLocale);
 			assertEquals("/model/",VTConfig.definitionPath);
 			assertEquals("xml,json",VTConfig.externalFileTypes);
 			assertEquals("",VTConfig.extraFileReaderComponentPaths);
