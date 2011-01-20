@@ -7,27 +7,6 @@ component extends="approot.test.BaseTestCase"
 		super.setup();
 		validatethis = instance.controller.getColdboxOCM().get( "validatethis" );
 	}
-
-	function testVTIsInCache()
-	{
-		// assert
-		assertTrue( IsObject( validatethis ) );
-		assertTrue( IsInstanceOf( validatethis, "validatethis.validatethis" ) );
-	}
-	
-	function testVTConfig()
-	{
-		var validatethisconfig = validatethis.getValidateThisConfig();
-		// assert
-		assertTrue( IsStruct( validatethisconfig ) );
-		assertFalse( validatethisconfig.JSIncludes );
-		assertTrue( validatethisconfig.ResultPath == "model.ValidationResult" );
-		assertTrue( validatethisconfig.boValidatorPath == "model.BOValidator" );
-		assertTrue( validatethisconfig.defaultLocale == "en_GB" );
-		assertTrue( validatethisconfig.translatorPath == "ValidateThis.extras.coldbox.ColdBoxRBTranslator" );
-		
-		debug( validatethisconfig );
-	}
 	
 	function testVTUsingCustomResult()
 	{
@@ -47,7 +26,7 @@ component extends="approot.test.BaseTestCase"
 	{
 		var validatethisconfig = validatethis.getValidateThisConfig();
 		// assert
-		assertTrue( validatethisconfig.defaultLocale == getPlugin( "i18n" ).getfwLocale() );
+		assertEquals( getPlugin( "i18n" ).getfwLocale(), validatethisconfig.defaultLocale );
 	}
 
 	function testVTUsingColdBoxRTTranslator()
@@ -63,7 +42,9 @@ component extends="approot.test.BaseTestCase"
 		var rbpath = FileUtils.getAbsolutePath( "../includes/i18n/main_en_GB.properties" );
 		var rbmessage = GetProfileString( rbpath, "validation", "VerifyPasswordRequired" );
 		var vtresult = validatethis.validate( User );
-		var failuremessage = vtresult.getFailureMessagesByProperty().VerifyPassword[ 1 ];
+		var failurestruct = vtresult.getFailureMessagesByProperty();
+		debug( failurestruct );
+		var failuremessage = failurestruct.VerifyPassword[ 1 ];
 		//assert
 		assertTrue( failuremessage == rbmessage, "expected '#rbmessage#', got '#failuremessage#'" );
 	}

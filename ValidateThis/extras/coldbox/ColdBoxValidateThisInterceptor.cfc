@@ -1,6 +1,6 @@
 ﻿<!---
 	
-	Copyright 2009, John Whish & Bob Silverberg
+	Copyright 2011, John Whish & Bob Silverberg
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -33,9 +33,14 @@
 				}
 			}
 			
-			// check if ColdBox is using a resource bundle --->
+			// Coldbox has i18n configured
 			if (getController().settingExists("defaultLocale") AND getController().getSetting("defaultLocale") neq "")
 			{
+				if (NOT propertyExists("defaultLocale"))
+				{
+					// set ValidateThis up to use ColdBox default Locale
+					setProperty("defaultLocale", getController().getSetting("defaultLocale"));
+				}
 				if (NOT propertyExists("translatorPath"))
 				{
 					// a custom translator hasn't been set so use ValidateThis.extras.coldbox.ColdBoxRBTranslator
