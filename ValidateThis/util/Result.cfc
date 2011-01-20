@@ -17,11 +17,14 @@
 
 	<cffunction name="Init" access="Public" returntype="any" output="false" hint="I am the constructor">
 		<cfargument name="Translator" type="any" required="yes" />
+		<cfargument name="ValidateThisConfig" type="struct" required="true" />
+		
 		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.instance = StructNew() />
 		<cfset variables.instance.Failures = ArrayNew(1) />
 		<cfset variables.instance.IsSuccess = true />
 		<cfset variables.instance.SuccessMessage = "" />
+		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<cfreturn this />
 		
 	</cffunction>
@@ -142,7 +145,16 @@
 		<cfset var failureToAdd = 0 />
 		<cfset var failureCount = {} />
 		<cfset var keyName = 0 />
-		<cfset var failures = getFailures(arguments.locale) />
+		<cfset var failures = "" />
+		
+		<cfif variables.ValidateThisConfig.defaultLocale neq "">
+			<cfif arguments.locale eq "">
+				<cfset arguments.locale = variables.ValidateThisConfig.defaultLocale>
+			</cfif>
+		</cfif>
+		
+		<cfset failures = getFailures(arguments.locale) />
+		
 		<cfloop from="1" to="#ArrayLen(Failures)#" index="Failure">
 			<cfif StructKeyExists(failures[failure],arguments.keyType)>
 				<cfset keyName = failures[failure][arguments.keyType] />
