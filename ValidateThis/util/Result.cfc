@@ -62,7 +62,7 @@
 	</cffunction>
 
 	<cffunction name="getFailures" access="public" output="false" returntype="any" hint="returns all failures as an array of structs">
-		<cfargument name="locale" type="Any" required="false" default="" hint="the locale to use to translate the failure messages" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" hint="the locale to use to translate the failure messages" />
 		
 		<cfset var failure = 0 />
 		<cfset var failures = getRawFailures() />
@@ -77,7 +77,7 @@
 	</cffunction>
 
 	<cffunction name="getFailureMessages" access="public" output="false" returntype="array" hint="I return all failure messages as an array of strings.">
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfset var FailureList = [] />
 		<cfset var Failure = 0 />
 		<cfloop array="#getFailures(arguments.locale)#" index="Failure">
@@ -91,7 +91,7 @@
 	<cffunction name="getFailuresAsString" access="public" output="false" returntype="any" hint="I return the errors as a string separated with a specified delimiter.">
 		<!--- Based on code by Craig McDonald --->
 		<cfargument name="delim" type="string" required="false" default="<br />" hint="The delimiter to use to separate messages" />
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 	
 		<cfset var failureList = "" />
 		<cfset var failure = 0 />
@@ -110,27 +110,27 @@
 	
 	<cffunction name="getFailuresByField" access="public" output="false" returntype="struct" hint="Returns a structure containing an array of failures for each clientFieldName.">
 		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per field" />
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfreturn getFailuresByFieldOrProperty("ClientFieldName",false,arguments.limit,"",arguments.locale) />
 	</cffunction>
 
 	<cffunction name="getFailureMessagesByField" access="public" output="false" returntype="struct" hint="Returns a structure containing a list of failure messages for each clientFieldName.">
 		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of messages to return per field" />
 		<cfargument name="delimiter" type="string" required="false" default="" hint="A delimeter to use to separate messages per field. Blank creates an array instead of a string." />
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfreturn getFailuresByFieldOrProperty("ClientFieldName",true,arguments.limit,arguments.delimiter,arguments.locale) />
 	</cffunction>
 
 	<cffunction name="getFailuresByProperty" access="public" output="false" returntype="struct" hint="Returns a structure containing an array of failures for each propertyName.">
 		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per property" />
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfreturn getFailuresByFieldOrProperty("PropertyName",false,arguments.limit,"",arguments.locale) />
 	</cffunction>
 
 	<cffunction name="getFailureMessagesByProperty" access="public" output="false" returntype="struct" hint="Returns a structure containing a list of failure messages for each propertyName.">
 		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of messages to return per property" />
 		<cfargument name="delimiter" type="string" required="false" default="" hint="A delimeter to use to separate messages per property. Blank creates an array instead of a string." />
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfreturn getFailuresByFieldOrProperty("PropertyName",true,arguments.limit,arguments.delimiter,arguments.locale) />
 	</cffunction>
 
@@ -139,19 +139,13 @@
 		<cfargument name="messageOnly" type="boolean" required="true" hint="Should only the failure messages be returned, or the complete failure struct?" />
 		<cfargument name="limit" type="Any" required="false" default="" hint="The maximum number of failures to return per field or property" />
 		<cfargument name="delimiter" type="string" required="false" default="" hint="A delimeter to use to separate messages per property. Blank creates an array instead of a string." />
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfset var failureList = StructNew() />
 		<cfset var failure = 0 />
 		<cfset var failureToAdd = 0 />
 		<cfset var failureCount = {} />
 		<cfset var keyName = 0 />
 		<cfset var failures = "" />
-		
-		<cfif variables.ValidateThisConfig.defaultLocale neq "">
-			<cfif arguments.locale eq "">
-				<cfset arguments.locale = variables.ValidateThisConfig.defaultLocale>
-			</cfif>
-		</cfif>
 		
 		<cfset failures = getFailures(arguments.locale) />
 		
@@ -188,19 +182,19 @@
 	</cffunction>
 
 	<cffunction name="getFailuresForUniForm" access="public" output="false" returntype="any" hint="Returns a structure of failures in a format the cfUniform likes">
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfreturn getFailuresAsStruct(arguments.locale) />
 	</cffunction>
 
 	<!--- These methods implement the interface for ModelGlue.util.ValidationErrorCollection --->
 
 	<cffunction name="GetErrors" returntype="struct" access="public" output="false" hint="I get the Error collection as expected from ModelGlue.util.ValidationErrorCollection.">
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfreturn getFailuresAsValidationErrorCollection(arguments.locale) />
 	</cffunction>
 	
 	<cffunction name="getFailuresAsValidationErrorCollection" access="private" output="false" returntype="any" hint="I return failures in a format expected from a ModelGlue.util.ValidationErrorCollection">
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfset var FailureList = StructNew() />
 		<cfset var Failure = 0 />
 		<cfset var Failures = getFailures(arguments.locale) />
@@ -318,7 +312,7 @@
 
 	<!--- An example of a custom method that returns failures in a format expected by an existing application --->
 	<cffunction name="getFailuresForCAYA" access="public" output="false" returntype="any">
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfset var FailureList = [] />
 		<cfset var Failure = 0 />
 		<cfloop array="#getFailures(arguments.locale)#" index="Failure">
@@ -330,7 +324,7 @@
 	</cffunction>
 
 	<cffunction name="getFailuresAsStruct" access="public" output="false" returntype="any" hint="Deprecated. Use getFailuresByProperty() or getFailuresByField().">
-		<cfargument name="locale" type="Any" required="false" default="" />
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfset var FailureList = StructNew() />
 		<cfset var Failure = 0 />
 		<cfset var Failures = getFailures(arguments.locale) />

@@ -35,46 +35,15 @@ component extends="approot.test.BaseTestCase"
 		assertTrue( IsInstanceOf( validatethis.getBean( "translator" ), "ValidateThis.extras.coldbox.ColdBoxRBTranslator" ) );
 	}
 	
-	function testFailureMessageIsDefaultLocaleWhenNoLocalePassed()
+	function testgetRawFailures()
 	{
-		var FileUtils = getPlugin( "fileUtils" );
 		var user = EntityNew( "User" );
-		var rbpath = FileUtils.getAbsolutePath( "../includes/i18n/main_en_GB.properties" );
-		var rbmessage = GetProfileString( rbpath, "validation", "VerifyPasswordRequired" );
 		var vtresult = validatethis.validate( User );
-		var failurestruct = vtresult.getFailureMessagesByProperty();
-		debug( failurestruct );
-		var failuremessage = failurestruct.VerifyPassword[ 1 ];
-		//assert
-		assertTrue( failuremessage == rbmessage, "expected '#rbmessage#', got '#failuremessage#'" );
-	}
-	
-	function testFailureMessageIsFrenchWhenFrenchLocalePassed()
-	{
-		// assert
-		var FileUtils = getPlugin( "fileUtils" );
-		var user = EntityNew( "User" );
-		var rbpath = FileUtils.getAbsolutePath( "../includes/i18n/main_fr_FR.properties" );
-		var rbmessage = GetProfileString( rbpath, "validation", "VerifyPasswordRequired" );
-		var vtresult = validatethis.validate( User );
-		var failuremessage = vtresult.getFailureMessagesByProperty( locale="fr_FR" ).VerifyPassword[ 1 ];
-		// assert
+		var rawfailures = vtresult.getRawFailures();
 		
-		assertTrue( failuremessage == rbmessage, "expected '#rbmessage#', got '#failuremessage#'" );
-	}
-	
-	function testFailureMessageIsEnglishWhenEnglishLocalePassed()
-	{
-		// assert
-		var FileUtils = getPlugin( "fileUtils" );
-		var user = EntityNew( "User" );
-		var rbpath = FileUtils.getAbsolutePath( "../includes/i18n/main_en_GB.properties" );
-		var rbmessage = GetProfileString( rbpath, "validation", "VerifyPasswordRequired" );
-		var vtresult = validatethis.validate( User );
-		var failuremessage = vtresult.getFailureMessagesByProperty( locale="en_GB" ).VerifyPassword[ 1 ];
-		// assert
+		assertTrue( IsArray( rawfailures ) );
+		assertTrue( ArrayLen( rawfailures ) == 8 );
 		
-		assertTrue( failuremessage == rbmessage, "expected '#rbmessage#', got '#failuremessage#'" );
+		debug( rawfailures );
 	}
-	
 }
