@@ -89,7 +89,7 @@
 	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate JS statements required to setup client-side validations for VT.">
 		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
 		<cfargument name="JSIncludes" type="Any" required="no" default="#variables.ValidateThisConfig.JSIncludes#" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="#variables.ValidateThisConfig.defaultLocale#" />
 
 		<cfreturn variables.CommonScriptGenerator.getInitializationScript(argumentCollection=arguments) />
 

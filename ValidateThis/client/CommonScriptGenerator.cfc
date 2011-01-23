@@ -31,9 +31,11 @@
 		<cfif arguments.JSIncludes>
 			<cfset theScript = variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="JSInclude") />
 		</cfif>
+		<!--- the js/localization/*.js translations aren't required
 		<cfif Len(arguments.locale)>
 			<cfset theScript = theScript & variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="Locale",locale=arguments.locale) />
 		</cfif>
+		--->
 		<cfset theScript = theScript & variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="VTSetup") />
 		<cfreturn theScript />
 		

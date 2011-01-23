@@ -479,6 +479,6 @@ component extends="approot.test.BaseTestCase"
 
 		// assert
 		assertEquals( rbmessage, failures.usergroupid );
-	}	
+	}
 	
 }
