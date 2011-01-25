@@ -52,6 +52,14 @@
 		<cfset var dependentPropertyExpression = 0 />
 		<cfset var dependentPropertyValue = "" />
 		<cfset var conditionPasses = true />
+		<cfset var isObject = variables.ObjectChecker.isCFC(arguments.theObject) />
+		<cfset var debuggingMode = arguments.Result.getDebuggingMode() />
+		<cfset var classname = "struct" />
+		
+		<cfif debuggingMode neq "none" AND isObject>
+			<!--- for performance, only inspect metadata to get classname if debugging is enabled --->
+			<cfset classname = GetMetaData( arguments.theObject ).name />
+		</cfif>
 		
 		<cfif not variables.equalsHelper.isInArray(arguments.theObject,arguments.objectList)>
 			<cfset arrayAppend(arguments.objectList, arguments.theObject) />
@@ -95,9 +103,14 @@
 							</cfif>
 						</cfif>
 					</cfif>
+					
+					<cfif debuggingMode neq "none">
+						<cfset arguments.Result.addRuleDebugging(classname=classname, context=arguments.context, rule=v, rulepassed=theVal.getIsSuccess()) />
+					</cfif>
+					
 				</cfloop>
 				<!--- inject the Result object into the BO if configured to do so --->
-				<cfif variables.injectResultIntoBO and variables.ObjectChecker.isCFC(arguments.theObject)>
+				<cfif variables.injectResultIntoBO and isObject>
 					<cfset arguments.theObject["setVTResult"] = this["setVTResult"] />
 					<cfset arguments.theObject["getVTResult"] = this["getVTResult"] />
 					<cfset arguments.theObject.setVTResult(arguments.Result) />

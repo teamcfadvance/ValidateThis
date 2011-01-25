@@ -40,6 +40,7 @@
 		<cfparam name="variables.ValidateThisConfig.defaultFailureMessagePrefix" default="The " />
 		<cfparam name="variables.ValidateThisConfig.BOComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.extraAnnotationTypeReaderComponentPaths" default="" />
+		<cfparam name="variables.ValidateThisConfig.debugging" default="info" /><!--- possible values: none|info|strict --->
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />

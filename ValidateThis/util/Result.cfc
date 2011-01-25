@@ -25,6 +25,8 @@
 		<cfset variables.instance.IsSuccess = true />
 		<cfset variables.instance.SuccessMessage = "" />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
+		<cfset variables.instance.ruledebugging = ArrayNew(1) />
+		
 		<cfreturn this />
 		
 	</cffunction>
@@ -338,6 +340,28 @@
 			</cfif>
 		</cfloop>
 		<cfreturn FailureList />
+	</cffunction>
+	
+	<!--- debugging methods --->
+	<cffunction name="addRuleDebugging" access="public" output="false" returntype="void">
+		<cfargument name="classname" type="string" required="true" />
+		<cfargument name="context" type="string" required="true" />
+		<cfargument name="rule" type="any" required="true" />
+		<cfargument name="rulepassed" type="string" required="true" />
+		
+		<cfif variables.ValidateThisConfig.debugging neq "none">
+			<!--- small performance penalty to logging debug calls so only do it if required --->
+			<cfset ArrayAppend( variables.instance.ruledebugging, arguments ) />
+		</cfif>
+		
+	</cffunction>
+	
+	<cffunction name="getRuleDebugging" access="public" output="false" returntype="array" hint="I return an array of rules have been evaluated">
+		<cfreturn variables.instance.ruledebugging />
+	</cffunction>
+	
+	<cffunction name="getDebuggingMode" access="public" output="false" returntype="string" hint="I return the debugging mode. Possible values: none|info|strict">
+		<cfreturn variables.ValidateThisConfig.debugging />
 	</cffunction>
 
 	<!--- getters and setters --->

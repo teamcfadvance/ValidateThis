@@ -49,6 +49,8 @@ component extends="approot.test.BaseTestCase"
 		// assert
 		
 		assertEquals( rbmessage, failuremessage );
+		
+		debug( vtresult.getRuleDebugging() );
 	}
 	
 	/*
