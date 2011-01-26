@@ -40,7 +40,7 @@
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 				<cfif Len(arguments.locale) and ListFirst(arguments.locale,"_") NEQ "en">
-					<script src="#JSRoot#messages_#ListFirst(arguments.locale,'_')#.js" type="text/javascript"></script>
+					<script src="#JSRoot#localization/messages_#ListFirst(arguments.locale,'_')#.js" type="text/javascript"></script>
 				</cfif>
 			</cfoutput>
 		</cfsavecontent>

@@ -22,7 +22,29 @@
 		<cfscript>
 			MockTranslator = mock();
 			MockTranslator.translate("{string}","{string}").returns("Translated Text");
-			result = CreateObject("component","ValidateThis.util.Result").init(MockTranslator);
+			validatethisconfig = {
+				TranslatorPath = "ValidateThis.core.BaseTranslator",
+				LocaleLoaderPath = "ValidateThis.core.BaseLocaleLoader",
+				BOValidatorPath = "ValidateThis.core.BOValidator",
+				ResultPath = "ValidateThis.util.Result",
+				DefaultJSLib = "jQuery",
+				JSRoot = "js/",
+				defaultFormName = "frmMain",
+				definitionPath = "/model/",
+				localeMap = "#StructNew()#",
+				defaultLocale = "",
+				abstractGetterMethod = "getValue",
+				ExtraRuleValidatorComponentPaths = "",
+				ExtraClientScriptWriterComponentPaths = "",
+				extraFileReaderComponentPaths = "",
+				externalFileTypes = "xml,json",
+				injectResultIntoBO = "false",
+				JSIncludes = "true",
+				defaultFailureMessagePrefix = "The ",
+				BOComponentPaths = "",
+				extraAnnotationTypeReaderComponentPaths = ""
+			};
+			result = CreateObject("component","ValidateThis.util.Result").init(MockTranslator, validatethisconfig);
 			//result.setTranslator(MockTranslator);
 		</cfscript>
 	</cffunction>
@@ -274,7 +296,7 @@
 		<cfscript>
 			addMultipleFailures();
 			assertEquals(3,arrayLen(result.getFailures()));
-			result2 = CreateObject("component","ValidateThis.util.Result").init(MockTranslator);
+			result2 = CreateObject("component","ValidateThis.util.Result").init(MockTranslator,validatethisconfig);
 			addMultipleFailures(result2);
 			result.addResult(result2);
 			assertEquals(6,arrayLen(result.getFailures()));

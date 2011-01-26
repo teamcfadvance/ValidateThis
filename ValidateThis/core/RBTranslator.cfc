@@ -36,12 +36,6 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="safeKey" returnType="any" access="public" output="false" hint="I take a message and turn it into a key">
-		<cfargument name="message" type="Any" required="true" />
-		
-		<cfreturn REReplace(Replace(arguments.message," ","_","all"),"\W","","all") />
-	</cffunction>
-
 </cfcomponent>
 	
 

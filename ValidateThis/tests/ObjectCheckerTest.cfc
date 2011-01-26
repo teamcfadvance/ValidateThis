@@ -102,11 +102,19 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="findGetterReturnsGetterForAbstractGetterCFC" access="public" returntype="void">
+	<cffunction name="findGetterReturnsGetterForAbstractGetterInCFC" access="public" returntype="void">
 		<cfscript>
 			var cfc = CreateObject("component","fixture.CFCWithAbstractGetter_Fixture").init();
 			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init("getProperty");
 			assertEquals("getProperty('FirstName')",objectChecker.findGetter(cfc,"FirstName"));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="findGetterReturnsGetterForOnMissingMethodInCFC" access="public" returntype="void">
+		<cfscript>
+			var cfc = CreateObject("component","fixture.CFCWithOnMM_Fixture").init();
+			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init("");
+			assertEquals("onMissingMethod('getFirstName')",objectChecker.findGetter(cfc,"FirstName"));
 		</cfscript>  
 	</cffunction>
 
