@@ -40,7 +40,7 @@
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 				<cfif Len(arguments.locale) and ListFirst(arguments.locale,"_") NEQ "en">
-					<script src="#JSRoot#messages_#ListFirst(arguments.locale,'_')#.js" type="text/javascript"></script>
+					<script src="#JSRoot#localization/messages_#ListFirst(arguments.locale,'_')#.js" type="text/javascript"></script>
 				</cfif>
 			</cfoutput>
 		</cfsavecontent>
@@ -89,6 +89,21 @@
 		<cfreturn theScript />
 		
 	</cffunction>
+	
+	<cffunction name="generateValidationJSON" returntype="any" access="public" output="false" hint="I generate the JSON rule required to implement a validation.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfset var theValidation = {} />
+		<cfset var theJSON = "" />
+		<cfset var valType = arguments.validation.getValType() />
+
+		<cfif StructKeyExists(variables.RuleScripters,valType)>
+			<cfset theJSON = variables.RuleScripters[valType].generateValidationJSON(arguments.validation,arguments.formName,arguments.locale) />
+		</cfif>
+		
+		<cfreturn theJSON />
+	</cffunction>
 
 	<cffunction name="generateScriptHeader" returntype="any" access="public" output="false" hint="I generate the JS script required at the top of the script block.">
 		<cfargument name="formName" type="any" required="yes" />
@@ -98,7 +113,7 @@
 			<cfoutput>
 				<script type="text/javascript">jQuery(document).ready(function() {
 					$form_#safeFormName# = jQuery("###arguments.formName#");
-					$form_#safeFormName#.validate();
+					$form_#safeFormName#.validate({ignore:'.ignore'});
 			</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />
@@ -114,6 +129,13 @@
 		</cfsavecontent>
 		<cfreturn theScript />
 	</cffunction>
+	
+	<cffunction name="minifiy" returntype="any" access="public" output="false" hint="I minifiy the generated JS script on demand.">
+		<cfargument name="theScript" type="any" required="yes" />
+		
+		<cfreturn arguments.theScript />
+	</cffunction>
+	
 	
 </cfcomponent>
 

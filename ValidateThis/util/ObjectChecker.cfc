@@ -63,6 +63,8 @@
 					<cfset theGetter = "get#arguments.propertyName#()" />
 				<cfelseif structKeyExists(arguments.theObject,variables.abstractGetterMethod)>
 					<cfset theGetter = "#variables.abstractGetterMethod#('#arguments.propertyName#')" />
+				<cfelseif structKeyExists(arguments.theObject,"onMissingMethod")>
+					<cfset theGetter = "onMissingMethod('get#arguments.propertyName#')" />
 				</cfif>
 			</cfif>
 		<cfelseif isGroovy(arguments.theObject)>

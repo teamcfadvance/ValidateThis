@@ -2,7 +2,7 @@
 
 Example Usage:
 
-<rule type="Patterns">
+<rule type="MinPatternsMatch">
 	<param name="minMatches" value="3" />
 	<param name="pattern_lowerCaseLetter" value="[a-z]" />
 	<param name="pattern_upperCaseLetter" value="[A-Z]" />

@@ -25,7 +25,7 @@
 		
 		<!--- attempt to parse as XML --->
 		<cftry>
-			<cfset theXML = XMLParse(arguments.metadataSource) />		
+			<cfset theXML = XMLParse(arguments.metadataSource) />	
 			<cfcatch>
 				<cfthrow type="ValidateThis.core.fileReaders.Filereader_XML.invalidXML" detail="The content of the file #arguments.metadataSource# is not valid XML" />
 			</cfcatch>
@@ -35,8 +35,8 @@
 		<cfset xmlErrors = XMLValidate( theXML, ExpandPath( "/validatethis/core/validateThis.xsd" ) )>
 		
 		<cfif !xmlErrors.status>
-			<!--- xml does not validate against the schema --->
-			<cfthrow type="ValidateThis.core.fileReaders.Filereader_XML.invalidXML" detail="The xml in the file #arguments.metadataSource# does not validate against the validateThis.xsd. #SerializeJSON( XmlErrors )#" />
+			<!--- xml does not validate against the schema so log warning --->
+			<cflog type="warning" text="ValidateThis.core.fileReaders.Filereader_XML.invalidXML. The xml in the file #arguments.metadataSource# does not validate against the validateThis.xsd. #SerializeJSON( XmlErrors )#" />
 		</cfif>
 		
 		<cfset theProperties = convertXmlCollectionToArrayOfStructs(XMLSearch(theXML,"//property")) />

@@ -29,7 +29,7 @@
 		<cfparam name="variables.ValidateThisConfig.defaultFormName" default="frmMain" />
 		<cfparam name="variables.ValidateThisConfig.definitionPath" default="/model/" />
 		<cfparam name="variables.ValidateThisConfig.localeMap" default="#StructNew()#" />
-		<cfparam name="variables.ValidateThisConfig.defaultLocale" default="en_US" />
+		<cfparam name="variables.ValidateThisConfig.defaultLocale" default="" />
 		<cfparam name="variables.ValidateThisConfig.abstractGetterMethod" default="getValue" />
 		<cfparam name="variables.ValidateThisConfig.ExtraRuleValidatorComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.ExtraClientScriptWriterComponentPaths" default="" />
@@ -40,6 +40,7 @@
 		<cfparam name="variables.ValidateThisConfig.defaultFailureMessagePrefix" default="The " />
 		<cfparam name="variables.ValidateThisConfig.BOComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.extraAnnotationTypeReaderComponentPaths" default="" />
+		<cfparam name="variables.ValidateThisConfig.debugging" default="info" /><!--- possible values: none|info|strict --->
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
@@ -89,8 +90,9 @@
 	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate JS statements required to setup client-side validations for VT.">
 		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
 		<cfargument name="JSIncludes" type="Any" required="no" default="#variables.ValidateThisConfig.JSIncludes#" />
-		<cfargument name="locale" type="Any" required="no" default="" />
-
+		<cfargument name="locale" type="Any" required="no" default="#variables.ValidateThisConfig.defaultLocale#" />
+		<cfargument name="format" type="string" required="no" default="script" hint="script|json" />
+		
 		<cfreturn variables.CommonScriptGenerator.getInitializationScript(argumentCollection=arguments) />
 
 	</cffunction>

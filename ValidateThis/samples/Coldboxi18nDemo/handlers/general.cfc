@@ -136,7 +136,7 @@ component
 		populateModel( model=rc.User, exclude="userid" );
 		
 		// get ValidateThis to validate the entity for the given context and locale
-		rc.validationresult = ValidateThis.validate( theObject=rc.User, Context=rc.Context, locale=getfwlocale() );
+		rc.validationresult = ValidateThis.validate( theObject=rc.User, Context=rc.Context );
 		
 		// check for any errors
 		if ( rc.validationresult.hasErrors() )
