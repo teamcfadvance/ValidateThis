@@ -25,5 +25,6 @@
 	<cfset this.mappings = {} />
 	<cfset this.mappings["/groovy"] = getDirectoryFromPath(getCurrenttemplatePath())&"/fixture/groovy/" />
 	<cfset this.mappings["/models"] = getDirectoryFromPath(getCurrenttemplatePath())&"/fixture/models/" />
+	<cfset this.mappings["/validatethis"] = ExpandPath("../") />
 	
 </cfcomponent>
