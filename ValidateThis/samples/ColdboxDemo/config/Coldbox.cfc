@@ -74,7 +74,9 @@ function configure(){
 				// Tell VT that I want to use a customised version of ValidateThis.util.Result (optional)
 				ResultPath="model.ValidationResult",
 				// Tell VT that I want to use a customised version of ValidateThis.core.BOValidator (optional)
-				boValidatorPath="model.BOValidator"
+				boValidatorPath="model.BOValidator",
+				// Turn on debugging so we can get information about which rules/conditions passed/failed (optional)
+				debuggingMode="info"
 			}
 		}
 	];	

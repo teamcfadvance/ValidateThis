@@ -25,7 +25,7 @@
 		<cfset variables.instance.IsSuccess = true />
 		<cfset variables.instance.SuccessMessage = "" />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
-		<cfset variables.instance.ruledebugging = ArrayNew(1) />
+		<cfset variables.instance.criteriaDebuggingLog = ArrayNew(1) />
 		
 		<cfreturn this />
 		
@@ -343,25 +343,21 @@
 	</cffunction>
 	
 	<!--- debugging methods --->
-	<cffunction name="addRuleDebugging" access="public" output="false" returntype="void">
+	<cffunction name="logCriteriaOutcome" access="public" output="false" returntype="void" hint="I log the outcome when a rule/condition is evaluated">
 		<cfargument name="classname" type="string" required="true" />
 		<cfargument name="context" type="string" required="true" />
-		<cfargument name="rule" type="any" required="true" />
-		<cfargument name="rulepassed" type="string" required="true" />
+		<cfargument name="criteria" type="any" required="true" />
+		<cfargument name="passed" type="string" required="true" />
 		
-		<cfif variables.ValidateThisConfig.debugging neq "none">
-			<!--- small performance penalty to logging debug calls so only do it if required --->
-			<cfset ArrayAppend( variables.instance.ruledebugging, arguments ) />
-		</cfif>
-		
+		<cfset ArrayAppend( variables.instance.criteriaDebuggingLog, arguments ) />
 	</cffunction>
 	
-	<cffunction name="getRuleDebugging" access="public" output="false" returntype="array" hint="I return an array of rules have been evaluated">
-		<cfreturn variables.instance.ruledebugging />
+	<cffunction name="getDebugging" access="public" output="false" returntype="array" hint="I return an array of rules/conditions which have been evaluated">
+		<cfreturn variables.instance.criteriaDebuggingLog />
 	</cffunction>
 	
 	<cffunction name="getDebuggingMode" access="public" output="false" returntype="string" hint="I return the debugging mode. Possible values: none|info|strict">
-		<cfreturn variables.ValidateThisConfig.debugging />
+		<cfreturn variables.ValidateThisConfig.debuggingMode />
 	</cffunction>
 
 	<!--- getters and setters --->
