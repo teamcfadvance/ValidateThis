@@ -56,8 +56,6 @@
 		<cfset var isObject = variables.ObjectChecker.isCFC(arguments.theObject) />
 		<cfset var classname = "struct" />
 		
-		<cfdump var="#arguments#" output="console" top="1">
-		
 		<!--- the passed debuggingmode argument takes precedence of the debugging mode defined in the Result object --->
 		<cfif arguments.debuggingMode eq "">
 			<cfset arguments.debuggingMode = arguments.Result.getDebuggingMode() />

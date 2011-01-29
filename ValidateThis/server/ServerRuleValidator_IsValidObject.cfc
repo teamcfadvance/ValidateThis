@@ -27,8 +27,6 @@
 		<cfset var theResult = arguments.validation.getValidateThis().newResult()/>
 		<cfset var validateArgumentCollection = {context=context,theResult=theResult,objectList=arguments.validation.getObjectList()} />
 		
-		<cfdump var="#arguments.validation.getObjectList()#" />
-		
 		<cfif not shouldTest(arguments.validation)><cfreturn/></cfif>
 
 		<cfif isSimpleValue(theVal)> 
