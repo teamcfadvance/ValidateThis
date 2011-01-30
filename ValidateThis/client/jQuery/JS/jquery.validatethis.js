@@ -121,29 +121,28 @@
 		},
 		
 		submitHandler: function(form) {
-			$.validatethis.log("ValidateThis SubmitHandler: " + $(form).attr("name"));
+			$.validatethis.log("ValidateThis [form]: submitHandler form " + $(form).attr("name"));
 			if ($.validatethis.settings.remoteEnabled){
-				$.validatethis.log("ValidateThis [form] : ajaxSubmit");
+				$(form).ajaxSubmit({success:$.validatethis.ajaxSubmitSuccessCallback});
 			} else {
-				$.validatethis.log("ValidateThis [form] : standardSubmit");
 				form.submit();
 			}
-   		},
+		},
+		ajaxSubmitSuccessCallback: function(data){
+			$.validatethis.log("ValidateThis [remote] : Submit Success. Returned View Data");
+		},
 
 		loadRules: function(form,data){
-	
 			$.validatethis.log("ValidateThis [validate] : " + form.attr('name') + " = " + data);
-	
 			var validations = $.parseJSON(data);
-
 			form.validate({
 				debug: false,
 				ignore: $.validatethis.settings.ignoreClass,
 				submitHandler: $.validatethis.submitHandler,
 				rules: validations.rules,
 				messages: validations.messages
-   			});
-   			
+			});
+			
 			$.validatethis.log("ValidateThis Ready.");
 		},
 	
@@ -173,6 +172,7 @@
 		},
 
 		getValidationVersionCallback: function(data){
+			$.validatethis.settings.remoteEnabled = true;
 			$.validatethis.log("Remote ValidateThis v" + data);
 		},
 
@@ -180,11 +180,11 @@
 			this.log("getScriptCallback:recieved" + $.param(data));
 			this.loading(false);
 		},
-		
+
 		validatorConfigureCallback: function(data){
 			this.setValidatorDefaults();
 		},
-		
+
 		action: function(form,command,parameters,callback){
 			var action = command.split(":");
 			var serviceName = action[0];
@@ -195,7 +195,7 @@
 			this.loading(true);
 			this.remoteCall("action",args,this.remoteCallback);
 		},
-		
+
 		getScript: function(property, scriptTarget){
 			var arguments = {
 				params: {}
@@ -203,11 +203,11 @@
 			this.log("retrieving validation script for: " + property);		
 			this.remoteCall('getScript', arguments, this.getScriptCallback);
 		},
-		
+
 		format: function(txt,tag,attributes){
 			return '<' + tag + '>' + txt + '</' + tag + '>';
 		},
-		
+
 		loading: function(enabled){
 			if (enabled == true) {
 				$("#VT").stop().hide();
@@ -216,7 +216,7 @@
 				$("#VT").stop().hide();
 			};
 		},
-		
+
 		getRules: function(form){
 			var count = 0;
 			form.find(":input").each(function(){
@@ -236,7 +236,7 @@
 				};
 			});
 		},
-		
+
 		log: function(message){
 			if (this.settings.debug && window.console) {
 				if (console.debug){
@@ -272,6 +272,6 @@
 				});
 		});
 	};
-	
+
 // end of closure
 })(jQuery);
