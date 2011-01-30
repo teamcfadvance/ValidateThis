@@ -37,22 +37,22 @@
 		},
 		
 		init : function(options){
-			if (!this.initialized){
+			if (!this.settings.initialized){
 				// Log Options For Debugging
-				this.log("validatethis options: " + $.param(options));
+				this.log("ValidateThis [options]: " + $.param(options));
 
 				this.session = {};
 				var extendedDefaultOptions = $.extend({}, this.defaults, options);
 				this.settings = extendedDefaultOptions;
 				this.remoteCall("getValidationVersion",{},this.getValidationVersionCallback);
-				this.log("Creating ValidateThis plugin for v" + this.version);
+				this.log("ValidateThis [plugin]: v" + this.version);
 
 				this.scriptSetup();
 				this.setValidatorDefaults();
 
 				this.settings.initialized = true;
 			} else {
-				this.log("Error Creating ValidateThis plugin");
+				this.log("ValidateThis [plugin]: initialized");
 			}
 		},
 		
@@ -74,37 +74,18 @@
 			});
 		},
 		
-		initRemoteProxy: function(options){
-			var result = true;
-			// Ping the ValidateThis RemoteProxy For Facade Initialization
-			return result;
-		},
-		
 		clearFormRules: function(form){
 			form.find(":input").each(function(input){
 				$(input).rules("remove");
 			});
 		},
 		
-		addFormRules: function(form,rules){
-			$(rules).each(function(){
-			  var rule = $(this);
-				form.find(":input").each(function(){
-					this.log($(this) + " : " + rule);
-				});
-			});
-		},
-		
-		addFormFieldRule: function(form,field,rule){
-
-		},
-		
 		remoteCall: function(action, arguments, callback){
-			this.log("Remote Call (ValidateThis): " + action + " " + $.param(arguments));
+			this.log("ValidateThis [remote]: " + action + " " + $.param(arguments));
 			$.get(this.settings.ajaxProxyURL + action + "&" + $.param(arguments), callback);
 		},
 		remoteCallback: function(data){
-			this.log("remoteCallback:recieved" + $.param(data));
+			this.log("ValidateThis [remote]: callback-recieved" + $.param(data));
 			$("#VT").stop().html(data);
 			$("#VT").validatethis({refresh:true});
 			$("#VT").fadeIn();
@@ -121,30 +102,29 @@
 		},
 		
 		submitHandler: function(form) {
-			$.validatethis.log("ValidateThis SubmitHandler: " + $(form).attr("name"));
+			$.validatethis.log("ValidateThis [form]: submitHandler form " + $(form).attr("name"));
 			if ($.validatethis.settings.remoteEnabled){
-				$.validatethis.log("ValidateThis [form] : ajaxSubmit");
+				$(form).ajaxSubmit({success:$.validatethis.ajaxSubmitSuccessCallback});
 			} else {
-				$.validatethis.log("ValidateThis [form] : standardSubmit");
 				form.submit();
 			}
-   		},
+		},
+		ajaxSubmitSuccessCallback: function(data){
+			$.validatethis.log("ValidateThis [remote]: Submit Success. Returned View Data");
+		},
 
 		loadRules: function(form,data){
-	
-			$.validatethis.log("ValidateThis [validate] : " + form.attr('name') + " = " + data);
-	
+			$.validatethis.log("ValidateThis [validate]: " + form.attr('name') + " = " + data);
 			var validations = $.parseJSON(data);
-
 			form.validate({
 				debug: false,
 				ignore: $.validatethis.settings.ignoreClass,
 				submitHandler: $.validatethis.submitHandler,
 				rules: validations.rules,
 				messages: validations.messages
-   			});
-   			
-			$.validatethis.log("ValidateThis Ready.");
+			});
+			
+			$.validatethis.log("ValidateThis [status]: ready.");
 		},
 	
 		addRule: function(form,rule){
@@ -173,18 +153,19 @@
 		},
 
 		getValidationVersionCallback: function(data){
-			$.validatethis.log("Remote ValidateThis v" + data);
+			$.validatethis.settings.remoteEnabled = true;
+			$.validatethis.log("ValidateThis [remote]: v" + data);
 		},
 
 		getScriptCallback: function(data){
 			this.log("getScriptCallback:recieved" + $.param(data));
 			this.loading(false);
 		},
-		
+
 		validatorConfigureCallback: function(data){
 			this.setValidatorDefaults();
 		},
-		
+
 		action: function(form,command,parameters,callback){
 			var action = command.split(":");
 			var serviceName = action[0];
@@ -195,19 +176,15 @@
 			this.loading(true);
 			this.remoteCall("action",args,this.remoteCallback);
 		},
-		
+
 		getScript: function(property, scriptTarget){
 			var arguments = {
 				params: {}
 			};
-			this.log("retrieving validation script for: " + property);		
+			this.log("ValidateThis [rules]: property=" + property);		
 			this.remoteCall('getScript', arguments, this.getScriptCallback);
 		},
-		
-		format: function(txt,tag,attributes){
-			return '<' + tag + '>' + txt + '</' + tag + '>';
-		},
-		
+
 		loading: function(enabled){
 			if (enabled == true) {
 				$("#VT").stop().hide();
@@ -216,7 +193,7 @@
 				$("#VT").stop().hide();
 			};
 		},
-		
+
 		getRules: function(form){
 			var count = 0;
 			form.find(":input").each(function(){
@@ -230,13 +207,13 @@
 					try {
 						valid = form.valid();					
 						formRules = $(this).rules();
-						$.validatethis.log("'" + $(this).attr("name") + "' Validation Rules: " + $.param(formRules));
+						$.validatethis.log("ValidateThis [rules]: " + $(this).attr("name") + " " + $.param(formRules));
 						return formRules;
 					} catch (x){ $.validatethis.log("error: " + x); }
 				};
 			});
 		},
-		
+
 		log: function(message){
 			if (this.settings.debug && window.console) {
 				if (console.debug){
@@ -263,7 +240,7 @@
 				// Initialize Validate Plugin
 				$(this).find("form").each(function(){
 					var $form = $(this);
-					$.validatethis.log("ValidateThis Form : " + $form.attr('name'));
+					$.validatethis.log("ValidateThis [form]: " + $form.attr('name'));
 					$.validatethis.remoteCall("getValidationJSON",{"objectType":"system","formName":"","locale":"","context":""},
 						function(data){
 							$.validatethis.loadRules($form,data);
@@ -272,6 +249,6 @@
 				});
 		});
 	};
-	
+
 // end of closure
 })(jQuery);
