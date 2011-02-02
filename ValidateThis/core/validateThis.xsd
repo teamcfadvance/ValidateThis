@@ -72,7 +72,7 @@
                       <xs:documentation>The unique name for the context.</xs:documentation>
                     </xs:annotation>
                   </xs:attribute>
-                  <xs:attribute name="formName" type="xs:string" use="required">
+                  <xs:attribute name="formName" type="xs:string">
                     <xs:annotation>
                       <xs:documentation>The name of the form that corresponds to the context.  Used to support generating client-side validations for multiple forms on a single page.</xs:documentation>
                     </xs:annotation>
