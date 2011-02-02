@@ -17,7 +17,6 @@ component
 {
 	// Dependancy Injection
 	property name="ValidateThis" inject="ocm:ValidateThis";
-	property name="MessageBox" inject="coldbox:plugin:MessageBox";
 
 	/**
 	 * I list users
