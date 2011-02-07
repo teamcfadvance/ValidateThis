@@ -43,6 +43,7 @@
 		<cfargument name="Context" type="any" required="true" />
 		<cfargument name="Result" type="any" required="true" />
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
+		<cfargument name="debuggingMode" type="string" required="false" default="" />
 
 		<cfset var v = "" />
 		<cfset var theFailure = 0 />
@@ -52,6 +53,18 @@
 		<cfset var dependentPropertyExpression = 0 />
 		<cfset var dependentPropertyValue = "" />
 		<cfset var conditionPasses = true />
+		<cfset var isObject = variables.ObjectChecker.isCFC(arguments.theObject) />
+		<cfset var classname = "struct" />
+		
+		<!--- the passed debuggingmode argument takes precedence of the debugging mode defined in the Result object --->
+		<cfif arguments.debuggingMode eq "">
+			<cfset arguments.debuggingMode = arguments.Result.getDebuggingMode() />
+		</cfif>
+		
+		<cfif arguments.debuggingMode neq "none" AND isObject>
+			<!--- for performance, only inspect metadata to get classname if debugging is enabled --->
+			<cfset classname = GetMetaData( arguments.theObject ).name />
+		</cfif>
 		
 		<cfif not variables.equalsHelper.isInArray(arguments.theObject,arguments.objectList)>
 			<cfset arrayAppend(arguments.objectList, arguments.theObject) />
@@ -95,9 +108,14 @@
 							</cfif>
 						</cfif>
 					</cfif>
+					
+					<cfif arguments.debuggingMode neq "none">
+						<cfset arguments.Result.logCriteriaOutcome(classname=classname, context=arguments.context, criteria=v, passed=theVal.getIsSuccess()) />
+					</cfif>
+					
 				</cfloop>
 				<!--- inject the Result object into the BO if configured to do so --->
-				<cfif variables.injectResultIntoBO and variables.ObjectChecker.isCFC(arguments.theObject)>
+				<cfif variables.injectResultIntoBO and isObject>
 					<cfset arguments.theObject["setVTResult"] = this["setVTResult"] />
 					<cfset arguments.theObject["getVTResult"] = this["getVTResult"] />
 					<cfset arguments.theObject.setVTResult(arguments.Result) />

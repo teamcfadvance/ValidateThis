@@ -133,7 +133,7 @@
 	</cffunction>
 
 	<cffunction name="hasObject" access="public" output="false" returntype="boolean">
-		<cfreturn structKeyExists(variables,"theObject") />		
+		<cfreturn structKeyExists(variables,"theObject") AND IsObject(variables.theObject) />		
 	</cffunction>
 
 	<cffunction name="getValidateThis" access="public" output="false" returntype="any">
