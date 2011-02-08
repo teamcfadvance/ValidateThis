@@ -265,6 +265,24 @@
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="getValidationScriptShouldAllowForAnObjectToBePassedInAndUsedInAnExpressionTypeParameter" access="public" returntype="void">
+		<cfscript>
+			theObject = createObject("component","Fixture.CFCWithMethodForExpressionTypeParameter").init();
+			script = ValidateThis.getValidationScript(theObject=theObject);
+			assertTrue(script contains "rules('add',{inlist: {""list"":""1,2,3""},messages:{inlist:'The Test Prop was not found in list: (1,2,3).'}});");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidationScriptShouldAllowForAnEmptyStringToBePassedInAsTheObject" access="public" returntype="void">
+		<cfscript>
+			theObject = "";
+			script = ValidateThis.getValidationScript(theObject=theObject,objectType="RuleWithADynamicParameterThatDoesNotNeedAnObject");
+			debug(script);
+			assertTrue(script contains "rules('add',{inlist: {""list"":#year(now())#},messages:{inlist:'The Test Prop was not found in list: (#year(now())#).'}});");
+		</cfscript>  
+	</cffunction>
+
+
 	<cffunction name="setUpUserStruct" access="private" returntype="any">
 		<cfargument name="emptyUser" type="boolean" required="false" default="false" />
 		<cfscript>

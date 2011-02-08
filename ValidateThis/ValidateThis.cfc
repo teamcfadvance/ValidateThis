@@ -103,7 +103,13 @@
 
 		<cfset var returnValue = "" />
 		<cfset var BOValidator = getValidator(argumentCollection=arguments.missingMethodArguments) />
+
+		<cfif structKeyExists(arguments.missingMethodArguments,"theObject")>
+			<cfset arguments.missingMethodArguments.theObject = createWrapper(arguments.missingMethodArguments.theObject)/>
+		</cfif>
+		
 		<cfinvoke component="#BOValidator#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="returnValue" />
+
 		<cfif NOT IsDefined("returnValue")>
 			<cfset returnValue = "" />
 		</cfif>
