@@ -277,6 +277,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,ValidateThis.createWrapper(""));
 			Validation.load(valStruct);
 			validation.addParameter(name="Param3",value="3*3");
 			parameters = validation.getParameters();
@@ -294,6 +295,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,ValidateThis.createWrapper(""));
 			Validation.load(valStruct);
 			validation.addParameter(name="Param3",value="3*3",type="Expression");
 			parameters = validation.getParameters();
@@ -311,6 +313,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,ValidateThis.createWrapper(""));
 			Validation.load(valStruct);
 			validation.addParameter(name="Param1",value="3*3");
 			parameters = validation.getParameters();
@@ -328,6 +331,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,ValidateThis.createWrapper(""));
 			Validation.load(valStruct);
 			validation.addParameter(name="Param2",value="3*3",type="Expression");
 			parameters = validation.getParameters();
