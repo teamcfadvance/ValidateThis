@@ -73,7 +73,7 @@
 		<cfscript>
 			createTransientFactory();
 			validation = transientFactory.newValidation();
-			assertEquals([],validation.getObjectList());
+			assertEquals(arrayNew(1),validation.getObjectList());
 		</cfscript>
 	</cffunction>
 

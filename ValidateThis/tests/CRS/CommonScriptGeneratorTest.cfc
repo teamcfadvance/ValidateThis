@@ -23,7 +23,6 @@
 			variables.CSGenerator = validationFactory.getBean("CommonScriptGenerator");
 			variables.JSLib = "jQuery";
 			variables.ExpectedInJSIncludes = '<script src="/JS/jquery-1.4.2.min.js" type="text/javascript">';
-			variables.ExpectedInLocale = '<script src="/JS/messages_fr.js" type="text/javascript"></script>';
 			variables.ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
 		</cfscript>
 	</cffunction>
@@ -32,7 +31,6 @@
 		<cfscript>
 			script = variables.CSGenerator.getInitializationScript(JSLib=variables.JSLib);
 			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
-			assertFalse(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>
 	</cffunction>
@@ -41,7 +39,6 @@
 		<cfscript>
 			script = variables.CSGenerator.getInitializationScript(JSLib=variables.JSLib,JSIncludes=false);
 			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
-			assertFalse(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>
 	</cffunction>
@@ -52,7 +49,6 @@
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
 			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
 			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
-			assertFalse(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>
 	</cffunction>
@@ -63,7 +59,6 @@
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
 			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
 			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
-			assertFalse(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>
 	</cffunction>
@@ -72,7 +67,6 @@
 		<cfscript>
 			script = variables.CSGenerator.getInitializationScript(JSLib=variables.JSLib,locale="fr_FR");
 			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
-			assertTrue(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>
 	</cffunction>
@@ -81,7 +75,6 @@
 		<cfscript>
 			script = variables.CSGenerator.getInitializationScript(JSLib=variables.JSLib,JSIncludes=false,locale="fr_FR");
 			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
-			assertTrue(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>
 	</cffunction>

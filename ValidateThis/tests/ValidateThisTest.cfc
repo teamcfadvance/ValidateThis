@@ -22,7 +22,6 @@
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 			JSLib = "jQuery";
 			ExpectedInJSIncludes = '<script src="JS/jquery-1.4.2.min.js" type="text/javascript">';
-			ExpectedInLocale = '<script src="JS/messages_fr.js" type="text/javascript"></script>';
 			ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
 		</cfscript>
 	</cffunction>
@@ -73,7 +72,6 @@
 		<cfscript>
 			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
 			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
-			assertFalse(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>
 	</cffunction>
@@ -84,7 +82,6 @@
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
 			assertFalse(script CONTAINS variables.ExpectedInJSIncludes);
-			assertFalse(script CONTAINS variables.ExpectedInLocale);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>
 	</cffunction>
