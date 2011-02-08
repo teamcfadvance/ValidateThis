@@ -40,7 +40,7 @@
 		<cfparam name="variables.ValidateThisConfig.defaultFailureMessagePrefix" default="The " />
 		<cfparam name="variables.ValidateThisConfig.BOComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.extraAnnotationTypeReaderComponentPaths" default="" />
-		<cfparam name="variables.ValidateThisConfig.debugging" default="info" /><!--- possible values: none|info|strict --->
+		<cfparam name="variables.ValidateThisConfig.debuggingMode" default="none" /><!--- possible values: none|info|strict --->
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
@@ -76,12 +76,13 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
+		<cfargument name="debuggingMode" type="string" required="false" default="" />
 
 		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
 		
 		<cfset arguments.theObject = createWrapper(arguments.theObject)/>
 
-		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.objectList) />
+		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode) />
 		
 		<cfreturn arguments.Result />
 
@@ -103,7 +104,12 @@
 
 		<cfset var returnValue = "" />
 		<cfset var BOValidator = getValidator(argumentCollection=arguments.missingMethodArguments) />
+
+		<cfparam name="arguments.missingMethodArguments.theObject" default="" />
+		<cfset arguments.missingMethodArguments.theObject = createWrapper(arguments.missingMethodArguments.theObject) />
+		
 		<cfinvoke component="#BOValidator#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="returnValue" />
+
 		<cfif NOT IsDefined("returnValue")>
 			<cfset returnValue = "" />
 		</cfif>

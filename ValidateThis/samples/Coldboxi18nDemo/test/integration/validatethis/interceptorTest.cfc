@@ -21,9 +21,10 @@ component extends="approot.test.BaseTestCase"
 		// assert
 		assertTrue( IsStruct( validatethisconfig ) );
 		assertFalse( validatethisconfig.JSIncludes );
-		assertTrue( validatethisconfig.ResultPath == "model.ValidationResult" );
-		assertTrue( validatethisconfig.boValidatorPath == "model.BOValidator" );
-		assertTrue( validatethisconfig.translatorPath == "ValidateThis.extras.coldbox.ColdBoxRBTranslator" );
+		assertEquals( validatethisconfig.ResultPath, "model.ValidationResult" );
+		assertEquals( validatethisconfig.boValidatorPath, "model.BOValidator" );
+		assertEquals( validatethisconfig.translatorPath, "ValidateThis.extras.coldbox.ColdBoxRBTranslator" );
+		assertEquals( validatethisconfig.debuggingMode, "none" );
 		
 		debug( validatethisconfig );
 	}

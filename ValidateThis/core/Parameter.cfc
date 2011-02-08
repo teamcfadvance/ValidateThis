@@ -36,17 +36,11 @@
 			<cfreturn variables.instance.value />
 		</cfif>
 		<cfif variables.instance.type eq "expression">
-			<cfif variables.validation.hasObject()>
-				<cfreturn variables.validation.getTheObject().evaluateExpression(variables.instance.value) />
-			</cfif>
-			<cfreturn evaluate(variables.instance.value) />
+			<cfreturn variables.validation.getTheObject().evaluateExpression(variables.instance.value) />
 		</cfif>
 		
 		<cfif variables.instance.type eq "property">
-			<cfif variables.validation.hasObject()>
-				<cfreturn variables.validation.getObjectValue(variables.instance.value) />
-			</cfif>
-			<cfthrow type="ValidateThis.core.Parameter.NoValidationLoaded" detail="You cannot use a parameter of type 'property' when generating client-side validations." />
+			<cfreturn variables.validation.getObjectValue(variables.instance.value) />
 		</cfif>
 	</cffunction>
 

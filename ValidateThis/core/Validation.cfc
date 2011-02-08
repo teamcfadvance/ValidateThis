@@ -132,10 +132,6 @@
 		<cfreturn structKeyExists(variables.instance.Parameters,arguments.name) />		
 	</cffunction>
 
-	<cffunction name="hasObject" access="public" output="false" returntype="boolean">
-		<cfreturn structKeyExists(variables,"theObject") />		
-	</cffunction>
-
 	<cffunction name="getValidateThis" access="public" output="false" returntype="any">
 		<cfreturn variables.ValidateThis />
 	</cffunction>

@@ -43,6 +43,7 @@
 		<cfargument name="Context" type="any" required="true" />
 		<cfargument name="Result" type="any" required="true" />
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
+		<cfargument name="debuggingMode" type="string" required="false" default="" />
 
 		<cfset var v = "" />
 		<cfset var theFailure = 0 />
@@ -53,10 +54,14 @@
 		<cfset var dependentPropertyValue = "" />
 		<cfset var conditionPasses = true />
 		<cfset var isObject = variables.ObjectChecker.isCFC(arguments.theObject) />
-		<cfset var debuggingMode = arguments.Result.getDebuggingMode() />
 		<cfset var classname = "struct" />
 		
-		<cfif debuggingMode neq "none" AND isObject>
+		<!--- the passed debuggingmode argument takes precedence of the debugging mode defined in the Result object --->
+		<cfif arguments.debuggingMode eq "">
+			<cfset arguments.debuggingMode = arguments.Result.getDebuggingMode() />
+		</cfif>
+		
+		<cfif arguments.debuggingMode neq "none" AND isObject>
 			<!--- for performance, only inspect metadata to get classname if debugging is enabled --->
 			<cfset classname = GetMetaData( arguments.theObject ).name />
 		</cfif>
@@ -104,8 +109,8 @@
 						</cfif>
 					</cfif>
 					
-					<cfif debuggingMode neq "none">
-						<cfset arguments.Result.addRuleDebugging(classname=classname, context=arguments.context, rule=v, rulepassed=theVal.getIsSuccess()) />
+					<cfif arguments.debuggingMode neq "none">
+						<cfset arguments.Result.logCriteriaOutcome(classname=classname, context=arguments.context, criteria=v, passed=theVal.getIsSuccess()) />
 					</cfif>
 					
 				</cfloop>

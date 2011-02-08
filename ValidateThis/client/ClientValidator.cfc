@@ -41,12 +41,13 @@
 		<cfargument name="formName" type="any" required="true" />
 		<cfargument name="JSLib" type="any" required="true" />
 		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="theObject" type="Any" required="no" default="" />
 
 		<cfset var validation = "" />
 		<cfset var theScript = "" />
 		<cfset var theScriptWriter = variables.ScriptWriters[arguments.JSLib] />
-		<cfset var theVal = variables.TransientFactory.newValidation() />
-
+		<cfset var theVal = variables.TransientFactory.newValidation(theObject=theObject) />
+		
 		<cfsetting enableCFoutputOnly = "true">
 		
 		<cfif IsArray(arguments.Validations) and ArrayLen(arguments.Validations)>

@@ -21,8 +21,8 @@ component extends="approot.test.BaseTestCase"
 		// assert
 		assertTrue( IsStruct( validatethisconfig ) );
 		assertFalse( validatethisconfig.JSIncludes );
-		assertTrue( validatethisconfig.ResultPath == "model.ValidationResult" );
-		assertTrue( validatethisconfig.boValidatorPath == "model.BOValidator" );
+		assertEquals( "model.ValidationResult", validatethisconfig.ResultPath );
+		assertEquals( "model.BOValidator", validatethisconfig.boValidatorPath );
 		
 		debug( validatethisconfig );
 	}
@@ -31,14 +31,14 @@ component extends="approot.test.BaseTestCase"
 	{
 		var result = validatethis.newResult();
 		// assert
-		assertTrue( IsInstanceOf( result, "model.ValidationResult" ) );
+		assertEquals( "model.ValidationResult", GetMetaData( result ).name );
 	}
 	
 	function testVTUsingCustomBOValidator()
 	{
 		var result = validatethis.getValidator( objectType='user' );
 		// assert
-		assertTrue( IsInstanceOf( result, "model.BOValidator" ) );
+		assertEquals( "model.BOValidator", GetMetaData( result ).name );
 	}
 		
 }

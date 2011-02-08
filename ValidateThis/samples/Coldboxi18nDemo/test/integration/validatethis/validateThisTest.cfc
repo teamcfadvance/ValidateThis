@@ -12,14 +12,14 @@ component extends="approot.test.BaseTestCase"
 	{
 		var result = validatethis.newResult();
 		// assert
-		assertTrue( IsInstanceOf( result, "model.ValidationResult" ) );
+		assertEquals( "model.ValidationResult", GetMetaData( result ).name );
 	}
 	
 	function testVTUsingCustomBOValidator()
 	{
 		var result = validatethis.getValidator( objectType='user' );
 		// assert
-		assertTrue( IsInstanceOf( result, "model.BOValidator" ) );
+		assertEquals( "model.BOValidator", GetMetaData( result ).name );
 	}
 	
 	function testVTDefaultLocaleIsColdBoxDefaultLocale()

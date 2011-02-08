@@ -188,14 +188,14 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
+		<cfargument name="debuggingMode" type="string" required="false" default="" />
 
 		<cfif IsSimpleValue(arguments.Result)>
 			<cfset arguments.Result = newResult() />
 		</cfif>
 		<!--- Put the object into the result so it can be retrieved from there --->
 		<cfset arguments.Result.setTheObject(arguments.theObject) />
-		<!--- TODO: pass the objectType (from getObjectType()) into the ServerValidator.validate() method so it can be passed into the Validation object --->
-		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result,arguments.objectList) />
+		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode) />
 		<cfreturn arguments.Result />
 		
 	</cffunction>
@@ -206,9 +206,9 @@
 		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
 		<cfargument name="JSLib" type="any" required="false" default="#variables.defaultJSLib#" />
 		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="theObject" type="Any" required="no" default="" />
 
-		<!--- TODO: pass the objectType (from getObjectType()) into the ClientValidator.getValidationScript() method so it can be passed into the Validation object --->
-		<cfreturn variables.ClientValidator.getValidationScript(getValidations(arguments.Context),arguments.formName,arguments.JSLib,arguments.locale) />
+		<cfreturn variables.ClientValidator.getValidationScript(getValidations(arguments.Context),arguments.formName,arguments.JSLib,arguments.locale,arguments.theObject) />
 
 	</cffunction>
 

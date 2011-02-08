@@ -18,9 +18,9 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			parameter = createObject("component","ValidateThis.core.Parameter").init();
-			validation = createValidation();
 			VTConfig = {definitionPath="/UnitTests/Fixture"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
+			validation = createValidation();
 		</cfscript>
 	</cffunction>
 	
@@ -63,25 +63,9 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="ParameterWithExpressionTypeAndNoObjectShouldReturnCorrectValueFromParameterContext" access="public" returntype="void">
-		<cfscript>
-			paramStruct = {value="getMetadata(this).name",type="expression"};
-			parameter.load(paramStruct);
-			assertEquals("validatethis.core.parameter",parameter.getValue());
-		</cfscript>
-	</cffunction>
-
 	<cffunction name="ParameterWithPropertyTypeShouldReturnCorrectValue" access="public" returntype="void">
 		<cfscript>
 			validation.setup(ValidateThis,obj);
-			paramStruct = {value="FirstName",type="property"};
-			parameter.load(paramStruct);
-			assertEquals("Bob",parameter.getValue());
-		</cfscript>
-	</cffunction>
-
-	<cffunction name="ParameterWithPropertyTypeAndNoObjectShouldThrow" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.Parameter.NoValidationLoaded">
-		<cfscript>
 			paramStruct = {value="FirstName",type="property"};
 			parameter.load(paramStruct);
 			assertEquals("Bob",parameter.getValue());
@@ -98,6 +82,7 @@
 			valStruct.ValType = "required";
 			valStruct.PropertyName = "FirstName";
 			validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,obj);
 			validation.load(valStruct);
 			return validation;
 		</cfscript>  

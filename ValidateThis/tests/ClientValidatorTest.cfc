@@ -70,11 +70,28 @@
 		<cfscript>
 			ClientValidator = validateThis.getBean("ClientValidator");
 			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
-			debug(script);
 			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
 			assertTrue(script contains "$form_testFormName.validate({ignore:'.ignore'});");
 			assertTrue(script contains "if ($form_testFormName.find("":input[name='clientFieldName']"").length)");
 			assertTrue(script contains "$form_testFormName.find("":input[name='clientFieldName']"").rules");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getValidationScriptShouldAllowForAnObjectToBePassedInAndUsedInAnExpressionTypeParameter" access="public" returntype="void">
+		<cfscript>
+			ClientValidator = validateThis.getBean("ClientValidator");
+			parameter = {name="list",value="getList()",type="expression"};
+			parameters = {list=parameter};
+			validation = {clientFieldName="clientFieldName",condition=structNew(),formName="formName",parameters=parameters,propertyDesc="propertyDesc",propertyName="propertyName",valType="inList"};
+			validations = [validation];
+			theObject = mock();
+			theObject.evaluateExpression("getList()").returns("1,2");
+			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery",theObject=theObject);
+			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
+			assertTrue(script contains "$form_testFormName.validate({ignore:'.ignore'});");
+			assertTrue(script contains "if ($form_testFormName.find("":input[name='clientFieldName']"").length)");
+			assertTrue(script contains "$form_testFormName.find("":input[name='clientFieldName']"").rules");
+			assertTrue(script contains "rules('add',{inlist: {""list"":""1,2""},messages:{inlist:'The propertyDesc was not found in list: (1,2).'}});");
 		</cfscript>  
 	</cffunction>
 

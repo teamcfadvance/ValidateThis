@@ -212,7 +212,7 @@
 	<cffunction name="translate" returntype="string" access="private" output="false" hint="I translate a message.">
 		<cfargument name="message" type="string" default=""/>		
 		<cfargument name="locale" type="string" default=""/>
-		<cfreturn  "#variables.Translator.translate(arguments.message,arguments.locale)#"/>
+		<cfreturn  variables.Translator.translate(arguments.message,arguments.locale) />
 	</cffunction>
 
 </cfcomponent>
