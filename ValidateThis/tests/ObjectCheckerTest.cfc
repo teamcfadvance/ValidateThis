@@ -114,7 +114,7 @@
 		<cfscript>
 			var cfc = CreateObject("component","fixture.CFCWithOnMM_Fixture").init();
 			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init("");
-			assertEquals("onMissingMethod('getFirstName')",objectChecker.findGetter(cfc,"FirstName"));
+			assertEquals("getFirstName()",objectChecker.findGetter(cfc,"FirstName"));
 		</cfscript>  
 	</cffunction>
 
