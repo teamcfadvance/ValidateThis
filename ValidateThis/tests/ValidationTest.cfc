@@ -85,6 +85,21 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="getObjectValueCFCWithOnMissingMethodShouldWork" access="public" returntype="void">
+		<cfscript>
+			var obj = CreateObject("component","fixture.CFCWithOnMM_Fixture").init();
+			var objectChecker = mock();
+			objectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,obj);
+			Validation.load(valStruct);
+			assertEquals("Bob",Validation.getObjectValue());
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="getObjectValueCFCWithPropertyNameArgumentShouldWork" access="public" returntype="void">
 		<cfscript>
 			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();

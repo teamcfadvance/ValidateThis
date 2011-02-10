@@ -31,7 +31,7 @@
 		<cfargument name="missingMethodArgs" type="any">
 		<cfscript>
 			if (left(arguments.missingMethodName,3) eq "get"){
-				return arguments.MissingMethodName;
+				return variables[right(arguments.missingMethodName,len(arguments.missingMethodName)-3)];
 			}
 		</cfscript>
 	</cffunction>
