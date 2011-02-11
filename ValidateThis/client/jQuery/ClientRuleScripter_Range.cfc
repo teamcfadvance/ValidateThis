@@ -20,10 +20,8 @@
 
 		<cfset var parameters = arguments.validation.getParameters() />
 
-		<cfreturn """range"": #serializeJSON(parameters)#" />
+		<cfreturn """range"": [#parameters.min#,#parameters.max#]" />
 		
 	</cffunction>
 
 </cfcomponent>
-
-

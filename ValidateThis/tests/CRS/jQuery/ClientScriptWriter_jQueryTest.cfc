@@ -428,7 +428,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			
-			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules(""add"", { required : true, messages: {required: ""the first name is required.""} });}",script);
+			assertEquals("if ($("":input[name='firstname']"",$form_frmmain).length) { $("":input[name='firstname']"",$form_frmmain).rules(""add"", { required : true, messages: {required: ""the first name is required.""} });}",script);
 			
 		</cfscript>  
 	</cffunction>
@@ -440,7 +440,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			
-			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules(""add"", { required : function(element) { return $("":input[name='lastname']"").getvalue().length > 0; }, messages: {required: ""the first name is required if you specify a value for the lastname.""} });}",script);
+			assertEquals("if ($("":input[name='firstname']"",$form_frmmain).length) { $("":input[name='firstname']"",$form_frmmain).rules(""add"", { required : function(element) { return $("":input[name='lastname']"").getvalue().length > 0; }, messages: {required: ""the first name is required if you specify a value for the lastname.""} });}",script);
 
 		</cfscript>  
 	</cffunction>
@@ -452,7 +452,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			
-			assertEquals("if ($form_frmmain2.find("":input[name='firstname']"").length) { $form_frmmain2.find("":input[name='firstname']"").rules(""add"", { required : function(element) { return $("":input[name='lastname']"").getvalue().length > 0; }, messages: {required: ""the first name is required if you specify a value for the lastname.""} });}",script);
+			assertEquals("if ($("":input[name='firstname']"",$form_frmmain2).length) { $("":input[name='firstname']"",$form_frmmain2).rules(""add"", { required : function(element) { return $("":input[name='lastname']"").getvalue().length > 0; }, messages: {required: ""the first name is required if you specify a value for the lastname.""} });}",script);
 
 		</cfscript>  
 	</cffunction>
@@ -465,7 +465,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			
-			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules(""add"", { required : function(element) { return $("":input[name='lastname']"").getvalue() == 'silverberg'; }, messages: {required: ""the first name is required based on what you entered for the lastname.""} });}",script);
+			assertEquals("if ($("":input[name='firstname']"",$form_frmmain).length) { $("":input[name='firstname']"",$form_frmmain).rules(""add"", { required : function(element) { return $("":input[name='lastname']"").getvalue() == 'silverberg'; }, messages: {required: ""the first name is required based on what you entered for the lastname.""} });}",script);
 
 		</cfscript>  
 	</cffunction>
@@ -478,7 +478,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 
-			assertEquals("if ($form_frmmain2.find("":input[name='firstname']"").length) { $form_frmmain2.find("":input[name='firstname']"").rules(""add"", { required : function(element) { return $("":input[name='lastname']"").getvalue() == 'silverberg'; }, messages: {required: ""the first name is required based on what you entered for the lastname.""} });}",script);
+			assertEquals("if ($("":input[name='firstname']"",$form_frmmain2).length) { $("":input[name='firstname']"",$form_frmmain2).rules(""add"", { required : function(element) { return $("":input[name='lastname']"").getvalue() == 'silverberg'; }, messages: {required: ""the first name is required based on what you entered for the lastname.""} });}",script);
 
 		</cfscript>  
 	</cffunction>
@@ -491,7 +491,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			
-			assertEquals("if ($form_frmmain.find("":input[name='firstname']"").length) { $form_frmmain.find("":input[name='firstname']"").rules(""add"", { required : function(element) { return $("":input[name='user[lastname]']"").getvalue().length > 0; }, messages: {required: ""the first name is required if you specify a value for the lastname.""} });}",script);
+			assertEquals("if ($("":input[name='firstname']"",$form_frmmain).length) { $("":input[name='firstname']"",$form_frmmain).rules(""add"", { required : function(element) { return $("":input[name='user[lastname]']"").getvalue().length > 0; }, messages: {required: ""the first name is required if you specify a value for the lastname.""} });}",script);
 			
 		</cfscript>  
 	</cffunction>
@@ -504,7 +504,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			
-			assertEquals("if ($form_frmmain2.find("":input[name='firstname']"").length) { $form_frmmain2.find("":input[name='firstname']"").rules(""add"", { required : function(element) { return $("":input[name='user[lastname]']"").getvalue().length > 0; }, messages: {required: ""the first name is required if you specify a value for the lastname.""} });}",script);
+			assertEquals("if ($("":input[name='firstname']"",$form_frmmain2).length) { $("":input[name='firstname']"",$form_frmmain2).rules(""add"", { required : function(element) { return $("":input[name='user[lastname]']"").getvalue().length > 0; }, messages: {required: ""the first name is required if you specify a value for the lastname.""} });}",script);
 			
 		</cfscript>  
 	</cffunction>

@@ -150,7 +150,7 @@
 		<cfreturn parameterDef/>
 		
 	</cffunction>
-	
+	 
 	<cffunction name="getMessageDef" returntype="string" access="public" output="false" hint="I generate the JS script required to display the appropriate failure message.">
 		<cfargument name="message" type="string" default=""/>
 		<cfargument name="valType" type="string" default="#getValType()#"/>
@@ -177,7 +177,7 @@
 		<cfargument name="formName" type="string" default=""/>
 		<cfset var safeFormName = variables.getSafeFormName(arguments.formName)/>
 		<cfset var safeFieldName = arguments.validation.getClientFieldName()/>
-		<cfreturn "$("":input[name='#safeFieldName#']"",form_#safeFormName#)" />
+		<cfreturn "$("":input[name='#safeFieldName#']"",$form_#safeFormName#)" />
 	</cffunction>	
 	
 	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I return the failure message to be used.">
