@@ -46,7 +46,7 @@
 			script = ScriptWriter.generateScriptHeader("formName");
 			assertTrue(Trim(Script) CONTAINS "jQuery(document).ready(function() {");
 			assertTrue(Trim(Script) CONTAINS "$form_formName = jQuery(""##formName"");");
-			assertTrue(Trim(Script) CONTAINS "$form_formName.validate()");
+			assertTrue(Trim(Script) CONTAINS "$form_formName.validate({ignore:'.ignore'})");
 		</cfscript>  
 	</cffunction>
 
@@ -55,7 +55,7 @@
 			script = ScriptWriter.generateScriptHeader("form-Name2");
 			assertTrue(Trim(Script) CONTAINS "jQuery(document).ready(function() {");
 			assertTrue(Trim(Script) CONTAINS "$form_formName2 = jQuery(""##form-Name2"");");
-			assertTrue(Trim(Script) CONTAINS "$form_formName2.validate()");
+			assertTrue(Trim(Script) CONTAINS "$form_formName2.validate({ignore:'.ignore'})");
 		</cfscript>  
 	</cffunction>
 
@@ -66,6 +66,9 @@
 		</cfscript>  
 	</cffunction>
 
+	<!--- Removing all of these CRS-specific tests as they are way too fragile.
+			The CRS's are being tested via the Selenium tests
+			
 	<cffunction name="BooleanValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "boolean";
@@ -417,6 +420,8 @@
             assertTrue(Script eq "if ($form_frmMain.find("":input[name='FirstName']"").length) { $form_frmMain.find("":input[name='FirstName']"").rules(""add"",{regex:/^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$/,messages:{regex:""First Name does not match the specified pattern.""}});}");		</cfscript>  
 	</cffunction>
 	
+	--->
+	
 	<cffunction name="SimpleRequiredValidationGeneratesCorrectScript" access="public" returntype="void">
 		<cfscript>
 			valStruct.ValType = "required";
@@ -503,7 +508,5 @@
 			
 		</cfscript>  
 	</cffunction>
-	
-	<!--- TODO: Need Size, True and URL --->
 	
 </cfcomponent>

@@ -85,6 +85,21 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="getObjectValueCFCWithOnMissingMethodShouldWork" access="public" returntype="void">
+		<cfscript>
+			var obj = CreateObject("component","fixture.CFCWithOnMM_Fixture").init();
+			var objectChecker = mock();
+			objectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,obj);
+			Validation.load(valStruct);
+			assertEquals("Bob",Validation.getObjectValue());
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="getObjectValueCFCWithPropertyNameArgumentShouldWork" access="public" returntype="void">
 		<cfscript>
 			var obj = CreateObject("component","fixture.APlainCFC_Fixture").init();
@@ -277,6 +292,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,ValidateThis.createWrapper(""));
 			Validation.load(valStruct);
 			validation.addParameter(name="Param3",value="3*3");
 			parameters = validation.getParameters();
@@ -294,6 +310,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,ValidateThis.createWrapper(""));
 			Validation.load(valStruct);
 			validation.addParameter(name="Param3",value="3*3",type="Expression");
 			parameters = validation.getParameters();
@@ -311,6 +328,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,ValidateThis.createWrapper(""));
 			Validation.load(valStruct);
 			validation.addParameter(name="Param1",value="3*3");
 			parameters = validation.getParameters();
@@ -328,6 +346,7 @@
 			valStruct.PropertyName = "FirstName";
 			valStruct.Parameters = {Param1={type="value",value=1},Param2={type="expression",value="2*10"}};
 			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,ValidateThis.createWrapper(""));
 			Validation.load(valStruct);
 			validation.addParameter(name="Param2",value="3*3",type="Expression");
 			parameters = validation.getParameters();
