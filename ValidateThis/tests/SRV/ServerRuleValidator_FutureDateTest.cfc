@@ -16,28 +16,57 @@
 	
 --->
 <cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTestsWithDataproviders" output="false">
-	
+
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			SRV = getSRV("Time");
-			shouldPass = ["00:00","24:59","01:00","02:02"];
-			shouldFail = ["a","1","1:00","00:60","25:00","24:60","99:99"];
+			SRV = getSRV("FutureDate");
+			defaultAfter="12/29/1968";
+			hasAfter = true;
+			shouldPassDefault = ["12/21/2012","Dec. 21 2012"];
+			shouldPass = ["12/31/1969","Dec. 31 2010","12/31/90","31/12/2012"];
+			shouldFail = ["12/28/1968","12/29/1968","1/2/1920","01/1969","12/31/1967"];
 		</cfscript>
 	</cffunction>
-	
+
+	<cffunction name="configureValidationMock" access="private">
+        <cfscript>
+           super.configureValidationMock();
+           validation.hasParameter("after").returns(hasAfter);
+           validation.getParameterValue("after").returns(defaultAfter);      
+        </cfscript>
+    </cffunction>
+
+	<cffunction name="validateReturnsTrueForDateWithNoBeforeParam" access="public" returntype="void" mxunit:dataprovider="shouldPassDefault">
+		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
+		<cfscript>
+			super.setup();
+			objectValue = arguments.value;
+			parameters = structNew();
+			hasAfter = false;
+
+			configureValidationMock();			
+
+			SRV.validate(validation);
+			validation.verifyTimes(0).fail("{*}"); 
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
 			super.setup();
 			objectValue = arguments.value;
+            parameters = {after="12/29/1969"};
+            hasAfter = true;
+            defaultAfter="12/29/1969";
             
             configureValidationMock();                     			
-			
+
 			SRV.validate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
-	
+
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
@@ -53,7 +82,7 @@
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
-	
+
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
 			super.setup();
@@ -69,7 +98,7 @@
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
-	
+
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
 			super.setup();
@@ -85,5 +114,5 @@
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
-	
+
 </cfcomponent>
