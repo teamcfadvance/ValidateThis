@@ -146,7 +146,10 @@
 	<cffunction name="loadValidators" access="public" output="false" returntype="any">
 		<cfargument name="objectList" type="any" required="true"/>
 		
-		<cfset list = []/>
+		<cfset var list = [] />
+		<cfset var obj = "" />
+		<cfset var name = "" />
+		<cfset var objectType = "" />
 		
 		<cfif isSimpleValue(arguments.objectList)>
 				<cfif (listLen(arguments.objectList) gt 1)>
@@ -193,6 +196,7 @@
 	<cffunction name="getValidatorNames" access="public" output="false" returntype="any">
 		
 		<cfset var result = []/>
+		<cfset var validatorName = "" />
 		
 		<cfloop collection="#variables.Validators#" item="validatorName">
 			<cfset arrayAppend(result,validatorName)/>

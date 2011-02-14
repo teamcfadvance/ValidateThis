@@ -17,7 +17,8 @@
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="#getDefaultFailureMessage()#">
-		<cfset theScript="">
+		<cfset var theScript="" />
+		<cfset var theCondition="" />
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">function(value, element, param) {
