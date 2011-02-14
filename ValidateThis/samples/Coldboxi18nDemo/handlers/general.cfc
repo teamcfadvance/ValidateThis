@@ -98,10 +98,6 @@ component
 		// check if javascript validation is enabled
 		if ( !rc.nojs ) 
 		{
-			// include javascript libraries, could do this in the layout if preferred
-			$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery-1.4.4.min.js""></script>" );
-			$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery.validate.min.js""></script>" );
-			$htmlhead( "<script type=""text/javascript"" src=""assets/js/jquery.field.min.js""></script>" );
 			// load general client side validation scripts passing in the locale for i18n support
 			$htmlhead( ValidateThis.getInitializationScript( locale=getfwlocale() ) );
 			// load client side validation specific to the User and context passing in the locale for i18n support

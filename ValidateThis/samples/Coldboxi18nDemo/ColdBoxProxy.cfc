@@ -19,7 +19,7 @@
 component extends="coldbox.system.remote.ColdboxProxy"
 {
 
-	remote any function checkDupNickname( required string nickname )
+	remote any function checkDupNickname( required string callback, required string nickname )
 	{
 		// note: result must be quoted as javascript is case sensitive
 		var result = "true";
@@ -29,7 +29,7 @@ component extends="coldbox.system.remote.ColdboxProxy"
 		{
 			result = "false";
 		}
-		return result;
+		return "#arguments.callback#(#result#)";
 	}
 
 }

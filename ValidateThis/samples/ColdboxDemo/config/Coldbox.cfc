@@ -69,8 +69,6 @@ function configure(){
 		{
 			class="validatethis.extras.coldbox.ColdBoxValidateThisInterceptor",
 			properties = {
-				// Tell VT that I will include Javascript libraries myself (optional)
-				JSIncludes=false,
 				// Tell VT that I want to use a customised version of ValidateThis.util.Result (optional)
 				ResultPath="model.ValidationResult",
 				// Tell VT that I want to use a customised version of ValidateThis.core.BOValidator (optional)
