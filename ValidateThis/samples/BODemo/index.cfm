@@ -25,9 +25,9 @@
 <html>
 	<head>
 		<title>ValidateThis Demo Page</title>
-		<link href="/validatethis/samples/css/demostyle.css" type="text/css" rel="stylesheet" />
+		<link href="../css/demostyle.css" type="text/css" rel="stylesheet" />
 		<cfif NOT Len(url.cfU)>
-			<link href="/validatethis/samples/css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
+			<link href="../css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
 		</cfif>
 	</head>
 	<body>

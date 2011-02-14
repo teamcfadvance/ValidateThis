@@ -17,9 +17,9 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
-		<cfif shouldTest(arguments.validation) AND ReFind("^([01][0-9])|(2[0123]):([0-5])([0-9])$",arguments.validation.getObjectValue()) EQ 0>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid time, between 00:00 and 23:59.")) />
-		</cfif>
+			<cfif shouldTest(arguments.validation) AND (ReFind("^(([01][0-9])|(2[0123])):([0-5])([0-9])$",arguments.validation.getObjectValue()) EQ 0)>
+				<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid time, between 00:00 and 23:59.")) />
+			</cfif>
 	</cffunction>
 	
 </cfcomponent>

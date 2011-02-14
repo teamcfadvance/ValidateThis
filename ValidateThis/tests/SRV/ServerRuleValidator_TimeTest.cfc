@@ -20,8 +20,8 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			SRV = getSRV("Time");
-			shouldPass = ["00:00","24:59","01:00","02:02"];
-			shouldFail = ["a","1","1:00","00:60","25:00","24:60","99:99"];
+			shouldPass = ["00:00","23:59","01:00","02:02"];
+			shouldFail = ["a","1","00:60","01:61","24:00","24:60","99:99"];
 		</cfscript>
 	</cffunction>
 	
@@ -31,7 +31,6 @@
 			super.setup();
 			objectValue = arguments.value;
             
-            debug(objectValue);
             configureValidationMock();                     			
 			
 			SRV.validate(validation);
@@ -45,6 +44,7 @@
 			super.setup();
 			objectValue = arguments.value;
             
+            debug(objectValue);
             configureValidationMock(); 
                    
 			SRV.validate(validation);
