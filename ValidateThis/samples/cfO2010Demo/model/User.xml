@@ -37,12 +37,10 @@
 			</rule>
 		</property>
 		<property name="Nickname">
-        			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname.">
-        				<param name="methodname" value="CheckDupNickname" />
-        				<param name="remoteURL" value="CheckDupNickname.cfm" />
-        			</rule>
-        		</property>
-        
-		
+			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname.">
+				<param name="methodname" value="CheckDupNickname" />
+				<param name="remoteURL" value="../RemoteDemo/CheckDupNickname.cfm" />
+			</rule>
+		</property>
 	</objectProperties>
 </validateThis>

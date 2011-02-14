@@ -22,7 +22,7 @@
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<script src="http://ajax.microsoft.com/ajax/jquery/jquery-1.5.min.js" type="text/javascript"></script>
+				<script src="http://code.jquery.com/jquery-1.5.min.js" type="text/javascript"></script>
 				<script src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js" type="text/javascript"></script>
 				<!---<script src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/additional-methods.js" type="text/javascript"></script>--->
 				<script type="text/javascript">
