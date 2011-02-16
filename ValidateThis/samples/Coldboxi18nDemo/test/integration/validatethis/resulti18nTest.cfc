@@ -408,44 +408,6 @@ component extends="approot.test.BaseTestCase"
 	
 	/*
 	-----------------------------------------------------------
-	getFailuresForCAYA tests
-	-----------------------------------------------------------
-	*/
-	function testGetFailuresForCAYAReturnDefaultLocaleWhenNoLocalePassed()
-	{
-		var user = EntityNew( "User" );
-		var vtresult = instance.validatethis.validate( User );
-		var rbmessage = instance.i18n.getResource( "EmailRequired" );
-		var failures = vtresult.getFailuresForCAYA();
-	
-		// assert
-		assertEquals( rbmessage, failures[ 1 ] );
-	}
-	
-	function testGetFailuresForCAYAReturnEnglishLocaleWhenEnglishLocalePassed()
-	{
-		var user = EntityNew( "User" );
-		var vtresult = instance.validatethis.validate( User );
-		var rbmessage = instance.i18n.getResource( "EmailRequired" );
-		var failures = vtresult.getFailuresForCAYA( locale="en_GB" );
-	
-		// assert
-		assertEquals( rbmessage, failures[ 1 ] );
-	}
-	
-	function testGetFailuresForCAYAReturnFrenchLocaleWhenFrenchLocalePassed()
-	{
-		instance.i18n.setfwlocale( "fr_FR" );
-		var user = EntityNew( "User" );
-		var vtresult = instance.validatethis.validate( User );
-		var rbmessage = instance.i18n.getResource( "EmailRequired" );
-		var failures = vtresult.getFailuresForCAYA( locale="fr_FR" );
-	
-		// assert
-		assertEquals( rbmessage, failures[ 1 ] );
-	}	
-	/*
-	-----------------------------------------------------------
 	getFailuresAsStruct tests
 	-----------------------------------------------------------
 	*/

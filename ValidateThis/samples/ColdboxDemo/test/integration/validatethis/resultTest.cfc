@@ -206,20 +206,6 @@ component extends="approot.test.BaseTestCase"
 		assertEquals( 'the how much money would you like? is required.', failures.howmuch[ 1 ] );
 	}
 		
-	/*
-	-----------------------------------------------------------
-	getFailuresForCAYA tests
-	-----------------------------------------------------------
-	*/
-	function testGetFailuresForCAYA()
-	{
-		var user = EntityNew( "User" );
-		var vtresult = instance.validatethis.validate( User );
-		var failures = vtresult.getFailuresForCAYA();
-	
-		// assert
-		assertEquals( 'the email address is required.', failures[ 1 ] );
-	}
 	
 	/*
 	-----------------------------------------------------------

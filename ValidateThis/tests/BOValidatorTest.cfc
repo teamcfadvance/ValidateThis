@@ -21,7 +21,7 @@
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			variables.className = "user";
 			JSLib = "jQuery";
-			ExpectedInJSIncludes = '<script src="JS/jquery-1.4.2.min.js" type="text/javascript">';
+			ExpectedInJSIncludes = '<script src="http://ajax.microsoft.com/ajax/jquery/jquery';
 			ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
 		</cfscript>  
 	</cffunction>
@@ -211,6 +211,7 @@
 		<cfscript>
 			BOValidator = createDefaultBOV();
 			script = BOValidator.getInitializationScript(JSLib=variables.JSLib);
+			debug(script);
 			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>
