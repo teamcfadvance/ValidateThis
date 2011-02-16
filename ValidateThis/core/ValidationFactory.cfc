@@ -86,11 +86,13 @@
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
 		<cfargument name="componentPath" type="any" required="true" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 		
-		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),
-			getBean("externalFileReader"),getBean("annotationReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),
-			getBean("CommonScriptGenerator"),getBean("Version"),
-			variables.ValidateThisConfig.defaultFormName,variables.ValidateThisConfig.defaultJSLib,variables.ValidateThisConfig.JSIncludes,variables.ValidateThisConfig.definitionPath,
-			arguments.definitionPath,arguments.theObject,arguments.componentPath) />
+		<cflock type="exclusive" timeout="5" throwontimeout="true" name="#arguments.objectType#">
+			<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),
+				getBean("externalFileReader"),getBean("annotationReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),
+				getBean("CommonScriptGenerator"),getBean("Version"),
+				variables.ValidateThisConfig.defaultFormName,variables.ValidateThisConfig.defaultJSLib,variables.ValidateThisConfig.JSIncludes,variables.ValidateThisConfig.definitionPath,
+				arguments.definitionPath,arguments.theObject,arguments.componentPath) />
+		</cflock>
 
 	</cffunction>
 	
