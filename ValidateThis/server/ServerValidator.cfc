@@ -43,7 +43,7 @@
 		<cfargument name="Context" type="any" required="true" />
 		<cfargument name="Result" type="any" required="true" />
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
-		<cfargument name="debuggingMode" type="string" required="false" default="" />
+		<cfargument name="debuggingMode" type="string" required="false" default="#arguments.Result.getDebuggingMode()#" />
 
 		<cfset var v = "" />
 		<cfset var theFailure = 0 />
@@ -55,11 +55,6 @@
 		<cfset var conditionPasses = true />
 		<cfset var isObject = variables.ObjectChecker.isCFC(arguments.theObject) />
 		<cfset var classname = "struct" />
-		
-		<!--- the passed debuggingmode argument takes precedence of the debugging mode defined in the Result object --->
-		<cfif arguments.debuggingMode eq "">
-			<cfset arguments.debuggingMode = arguments.Result.getDebuggingMode() />
-		</cfif>
 		
 		<cfif arguments.debuggingMode neq "none" AND isObject>
 			<!--- for performance, only inspect metadata to get classname if debugging is enabled --->
