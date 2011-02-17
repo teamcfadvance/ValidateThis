@@ -1,0 +1,219 @@
+﻿<!---
+	
+	Copyright 2011, John Whish, Adam Drew, & Bob Silverberg
+	
+	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
+	compliance with the License.  You may obtain a copy of the License at 
+	
+		http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software distributed under the License is 
+	distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
+	implied.  See the License for the specific language governing permissions and limitations under the 
+	License.
+	
+--->
+<cfcomponent name="ColdBoxValidateThis"
+			 extends="coldbox.system.interceptor" 
+			 hint="I load and configure ValidateThis" 
+			 output="false">
+
+	<!------------------------------------------- CONSTRUCTOR ------------------------------------------->
+
+	<cffunction name="Configure" access="public" returntype="void" hint="This is the configuration method for your interceptor" output="false" >
+		
+		<cfscript>
+			// If no definitionPath was defined, use the ModelsPath and (optionally) the ModelsExternalLocation from the ColdBox config
+			if (NOT propertyExists("definitionPath"))
+			{
+				setProperty("definitionPath", getController().getSetting("ModelsPath") & "/");
+				if (propertyExists("ModelsExternalLocation") AND Len(getController().getSetting("ModelsExternalLocation")))
+				{
+					setProperty("definitionPath", getProperty("definitionPath") & getController().getSetting("ModelsExternalLocation"));
+				}
+			}
+			
+			// Coldbox has i18n configured
+			if (getController().settingExists("defaultLocale") AND getController().getSetting("defaultLocale") neq "")
+			{
+				if (NOT propertyExists("defaultLocale"))
+				{
+					// set ValidateThis up to use ColdBox default Locale
+					setProperty("defaultLocale", getController().getSetting("defaultLocale"));
+				}
+				if (NOT propertyExists("translatorPath"))
+				{
+					// a custom translator hasn't been set so use ValidateThis.extras.coldbox.model.ColdBoxRBTranslator
+					setProperty("translatorPath", "ValidateThis.extras.coldbox.ColdBoxRBTranslator");
+				}
+			}
+			
+			// name of key to use in the cache
+			if (NOT propertyExists('ValidateThisCacheKey'))
+			{
+				setProperty('ValidateThisCacheKey',"ValidateThis");
+			}
+			// name of key to use in the prc
+			if (NOT propertyExists('ValidationResultKey'))
+			{
+				setProperty("ValidationResultKey","ValidationResult");
+			}
+		</cfscript>
+				
+	</cffunction>
+	
+	<!------------------------------------------- INTERCEPTION POINTS ------------------------------------------->
+
+	<!--- After Aspects Load --->
+	<cffunction name="afterAspectsLoad" access="public" returntype="void" output="false" hint="Load ValidateThis after configuration has loaded">
+		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
+		<cfargument name="interceptData" required="true" type="struct" hint="interceptData of intercepted info.">
+		
+		<cfscript>
+		var ValidateThis = "";
+			
+		ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(getProperties());
+		
+		if (getController().settingExists("defaultLocale") AND getController().getSetting("defaultLocale") neq "")
+		{
+			// inject the ColdBox resource bundle into the translator, this does assume that if a custom translator has been defined it will have a setResourceBundle() method
+			try
+			{
+				ValidateThis.getBean("Translator").setResourceBundle(getPlugin("ResourceBundle"));
+			}
+			catch(Any exception) 
+			{
+				// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
+				getPlugin("logger").error("ColdBoxValidateThisInterceptor error: setResourceBundle method not found in  #getProperty('translatorPath')#");
+			}
+		}
+
+		// ValidateThis is loaded and configured so cache it
+		setValidateThis(ValidateThis);
+		
+		// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
+		logMessage("ValidateThis " & ValidateThis.getVersion() &  " loaded", SerializeJSON(ValidateThis.getValidateThisConfig()));
+		</cfscript>
+
+	</cffunction>
+	
+	<!--- Validate API --->
+	<cffunction name="beforeValidate" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
+		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
+		<cfargument name="interceptData" required="true" type="struct" hint="validation request for validate.">
+		<cfscript>
+			
+			// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
+			logMessage("ValidateThis " & getValidateThis().getVersion() &  " before validate", SerializeJSON(arguments.interceptData));
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="validate" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
+		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
+		<cfargument name="interceptData" required="true" type="struct" hint="interceptData of intercepted info.">
+
+		<cfscript>
+			var prc = arguments.event.getCollection(private=true);
+			var currentResult = getValidationResult(arguments.event);
+
+			if (!structKeyExists(arguments.interceptData,"result") or isSimpleValue(arguments.interceptData.result)){
+				arguments.interceptData['result'] = currentResult;
+			}
+	
+			// Announce beforeValidate interception point
+			announceInterception("beforeValidate",arguments.interceptData);
+
+			// validate 
+			currentResult = getValidateThis().validate(argumentCollection=arguments.interceptData);
+			
+			// set results in request collection
+			setValidationResult(event,currentResult);
+
+			// log result using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
+			logMessage("ValidateThis " & getValidateThis().getVersion() &  " validate", SerializeJSON(currentResult));
+
+			// Announce afterValidate interception point
+			announceInterception("afterValidate",getValidationResult(arguments.event));
+
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="afterValidate" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
+		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
+		<cfargument name="interceptData" required="true" type="struct" hint="resultObject returned from validate.">
+		<cfscript>
+			logMessage("ValidateThis " & getValidateThis().getVersion() &  " after validate", SerializeJSON(arguments.interceptData));
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="prepareValidationRequest" access="public" returntype="void" output="false" hint="Prepare Event Collection for Validate Facade">
+		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
+		<cfargument name="interceptData" required="true" type="struct" hint="interceptData of intercepted info.">
+		<cfscript>
+			var rc = arguments.event.getCollection();
+			arguments.event.paramValue(name="objectType",value="");
+			arguments.event.paramValue(name="theObject",value=structNew());
+			
+			announceInterception("getObjectForValidation");
+			
+			arguments.event.paramValue("context","");
+			arguments.event.paramValue("locale","");
+			arguments.event.paramValue("context","");
+			arguments.event.paramValue("validatioresult",structNew());
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="prepareValidationRules" access="public" returntype="void" output="false" hint="Prepare Event Collection for Validate Facade">
+		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
+		<cfargument name="interceptData" required="true" type="struct" hint="interceptData of intercepted info.">
+
+		<cfset var objectType = event.getValue("objectType")/>
+		<cfset var theObject = event.getValue("theObject",arguments.interceptData)/>
+		<cfset var context = event.getValue("context","default")/>
+		<cfset var rc = arguments.event.getCollection()>
+
+		<cfset rc.ValidationRules = {}/>
+	</cffunction>
+
+	<cffunction name="configureValidators" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
+		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
+		<cfargument name="interceptData" required="true" type="struct" hint="resultObject returned from validate.">
+		<cfset var prc = arguments.event.getCollection(private=True)>
+		<cfparam name="prc.objectTypes" default="#arrayNew(1)#">
+		<cfscript>
+			var validators = getValidateThis().getValidatorNames(objectList=prc.objectTypes);
+			logMessage("ValidateThis [configureValidators]:", SerializeJSON(validators));
+		</cfscript>
+	</cffunction>
+
+	<!--- Private Methods --->
+	<cffunction name="logMessage" access="private" returntype="void" output="false">
+		<cfargument name="message" type="string"/>
+		<cfargument name="extrainfo" type="string"/>
+		<cfscript>
+			getPlugin("logger").info(arguments.message,arguments.extrainfo);
+		</cfscript>
+	</cffunction>
+	<cffunction name="getValidateThis" access="private" returntype="any" output="false">
+		<cfreturn getColdboxOCM().get(getProperty('ValidateThisCacheKey'))/>
+	</cffunction>
+	<cffunction name="setValidateThis" access="private" returntype="any" output="false">
+		<cfargument name="ValidateThis" type="any" required="true">
+		<cfreturn getColdboxOCM().set(getProperty('ValidateThisCacheKey'),arguments.ValidateThis,0)/>
+	</cffunction>
+	<cffunction name="setValidationResult" access="private" returntype="any" output="false">
+		<cfargument name="event" type="any" required="true">
+		<cfargument name="result" type="any" required="true">
+		<cfset var rc = event.getCollection()/>
+		<cfset rc[getProperty("ValidationResultKey")] = arguments.result/>
+	</cffunction>
+	<cffunction name="getValidationResult" access="private" returntype="any" output="false">
+		<cfargument name="event" type="any" required="true">
+		<cfset var rc = arguments.event.getCollection()/>
+		<cfif !structKeyExists(rc,getProperty("ValidationResultKey"))>
+			<cfset setValidationResult(arguments.event,getValidateThis().newResult())>
+		</cfif>
+		<cfreturn rc[getProperty("ValidationResultKey")]/>
+	</cffunction>
+
+</cfcomponent>

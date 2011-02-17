@@ -18,7 +18,7 @@
 			remoteEnabled:		false,
 			baseURL: 			'',
 			appMapping:			'',
-			ajaxProxyURL:		'/remote/majik.cfc?method=',
+			ajaxProxyURL:		'/remote/validatethisproxy.cfc?method=',
 			ignoreClass:		".ignore",
 			errorClass:			'ui-state-error'
 		},

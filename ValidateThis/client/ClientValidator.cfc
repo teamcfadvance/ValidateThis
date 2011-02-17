@@ -71,11 +71,12 @@
 		<cfargument name="formName" type="any" required="true" />
 		<cfargument name="JSLib" type="any" required="true" />
 		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="theObject" type="Any" required="no" default="" />
 
 		<cfset var i = 0/>
 		<cfset var validation = "" />
 		<cfset var theScriptWriter = variables.ScriptWriters[arguments.JSLib] />
-		<cfset var theVal = variables.TransientFactory.newValidation() />
+		<cfset var theVal = variables.TransientFactory.newValidation(theObject=theObject) />
 		<cfset var theJSON = "" />
 		<cfset var theArray = 0 />
 		<cfset var theResult = {} />

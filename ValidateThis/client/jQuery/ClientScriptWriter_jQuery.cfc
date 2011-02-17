@@ -130,13 +130,6 @@
 		<cfreturn theScript />
 	</cffunction>
 	
-	<cffunction name="minifiy" returntype="any" access="public" output="false" hint="I minifiy the generated JS script on demand.">
-		<cfargument name="theScript" type="any" required="yes" />
-		
-		<cfreturn arguments.theScript />
-	</cffunction>
-	
-	
 </cfcomponent>
 
 
