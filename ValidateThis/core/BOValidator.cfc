@@ -257,6 +257,7 @@
 		<cfset var RequiredPropertyDescs = {}/>
 		<cfset var requiredFields = this.getRequiredProperties(arguments.context)/>
 		<cfset var propertyDescs = this.getValidationPropertyDescs()>
+		<cfset var name = "" />
 		
 		<cfloop list="#structKeyList(requiredFields)#" index="name">
 			<cfset StructInsert(RequiredPropertyDescs,name,propertyDescs[name])>

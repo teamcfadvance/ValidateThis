@@ -38,7 +38,7 @@ component persistent="true" table="tblUser_A" vtContexts='[{"name":"Register","f
 			{"type":"custom","failureMessage":"That Nickname is already taken. Please try a different Nickname.",
 				"params":[
 					{"name":"methodName","value":"CheckDupNickname"},
-					{"name":"remoteURL","value":"CheckDupNickname.cfm"}
+					{"name":"remoteURL","value":"../RemoteDemo/CheckDupNickname.cfm"}
 				]}
 		]';
 	

@@ -254,94 +254,6 @@
 		<cfset getRawFailures().addAll(arguments.theResult.getRawFailures()) />
 	</cffunction>
 	
-	<!--- Work in progress by Adam
-	<cffunction name="ResultsMerge" output="false" returntype="any">
-		<cfargument name="theData" type="any" />
-		<cfargument name="returnDuplicate" type="boolean" default="true"/>
-
-		<cfset var newData = 0/>
-		<cfset var oldData = 0/>
-		<cfset var temp = arrayNew(1)/>
-		<cfset var subKey = 0/>
-		
-		<!--- were we asked to merge AND return this or a duplicate of it --->
-		<cfif not arguments.returnDuplicate>
-			<cfset result = this/>
-		<cfelse>
-			<cfset result = duplicate(this)/>
-		</cfif>
-
-		<cfset oldData = result.getMemento()/>
-		
-		<cfif isStruct(arguments.theData)>
-			<cfloop list="#structKeyList(arguments.theData)#" index="arg">
-				<cfset newData = arguments.theData[arg]>
-				<cfif isStruct(newData) and isStruct(oldData)>
-					<cfif not structIsEmpty(newData)>
-						 <cfloop list="#structKeyList(newData)#" index="subKey">
-							<cfif isStruct(newData[subKey]) and not structIsEmpty(newData[subKey])>
-								<cfset structInsert(oldData[arg],subKey,newData[subKey],true)>
-							<cfelse>
-								<!--- We probably don't want to do antyhing here --->
-							</cfif>
-						</cfloop> 
-					<cfelse>
-						<!--- We could we do here? --->
-					</cfif>
-				<cfelseif isArray(newData) and isArray(oldData)>
-					<cfset arrayAppend(oldData,newData)/>
-				<cfelseif isSimpleValue(newData) and len(newData) and isSimpleValue(oldData)>	
-					<cfset result.set(arg,newData)/>
-				<cfelse>
-					<cfif len(newData)>
-						<cfset result.set(arg,newData)/>
-					<cfelse>
-						<!--- Do we need to do anything here? --->
-					</cfif>
-				</cfif>
-			</cfloop>
-		<cfelse>
-			<cfthrow type="validatethis.util.Result.invalidDataStruct"	message="The data  passed into the StructMerge() must be a valid key/value structure." />
-		</cfif>
-		
-		<!--- Return the merged duplicate(this) if asked for --->
-		<cfif arguments.returnDuplicate>
-			<cfreturn result/>
-		</cfif>
-		
-	</cffunction>
-	--->
-
-	<!--- An example of a custom method that returns failures in a format expected by an existing application --->
-	<cffunction name="getFailuresForCAYA" access="public" output="false" returntype="any">
-		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
-		<cfset var FailureList = [] />
-		<cfset var Failure = 0 />
-		<cfloop array="#getFailures(arguments.locale)#" index="Failure">
-			<cfif Len(Failure.Message)>
-				<cfset ArrayAppend(FailureList,Failure.Message) />
-			</cfif>
-		</cfloop>
-		<cfreturn FailureList />
-	</cffunction>
-
-	<cffunction name="getFailuresAsStruct" access="public" output="false" returntype="any" hint="Deprecated. Use getFailuresByProperty() or getFailuresByField().">
-		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
-		<cfset var FailureList = StructNew() />
-		<cfset var Failure = 0 />
-		<cfset var Failures = getFailures(arguments.locale) />
-		<cfloop from="1" to="#ArrayLen(Failures)#" index="Failure">
-			<cfif StructKeyExists(Failures[Failure],"ClientFieldName")>
-				<cfif StructKeyExists(FailureList,Failures[Failure].ClientFieldName)>
-					<cfset FailureList[Failures[Failure].ClientFieldName] =  FailureList[Failures[Failure].ClientFieldName] & "<br />" & Failures[Failure].Message />	
-				<cfelse>			
-					<cfset FailureList[Failures[Failure].ClientFieldName] =  Failures[Failure].Message />	
-				</cfif>
-			</cfif>
-		</cfloop>
-		<cfreturn FailureList />
-	</cffunction>
-	
 	<!--- debugging methods --->
 	<cffunction name="logCriteriaOutcome" access="public" output="false" returntype="void" hint="I log the outcome when a rule/condition is evaluated">
 		<cfargument name="classname" type="string" required="true" />
@@ -389,6 +301,25 @@
 		<cfreturn variables.instance />
 	</cffunction>
 
+	<!--- Deprecated!!! --->
+		
+	<cffunction name="getFailuresAsStruct" access="public" output="false" returntype="any" hint="Deprecated. Use getFailuresByProperty() or getFailuresByField().">
+		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
+		<cfset var FailureList = StructNew() />
+		<cfset var Failure = 0 />
+		<cfset var Failures = getFailures(arguments.locale) />
+		<cfloop from="1" to="#ArrayLen(Failures)#" index="Failure">
+			<cfif StructKeyExists(Failures[Failure],"ClientFieldName")>
+				<cfif StructKeyExists(FailureList,Failures[Failure].ClientFieldName)>
+					<cfset FailureList[Failures[Failure].ClientFieldName] =  FailureList[Failures[Failure].ClientFieldName] & "<br />" & Failures[Failure].Message />	
+				<cfelse>			
+					<cfset FailureList[Failures[Failure].ClientFieldName] =  Failures[Failure].Message />	
+				</cfif>
+			</cfif>
+		</cfloop>
+		<cfreturn FailureList />
+	</cffunction>
+	
 </cfcomponent>
 	
 

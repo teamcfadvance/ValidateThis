@@ -17,13 +17,6 @@
 <cfcomponent output="false">
 	
 	<cffunction name="init" access="public" returntype="any">
-		<!--- get the current classloader --->
-		<cfset var classLoader = getClass().getClassLoader() />
-		<!--- load the class for java.lang.Object --->
-		<cfset var objectClass = classLoader.loadClass("java.lang.Object") />
-		<!--- get the equals method --->
-		<cfset var arr = [objectClass] />
-		<cfset variables.equalsMethod = objectClass.getMethod("equals", arr) />
 		<cfreturn this />
 	</cffunction>
 	
@@ -31,19 +24,18 @@
 		<cfargument name="thing1" type="any" required="true" hint="One thing to compare" />
 		<cfargument name="thing2" type="any" required="true" hint="Another thing to compare" />
 		
-		<cfset var thing2Array = [arguments.thing2] />
-		<cfreturn variables.equalsMethod.invoke(arguments.thing1,thing2Array) />
+		<cfset var thing1Holder = [arguments.thing1] />
+		<cfset var thing2Holder = [arguments.thing2] />
+		<cfreturn thing1Holder.equals(thing2Holder) />
 	</cffunction>
 
 	<cffunction name="isInArray" access="public" returntype="boolean">
 		<cfargument name="theThing" type="any" required="true" hint="The thing that you want to check for in the array" />
 		<cfargument name="thingArray" type="array" required="true" hint="An array of things to check" />
 		
-		<cfset var thing = 0 />
-		<cfset var thingHolder = [] />
-		<cfloop array="#arguments.thingArray#" index="thing">
-			<cfset thingHolder[1] = thing />
-			<cfif variables.equalsMethod.invoke(arguments.theThing,thingHolder)>
+		<cfset var tempThing = 0 />
+		<cfloop array="#arguments.thingArray#" index="tempThing">
+			<cfif isEqual(arguments.theThing,tempThing)>
 				<cfreturn true />
 			</cfif>
 		</cfloop>
@@ -55,10 +47,8 @@
 		<cfargument name="thingStruct" type="struct" required="true" hint="A struct of things to check" />
 		
 		<cfset var thingIndex = 0 />
-		<cfset var thingHolder = [] />
 		<cfloop collection="#arguments.thingStruct#" item="thingIndex">
-			<cfset thingHolder[1] = arguments.thingStruct[thingIndex] />
-			<cfif variables.equalsMethod.invoke(arguments.theThing,thingHolder)>
+			<cfif isEqual(arguments.theThing,arguments.thingStruct[thingIndex])>
 				<cfreturn true />
 			</cfif>
 		</cfloop>

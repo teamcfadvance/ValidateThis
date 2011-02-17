@@ -78,6 +78,8 @@ VTML
 		<cfset var tempValue = {} />
 		<cfset var theRules = {} />
 		<cfset var theRule = "" />
+		<cfset var theCondition = "" />
+		<cfset var theParameters = "" />
 		<cftry>
 			<cfparam name="result.Rules" default="#arrayNew(1)#" />
 			<cfparam name="result.Tests" default="#structNew()#" />
@@ -236,6 +238,7 @@ VTML
 		<cfset var theKey = 0 />
 		<cfset var theOldParameter = 0 />
 		<cfset var theNewParameter = 0 />
+		<cfset var theParameter = 0 />
 		<cfif structKeyExists(arguments.theMetadata,variables.ValidateThisConfig.AnnotationAttributeKey) and isVTML(arguments.theMetadata[variables.ValidateThisConfig.annotationAttributeKey])>
 			<!--- Deal With Psudo Paramter Values --->
 			<cfif structKeyExists(arguments.theValidation,"Parameters") and structCount(arguments.theValidation.Parameters) gt 0>

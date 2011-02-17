@@ -24,7 +24,7 @@
 		<property name="Nickname">
 			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname."> 
 				<param name="methodname" value="CheckDupNickname" />
-				<param name="remoteURL" value="CheckDupNickname.cfm" />
+				<param name="remoteURL" value="../RemoteDemo/CheckDupNickname.cfm" />
 			</rule>
 		</property>
 		<property name="UserPass" desc="Password">

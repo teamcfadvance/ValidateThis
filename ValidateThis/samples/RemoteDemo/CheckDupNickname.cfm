@@ -1,6 +1,6 @@
 <!---
 	
-	Copyright 2010, Bob Silverberg
+	Copyright 2011, Bob Silverberg, John Whish
 	
 	Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in 
 	compliance with the License.  You may obtain a copy of the License at 
@@ -15,11 +15,20 @@
 --->
 <cfsetting enablecfoutputonly="true" />
 <cfsetting showDebugOutput="false" />
-
 <cfparam name="url.Nickname" default="" />
+<cfparam name="url.callback" default="" />
 
-<cfif url.Nickname EQ "BobRules">
-	<cfoutput>false</cfoutput>
+<!--- note, we need to quote as Javascript is case-sensitive --->
+<cfset result = "false">
+
+<cfif url.Nickname NEQ "BobRules">
+	<cfset result = "true">
+</cfif>
+
+<cfif Trim(url.callback) NEQ "">
+	<!--- jQuery 1.5 or higher --->
+	<cfoutput>#url.callback#(#result#)</cfoutput>
 <cfelse>
-	<cfoutput>true</cfoutput>
+	<!--- jQuery 1.4.4 or lower --->
+	<cfoutput>#result#</cfoutput>
 </cfif>

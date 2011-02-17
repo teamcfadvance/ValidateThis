@@ -22,9 +22,12 @@
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<script src="#JSRoot#jquery-1.4.2.min.js" type="text/javascript"></script>
-				<script src="#JSRoot#jquery.field.min.js" type="text/javascript"></script>
-				<script src="#JSRoot#jquery.validate.pack.js" type="text/javascript"></script>
+				<script src="http://ajax.microsoft.com/ajax/jquery/jquery-1.5.min.js" type="text/javascript"></script>
+				<script src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js" type="text/javascript"></script>
+				<!---<script src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/additional-methods.js" type="text/javascript"></script>--->
+				<script type="text/javascript">
+				<cfinclude template="JS/jquery.field.min.js">
+				</script>
 			</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />
@@ -40,7 +43,9 @@
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 				<cfif Len(arguments.locale) and ListFirst(arguments.locale,"_") NEQ "en">
-					<script src="#JSRoot#localization/messages_#ListFirst(arguments.locale,'_')#.js" type="text/javascript"></script>
+					<script type="text/javascript">
+					<cfinclude template="JS/localization/messages_#ListFirst(arguments.locale,'_')#.js">
+					</script>
 				</cfif>
 			</cfoutput>
 		</cfsavecontent>

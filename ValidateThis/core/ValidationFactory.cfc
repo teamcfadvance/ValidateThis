@@ -86,11 +86,13 @@
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
 		<cfargument name="componentPath" type="any" required="true" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 		
-		<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),
-			getBean("externalFileReader"),getBean("annotationReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),
-			getBean("CommonScriptGenerator"),getBean("Version"),
-			variables.ValidateThisConfig.defaultFormName,variables.ValidateThisConfig.defaultJSLib,variables.ValidateThisConfig.JSIncludes,variables.ValidateThisConfig.definitionPath,
-			arguments.definitionPath,arguments.theObject,arguments.componentPath) />
+		<cflock type="exclusive" timeout="5" throwontimeout="true" name="#arguments.objectType#">
+			<cfreturn CreateObject("component",variables.ValidateThisConfig.BOValidatorPath).init(arguments.objectType,getBean("FileSystem"),
+				getBean("externalFileReader"),getBean("annotationReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),
+				getBean("CommonScriptGenerator"),getBean("Version"),
+				variables.ValidateThisConfig.defaultFormName,variables.ValidateThisConfig.defaultJSLib,variables.ValidateThisConfig.JSIncludes,variables.ValidateThisConfig.definitionPath,
+				arguments.definitionPath,arguments.theObject,arguments.componentPath) />
+		</cflock>
 
 	</cffunction>
 	
@@ -146,7 +148,10 @@
 	<cffunction name="loadValidators" access="public" output="false" returntype="any">
 		<cfargument name="objectList" type="any" required="true"/>
 		
-		<cfset list = []/>
+		<cfset var list = [] />
+		<cfset var obj = "" />
+		<cfset var name = "" />
+		<cfset var objectType = "" />
 		
 		<cfif isSimpleValue(arguments.objectList)>
 				<cfif (listLen(arguments.objectList) gt 1)>
@@ -193,6 +198,7 @@
 	<cffunction name="getValidatorNames" access="public" output="false" returntype="any">
 		
 		<cfset var result = []/>
+		<cfset var validatorName = "" />
 		
 		<cfloop collection="#variables.Validators#" item="validatorName">
 			<cfset arrayAppend(result,validatorName)/>
