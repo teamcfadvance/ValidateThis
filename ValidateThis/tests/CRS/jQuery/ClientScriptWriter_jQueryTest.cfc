@@ -488,6 +488,8 @@
 			valStruct.ValType = "required";
 			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
 			valStruct.Parameters.DependentFieldName = {value="User[LastName]",type="value"};
+			valStruct.Parameters.DependentPropertyDesc = {value="lastname",type="value"};
+			
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
 			
@@ -501,6 +503,7 @@
 			valStruct.ValType = "required";
 			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
 			valStruct.Parameters.DependentFieldName = {value="User[LastName]",type="value"};
+			valStruct.Parameters.DependentPropertyDesc = {value="lastname",type="value"};
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
 			

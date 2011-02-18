@@ -122,7 +122,7 @@
 		<cfargument name="name" type="string" required="true" />
 		<cfargument name="value" type="any" required="true" />
 		<cfargument name="type" type="string" required="false" default="value" />
-		
+
 		<cfset variables.instance.Parameters[arguments.name] = {value=arguments.value,type=arguments.type} />
 		
 	</cffunction>
@@ -130,6 +130,10 @@
 	<cffunction name="hasParameter" access="public" output="false" returntype="boolean">
 		<cfargument name="name" type="string" required="true" />
 		<cfreturn structKeyExists(variables.instance.Parameters,arguments.name) />		
+	</cffunction>
+	
+	<cffunction name="hasParameters" access="public" output="false" returntype="boolean">
+		<cfreturn structCount(variables.instance.Parameters) gt 0 />
 	</cffunction>
 
 	<cffunction name="getValidateThis" access="public" output="false" returntype="any">
@@ -190,6 +194,24 @@
 	</cffunction>
 	<cffunction name="getCondition" access="public" output="false" returntype="any">
 		<cfreturn variables.instance.Condition />
+	</cffunction>
+	<cffunction name="hasCondition" access="public" output="false" returntype="any">
+		<cfreturn structCount(getCondition()) gt 0 />
+	</cffunction>
+	<cffunction name="getConditionName" access="public" output="false" returntype="any">
+		<cfreturn getCondition().name />
+	</cffunction>
+	<cffunction name="hasClientTest" access="public" output="false" returntype="any">
+		<cfreturn structKeyExists(getCondition(),"clientTest") />
+	</cffunction>
+	<cffunction name="getClientTest" access="public" output="false" returntype="any">
+		<cfreturn JSStringFormat(getCondition().clientTest) />
+	</cffunction>
+	<cffunction name="hasServerTest" access="public" output="false" returntype="any">
+		<cfreturn structKeyExists(getCondition(),"serverTest") />
+	</cffunction>
+	<cffunction name="getServerTest" access="public" output="false" returntype="any">
+		<cfreturn JSStringFormat(getCondition().serverTest) />
 	</cffunction>
 
 	<cffunction name="setTheObject" returntype="void" access="public" output="false">

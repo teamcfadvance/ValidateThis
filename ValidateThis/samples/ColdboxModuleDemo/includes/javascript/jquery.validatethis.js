@@ -43,7 +43,7 @@
 
 				// See: : /validatethis/extras/coldbox/remote/validatethisproxy.cfc
 				this.remoteCall("getValidationVersion",{},this.getVersionCallback);
-				$.validatethis.remoteCall("getInitializationScript",{format:"json"},
+				$.validatethis.remoteCall("getInitializationScript",{},
 						function(data){
 							$.validatethis.evalInitScript(data);
 						}
@@ -53,7 +53,7 @@
 				this.settings.initialized = true;
 				
 			} else {
-				this.log("ValidateThis [plugin]: initialized ");
+				this.log("ValidateThis [plugin]: initialized");
 			}
 		},
 		

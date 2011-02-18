@@ -96,10 +96,10 @@
 	</cffunction>
 
 	<!---  ValidationJSON --->
-	<cffunction name="getValidationJSONShouldHonourPassedInFormName" access="public" returntype="void">
+	<cffunction name="getValidationRulesStructShouldReturnStruct" access="public" returntype="void">
 		<cfscript>
 			ClientValidator = validateThis.getBean("ClientValidator");
-			theStruct = ClientValidator.getValidationJSON(validations=validations,formName="testFormName",jsLib="jQuery");
+			theStruct = ClientValidator.getValidationRulesStruct(validations=validations,formName="testFormName",jsLib="jQuery");
 			assertTrue(isStruct(theStruct),"Did not return valid JSON #htmlEditFormat(serializeJSON(theStruct))#");
 			assertTrue(structKeyExists(theStruct,"messages"),"Validation JSON does not contain messages struct");
 			assertTrue(structKeyExists(theStruct['rules'],"clientFieldName"),"Validation JSON does not contain rules for property 'clientFieldName' - #htmlEditFormat(serializeJSON(theStruct))#");
@@ -108,7 +108,7 @@
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="getValidationJSONShouldAllowForAnObjectToBePassedInAndUsedInAnExpressionTypeParameter" access="public" returntype="void">
+	<cffunction name="getValidationRulesStructShouldAllowForAnObjectToBePassedInAndUsedInAnExpressionTypeParameter" access="public" returntype="void">
 		<cfscript>
 			ClientValidator = validateThis.getBean("ClientValidator");
 			parameter = {name="list",value="getList()",type="expression"};
@@ -117,7 +117,7 @@
 			validations = [validation];
 			theObject = mock();
 			theObject.evaluateExpression("getList()").returns("1,2");
-			theStruct = ClientValidator.getValidationJSON(validations=validations,formName="testFormName",jsLib="jQuery",theObject=theObject);
+			theStruct = ClientValidator.getValidationRulesStruct(validations=validations,formName="testFormName",jsLib="jQuery",theObject=theObject);
 			
 			// Test JSON format as expected based on the inlist testcase
 			assertTrue(isStruct(theStruct),"Did not return valid JSON #htmlEditFormat(serializeJSON(theStruct))#");

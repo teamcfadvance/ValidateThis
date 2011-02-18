@@ -22,7 +22,7 @@
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">function(value, element, param) {
-			var re = param;
+			var re = new RegExp(param);
 			return this.optional(element) || re.test(value);
 		}</cfsavecontent>
 
@@ -40,10 +40,10 @@
             <cfthrow type="validatethis.client.jQuery.ClientRuleScripter_Regex.missingParameter"
             message="Either a regex or a serverRegex parameter must be defined for a regex rule type." />
         </cfif>
-		<cfreturn "/#options#/" />
+		<cfreturn '"' & JSStringFormat(options) & '"' />
 	</cffunction>
 
-	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+	<cffunction name="getCustomFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
 		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the specified pattern.") />
 	</cffunction>
