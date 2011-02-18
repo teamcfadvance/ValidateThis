@@ -92,19 +92,18 @@
 		setValidateThis(ValidateThis);
 		
 		// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
-		logMessage("ValidateThis " & ValidateThis.getVersion() &  " loaded", SerializeJSON(ValidateThis.getValidateThisConfig()));
+		logMessage("loaded", SerializeJSON(ValidateThis.getValidateThisConfig()));
 		</cfscript>
 
 	</cffunction>
 	
 	<!--- Validate API --->
-	<cffunction name="beforeValidate" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
+	<cffunction name="preValidate" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
 		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
 		<cfargument name="interceptData" required="true" type="struct" hint="validation request for validate.">
 		<cfscript>
-			
 			// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
-			logMessage("ValidateThis " & getValidateThis().getVersion() &  " before validate", SerializeJSON(arguments.interceptData));
+			logMessage("preValidate", SerializeJSON(arguments.interceptData));
 		</cfscript>
 	</cffunction>
 
@@ -114,35 +113,35 @@
 
 		<cfscript>
 			var prc = arguments.event.getCollection(private=true);
-			var currentResult = getValidationResult(arguments.event);
+			var currentResult = getValidationResultInRequest(arguments.event);
 
 			if (!structKeyExists(arguments.interceptData,"result") or isSimpleValue(arguments.interceptData.result)){
 				arguments.interceptData['result'] = currentResult;
 			}
 	
 			// Announce beforeValidate interception point
-			announceInterception("beforeValidate",arguments.interceptData);
+			announceInterception("preValidate",arguments.interceptData);
 
 			// validate 
 			currentResult = getValidateThis().validate(argumentCollection=arguments.interceptData);
 			
 			// set results in request collection
-			setValidationResult(event,currentResult);
+			setValidationResultInRequest(event,currentResult);
 
 			// log result using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
-			logMessage("ValidateThis " & getValidateThis().getVersion() &  " validate", SerializeJSON(currentResult));
+			logMessage("validate", SerializeJSON(currentResult));
 
 			// Announce afterValidate interception point
-			announceInterception("afterValidate",getValidationResult(arguments.event));
+			announceInterception("postValidate",getValidationResultInRequest(arguments.event));
 
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="afterValidate" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
+	<cffunction name="postValidate" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
 		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
 		<cfargument name="interceptData" required="true" type="struct" hint="resultObject returned from validate.">
 		<cfscript>
-			logMessage("ValidateThis " & getValidateThis().getVersion() &  " after validate", SerializeJSON(arguments.interceptData));
+			logMessage("postValidate", SerializeJSON(arguments.interceptData));
 		</cfscript>
 	</cffunction>
 
@@ -153,47 +152,25 @@
 			var rc = arguments.event.getCollection();
 			arguments.event.paramValue(name="objectType",value="");
 			arguments.event.paramValue(name="theObject",value=structNew());
-			
-			announceInterception("getObjectForValidation");
-			
 			arguments.event.paramValue("context","");
 			arguments.event.paramValue("locale","");
 			arguments.event.paramValue("context","");
-			arguments.event.paramValue("validatioresult",structNew());
+			arguments.event.paramValue(getProperty("ValidationResultKey"),structNew());
+			
+			announceInterception("getObjectForValidation");
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="prepareValidationRules" access="public" returntype="void" output="false" hint="Prepare Event Collection for Validate Facade">
-		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
-		<cfargument name="interceptData" required="true" type="struct" hint="interceptData of intercepted info.">
-
-		<cfset var objectType = event.getValue("objectType")/>
-		<cfset var theObject = event.getValue("theObject",arguments.interceptData)/>
-		<cfset var context = event.getValue("context","default")/>
-		<cfset var rc = arguments.event.getCollection()>
-
-		<cfset rc.ValidationRules = {}/>
-	</cffunction>
-
-	<cffunction name="configureValidators" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
-		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
-		<cfargument name="interceptData" required="true" type="struct" hint="resultObject returned from validate.">
-		<cfset var prc = arguments.event.getCollection(private=True)>
-		<cfparam name="prc.objectTypes" default="#arrayNew(1)#">
-		<cfscript>
-			var validators = getValidateThis().getValidatorNames(objectList=prc.objectTypes);
-			logMessage("ValidateThis [configureValidators]:", SerializeJSON(validators));
-		</cfscript>
-	</cffunction>
-
-	<!--- Private Methods --->
+	
+	<!------------------------------------------- PRIVATE METHODS ------------------------------------------->
 	<cffunction name="logMessage" access="private" returntype="void" output="false">
 		<cfargument name="message" type="string"/>
 		<cfargument name="extrainfo" type="string"/>
 		<cfscript>
-			getPlugin("logger").info(arguments.message,arguments.extrainfo);
+			getPlugin("logger").info("ValidateThis " & getValidateThis().getVersion() & " " & arguments.message,arguments.extrainfo);
 		</cfscript>
 	</cffunction>
+	
 	<cffunction name="getValidateThis" access="private" returntype="any" output="false">
 		<cfreturn getColdboxOCM().get(getProperty('ValidateThisCacheKey'))/>
 	</cffunction>
@@ -201,17 +178,18 @@
 		<cfargument name="ValidateThis" type="any" required="true">
 		<cfreturn getColdboxOCM().set(getProperty('ValidateThisCacheKey'),arguments.ValidateThis,0)/>
 	</cffunction>
-	<cffunction name="setValidationResult" access="private" returntype="any" output="false">
+	
+	<cffunction name="setValidationResultInRequest" access="private" returntype="any" output="false">
 		<cfargument name="event" type="any" required="true">
 		<cfargument name="result" type="any" required="true">
 		<cfset var rc = event.getCollection()/>
 		<cfset rc[getProperty("ValidationResultKey")] = arguments.result/>
 	</cffunction>
-	<cffunction name="getValidationResult" access="private" returntype="any" output="false">
+	<cffunction name="getValidationResultInRequest" access="private" returntype="any" output="false">
 		<cfargument name="event" type="any" required="true">
 		<cfset var rc = arguments.event.getCollection()/>
 		<cfif !structKeyExists(rc,getProperty("ValidationResultKey"))>
-			<cfset setValidationResult(arguments.event,getValidateThis().newResult())>
+			<cfset setValidationResultInRequest(arguments.event,getValidateThis().newResult())>
 		</cfif>
 		<cfreturn rc[getProperty("ValidationResultKey")]/>
 	</cffunction>
