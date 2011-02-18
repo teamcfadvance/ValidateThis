@@ -66,22 +66,24 @@
 
 	</cffunction>
 	
-	<cffunction name="getValidationJSON" returntype="any" access="public" output="false" hint="I generate the JS script.">
+	<cffunction name="getValidationJSON" returntype="any" access="public" returnformat="JSON" output="false" hint="I generate the JS script.">
 		<cfargument name="Validations" type="any" required="true" />
 		<cfargument name="formName" type="any" required="true" />
 		<cfargument name="JSLib" type="any" required="true" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 		<cfargument name="theObject" type="Any" required="no" default="" />
 
-		<cfset var i = 0/>
 		<cfset var validation = "" />
 		<cfset var theScriptWriter = variables.ScriptWriters[arguments.JSLib] />
 		<cfset var theVal = variables.TransientFactory.newValidation(theObject=theObject) />
 		<cfset var theJSON = "" />
-		<cfset var theArray = 0 />
+		<cfset var theArray = [] />
 		<cfset var theResult = {} />
-		<cfset var theMessages= {} />
-		<cfset var theRules= {} />
+		<cfset var message = {} />
+		<cfset var key = "" />
+		<cfset var clientFieldName = "" />
+		<cfset var field = "" />
+
 		<cfset theResult['messages'] = {}/>
 		<cfset theResult['rules'] = {}/>
 
@@ -91,24 +93,25 @@
 				<cfset theJSON = listAppend(theJSON,Trim(theScriptWriter.generateValidationJSON(theVal,arguments.formName,arguments.locale)))/>
 		</cfloop>
 
+			<!--- Wrap validation json as array  --->
 			<cfset theJSON = "[#theJSON#]"/>
+			
+			<!--- Check if generated valid json and deserialize for structure manipulation --->
 			<cfif isJSON(theJSON)>
 				<cfset theArray = deserializeJSON(theJSON)/>
-			<cfelse>
-				<cfthrow message="INVALID JSON" detail="#theJSON#">
 			</cfif>
 			
 			<cfloop array="#theArray#" index="field">
-				<cfloop collection="#field#" item="name">
-					<cfparam name="theResult['messages']['#name#']" default="#structNew()#"/>
-					<cfparam name="theResult['rules']['#name#']" default="#structNew()#"/>
-					<cfloop collection="#field[name]#" item="key">
+				<cfloop collection="#field#" item="clientFieldName">
+					<cfparam name="theResult['messages']['#clientFieldName#']" default="#structNew()#"/>
+					<cfparam name="theResult['rules']['#clientFieldName#']" default="#structNew()#"/>
+					<cfloop collection="#field[clientFieldName]#" item="key">
 						<cfif key eq "messages">
-							<cfloop collection="#field[name][key]#" item="message">
-								<cfset structInsert(theResult['messages'][name],message,field[name][key][message],true)/>
+							<cfloop collection="#field[clientFieldName][key]#" item="message">
+								<cfset structInsert(theResult['messages'][clientFieldName],message,field[clientFieldName][key][message],true)/>
 							</cfloop>
 						<cfelse>
-							<cfset structInsert(theResult['rules'][name],key,field[name][key],true)/>
+							<cfset structInsert(theResult['rules'][clientFieldName],key,field[clientFieldName][key],true)/>
 						</cfif>
 					</cfloop>
 				</cfloop>

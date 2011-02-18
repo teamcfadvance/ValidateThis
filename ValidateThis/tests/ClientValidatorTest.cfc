@@ -79,12 +79,12 @@
 
 	<cffunction name="getValidationScriptShouldAllowForAnObjectToBePassedInAndUsedInAnExpressionTypeParameter" access="public" returntype="void">
 		<cfscript>
-			var theObject = mock();
 			ClientValidator = validateThis.getBean("ClientValidator");
 			parameter = {name="list",value="getList()",type="expression"};
 			parameters = {list=parameter};
 			validation = {clientFieldName="clientFieldName",condition=structNew(),formName="formName",parameters=parameters,propertyDesc="propertyDesc",propertyName="propertyName",valType="inList"};
 			validations = [validation];
+			theObject = mock();
 			theObject.evaluateExpression("getList()").returns("1,2");
 			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery",theObject=theObject);
 			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
@@ -110,12 +110,12 @@
 	
 	<cffunction name="getValidationJSONShouldAllowForAnObjectToBePassedInAndUsedInAnExpressionTypeParameter" access="public" returntype="void">
 		<cfscript>
-			var theObject = mock();
 			ClientValidator = validateThis.getBean("ClientValidator");
 			parameter = {name="list",value="getList()",type="expression"};
 			parameters = {list=parameter};
 			validation = {clientFieldName="clientFieldName",condition=structNew(),formName="formName",parameters=parameters,propertyDesc="propertyDesc",propertyName="propertyName",valType="inList"};
 			validations = [validation];
+			theObject = mock();
 			theObject.evaluateExpression("getList()").returns("1,2");
 			theStruct = ClientValidator.getValidationJSON(validations=validations,formName="testFormName",jsLib="jQuery",theObject=theObject);
 			
@@ -123,10 +123,10 @@
 			assertTrue(isStruct(theStruct),"Did not return valid JSON #htmlEditFormat(serializeJSON(theStruct))#");
 			assertTrue(structKeyExists(theStruct,"rules"),"Validation JSON does not contain rules struct");
 			assertTrue(structKeyExists(theStruct,"messages"),"Validation JSON does not contain messages struct");
-			assertTrue(structKeyExists(theStruct['rules'],"clientFieldName"),"Validation JSON does not contain rules for property 'clientFieldName' - #htmlEditFormat(serializeJSON(theStruct))#");
-			assertTrue(structKeyExists(theStruct['messages'],"clientFieldName"),"Validation JSON does not contain messages for property 'clientFieldName'");
-			assertTrue(structKeyExists(theStruct['rules']["clientFieldName"],"inlist"),"Validation JSON does not contain inlist rule for clientFieldName.");
-			assertTrue(structKeyExists(theStruct['messages']["clientFieldName"],"inlist"),"Validation JSON does not contain inlist message for clientFieldName");
+			assertTrue(structKeyExists(theStruct.rules,"clientFieldName"),"Validation JSON does not contain rules for property 'clientFieldName' - #htmlEditFormat(serializeJSON(theStruct))#");
+			assertTrue(structKeyExists(theStruct.messages,"clientFieldName"),"Validation JSON does not contain messages for property 'clientFieldName'");
+			assertTrue(structKeyExists(theStruct.rules.clientFieldName,"inlist"),"Validation JSON does not contain inlist rule for clientFieldName.");
+			assertTrue(structKeyExists(theStruct.messages.clientFieldName,"inlist"),"Validation JSON does not contain inlist message for clientFieldName");
 			
 			// Test actual Rule and Message contents
 			assertEquals(theStruct.rules.clientFieldName.inlist,"{list={1,2}}");
