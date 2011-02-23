@@ -28,6 +28,7 @@ CREATE TABLE tblUser (
 	AllowCommunication bit NULL,
 	CommunicationMethod varchar(100) NULL,
 	HowMuch decimal(18,2) NULL,
+	HowCool decimal(18,2) NULL,
 	LastUpdateTimestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (UserId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -112,11 +112,12 @@
 		<cfset var failureMessage = determineFailureMessage(argumentCollection=arguments) />
 		<cfset var theStruct = "" />
 		
+		<cfset var conditionDef = getConditionDef(argumentCollection=arguments)>
 		<cfset var ruleDef = getRuleDef(arguments.validation) />
 		<cfset var messageDef = getMessageDef(failureMessage,getValType(),arguments.locale)/>
 		
 		<cfif len(ruleDef) GT 0>
-			<cfset theStruct = "{#ruleDef##messageDef##getConditionDef(argumentCollection=arguments)#}" />
+			<cfset theStruct = "{#ruleDef##messageDef##conditionDef#}" />
 		</cfif>
 		
 		<cfreturn theStruct/>
@@ -169,10 +170,12 @@
 	<cffunction name="getConditionDef" returntype="string" access="public" output="false" hint="I generate the JS script required to pass the appropriate depends conditions to the validator method.">
 		<cfargument name="validation" type="any"/>
 		<cfset var condition = arguments.validation.getCondition() />
+		<cfset var parameters = arguments.validation.getParameters() />
+		<cfset var conditionDef = "" />
 		<cfif arguments.validation.hasClientTest()>
-			<cfreturn ',"conditions": {"#arguments.validation.getConditionName()# : "#arguments.validation.getClientTest()#"}' />
+			<cfreturn  ',"conditions": {"#arguments.validation.getConditionName()#" : "#arguments.validation.getClientTest()#"}' />
 		<cfelse>
-			<cfreturn "" />
+			<cfreturn ''>
 		</cfif>
 	</cffunction>
 	 

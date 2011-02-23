@@ -6,12 +6,23 @@
 
 // closure for plugin
 (function($){
+	
+	Object.size = function(obj) {
+		var size = 0, key;
+		for (key in obj) {
+			if (obj.hasOwnProperty(key)) size++;
+		}
+		return size;
+	};
+
 	$.validatethis = {
 		version: '0.98.2',
-		ruleCache: {}, // todo: client side rule caching
+		ruleCache: [], // associatve array for client side rule caching
+		Conditions: [],
 		
 		// Settings
 		settings: {}, 
+		
 		defaults: {
 			debug:				false,
 			initialized:		false,
@@ -76,15 +87,6 @@
 			$.get(this.settings.ajaxProxyURL + action + "&" + $.param(arguments), callback);
 		},
 
-		addMethod: function(methodName,functionScript,message){
-			if (!$.validator.methods[methodName]){
-				$.validator.addMethod(methodName,functionScript,message);
-				this.log("method '" + methodName + "' was added to the jQuery validator. ");
-			} else {
-				this.log("method '" + methodName + "' already exists. ");
-			};
-		},
-		
 		submitHandler: function(form) {
 			$.validatethis.log("ValidateThis [form]: submitHandler form " + $(form).attr("name"));
 			if ($.validatethis.settings.remoteEnabled){
@@ -95,12 +97,70 @@
 		},
 
 		ajaxSubmitSuccessCallback: function(data){
-			$.validatethis.log("ValidateThis [remote]: Submit Success. Returned View Data");
+			$.validatethis.log("ValidateThis [remote]: Submit Success - " + $.param(data));
+		},
+
+		evaluateCondition: function(element){
+			// return true by default
+			var result = true;
+			
+			if ( $(element).data("depends") ){
+				var key = $(element).data("depends");
+				var formID = $(element).parents().find("form:first").attr("id");
+				var clientTest= $.validatethis.Conditions[formID][key];
+				result = eval(clientTest);
+				this.log("ValidateThis [condition] : Evaluated {" + key + " = " + result + ", " + formID + "}" );
+			} 
+			return result;
+		},
+
+		prepareConditions: function(form,data){
+			var formID = form.attr('id');
+			
+			// Cache form conditions
+			for (var key in data) {
+			   if (key == "conditions"){
+					var obj = data[key];
+					for (var condition in obj){
+						var clientTest = obj[condition];
+						if (!$.validatethis.Conditions[formID]){
+							$.validatethis.Conditions[formID] = {};
+						}
+						$.validatethis.Conditions[formID][condition] = clientTest;
+					}
+			   }
+			}
+			
+			// Set the element's data "depends" key and the rule.[depends] evluateCondition(element) function 
+			for (var key in data) {
+			   if (key == "rules"){
+					var obj = data[key];
+					for (var property in obj){
+						var rules = obj[property];
+						$(rules).each(function(){
+							for (var item in this){
+								if (this[item].depends){
+									//alert(this[item].depends);
+									var key = this[item].depends;
+									$(":input[name='" + property + "']",form).data("depends",key);
+									this[item].depends = function (element) { return $.validatethis.evaluateCondition(element) };
+								}
+							}
+						});
+					}
+			   }
+			}
+			
+			return data;
 		},
 		
 		loadRules: function(form,data){
-			$.validatethis.log("ValidateThis [validate]: " + form.attr('name') + " = " + data);
-			var validations = $.parseJSON(data);
+			$.validatethis.log("ValidateThis [loadRules]: " + form.attr('name'));
+			
+			var validations = this.prepareConditions(form,$.parseJSON(data));
+			var cacheItem = {key: form.attr('id'), value: validations};
+			this.ruleCache.push(cacheItem);
+			
 			form.validate({
 				debug: false,
 				ignore: $.validatethis.settings.ignoreClass,
@@ -149,7 +209,7 @@
 				$(this).find("form").each(function(){
 					var $form = $(this);
 					$.validatethis.log("ValidateThis [form]: " + $form.attr('name'));
-					$.validatethis.remoteCall("getValidationJSON",{"objectType":$form.attr('rel'),"formName":$form.attr('name'),"locale":"","context":""},
+					$.validatethis.remoteCall("getValidationJSON",{"objectType":$form.attr('rel'),"formName":$form.attr('id'),"locale":"","context":$form.attr('id')},
 						function(data){
 							$.validatethis.loadRules($form,data);
 						}

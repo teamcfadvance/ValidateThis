@@ -4,6 +4,9 @@
 		<condition name="MustLikeSomething" 
 			serverTest="getLikeCheese() EQ 0 AND getLikeChocolate() EQ 0"
 			clientTest="$(&quot;[name='LikeCheese']&quot;).getValue() == 0 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 0;" />
+		<condition name="IsCool" 
+			serverTest="getLikeCheese() EQ 1 AND getLikeChocolate() EQ 1"
+			clientTest="($(&quot;[name='LikeCheese']&quot;).getValue() == 1 &amp;&amp; $(&quot;[name='LikeChocolate']&quot;).getValue() == 1) || $(&quot;[name='LikeOther']&quot;).getValue().length;" />
 	</conditions>
 	<contexts>
 		<context name="Register" formName="frmMain" />
@@ -17,7 +20,7 @@
 		<property name="Nickname">
 			<rule type="custom" failureMessage="That Nickname is already taken.  Please try a different Nickname."> <!-- Specifying no context is the same as specifying a context of "*" -->
 				<param name="methodname" value="CheckDupNickname" />
-				<param name="remoteURL" value="ColdBoxProxy.cfc?method=CheckDupNickname&amp;returnformat=plain" />
+				<param name="remoteURL" value="/validatethis/samples/coldboxmoduledemo/ColdBoxProxy.cfc?method=CheckDupNickname&amp;returnformat=plain" />
 			</rule>
 		</property>
 		<property name="UserPass" desc="Password">
@@ -61,6 +64,22 @@
 			<rule type="required" contexts="*" />
 			<rule type="numeric" contexts="*" />
 		</property>
+		<property name="HowCool" desc="How cool this is on a scale of 1 to 10?">
+			<rule type="numeric" contexts="*" failuremessage="How Cool must be a number" />
+			
+			<rule type="required" 
+					contexts="*" 
+						condition="IsCool" 
+							failureMessage="You must rate how cool this is because this is very cool." 
+				/>
+			
+			<rule type="range" contexts="*" condition="IsCool" >
+				<param name="min" value="1" />
+				<param name="max" value="10" />
+			</rule>
+			
+		</property>
+
 		<property name="CommunicationMethod" desc="Communication Method">
 			<rule type="required" contexts="*"
 				failureMessage="If you are allowing communication, you must choose a communication method.">

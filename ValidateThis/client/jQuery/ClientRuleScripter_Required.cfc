@@ -51,23 +51,6 @@
 		<cfreturn failureMessage />
 	</cffunction>
 	
-	<!--- <cffunction name="getParameterDef" returntype="string" access="public" output="false" hint="I generate the JS script required to pass the appropriate paramters to the validator method.">
-		<cfargument name="validation" type="any"/>
-		
-		<cfset var parameterDef = ""/>
-		<cfset var paramName = "" />
-		<cfset var paramList = "" />
-		<cfset var parameters = {} />
-		<cfset var conditionDef = ""/>
-		
-		<cfif len(parameterDef) eq 0>
-			<cfset parameterDef &= '"true"' />
-		</cfif>
-		
-		<cfreturn parameterDef/>
-		
-	</cffunction> --->
-
 	<cffunction name="getConditionDef" returntype="string" access="public" output="false" hint="I generate the JS script required to pass the appropriate depends conditions to the validator method.">
 		<cfargument name="validation" type="any"/>
 		<cfset var condition = arguments.validation.getCondition() />
@@ -82,12 +65,13 @@
 			</cfif>
 		</cfif>
 		<cfif len(conditionDef)>
-			<cfreturn ',"conditions": {"#arguments.validation.getClientFieldName()##arguments.validation.getValType()#Condition" : "#jsStringFormat(conditionDef)#"}' />
+			<cfset arguments.validation.addParameter("depends","#arguments.validation.getClientFieldName()#Depends")>
+			<cfreturn ',"conditions": {"#arguments.validation.getClientFieldName()#Depends" : "#jsStringFormat(conditionDef)#"}' />
 		<cfelse>
 	     	<cfif arguments.validation.hasClientTest()>
 				<cfreturn  ',"conditions": {"#arguments.validation.getConditionName()#" : "#arguments.validation.getClientTest()#"}' />
 			<cfelse>
-				<cfreturn "">
+				<cfreturn ''>
 			</cfif>
 		</cfif>
 	</cffunction>
