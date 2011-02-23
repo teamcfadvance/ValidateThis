@@ -110,6 +110,24 @@
 		<cfreturn theJSON />
 	</cffunction>
 
+	<cffunction name="generateConditionJSON" returntype="any" access="public" output="false" hint="I generate the JSON condition required to implement a validation.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="formName" type="Any" required="yes" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfset var theValidation = {} />
+		<cfset var theJSON = "" />
+		<cfset var valType = arguments.validation.getValType() />
+
+		<cfif arguments.validation.hasClientTest()>
+			<cfif StructKeyExists(variables.RuleScripters,valType)>
+				<cfset theJSON = variables.RuleScripters[valType].generateConditionJSON(arguments.validation,arguments.formName,arguments.locale) />
+			</cfif>
+		</cfif>
+
+		<cfreturn theJSON />
+	</cffunction>
+
+
 	<cffunction name="generateScriptHeader" returntype="any" access="public" output="false" hint="I generate the JS script required at the top of the script block.">
 		<cfargument name="formName" type="any" required="yes" />
 		<cfset var theScript = "" />

@@ -61,10 +61,80 @@
 			</cfsavecontent>
 		</cfif>
 		<cfsetting enableCFoutputOnly = "false">
+		
 		<cfreturn theScript />
 
 	</cffunction>
+	
+	<cffunction name="getValidationRulesStruct" returntype="any" access="public" output="false" hint="I generate the client side rules structure.">
+		<cfargument name="Validations" type="any" required="true" />
+		<cfargument name="formName" type="any" required="true" />
+		<cfargument name="JSLib" type="any" required="true" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="theObject" type="Any" required="no" default="" />
+		
+		<cfset var validation = "" />
+		<cfset var theScriptWriter = variables.ScriptWriters[arguments.JSLib] />
+		<cfset var theVal = variables.TransientFactory.newValidation(theObject=theObject) />
+		<cfset var theJSON = "" />
+		<cfset var theCondition = "" />
+		<cfset var theArray = [] />
+		<cfset var theResult = {} />
+		<cfset var message = {} />
+		<cfset var key = "" />
+		<cfset var clientFieldName = "" />
+		<cfset var field = "" />
 
+		<cfset theResult['messages'] = {}/>
+		<cfset theResult['rules'] = {}/>
+		<cfset theResult['conditions'] = {}/>
+
+		<cfif IsArray(arguments.Validations) and ArrayLen(arguments.Validations)>
+			<cfloop Array="#arguments.Validations#" index="validation">
+				<cfset theVal.load(validation) />
+				<cfset theJSON = listAppend(theJSON,Trim(theScriptWriter.generateValidationJSON(theVal,arguments.formName,arguments.locale)))/>
+			</cfloop>
+			
+			<!--- Wrap validation json as array  --->
+			<cfset theJSON = replace("[#theJSON#]",",,",",","all")/>
+			
+			<!--- Check if generated valid json and deserialize for structure manipulation --->
+			<cfif isJSON(theJSON)>
+				<cfset theArray = deserializeJSON(theJSON)/>
+			<cfelse>
+				<cftry>
+					<cfset theArray = deserializeJSON(theJSON)/>
+					<cfcatch>
+						<cfthrow type="validatethis.client.ClientValidator.InvalidJSON" message="Invalid CRS JSON: #theJSON#" />
+					</cfcatch>
+				</cftry>
+			</cfif>
+			
+			<cfloop array="#theArray#" index="field">
+				<cfloop collection="#field#" item="clientFieldName">
+					<cfparam name="theResult['messages']['#clientFieldName#']" default="#structNew()#"/>
+					<cfparam name="theResult['rules']['#clientFieldName#']" default="#structNew()#"/>
+					
+					<cfloop collection="#field[clientFieldName]#" item="key">
+						<cfif key eq "messages">
+							<cfloop collection="#field[clientFieldName][key]#" item="message">
+								<cfset structInsert(theResult['messages'][clientFieldName],message,field[clientFieldName][key][message],true)/>
+							</cfloop>
+						<cfelseif key eq "conditions">
+							<cfloop collection="#field[clientFieldName][key]#" item="condition">
+								<cfset structInsert(theResult['conditions'],condition,field[clientFieldName][key][condition],true)/>
+							</cfloop>
+						<cfelse>
+							<cfset structInsert(theResult['rules'][clientFieldName],key,field[clientFieldName][key],true)/>
+						</cfif>
+					</cfloop>
+				</cfloop>
+			</cfloop>
+		</cfif>
+		
+		<cfreturn theResult />
+	</cffunction>
+	
 	<cffunction name="getGeneratedJavaScript" returntype="any" access="public" output="false" hint="I ask the appropriate client script writer to generate some JS for me.">
 		<cfargument name="scriptType" type="any" required="true" hint="Current valid values are JSInclude, Locale and VTSetup." />
 		<cfargument name="JSLib" type="any" required="true" />
@@ -76,11 +146,11 @@
 		<cfreturn theScript />
 
 	</cffunction>
-	
+
 	<cffunction name="getScriptWriters" access="public" output="false" returntype="any">
 		<cfreturn variables.ScriptWriters />
 	</cffunction>
-	
+
 	<cffunction name="setScriptWriters" returntype="void" access="private" output="false" hint="I create script writer objects from a list of component paths">
 		
 		<cfset var initArgs = {childObjectFactory=variables.childObjectFactory,translator=variables.translator,JSRoot=variables.JSRoot,extraClientScriptWriterComponentPaths=variables.extraClientScriptWriterComponentPaths,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix} />
@@ -93,7 +163,7 @@
 		<cfset variables.ScriptWriters = variables.childObjectFactory.loadChildObjects(swPaths & "," & variables.extraClientScriptWriterComponentPaths,"ClientScriptWriter_",structNew(),initArgs) />
 
 	</cffunction>
-	
+
 	<cffunction name="getScriptWriter" access="public" output="false" returntype="any">
 		<cfargument name="JSLib" type="any" required="true" />
 		<cfreturn variables.ScriptWriters[arguments.JSLib] />

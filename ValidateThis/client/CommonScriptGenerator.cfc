@@ -13,34 +13,46 @@
 	License.
 	
 --->
-<cfcomponent output="false" name="CommonScriptGenerator" hint="I generate JS that is not specific to a Business Object (generally setup script).">
 
+<cfcomponent output="false" name="CommonScriptGenerator" hint="I generate JS that is not specific to a Business Object (generally setup script).">
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new BOValidator">
 		<cfargument name="ClientValidator" type="any" required="true" />
-
 		<cfset variables.ClientValidator = arguments.ClientValidator />
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="getInitializationScript" access="public" output="false" returntype="Any" hint="Asks the Client Validator to return some JS.">
 		<cfargument name="JSLib" type="any" required="true" />
 		<cfargument name="JSIncludes" type="Any" required="no" default="true" />
 		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="format" type="Any" required="no" default="default" />
 
 		<cfset var theScript = "" />
-		<cfif arguments.JSIncludes>
-			<cfset theScript = variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="JSInclude") />
-		</cfif>
-		<!--- the js/localization/*.js translations aren't required
-		<cfif Len(arguments.locale)>
-			<cfset theScript = theScript & variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="Locale",locale=arguments.locale) />
-		</cfif>
-		--->
-		<cfset theScript = theScript & variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="VTSetup") />
-		<cfreturn theScript />
 		
+		<cfswitch expression="#arguments.format#">
+			<cfcase value="remote">
+				<cfif arguments.JSIncludes>
+					<cfset theScript = variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="JSInclude") />
+				</cfif>
+				<cfif Len(arguments.locale)>
+					<cfset theScript = theScript & variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="Locale",locale=arguments.locale) />
+				</cfif>
+			</cfcase>
+			<cfcase value="json">
+				<cfset theScript = theScript & variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="VTSetup") />
+			</cfcase>
+			<cfdefaultcase>
+				<cfif arguments.JSIncludes>
+					<cfset theScript = variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="JSInclude") />
+				</cfif>
+				<cfif Len(arguments.locale)>
+					<cfset theScript = theScript & variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="Locale",locale=arguments.locale) />
+				</cfif>
+				<cfset theScript = theScript & variables.ClientValidator.getGeneratedJavaScript(JSLib=arguments.JSLib,scriptType="VTSetup") />
+			</cfdefaultcase>
+		</cfswitch>
+		
+		<cfreturn theScript />
 	</cffunction>
-	
-</cfcomponent>
-	
 
+</cfcomponent>

@@ -25,6 +25,7 @@ CREATE TABLE dbo.tblUser (
 	[AllowCommunication] [bit] NULL,
 	[CommunicationMethod] [varchar](100) NULL,
 	[HowMuch] [decimal](18,2) NULL,
+	[HowCool] [decimal](18,2) NULL,
 	[LastUpdateTimestamp] [datetime] NOT NULL DEFAULT (getdate())
 )
 

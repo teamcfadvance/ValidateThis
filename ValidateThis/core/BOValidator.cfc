@@ -211,6 +211,17 @@
 		<cfreturn variables.ClientValidator.getValidationScript(getValidations(arguments.Context),arguments.formName,arguments.JSLib,arguments.locale,arguments.theObject) />
 
 	</cffunction>
+	
+	<cffunction name="getValidationRulesStruct" returntype="any" access="public" output="false" hint="I generate the JS using the Client Validator script.">
+		<cfargument name="Context" type="any" required="false" default="" />
+		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
+		<cfargument name="JSLib" type="any" required="false" default="#variables.defaultJSLib#" />
+		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="theObject" type="Any" required="no" default="" />
+
+		<cfreturn variables.ClientValidator.getValidationRulesStruct(getValidations(arguments.Context),arguments.formName,arguments.JSLib,arguments.locale,arguments.theObject) />
+
+	</cffunction>
 
 	<cffunction name="getInitializationScript" returntype="any" access="public" output="false" hint="I generate JS statements required to setup client-side validations for VT.">
 

@@ -41,6 +41,7 @@
 		<cfparam name="variables.ValidateThisConfig.BOComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.extraAnnotationTypeReaderComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.debuggingMode" default="none" /><!--- possible values: none|info|strict --->
+		<cfparam name="variables.ValidateThisConfig.ajaxProxyURL" default="" /><!--- possible values: any web webservice path that exposes the VT api --->
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
@@ -92,7 +93,8 @@
 		<cfargument name="JSLib" type="any" required="false" default="#variables.ValidateThisConfig.defaultJSLib#" />
 		<cfargument name="JSIncludes" type="Any" required="no" default="#variables.ValidateThisConfig.JSIncludes#" />
 		<cfargument name="locale" type="Any" required="no" default="#variables.ValidateThisConfig.defaultLocale#" />
-
+		<cfargument name="format" type="string" required="no" default="script" hint="" />
+		
 		<cfreturn variables.CommonScriptGenerator.getInitializationScript(argumentCollection=arguments) />
 
 	</cffunction>
@@ -184,7 +186,7 @@
 	</cffunction>
 	<cffunction name="getSRV" access="public" output="false" returntype="any">
 		<cfargument name="validator" required="true"/>
-		<cfreturn this.getServerRuleValidators(argumentCollection=arguments) />
+		<cfreturn getServerRuleValidators(argumentCollection=arguments) />
 	</cffunction>
 	
 	<cffunction name="getClientRuleScripters" access="public" output="false" returntype="any">

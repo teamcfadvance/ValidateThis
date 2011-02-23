@@ -34,7 +34,7 @@
 
 	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
-		<cfreturn """#arguments.validation.getParameterValue('remoteURL')#""" />
+		<cfreturn '"#arguments.validation.getParameterValue('remoteURL')#"' />
 	</cffunction>
 
 	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
