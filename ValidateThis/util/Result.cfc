@@ -50,13 +50,17 @@
 	</cffunction>
 	
 	<cffunction name="addFailure" access="public" output="false" returntype="void" hint="adds a Failure to the collection of failures in the object.">
-		<cfargument name="Failure" type="struct" required="yes" hint="a struct with keys describing the failure. It must contain a Message key" />
-		<cfif structKeyExists(arguments.Failure,"Message")>
-			<cfset ArrayAppend(variables.instance.Failures,arguments.Failure) />
-		<cfelse>
-			<cfthrow type="validatethis.util.Result.invalidFailureStruct"
-					message="The struct passed into the addFailure() method must contain a 'Message' key." />
-		</cfif>
+		<cfargument name="failure" type="struct" required="no" default="#structNew()#" hint="a struct with keys describing the failure. It must contain a Message key if it is the only argument passed" />
+		<cfargument name="propertyName" type="string" required="no" default="" hint="The name of the property that caused the failure" />
+		<cfargument name="clientFieldName" type="string" required="no" default="#arguments.propertyName#" hint="The name of the form field that caused the failure" />
+		<cfargument name="type" type="string" required="no" default="" hint="The type of validation that caused the failure" />
+		<cfargument name="message" type="string" required="no" default="" hint="The message to be displayed" />
+		<cfargument name="theObject" type="any" required="no" default="" hint="The object that was being validated" />
+		<cfargument name="objectType" type="string" required="no" default="" hint="The type of object that was being validated" />
+
+		<cfset structAppend(arguments.failure,arguments,false) />	
+		<cfset ArrayAppend(variables.instance.Failures,arguments.failure) />
+		<cfset setIsSuccess(false) />
 	</cffunction>
 
 	<cffunction name="getRawFailures" access="public" output="false" returntype="any" hint="returns the internal array of failure structs">

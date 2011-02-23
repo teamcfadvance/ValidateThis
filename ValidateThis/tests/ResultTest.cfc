@@ -83,11 +83,46 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="addFailureMissingMessageKeyShouldThrowAnException" access="public" returntype="void"
-	mxunit:expectedException="ValidateThis.util.Result.invalidFailureStruct">
+	<cffunction name="addFailureShouldSetSuccessToFalse" access="public" returntype="void">
 		<cfscript>
 			failure = StructNew();
+			failure.Code = 999;
+			failure.Message = "abc";
 			result.addFailure(failure);
+			assertEquals(result.getIsSuccess(),false);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="addFailureShouldAcceptNewSpecificArgumentsAndAddAFailure" access="public" returntype="void">
+		<cfscript>
+			failure = StructNew();
+			failure.propertyName = "propertyName";
+			failure.clientFieldName = "clientFieldName";
+			failure.type = "type";
+			failure.message = "message";
+			failure.theObject = "theObject";
+			failure.objectType = "objectType";
+			result.addFailure(argumentCollection=failure);
+			failures = result.getFailures();
+			assertEquals(ArrayLen(failures),1);
+			assertEquals(failures[1].propertyName, failure.propertyName);
+			assertEquals(failures[1].clientFieldName, failure.clientFieldName);
+			assertEquals(failures[1].type, failure.type);
+			assertEquals(failures[1].message, failure.message);
+			assertEquals(failures[1].theObject, failure.theObject);
+			assertEquals(failures[1].objectType, failure.objectType);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="addFailureShouldDefaultClientFieldnameToPropertyName" access="public" returntype="void">
+		<cfscript>
+			failure = StructNew();
+			failure.propertyName = "propertyName";
+			result.addFailure(propertyName=failure.propertyName);
+			failures = result.getFailures();
+			assertEquals(ArrayLen(failures),1);
+			assertEquals(failures[1].propertyName, failure.propertyName);
+			assertEquals(failures[1].clientFieldName, failure.propertyName);
 		</cfscript>  
 	</cffunction>
 
