@@ -231,10 +231,25 @@ Version 0.98.2
 - removed Size CRS to address JS bug
 - fixed a bug in Result object when working with locales
 
-  
-WIP
----
-
-- VTML
-- updated the Custom validation type to make a call via cfhttp to remoteURL if a methodName parameter has not been provided
+Version 0.99
+--------------
+- added fieldIsRequired() method to the BOValidator object, making it available to the facade as well
+- added a ColdBox interceptor which deprecates the ColdBox plugins
+- ColdBox interceptor will use ColdBox configured resource bundles if you have any
+- new ColdBox 3, ColdBox 3 with i18n, and ColdBox Module demos
+- ColdBox plugins have been deprecated (and removed from the distribution)
+- changed name of validation type from Patterns to MinPatternsMatch
+- xml schema is now validated and either throws an error or logs a message if invalid based on debuggingMode setting
+- new debugging features added
+- you can now instruct VT not to validate a field client-side by assigning a class of 'ignore' to the field
+- added support for onMissingMethod in your business objects
+- you can now pass an actual object into getValidationScript() (or any method on the facade, in fact) if it's needed for dynamic parameters
+- added ability for CRS to return a JSON rule packet for use with the jquery.validate.js plugin and/or future jquery.validatethis.js ext
+- new validation type: Time
+- changed links to jQuery files to use a CDN or writes out to the browser so that ValidateThis can be anywhere on the file system
+- now using jQuery 1.5
+- deprecated getFailuresAsStruct and removed getFailuresForCAYA
+- added locking to ValidationFactory
+- success is now set to 'false' automatically when calling addFailure()
+- updated API for addFailure() to allow for specific arguments
 
