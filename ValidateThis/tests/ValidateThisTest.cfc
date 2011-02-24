@@ -277,7 +277,7 @@
 		<cfscript>
 			theObject = "";
 			script = ValidateThis.getValidationScript(theObject=theObject,objectType="RuleWithADynamicParameterThatDoesNotNeedAnObject");
-			assertTrue(script contains "rules('add',{""inlist"": {""list"":2011},""messages"":{""inlist"":""The Test Prop was not found in list: (2011).""}});",htmlEditFormat(script));
+			assertTrue(script contains "rules('add',{""inlist"": {""list"":""2011""},""messages"":{""inlist"":""The Test Prop was not found in list: (2011).""}});",htmlEditFormat(script));
 		</cfscript>  
 	</cffunction>
 
