@@ -93,6 +93,7 @@
 			ValidateThisConfig.defaultFailureMessagePrefix="The ";
 			ValidateThisConfig.BOComponentPaths="";
 			ValidateThisConfig.extraAnnotationTypeReaderComponentPaths="";
+			ValidateThisConfig.debuggingMode="none";
 			return ValidateThisConfig;
 		</cfscript>
 	</cffunction>

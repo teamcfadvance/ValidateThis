@@ -235,6 +235,38 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="loadRulesFromExternalFileDoesNotThrowAnErrorOnInvalidXMLinDebugNoneMode" access="public" returntype="void">
+		<cfscript>
+			className = "user_invalidxml";
+			definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
+			validations = externalFileReader.loadRulesFromExternalFile(className,definitionPath).Validations;
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="loadRulesFromExternalFileDoesNotThrowAnErrorOnInvalidXMLinDebugInfo" access="public" returntype="void">
+		<cfscript>
+			ValidateThisConfig = getVTConfig();
+			ValidateThisConfig.debuggingMode = "info";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			externalFileReader = validationFactory.getBean("externalFileReader");
+			className = "user_invalidxml";
+			definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
+			validations = externalFileReader.loadRulesFromExternalFile(className,definitionPath).Validations;
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="loadRulesFromExternalThrowsAnExceptionOnInvalidXMLinDebugStrict" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.fileReaders.Filereader_XML.invalidXML">
+		<cfscript>
+			ValidateThisConfig = getVTConfig();
+			ValidateThisConfig.debuggingMode = "strict";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			externalFileReader = validationFactory.getBean("externalFileReader");
+			className = "user_invalidxml";
+			definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture";
+			validations = externalFileReader.loadRulesFromExternalFile(className,definitionPath).Validations;
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="isPropertiesStructCorrect" access="private" returntype="void">
 		<cfargument type="Any" name="PropertyDescs" required="true" />
 		<cfscript>

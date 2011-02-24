@@ -91,7 +91,7 @@
 				getBean("externalFileReader"),getBean("annotationReader"),getBean("ServerValidator"),getBean("ClientValidator"),getBean("TransientFactory"),
 				getBean("CommonScriptGenerator"),getBean("Version"),
 				variables.ValidateThisConfig.defaultFormName,variables.ValidateThisConfig.defaultJSLib,variables.ValidateThisConfig.JSIncludes,variables.ValidateThisConfig.definitionPath,
-				arguments.definitionPath,arguments.theObject,arguments.componentPath) />
+				arguments.definitionPath,arguments.theObject,arguments.componentPath,variables.ValidateThisConfig.debuggingMode) />
 		</cflock>
 
 	</cffunction>

@@ -77,7 +77,7 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
-		<cfargument name="debuggingMode" type="string" required="false" default="" />
+		<cfargument name="debuggingMode" type="string" required="false" default="#variables.ValidateThisConfig.debuggingMode#" />
 
 		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
 		

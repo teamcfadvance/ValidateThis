@@ -32,6 +32,7 @@
 		<cfargument name="specificDefinitionPath" type="string" required="true" />
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
 		<cfargument name="componentPath" type="any" required="true" hint="The component path to the object - used to read annotations using getComponentMetadata" />
+		<cfargument name="debuggingMode" type="string" required="true" hint="The debuggingMode from the VTConfig struct" />
 
 		<cfset variables.instance = {objectType = arguments.objectType, propertyDescs = {}, clientFieldDescs = {}, formContexts = {}, validations = {contexts = {___Default = arrayNew(1)}}, newRules = {}} />
 		<cfset variables.FileSystem = arguments.FileSystem />
@@ -45,6 +46,7 @@
 		<cfset variables.JSIncludes = arguments.JSIncludes />
 		<cfset variables.CommonScriptGenerator = arguments.CommonScriptGenerator />
 		<cfset variables.Version = arguments.Version />
+		<cfset variables.debuggingMode = arguments.debuggingMode />
 
 		<!--- Prepend a specified definitionPath to the paths in the ValidateThisConfig --->
 		<cfset variables.definitionPath = listPrepend(arguments.definitionPath,arguments.specificDefinitionPath) />
@@ -188,7 +190,7 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="Result" type="any" required="false" default="" />
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
-		<cfargument name="debuggingMode" type="string" required="false" default="" />
+		<cfargument name="debuggingMode" type="string" required="false" default="#variables.debuggingMode#" />
 
 		<cfif IsSimpleValue(arguments.Result)>
 			<cfset arguments.Result = newResult() />
