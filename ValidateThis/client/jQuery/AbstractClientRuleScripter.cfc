@@ -86,8 +86,9 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfset var theJSON = "" />
 		<cfset arguments.selector = getSafeSelectorScript(argumentCollection=arguments) />
-		<cfset var theJSON = '{"#validation.getClientFieldName()#" : #generateRuleStruct(argumentCollection=arguments)#}' />
+		<cfset theJSON = '{"#validation.getClientFieldName()#" : #generateRuleStruct(argumentCollection=arguments)#}' />
 		<cfreturn theJSON />
 	</cffunction>
 	

@@ -131,6 +131,8 @@
 		
 		<cfset var failureMessage = ""/>
 
+		<cfset var parameters = "" />
+
 		<cfscript>
 			if (arguments.validation.hasParameter("DependentFieldName")){
 				arguments.validation.addParameter("DependentInputName",arguments.validation.getParameterValue("DependentFieldName"));
@@ -159,7 +161,7 @@
 			}
 		</cfscript>
 
-		<cfset var parameters = arguments.validation.getParameters() />
+		<cfset parameters = arguments.validation.getParameters() />
 
 		<cfset failureMessage = determineFailureMessage(validation=arguments.validation) />
 
