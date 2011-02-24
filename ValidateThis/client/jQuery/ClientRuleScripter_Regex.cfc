@@ -43,9 +43,4 @@
 		<cfreturn '"' & JSStringFormat(options) & '"' />
 	</cffunction>
 
-	<cffunction name="getCustomFailureMessage" returntype="any" access="private" output="false">
-		<cfargument name="validation" type="any"/>
-		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# does not match the specified pattern.") />
-	</cffunction>
-
 </cfcomponent>

@@ -41,9 +41,6 @@ function configure(){
 		sessionEndHandler		= "",
 		missingTemplateHandler	= "",
 		
-		// Extension Points
-		modulesExternalLocation		= ["/validatethis/extras/coldbox/modules"],	
-		
 		//Error/Exception Handling
 		exceptionHandler		= "",
 		onInvalidEvent			= "",

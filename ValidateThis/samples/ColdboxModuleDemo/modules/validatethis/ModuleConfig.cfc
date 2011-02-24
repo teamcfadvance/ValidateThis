@@ -25,11 +25,6 @@
 		
 		// SES Routes
 		routes = [
-			{pattern="/api/validate/:objectType/:context/:locale/:objectid?"},
-			{pattern="/api/validate/:objectType/:context?/:locale?/:objectid?"},
-			{pattern="/api/validate/:objectType/:context?/:objectid-numeric?"},
-			{pattern="/api/validate/:objectType/:context-alpha?"},
-			{pattern="/api/validate/:objectType/:objectid-numeric"},
 			{pattern="/:handler/:action"},
 			{pattern="/",handler="api",action="index"}
 		];
@@ -68,8 +63,10 @@
 	}
 	
 	function preValidate(event,interceptData){
+	   // intercept before validation if anything is needed
 	}
 	
 	function postValidate(interceptData){
+	   // intercept after validation if you need to do anything
 	}
 }
