@@ -186,12 +186,12 @@
 	<cffunction name="getValidateThis" access="private" returntype="any" output="false">
 		<cfreturn getColdboxOCM().get(getProperty('ValidateThisCacheKey'))/>
 	</cffunction>
-	<cffunction name="setValidateThis" access="private" returntype="any" output="false">
+	<cffunction name="setValidateThis" access="private" returntype="void" output="false">
 		<cfargument name="ValidateThis" type="any" required="true">
-		<cfreturn getColdboxOCM().set(getProperty('ValidateThisCacheKey'),arguments.ValidateThis,0)/>
+		<cfset getColdboxOCM().set(getProperty('ValidateThisCacheKey'),arguments.ValidateThis,0)/>
 	</cffunction>
 	
-	<cffunction name="setValidationResultInRequest" access="private" returntype="any" output="false">
+	<cffunction name="setValidationResultInRequest" access="private" returntype="void" output="false">
 		<cfargument name="event" type="any" required="true">
 		<cfargument name="result" type="any" required="true">
 		<cfset var rc = event.getCollection()/>
@@ -201,7 +201,7 @@
 		<cfargument name="event" type="any" required="true">
 		<cfset var rc = arguments.event.getCollection()/>
 		<cfif !structKeyExists(rc,getProperty("ValidationResultKey"))>
-			<cfset setValidationResultInRequest(arguments.event,getValidateThis().newResult(theObject=arguments.event.getValue("theObject",{})))>
+			<cfset setValidationResultInRequest(arguments.event,getValidateThis().newResult(theObject=arguments.event.getValue("theObject",StructNew())))>
 		</cfif>
 		<cfreturn rc[getProperty("ValidationResultKey")]/>
 	</cffunction>

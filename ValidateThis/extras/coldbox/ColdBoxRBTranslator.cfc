@@ -26,11 +26,11 @@
 		<cfargument name="translateThis" type="Any" required="true" />
 		<cfargument name="locale" type="Any" required="false" default="" />
 		
+		<cfset var theKey = safeKey(arguments.translateThis) />
+
 		<cfif arguments.locale eq "">
 			<cfset arguments.locale = variables.defaultLocale>
 		</cfif>
-		
-		<cfset var theKey = safeKey(arguments.translateThis) />
 
 		<!--- return key from resource bundle if it exists, otherwise use the message VT creates --->
 		<cfreturn variables.instance.resourcebundle.getResource( resource=theKey, default=arguments.translateThis, locale=arguments.locale )>
