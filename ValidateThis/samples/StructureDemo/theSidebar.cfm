@@ -28,7 +28,7 @@
 		</cfif>
 		<li><a href="index.cfm?NoJS=#Form.NoJS#">Register a New User</a></li>
 		<li><a href="index.cfm?Context=Profile&NoJS=#Form.NoJS#">Edit an Existing User</a></li>
-		<li><a href="/validatethis/samples/index.cfm">Back to the Home Page</a></li>
+		<li><a href="index.cfm">Back to the Home Page</a></li>
 		</cfoutput>
 	</ul>
 </p>
