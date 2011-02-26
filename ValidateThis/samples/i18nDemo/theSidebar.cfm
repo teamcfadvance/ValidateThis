@@ -34,7 +34,7 @@
 		</cfif>
 		<li><a href="index.cfm?NoJS=#Form.NoJS#&Locale=#Form.Locale#">Register a New User</a></li>
 		<li><a href="index.cfm?Context=Profile&NoJS=#Form.NoJS#&Locale=#Form.Locale#">Edit an Existing User</a></li>
-		<li><a href="/index.cfm">Back to the Home Page</a></li>
+		<li><a href="../index.cfm">Back to the Home Page</a></li>
 		</cfoutput>
 	</ul>
 </p>
