@@ -66,11 +66,11 @@
 	
 			<ul class="sidemenu">
 				<li>
-					<a href="/validatethis/samples/FacadeDemo/index.cfm">Client and Server-Side Validations</a>
+					<a href="FacadeDemo/index.cfm">Client and Server-Side Validations</a>
 				</li>
 				<!---
 				<li>
-					<a href="/validatethis/samples/i18nDemo/index.cfm">Internationalization (i18n) Demo</a>
+					<a href="i18nDemo/index.cfm">Internationalization (i18n) Demo</a>
 				</li>
 				--->
 			</ul>
