@@ -17,7 +17,9 @@
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ValidateThis">
 		<cfargument name="ValidateThisConfig" type="any" required="false" default="#StructNew()#" />
-
+		<!--- marc is testing --->
+		
+		
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<!--- Set default values for keys in ValidateThisConfig --->
 		<cfparam name="variables.ValidateThisConfig.TranslatorPath" default="ValidateThis.core.BaseTranslator" />
