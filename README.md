@@ -15,7 +15,7 @@ ValidateThis is a framework that allows you to define validation rules for your 
 * [Documentation](http://www.validatethis.org/docs/) (near complete)
 * [API Documentation](http://www.validatethis.org/docs/api/) (JavaDoc style)
 * [Live Demo](http://validatethis.org/validatethis/samples/FacadeDemo/index.cfm)
-* [Bob Silverberg ValidateThis blog posts](http://www.silverwareconsulting.com/index.cfm/ValidateThis)
+* [Bob Silverberg's ValidateThis blog posts](http://www.silverwareconsulting.com/index.cfm/ValidateThis)
 * [Questions and Discussion](http://groups.google.com/group/validatethis)
 * [ValidateThis.org Project Home Page](http://www.validatethis.org/)
 
