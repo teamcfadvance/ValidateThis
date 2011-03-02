@@ -30,9 +30,28 @@ You are encouraged to contribute to ValidateThis, and there are a variety of way
 * Contribute to the discussion on developing the framework on the [ValidateThis development list](http://groups.google.com/group/validatethis-dev)
 * Submit bug fixes or help code new features (see _Code Contributions and Git Workflow_, below)
 
-### Code Contributions and Git Workflow
+### Code Contributions
 
-The [ValidateThis development list](http://groups.google.com/group/validatethis-dev) is a good place to ask questions or discuss large changes before coding.
+The [ValidateThis development list](http://groups.google.com/group/validatethis-dev) is a good place to ask questions or discuss large changes before coding. Please also review the following sections concerning Git configuration to deal with line endings and the Git workflow model used by this project.
+
+#### Dealing with Line Endings
+
+As recommended by [this GitHub Help page](http://help.github.com/dealing-with-lineendings/), we ask that all ValidateThis developers set their Git `core.autocrlf` setting accordingly.
+
+**Linux and Mac OS X:**
+
+	git config --global core.autocrlf input
+
+**Windows:**
+
+	git config --global core.autocrlf true
+
+If you do not want to set `core.autocrlf` globally, you can set it as a repository option by changing to your ValidateThis clone directory and running one of the above commands without the `--global` option. For example:
+
+	cd ~/Projects/ValidateThis
+	git config core.autocrlf input
+
+#### Git Workflow
 
 The git repo's _develop_ branch is used as the primary development branch. The _master_ branch will always be the current stable release. When finalizing a release, a release branch will be used (e.g., _release-0.99_). The Git workflow employed for ValidateThis development is nicely detailed in this blog series, by Bob Silverberg, [A Git Workflow for Open Source Collaboration](http://www.silverwareconsulting.com/index.cfm/Git-Workflow):
 
