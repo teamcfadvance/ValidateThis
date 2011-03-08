@@ -350,12 +350,12 @@
 			failure.Message = "Second Message";
 			failure.PropertyName = "propertyA";
 			failure.ClientFieldName = "fieldA";
-			arguments.toResult..addFailure(failure);
+			arguments.toResult.addFailure(failure);
 			failure = StructNew();
 			failure.Message = "Third Message";
 			failure.PropertyName = "propertyB";
 			failure.ClientFieldName = "fieldB";
-			arguments.toResult..addFailure(failure);
+			arguments.toResult.addFailure(failure);
 		</cfscript>
 	</cffunction>
 
