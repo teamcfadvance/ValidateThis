@@ -21,7 +21,7 @@
 			VTConfig = {definitionPath="/validatethis/tests/Fixture"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 			JSLib = "jQuery";
-			ExpectedInJSIncludes = '<script src="http://ajax.microsoft.com/ajax/jquery/jquery';
+			ExpectedInJSIncludes = '<script src="//ajax.microsoft.com/ajax/jquery/jquery';
 			ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
 		</cfscript>
 	</cffunction>
@@ -32,6 +32,12 @@
 	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
 		<cfscript>
 			assertEquals("0.99",ValidateThis.getVersion());
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="getVTFolderReturnsVTFolder" access="public" returntype="void">
+		<cfscript>
+			assertEqualsCase("ValidateThis",ValidateThis.getVTFolder());
 		</cfscript>  
 	</cffunction>
 
@@ -60,6 +66,7 @@
 			assertEquals(structNew(),VTConfig.localeMap);
 			assertEquals("",VTConfig.BOComponentPaths);
 			assertEquals("",VTConfig.ExtraAnnotationTypeReaderComponentPaths);
+			assertEqualsCase("ValidateThis",VTConfig.vtFolder);
 		</cfscript>  
 	</cffunction>
 
@@ -71,6 +78,7 @@
 	<cffunction name="getInitializationScriptWithDefaultVTConfigReturnsCorrectScript" returntype="void" access="public">
 		<cfscript>
 			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
+			debug(script);
 			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>

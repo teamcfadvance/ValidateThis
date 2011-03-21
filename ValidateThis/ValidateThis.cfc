@@ -42,6 +42,7 @@
 		<cfparam name="variables.ValidateThisConfig.extraAnnotationTypeReaderComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.debuggingMode" default="none" /><!--- possible values: none|info|strict --->
 		<cfparam name="variables.ValidateThisConfig.ajaxProxyURL" default="" /><!--- possible values: any web webservice path that exposes the VT api --->
+		<cfparam name="variables.ValidateThisConfig.vtFolder" default="#getVTFolder()#" /><!--- possible values: any web webservice path that exposes the VT api --->
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />
@@ -64,6 +65,13 @@
 		</cfif>
 		<cfreturn variables.ValidationFactory.getValidator(theObjectType,arguments.definitionPath,arguments.theObject) />
 		
+	</cffunction>
+	
+	<cffunction name="getVTFolder" access="public" output="false" returntype="any" hint="returns the name of the folder in which VT is installed">
+
+		<cfset var thisFolder = getDirectoryFromPath(getCurrentTemplatePath()) />
+		<cfreturn listLast(thisFolder,"/\") />
+
 	</cffunction>
 	
 	<cffunction name="createWrapper" access="public" output="false" returntype="any">
