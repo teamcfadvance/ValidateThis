@@ -91,7 +91,9 @@
 	<cffunction name="setRuleScripters" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		<cfset var dirName = listLast(listLast(getMetadata(this).Name,"."),"_") />
 		<cfset var initArgs = {translator=variables.translator,getSafeFormName=variables.getSafeFormName,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix} />
-		<cfset variables.RuleScripters = variables.childObjectFactory.loadChildObjects("ValidateThis.client.#dirName#" & "," & variables.extraClientScriptWriterComponentPaths,"ClientRuleScripter_",structNew(),initArgs) />
+		<cfset var thisFolder = getDirectoryFromPath(getCurrentTemplatePath()) />
+		<cfset var vtFolder = listGetAt( thisFolder, listLen( thisFolder, '/\' ) - 1, '/\' ) />
+		<cfset variables.RuleScripters = variables.childObjectFactory.loadChildObjects(vtFolder & ".client.#dirName#" & "," & variables.extraClientScriptWriterComponentPaths,"ClientRuleScripter_",structNew(),initArgs) />
 	</cffunction>
 
 </cfcomponent>

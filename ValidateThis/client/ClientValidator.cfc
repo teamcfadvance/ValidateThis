@@ -154,11 +154,15 @@
 	<cffunction name="setScriptWriters" returntype="void" access="private" output="false" hint="I create script writer objects from a list of component paths">
 		
 		<cfset var initArgs = {childObjectFactory=variables.childObjectFactory,translator=variables.translator,JSRoot=variables.JSRoot,extraClientScriptWriterComponentPaths=variables.extraClientScriptWriterComponentPaths,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix} />
-		<cfset var swDirs = variables.fileSystem.listDirs(GetDirectoryFromPath(getCurrentTemplatePath())) />
+		<cfset var thisFolder = getDirectoryFromPath(getCurrentTemplatePath()) />
+		<cfset var swDirs = variables.fileSystem.listDirs(thisFolder) />
 		<cfset var swDir = 0 />
 		<cfset var swPaths = "" />
+		<cfset var vtFolder = listGetAt( thisFolder, listLen( thisFolder, '/\' ) - 1, '/\' ) />
+				
 		<cfloop list="#swDirs#" index="swDir">
-			<cfset swPaths = listAppend(swPaths,"ValidateThis.client." & swDir) />
+			<cfset swPaths = listAppend(swPaths, vtFolder & ".client." & swDir) />
+			<cfdump var="#swPaths#" label="swPaths">
 		</cfloop>
 		<cfset variables.ScriptWriters = variables.childObjectFactory.loadChildObjects(swPaths & "," & variables.extraClientScriptWriterComponentPaths,"ClientScriptWriter_",structNew(),initArgs) />
 

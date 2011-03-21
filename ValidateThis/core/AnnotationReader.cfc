@@ -81,7 +81,9 @@
 
 	<cffunction name="setAnnotationTypeReaders" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		<cfset var initArgs = {} />
-		<cfset variables.AnnotationTypeReaders = variables.childObjectFactory.loadChildObjects("ValidateThis.core.annotationTypeReaders,#variables.extraAnnotationTypeReaderComponentPaths#","AnnotationTypeReader_",structNew(),initArgs) />
+		<cfset var thisFolder = getDirectoryFromPath(getCurrentTemplatePath()) />
+		<cfset var vtFolder = listGetAt( thisFolder, listLen( thisFolder, '/\' ) - 1, '/\' ) />
+		<cfset variables.AnnotationTypeReaders = variables.childObjectFactory.loadChildObjects(vtFolder & ".core.annotationTypeReaders,#variables.extraAnnotationTypeReaderComponentPaths#","AnnotationTypeReader_",structNew(),initArgs) />
 	</cffunction>
 	
 </cfcomponent>
