@@ -21,12 +21,14 @@
 		<cfargument name="extraFileReaderComponentPaths" type="string" required="true" />
 		<cfargument name="externalFileTypes" type="string" required="true" />
 		<cfargument name="extraAnnotationTypeReaderComponentPaths" type="string" required="true" />
+		<cfargument name="vtFolder" type="string" required="true" />
 
 		<cfset variables.transientFactory = arguments.transientFactory />
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.extraFileReaderComponentPaths = arguments.extraFileReaderComponentPaths />
 		<cfset variables.externalFileTypes = arguments.externalFileTypes />
 		<cfset variables.extraAnnotationTypeReaderComponentPaths = arguments.extraAnnotationTypeReaderComponentPaths />
+		<cfset variables.vtFolder = arguments.vtFolder />
 		
 		<cfset setAnnotationTypeReaders() />
 		
@@ -81,9 +83,7 @@
 
 	<cffunction name="setAnnotationTypeReaders" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		<cfset var initArgs = {} />
-		<cfset var thisFolder = getDirectoryFromPath(getCurrentTemplatePath()) />
-		<cfset var vtFolder = listGetAt( thisFolder, listLen( thisFolder, '/\' ) - 1, '/\' ) />
-		<cfset variables.AnnotationTypeReaders = variables.childObjectFactory.loadChildObjects(vtFolder & ".core.annotationTypeReaders,#variables.extraAnnotationTypeReaderComponentPaths#","AnnotationTypeReader_",structNew(),initArgs) />
+		<cfset variables.AnnotationTypeReaders = variables.childObjectFactory.loadChildObjects(variables.vtFolder & ".core.annotationTypeReaders,#variables.extraAnnotationTypeReaderComponentPaths#","AnnotationTypeReader_",structNew(),initArgs) />
 	</cffunction>
 	
 </cfcomponent>

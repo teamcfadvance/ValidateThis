@@ -23,6 +23,7 @@
 		<cfargument name="JSRoot" type="string" required="true" />
 		<cfargument name="extraClientScriptWriterComponentPaths" type="string" required="true" />
 		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
+		<cfargument name="vtFolder" type="string" required="true" />
 
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.translator = arguments.translator />
@@ -31,6 +32,7 @@
 		<cfset variables.JSRoot = arguments.JSRoot />
 		<cfset variables.extraClientScriptWriterComponentPaths = arguments.extraClientScriptWriterComponentPaths />
 		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
+		<cfset variables.vtFolder = arguments.vtFolder />
 
 		<cfset setScriptWriters() />
 		<cfreturn this />
@@ -153,15 +155,14 @@
 
 	<cffunction name="setScriptWriters" returntype="void" access="private" output="false" hint="I create script writer objects from a list of component paths">
 		
-		<cfset var initArgs = {childObjectFactory=variables.childObjectFactory,translator=variables.translator,JSRoot=variables.JSRoot,extraClientScriptWriterComponentPaths=variables.extraClientScriptWriterComponentPaths,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix} />
+		<cfset var initArgs = {childObjectFactory=variables.childObjectFactory,translator=variables.translator,JSRoot=variables.JSRoot,extraClientScriptWriterComponentPaths=variables.extraClientScriptWriterComponentPaths,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix,vtFolder=variables.vtFolder} />
 		<cfset var thisFolder = getDirectoryFromPath(getCurrentTemplatePath()) />
 		<cfset var swDirs = variables.fileSystem.listDirs(thisFolder) />
 		<cfset var swDir = 0 />
 		<cfset var swPaths = "" />
-		<cfset var vtFolder = listGetAt( thisFolder, listLen( thisFolder, '/\' ) - 1, '/\' ) />
 				
 		<cfloop list="#swDirs#" index="swDir">
-			<cfset swPaths = listAppend(swPaths, vtFolder & ".client." & swDir) />
+			<cfset swPaths = listAppend(swPaths, variables.vtFolder & ".client." & swDir) />
 			<cfdump var="#swPaths#" label="swPaths">
 		</cfloop>
 		<cfset variables.ScriptWriters = variables.childObjectFactory.loadChildObjects(swPaths & "," & variables.extraClientScriptWriterComponentPaths,"ClientScriptWriter_",structNew(),initArgs) />

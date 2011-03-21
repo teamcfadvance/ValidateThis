@@ -42,7 +42,7 @@
 		<cfparam name="variables.ValidateThisConfig.extraAnnotationTypeReaderComponentPaths" default="" />
 		<cfparam name="variables.ValidateThisConfig.debuggingMode" default="none" /><!--- possible values: none|info|strict --->
 		<cfparam name="variables.ValidateThisConfig.ajaxProxyURL" default="" /><!--- possible values: any web webservice path that exposes the VT api --->
-		<cfparam name="variables.ValidateThisConfig.vtFolder" default="#getVTFolder()#" /><!--- possible values: any web webservice path that exposes the VT api --->
+		<cfparam name="variables.ValidateThisConfig.vtFolder" default="#getVTFolder()#" />
 		
 		<cfset variables.ValidationFactory = CreateObject("component","core.ValidationFactory").init(variables.ValidateThisConfig) />
 		<cfset variables.CommonScriptGenerator = getBean("CommonScriptGenerator") />

@@ -78,7 +78,6 @@
 	<cffunction name="getInitializationScriptWithDefaultVTConfigReturnsCorrectScript" returntype="void" access="public">
 		<cfscript>
 			script = ValidateThis.getInitializationScript(JSLib=variables.JSLib);
-			debug(script);
 			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>

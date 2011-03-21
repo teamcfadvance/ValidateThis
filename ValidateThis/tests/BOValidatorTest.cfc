@@ -21,7 +21,7 @@
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			variables.className = "user";
 			JSLib = "jQuery";
-			ExpectedInJSIncludes = '<script src="http://ajax.microsoft.com/ajax/jquery/jquery';
+			ExpectedInJSIncludes = '<script src="//ajax.microsoft.com/ajax/jquery/jquery';
 			ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
 		</cfscript>  
 	</cffunction>

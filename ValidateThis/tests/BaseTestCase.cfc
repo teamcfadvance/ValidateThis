@@ -94,6 +94,7 @@
 			ValidateThisConfig.BOComponentPaths="";
 			ValidateThisConfig.extraAnnotationTypeReaderComponentPaths="";
 			ValidateThisConfig.debuggingMode="none";
+			ValidateThisConfig.vtFolder="ValidateThis";
 			return ValidateThisConfig;
 		</cfscript>
 	</cffunction>
