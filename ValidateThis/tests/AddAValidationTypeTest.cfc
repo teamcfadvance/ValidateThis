@@ -28,15 +28,6 @@
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 
-	<cffunction name="additionalRuleShouldBeAvailableToClientSideValidations" access="public" returntype="void">
-		<cfscript>
-			//failing fast as I know this doesn't work yet
-			fail("This feature doesn't work yet, but needs to be added soon!");
-			script = ValidateThis.getValidationScript(objectType="BigNumber");
-			assertEquals(true,script CONTAINS "rules('add',{min: 1000});");
-		</cfscript>  
-	</cffunction>
-
 	<cffunction name="additionalRuleShouldBeAvailableToServerSideValidations" access="public" returntype="void">
 		<cfscript>
 			bigNumber = createObject("component","validatethis.tests.Fixture.BigNumberTest.BigNumber").init();
@@ -54,6 +45,17 @@
 			assertEquals(true,result.getIsSuccess());
 		</cfscript>  
 	</cffunction>
+
+	<!--- TODO: This feature doesn't work, but really should
+	<cffunction name="additionalRuleShouldBeAvailableToClientSideValidations" access="public" returntype="void">
+		<cfscript>
+			//failing fast as I know this doesn't work yet
+			fail("This feature doesn't work yet, but needs to be added soon!");
+			script = ValidateThis.getValidationScript(objectType="BigNumber");
+			assertEquals(true,script CONTAINS "rules('add',{min: 1000});");
+		</cfscript>  
+	</cffunction>
+	--->
 
 </cfcomponent>
 

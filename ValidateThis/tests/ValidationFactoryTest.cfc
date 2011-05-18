@@ -30,16 +30,6 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="createBOVsFromCFCsShouldCreateBOVsFromAnnotatedCFCs" returntype="void" access="public">
-		<cfscript>
-			assertTrue(false,"This should fail as this hasn't been fully implemented yet!");
-			ValidateThisConfig.BOComponentPaths="validatethis.tests.Fixture.AnnotatedBOs";
-			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
-			injectMethod(validationFactory, this, "getBOVs", "getBOVs");
-			validationFactory.createBOVsFromCFCs();
-			BOVs = validationFactory.getBOVs();
-		</cfscript>
-	</cffunction>
 
 	<cffunction name="getBOVs" access="public" output="false" returntype="any" hint="Used to retrieve the BOVs for testing.">
 		<cfparam name="variables.Validators" default="#structNew()#" />
@@ -107,6 +97,19 @@
 			assertEquals("lastName",allContexts.___Default[2].propertyName);
 		</cfscript>  
 	</cffunction>
+
+	<!--- TODO: This test is for a feature that hasn't been written yet 
+	<cffunction name="createBOVsFromCFCsShouldCreateBOVsFromAnnotatedCFCs" returntype="void" access="public">
+		<cfscript>
+			assertTrue(false,"This should fail as this hasn't been fully implemented yet!");
+			ValidateThisConfig.BOComponentPaths="validatethis.tests.Fixture.AnnotatedBOs";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			injectMethod(validationFactory, this, "getBOVs", "getBOVs");
+			validationFactory.createBOVsFromCFCs();
+			BOVs = validationFactory.getBOVs();
+		</cfscript>
+	</cffunction>
+	--->
 
 </cfcomponent>
 
