@@ -34,18 +34,19 @@
 		<cfargument name="missingMethodName" type="any" required="true" />
 		<cfargument name="missingMethodArguments" type="any" required="true" />
 
-		<cfset var local = {} />
-		<cfset local.Validator = getValidator() />
+		<cfset var returnValue = "">
+		<cfset var Validator = getValidator() />
 		
 		<cfif arguments.missingMethodName EQ "validate">
 			<cfset arguments.missingMethodArguments.theObject = this />
 		</cfif>
 		
-		<cfinvoke component="#local.Validator#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="local.returnValue" />
-		<cfif NOT StructKeyExists(local,"returnValue")>
-			<cfset local.returnValue = "" />
+		<cfinvoke component="#Validator#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="returnValue" />
+		<!--- trap null values --->
+		<cfif NOT IsDefined("returnValue")>
+			<cfset returnValue = "" />
 		</cfif>
-		<cfreturn local.returnValue />
+		<cfreturn returnValue />
 		
 	</cffunction>
 
