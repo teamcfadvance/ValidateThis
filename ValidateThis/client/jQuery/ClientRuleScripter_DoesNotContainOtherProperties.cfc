@@ -28,16 +28,16 @@ Definition Usage Example:
 		<cfsavecontent variable="theCondition">
 		function(value,element,options) {
 			var isValid = true;
-			$(options).each(function(){		
+			jQuery(options).each(function(){		
 				var propertyName = this;			
-				var propertyValue = $(':input[name='+this+']').getValue();
+				var propertyValue = jQuery(':input[name='+this+']').getValue();
 				if (propertyValue.length){
 					// if this is a mutilple select list, split the value into an array for iteration
 					if (propertyValue.search(",")){
 						propertyValue = propertyValue.split( "," )
 					};
 					// for each property value in the array to check
-					$(propertyValue).each(function(){
+					jQuery(propertyValue).each(function(){
 						var test = value.toString().toLowerCase().search(this.toString().toLowerCase()) == -1;
 						if (!test){ // Only worrie about failures here so we return true if none of the other values fail.
 							isValid = false;
