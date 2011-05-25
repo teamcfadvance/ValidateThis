@@ -114,6 +114,29 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="addFailureShouldAcceptAFailureStructAndNewSpecificArgumentsAndAddAFailure" access="public" returntype="void">
+		<cfscript>
+			failure1 = StructNew();
+			failure1.propertyName = "propertyName";
+			failure1.clientFieldName = "clientFieldName";
+			failure1.type = "type";
+			failure1.theObject = "theObject";
+			failure1.objectType = "objectType";
+			failure1.failure = structNew();
+			failure1.failure.propertyName = "propertyName2";
+			failure1.failure.message = "messageFromFailureStruct";
+			result.addFailure(argumentCollection=failure1);
+			failures = result.getFailures();
+			assertEquals(ArrayLen(failures),1);
+			assertEquals(failures[1].propertyName, failure1.failure.propertyName);
+			assertEquals(failures[1].clientFieldName, failure1.clientFieldName);
+			assertEquals(failures[1].type, failure1.type);
+			assertEquals(failures[1].theObject, failure1.theObject);
+			assertEquals(failures[1].objectType, failure1.objectType);
+			assertEquals(failures[1].message, failure1.failure.message);
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="addFailureShouldDefaultClientFieldnameToPropertyName" access="public" returntype="void">
 		<cfscript>
 			failure = StructNew();
