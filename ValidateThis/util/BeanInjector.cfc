@@ -120,36 +120,38 @@ Usage:
 		<cfargument name="targetComponent" type="any" required="true" />
 		<cfargument name="targetComponentTypeName" type="any" required="false" default="" hint="If the calling code already knows the type name of the target component, passing this will provide a small speed improvment because the type doesn't have to be looked up in the component metadata." />
 		<cfargument name="stopRecursionAt" type="string" required="false" default="" hint="When recursing the parent classes of the target component, recusion will stop when it reaches this class name." />
-		<cfset var local = StructNew() />
+		
+		<cfset var typeName = "">
+		<cfset var objMetaData = "">
 		
 		<cfif not Len(arguments.targetComponentTypeName)>
-			<cfset local.typeName = GetMetaData(arguments.targetComponent).name />
+			<cfset typeName = GetMetaData(arguments.targetComponent).name />
 		<cfelse>
-			<cfset local.typeName = arguments.targetComponentTypeName />
+			<cfset typeName = arguments.targetComponentTypeName />
 		</cfif>
 		
 		<!--- If the DI resolution has already been cached, inject from the cache. --->
-		<cfif StructKeyExists(variables.DICache, local.typeName) and StructKeyExists(variables.DICache[local.typeName], variables.loadedKey)>
-			<cfset injectCachedBeans(arguments.targetComponent, local.typeName) />
+		<cfif StructKeyExists(variables.DICache, typeName) and StructKeyExists(variables.DICache[typeName], variables.loadedKey)>
+			<cfset injectCachedBeans(arguments.targetComponent, typeName) />
 		<cfelse>
 		
 			<!--- Double-checked lock based on Object Type Name to handle race conditions. --->
-			<cflock name="Lock_BeanInjector_Exclusive_#local.typeName#" type="exclusive" timeout="5" throwontimeout="true">
+			<cflock name="Lock_BeanInjector_Exclusive_#typeName#" type="exclusive" timeout="5" throwontimeout="true">
 				
-				<cfif StructKeyExists(variables.DICache, local.typeName) and StructKeyExists(variables.DICache[local.typeName], variables.loadedKey)>
-					<cfset injectCachedBeans(arguments.targetComponent, local.typeName) />
+				<cfif StructKeyExists(variables.DICache, typeName) and StructKeyExists(variables.DICache[typeName], variables.loadedKey)>
+					<cfset injectCachedBeans(arguments.targetComponent, typeName) />
 				<cfelse>	
 					<!--- Create a new cache element for this component. --->
-					<cfset variables.DICache[local.typeName] = StructNew() />
+					<cfset variables.DICache[typeName] = StructNew() />
 					
 					<!--- Get the metadata for the component. --->
-					<cfset local.objMetaData = GetMetaData(arguments.targetComponent) />
+					<cfset objMetaData = GetMetaData(arguments.targetComponent) />
 			    	
 			    	<!--- Recurse the inheritance tree of the component and attempt to resolve dependencies. --->
-			    	<cfset performDIRecursion(arguments.targetComponent, local.objMetaData, local.typeName, arguments.stopRecursionAt) />
+			    	<cfset performDIRecursion(arguments.targetComponent, objMetaData, typeName, arguments.stopRecursionAt) />
 			    	
 			    	<!--- Update the DI cache to set this type as loaded. --->
-			    	<cfset variables.DICache[local.typeName][variables.loadedKey]=true />
+			    	<cfset variables.DICache[typeName][variables.loadedKey]=true />
 				</cfif>
 				
 			</cflock>
