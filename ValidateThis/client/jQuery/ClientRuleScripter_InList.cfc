@@ -25,7 +25,7 @@
 			var theDelim = (options.delim) ? options.delim : ",";
 			var theList = options.list.split(theDelim);
 			var isValid = false;
-			$(theList).each(function(){
+			jQuery(theList).each(function(){
 				if (value.toLowerCase() == this.toLowerCase()){
 					isValid = true;
 				}

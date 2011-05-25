@@ -59,9 +59,9 @@
 
 		<cfif len(parameters.DependentInputName) GT 0>
 			<cfif len(parameters.DependentInputValue) gt 0>
-			    <cfset conditionDef = "$("":input[name='#parameters.DependentInputName#']"").getValue() == " & parameters.DependentInputValue & ";"/>
+			    <cfset conditionDef = "jQuery("":input[name='#parameters.DependentInputName#']"").getValue() == " & parameters.DependentInputValue & ";"/>
 			<cfelse>
-			    <cfset conditionDef = "$("":input[name='#parameters.DependentInputName#']"").getValue().length > 0;"/>
+			    <cfset conditionDef = "jQuery("":input[name='#parameters.DependentInputName#']"").getValue().length > 0;"/>
 			</cfif>
 		</cfif>
 		<cfif len(conditionDef)>
@@ -172,9 +172,9 @@
 		
         <cfif len(parameters.DependentInputName) GT 0>
             <cfif len(parameters.DependentInputValue) gt 0>
-                <cfset theCondition = "function(element) { return $("":input[name='#parameters.DependentInputName#']"").getValue() == '" & parameters.DependentInputValue & "'; }" />
+                <cfset theCondition = "function(element) { return jQuery("":input[name='#parameters.DependentInputName#']"").getValue() == '" & parameters.DependentInputValue & "'; }" />
             <cfelse>
-                <cfset theCondition = "function(element) { return $("":input[name='#parameters.DependentInputName#']"").getValue().length > 0; }" />
+                <cfset theCondition = "function(element) { return jQuery("":input[name='#parameters.DependentInputName#']"").getValue().length > 0; }" />
             </cfif>
         </cfif>
 		
