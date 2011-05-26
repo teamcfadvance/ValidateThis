@@ -51,7 +51,6 @@
 		<cfscript>
 			assertEquals(true,structKeyExists(ValidateThis.getClientRuleScripters(),"BigNumber"),"Did not load the BigNumber CRS!");
 			script = ValidateThis.getValidationScript(objectType="BigNumber");
-			debug(script);
 			assertEquals(true,script CONTAINS "rules('add',{min: 1000});","BigNumber CRS does not generate correct script");
 		</cfscript>
 	</cffunction>

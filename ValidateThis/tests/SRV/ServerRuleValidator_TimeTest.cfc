@@ -44,7 +44,6 @@
 			super.setup();
 			objectValue = arguments.value;
             
-            debug(objectValue);
             configureValidationMock(); 
                    
 			SRV.validate(validation);

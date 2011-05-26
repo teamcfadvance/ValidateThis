@@ -211,7 +211,6 @@
 		<cfscript>
 			BOValidator = createDefaultBOV();
 			script = BOValidator.getInitializationScript(JSLib=variables.JSLib);
-			debug(script);
 			assertTrue(script CONTAINS variables.ExpectedInJSIncludes);
 			assertTrue(script CONTAINS variables.ExpectedInVTSetup);
 		</cfscript>

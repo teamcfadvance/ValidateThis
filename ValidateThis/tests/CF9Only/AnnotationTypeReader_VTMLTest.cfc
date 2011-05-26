@@ -85,7 +85,6 @@
 			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['Profile']) eq 15 ,"Inncorect Rule count in Profile context");
 			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['Register']) eq 13 ,"Inncorect Rule count in Register Context");
 			assertTrue(structCount(PropertyRules['Validations']['Contexts']['Profile'][4].parameters) eq 2 ,"Inccorect parameter count found.. 2 were expcted.");
-			//debug(PropertyRules['Validations']['Contexts']['Profile'][4].parameters);
 			assertTrue(structCount(PropertyRules['Validations']['Contexts']['___DEFAULT'][7].condition) eq 3 ,"Inccorect condition count found.. 2 were expcted.");
 			assertTrue(structCount(PropertyRules['Validations']['Contexts']) eq 3,"Invalid Context Count");
 			assertTrue(structCount(PropertyRules['FormContexts']) eq 2,"Invalid FormContexts Count");
