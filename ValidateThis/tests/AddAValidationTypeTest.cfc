@@ -18,18 +18,19 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			VTConfig = getVTConfig();
-			VTConfig.extraClientScriptWriterComponentPaths="validatethis.tests.Fixture.BigNumberTest.CRSs";
+			VTConfig.extraClientScriptWriterComponentPaths="validatethis.tests.Fixture.BigNumberTest.CRSs.jQuery";
 			VTConfig.extraRuleValidatorComponentPaths="validatethis.tests.Fixture.BigNumberTest.SRVs";
 			VTConfig.definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/BigNumberTest";
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 		</cfscript>
 	</cffunction>
-	
+
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 
 	<cffunction name="additionalRuleShouldBeAvailableToServerSideValidations" access="public" returntype="void">
 		<cfscript>
+			assertEquals(true,structKeyExists(ValidateThis.getServerRuleValidators(),"BigNumber"),"Did not load the BigNumber SRV!");
 			bigNumber = createObject("component","validatethis.tests.Fixture.BigNumberTest.BigNumber").init();
 			result = ValidateThis.validate(bigNumber);
 			assertEquals(false,result.getIsSuccess());
@@ -46,16 +47,14 @@
 		</cfscript>  
 	</cffunction>
 
-	<!--- TODO: This feature doesn't work, but really should
 	<cffunction name="additionalRuleShouldBeAvailableToClientSideValidations" access="public" returntype="void">
 		<cfscript>
-			//failing fast as I know this doesn't work yet
-			fail("This feature doesn't work yet, but needs to be added soon!");
+			assertEquals(true,structKeyExists(ValidateThis.getClientRuleScripters(),"BigNumber"),"Did not load the BigNumber CRS!");
 			script = ValidateThis.getValidationScript(objectType="BigNumber");
-			assertEquals(true,script CONTAINS "rules('add',{min: 1000});");
-		</cfscript>  
+			debug(script);
+			assertEquals(true,script CONTAINS "rules('add',{min: 1000});","BigNumber CRS does not generate correct script");
+		</cfscript>
 	</cffunction>
-	--->
-
+       
 </cfcomponent>
 
