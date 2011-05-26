@@ -72,8 +72,8 @@
 			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
 			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
 			assertTrue(script contains "$form_testFormName.validate({ignore:'.ignore'});");
-			assertTrue(script contains "if ($("":input[name='clientFieldName']"",$form_testFormName).length)");
-			assertTrue(script contains "$("":input[name='clientFieldName']"",$form_testFormName).rules");
+			assertTrue(script contains "if (jQuery("":input[name='clientFieldName']"",$form_testFormName).length)");
+			assertTrue(script contains "jQuery("":input[name='clientFieldName']"",$form_testFormName).rules");
 		</cfscript>  
 	</cffunction>
 
@@ -89,8 +89,9 @@
 			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery",theObject=theObject);
 			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
 			assertTrue(script contains "$form_testFormName.validate({ignore:'.ignore'});");
-			assertTrue(script contains "if ($("":input[name='clientFieldName']"",$form_testFormName).length)","invalid input existance check selector");
-			assertTrue(script contains "$("":input[name='clientFieldName']"",$form_testFormName).rules","invalid field selector");
+			debug(script);
+			assertTrue(script contains "if (jQuery("":input[name='clientFieldName']"",$form_testFormName).length)","invalid input existance check selector");
+			assertTrue(script contains "jQuery("":input[name='clientFieldName']"",$form_testFormName).rules","invalid field selector");
 			assertTrue(script contains 'rules(''add'',{"inlist": {"list":"1,2"},"messages":{"inlist":"The propertyDesc was not found in list: (1,2)."}});',"Invalid Rules('add') script:" & htmlEditFormat(script));
 		</cfscript>  
 	</cffunction>
