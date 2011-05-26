@@ -35,17 +35,17 @@
 		<cfargument name="missingMethodName" type="any" required="true" />
 		<cfargument name="missingMethodArguments" type="any" required="true" />
 		
-		<cfset var local = {} />
-		<cfset local.varName = ReplaceNoCase(arguments.missingMethodName,"get","") />
+		<cfset var varName = ReplaceNoCase(arguments.missingMethodName,"get","") />
 
-		<cfif Left(arguments.missingMethodName,3) EQ "get" AND StructKeyExists(variables.instance.invalidVars,local.varName)>
-			<cfreturn variables.instance.invalidVars[local.varName] />
+		<cfif Left(arguments.missingMethodName,3) EQ "get" AND StructKeyExists(variables.instance.invalidVars,varName)>
+			<cfreturn variables.instance.invalidVars[varName] />
 		<cfelse>
-			<cfinvoke component="#variables.instance.theObject#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="local.returnValue" />
-			<cfif NOT StructKeyExists(local,"returnValue")>
-				<cfset local.returnValue = "" />
+			<cfinvoke component="#variables.instance.theObject#" method="#arguments.missingMethodName#" argumentcollection="#arguments.missingMethodArguments#" returnvariable="returnValue" />
+			<!--- trap null values --->
+			<cfif NOT IsDefined("returnValue")>
+				<cfset returnValue = "" />
 			</cfif>
-			<cfreturn local.returnValue />
+			<cfreturn returnValue />
 		</cfif>
 		
 	</cffunction>
