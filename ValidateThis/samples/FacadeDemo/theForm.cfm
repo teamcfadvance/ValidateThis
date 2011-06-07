@@ -88,7 +88,7 @@
 <cfoutput>
 <h1>ValidateThis Facade Demo</h1>
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>)</h3>
-<cfif Len(SuccessMessage)><h3>#SuccessMessage#</h3></cfif>
+<cfif Len(SuccessMessage)><h3 id="successMessage">#SuccessMessage#</h3></cfif>
 <div class="formContainer">
 <form action="index.cfm" id="frmMain" method="post" name="frmMain" class="uniForm">
 	<input type="hidden" name="Context" id="Context" value="#Form.Context#" />
