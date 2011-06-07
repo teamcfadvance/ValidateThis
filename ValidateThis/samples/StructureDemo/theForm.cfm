@@ -48,12 +48,12 @@
 </cfif>
 
 <!--- Default the validation failures to an empty struct --->
-<cfset UniFormErrors = {} />
+<cfset validationErrors = {} />
 <!--- Are we processing the form? --->
 <cfif StructKeyExists(Form,"Processing")>
 	<!--- Validate the form scope using ValidateThis --->
 	<cfset Result = application.ValidateThis.validate(objectType="User",theObject=form,Context=Form.Context) />
-	<cfset UniFormErrors = Result.getFailuresForUniForm() />
+	<cfset validationErrors = Result.getFailuresForUniForm() />
 	<!--- If validations passed, save the info --->
 	<cfif Result.getIsSuccess()>
 		<!--- save the info here --->
@@ -93,7 +93,7 @@
 <cfoutput>
 <h1>ValidateThis Validating a Structure Demo</h1>
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>)</h3>
-<cfif Len(SuccessMessage)><h3>#SuccessMessage#</h3></cfif>
+<cfif Len(SuccessMessage)><h3 id="successMessage">#SuccessMessage#</h3></cfif>
 <div class="formContainer">
 <form action="index.cfm" id="frmMain" method="post" name="frmMain" class="uniForm">
 	<input type="hidden" name="ObjectType" id="ObjectType" value="user" />
@@ -221,8 +221,8 @@
 
 <cffunction name="isErrorMsg" returntype="any" output="false" hint="I am used to display error messages for a field.  I only exist for this demo page - there are much better ways of doing this!">
 	<cfargument name="fieldName" type="any" required="yes" />
-	<cfif StructKeyExists(UniFormErrors,arguments.fieldName)>
-		<cfreturn '<p id="error-UserName" class="errorField bold">#UniFormErrors[arguments.fieldName]#</p>' />
+	<cfif StructKeyExists(validationErrors,arguments.fieldName)>
+		<cfreturn '<p id="error-#arguments.fieldName#" class="errorField bold">#validationErrors[arguments.fieldName]#</p>' />
 	<cfelse>
 		<cfreturn "" />
 	</cfif>
