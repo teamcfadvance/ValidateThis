@@ -104,7 +104,7 @@
 			<cfelse>
 				<cfset theDesc = determineLabel(theName) />
 			</cfif>
-			<cfif StructKeyExists(theProperty,"desc") AND len(theProperty["desc"])>
+			<cfif (StructKeyExists(theProperty,"desc") AND len(theProperty["desc"])) OR theDesc neq theName>
 				<cfset variables.propertyDescs[theName] = theDesc />
 				<cfif StructKeyExists(theProperty,"clientfieldname")>
 					<cfset variables.clientFieldDescs[theProperty.clientfieldname] = theDesc />
