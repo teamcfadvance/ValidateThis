@@ -13,7 +13,7 @@ NOTE: these tests take a long time to run. A lot of the time is in a subset of t
 <cfset DTS = createObject("component","mxunit.runner.DirectoryTestSuite")>
 
 
-<cfset excludes = "fixture,Selenium">
+<cfset excludes = "fixture">
 
 <cfinvoke component="#DTS#" 
 	method="run"

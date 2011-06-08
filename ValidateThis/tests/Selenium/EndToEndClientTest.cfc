@@ -1,4 +1,4 @@
-component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEnd-Client" {
+component extends="ClientBaseTestCase" displayName="EndToEnd-Client" {
 
     public void function beforeTests() {
         browserUrl = "http://localhost/validatethis/samples/FacadeDemo/";
@@ -23,7 +23,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEnd-Client" 
         selenium.type("HowMuch", "a");
         selenium.click("AllowCommunication-1");
         selenium.click("//button[@type='submit']");
-        selenium.waitForElementPresent("css=p.errorField[htmlfor=Nickname]");
+        selenium.waitForElementPresent(errLocator("Nickname"));
         assertEquals("That Nickname is already taken. Please try a different Nickname.", selenium.getText(errLocator("Nickname")));
         assertEquals("Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.", selenium.getText(errLocator("Salutation")));
         assertEquals("The Last Name is required if you specify a value for the First Name.", selenium.getText(errLocator("LastName")));
@@ -85,7 +85,4 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEnd-Client" 
         assertNotEquals("This field is required.", selenium.getText(errLocator("LastName")));
     }
     
-    private string function errLocator(name) {
-    	return "css=p.errorField[htmlfor=#arguments.name#]";
-    }
 }

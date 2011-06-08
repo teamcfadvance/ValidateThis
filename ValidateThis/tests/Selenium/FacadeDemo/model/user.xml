@@ -70,6 +70,10 @@
 			 -->
 		</property>
 		<property name="FirstName">
+			<rule type="daterange" contexts="*">
+				<param name="from" value="2010-01-01" />
+				<param name="until" value="2011-12-31" />
+			</rule>
 		</property>
 		<property name="LastName">
 		</property>
