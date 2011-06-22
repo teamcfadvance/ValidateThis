@@ -13,9 +13,11 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
 
     public void function testEndToEndClient() {
         selenium.open("http://localhost/validatethis/samples/FacadeDemo/index.cfm?init=true");
+        selenium.waitForPageToLoad("30000");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
         selenium.type("UserPass", "");
         selenium.click("//button[@type='submit']");
+        selenium.waitForElementPresent(errLocator("UserName"));
         assertEquals("The Email Address is required.", selenium.getText(errLocator("UserName")));
         assertEquals("The Password is required.", selenium.getText(errLocator("UserPass")));
         assertEquals("The Verify Password is required.", selenium.getText(errLocator("VerifyPassword")));
@@ -89,8 +91,10 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         assertNotEquals("This field is required.", selenium.getText(errLocator("LastName")));
     }
 
+
     public void function testEndToEndClientnewValidations() {
         selenium.open("http://localhost/validatethis/tests/selenium/FacadeDemo/index.cfm?init=true&context=newValidations-client");
+        selenium.waitForPageToLoad("30000");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
         selenium.type("UserName", "");
         selenium.type("UserPass", "");
