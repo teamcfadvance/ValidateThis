@@ -58,7 +58,8 @@
 		<cfargument name="theObject" type="any" required="no" default="" hint="The object that was being validated" />
 		<cfargument name="objectType" type="string" required="no" default="" hint="The type of object that was being validated" />
 
-		<cfset structAppend(arguments.failure,arguments,false) />	
+		<cfset structAppend(arguments.failure,arguments,false) />
+		<cfset structDelete(arguments.failure, "failure") />
 		<cfset ArrayAppend(variables.instance.Failures,arguments.failure) />
 		<cfset setIsSuccess(false) />
 	</cffunction>

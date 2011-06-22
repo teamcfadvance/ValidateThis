@@ -360,6 +360,34 @@
 			assertEquals(6,arrayLen(result.getFailures()));
 		</cfscript>  
 	</cffunction>
+		
+	<cffunction name="getRawFailuresShouldReturnArrayOfFailureStructs" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			rawfailures = result.getRawFailures();
+			assertIsArray(rawfailures);
+			assertEquals(3, ArrayLen(rawfailures));
+			assertEquals("fieldA", rawfailures[1].clientfieldname);
+			assertEquals("First Message", rawfailures[1].message);
+			assertEquals("", rawfailures[1].objecttype);
+			assertEquals("propertyA", rawfailures[1].propertyname);
+			assertEquals("", rawfailures[1].theobject);
+			assertEquals("", rawfailures[1].type);
+		</cfscript>  
+	</cffunction>
+	
+	<!--- test for reported bug http://groups.google.com/group/validatethis/browse_thread/thread/91ef8d6dc44847ff?hl=en --->
+	<cffunction name="bugFixForFailureStructAppendedToFailureStruct" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			rawfailures = result.getRawFailures();
+			assertIsArray(rawfailures);
+			assertEquals(3, ArrayLen(rawfailures));
+			failure = rawfailures[1];
+			assertFalse(StructKeyExists(failure, "failure"));
+		</cfscript>  
+	</cffunction>
+	
 	
 	<cffunction name="addMultipleFailures" access="private" returntype="void">
 		<cfargument name="toResult" required="false" default="#result#" >
