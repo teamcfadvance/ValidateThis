@@ -468,6 +468,27 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="validateWithAMissingPropertyThrowsErrorWithoutIgnoreMissingPropertiesOption" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.serverValidator.propertyNotFound">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			BOValidator = validationFactory.getValidator("rulesWithMissingProperty",getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"",Result);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateWithAMissingPropertyIgnoresRuleWithIgnoreMissingPropertiesOption" access="public" returntype="void">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			BOValidator = validationFactory.getValidator("rulesWithMissingProperty",getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator=BOValidator,theObject=user,Context="",Result=Result,ignoreMissingProperties=true);
+			assertEquals(0,arrayLen(Result.getFailures()));
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">
 		<cfargument name="expression" type="any" required="false" default="1" />
 		

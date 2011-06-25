@@ -71,7 +71,7 @@
 	<cffunction name="getObjectValue" access="public" output="false" returntype="any" hint="I return the value from the stored object that corresponds to the field being validated.">
 		<cfargument name="propertyName" type="any" required="false" default="#getPropertyName()#" />
 		<cfset var theValue = "" />
-		<cfset var methodName = variables.ObjectChecker.findGetter(variables.theObject,arguments.propertyName) />
+		<cfset var methodName = getPropertyMethodName(arguments.propertyName) />
 		
 		<cfif len(methodName)>
 			<!--- Using try/catch to deal with composed objects that throw an error if they aren't loaded --->
@@ -93,6 +93,16 @@
 		<cfargument name="propertyName" type="any" required="false" default="#getPropertyName()#" />
 		 <cfset var theVal = getObjectValue(arguments.propertyName) />
 		<cfreturn (isSimpleValue(theVal) and len(theVal) gt 0) or (isStruct(theVal) and structCount(theVal) gt 0) or (isArray(theVal) and arrayLen(theVal) gt 0)/>
+	</cffunction>
+
+	<cffunction name="propertyExists" returntype="boolean" access="public" output="false" hint="I report whether a property exists in the object being validated.">
+		<cfargument name="propertyName" type="any" required="false" default="#getPropertyName()#" />
+		<cfreturn len(getPropertyMethodName(arguments.propertyName)) gt 0 />
+	</cffunction>
+
+	<cffunction name="getPropertyMethodName" returntype="string" access="public" output="false" hint="I determine the method to use for a given property.">
+		<cfargument name="propertyName" type="any" required="false" default="#getPropertyName()#" />
+		<cfreturn variables.ObjectChecker.findGetter(variables.theObject,arguments.propertyName) />
 	</cffunction>
 
 	<cffunction name="getParameter" access="public" output="false" returntype="any">
