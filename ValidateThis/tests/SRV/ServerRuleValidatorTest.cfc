@@ -41,24 +41,6 @@
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="propertyHasValueShouldReturnTrueIfPropertyPopulated" access="public" returntype="void">
-		<cfscript>
-			SRV = getSRV("required");
-			validation.getObjectValue().returns("Something");
-			makePublic(SRV,"propertyHasValue");
-			assertEquals(true,SRV.propertyHasValue(validation));
-		</cfscript>  
-	</cffunction>
-	
-	<cffunction name="propertyHasValueShouldReturnFalseIfPropertyNotPopulated" access="public" returntype="void">
-		<cfscript>
-			SRV = getSRV("required");
-			validation.getObjectValue().returns("");
-			makePublic(SRV,"propertyHasValue");
-			assertEquals(false,SRV.propertyHasValue(validation));
-		</cfscript>  
-	</cffunction>
-	
 	<cffunction name="propertyIsRequiredShouldReturnTrueIfPropertyIsRequired" access="public" returntype="void">
 		<cfscript>
 			SRV = getSRV("email");
@@ -82,6 +64,7 @@
 			SRV = getSRV("email");
 			validation.getIsRequired().returns(true);
 			validation.getObjectValue().returns("");
+			validation.propertyHasValue().returns(false);
 			makePublic(SRV,"shouldTest");
 			assertEquals(true,SRV.shouldTest(validation));
 		</cfscript>  
@@ -92,6 +75,7 @@
 			SRV = getSRV("email");
 			validation.getIsRequired().returns(false);
 			validation.getObjectValue().returns("Something");
+			validation.propertyHasValue().returns(true);
 			makePublic(SRV,"shouldTest");
 			assertEquals(true,SRV.shouldTest(validation));
 		</cfscript>  
@@ -102,6 +86,7 @@
 			SRV = getSRV("email");
 			validation.getIsRequired().returns(true);
 			validation.getObjectValue().returns("Something");
+			validation.propertyHasValue().returns(true);
 			makePublic(SRV,"shouldTest");
 			assertEquals(true,SRV.shouldTest(validation));
 		</cfscript>  
@@ -111,6 +96,7 @@
 		<cfscript>
 			SRV = getSRV("email");
 			validation.getIsRequired().returns(false);
+			validation.propertyHasValue().returns(false);
 			validation.getObjectValue().returns("");
 			makePublic(SRV,"shouldTest");
 			assertEquals(false,SRV.shouldTest(validation));

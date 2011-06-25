@@ -89,6 +89,12 @@
 		</cfif>
 	</cffunction>
 
+	<cffunction name="propertyHasValue" returntype="boolean" access="public" output="false" hint="I determine whether the property that the validation references has a value.">
+		<cfargument name="propertyName" type="any" required="false" default="#getPropertyName()#" />
+		 <cfset var theVal = getObjectValue(arguments.propertyName) />
+		<cfreturn (isSimpleValue(theVal) and len(theVal) gt 0) or (isStruct(theVal) and structCount(theVal) gt 0) or (isArray(theVal) and arrayLen(theVal) gt 0)/>
+	</cffunction>
+
 	<cffunction name="getParameter" access="public" output="false" returntype="any">
 		<cfargument name="parameterName" type="string" required="true" />
 		<cfif not structKeyExists(variables.instance.parameters,arguments.parameterName)>

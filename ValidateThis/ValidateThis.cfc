@@ -86,12 +86,13 @@
 		<cfargument name="Result" type="any" required="false" default="" />
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
 		<cfargument name="debuggingMode" type="string" required="false" default="#variables.ValidateThisConfig.debuggingMode#" />
+		<cfargument name="ignoreMissingProperties" type="boolean" required="false" default="false" />
 
 		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
 		
 		<cfset arguments.theObject = createWrapper(arguments.theObject)/>
 
-		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode) />
+		<cfset arguments.Result = BOValidator.validate(arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode,arguments.ignoreMissingProperties) />
 		
 		<cfreturn arguments.Result />
 

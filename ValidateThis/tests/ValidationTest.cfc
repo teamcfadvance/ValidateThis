@@ -369,6 +369,38 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="propertyHasValueShouldReturnTrueIfPropertyPopulated" access="public" returntype="void">
+		<cfscript>
+			var obj = mock();
+			var objectChecker = mock();
+			obj.getFirstName().returns("something");
+			objectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,obj);
+			Validation.load(valStruct);
+			assertEquals(true,Validation.propertyHasValue());
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="propertyHasValueShouldReturnFalseIfPropertyNotPopulated" access="public" returntype="void">
+		<cfscript>
+			var obj = mock();
+			var objectChecker = mock();
+			obj.getFirstName().returns("");
+			objectChecker.findGetter("{*}").returns("getFirstName()");
+			valStruct = StructNew();
+			valStruct.ValType = "required";
+			valStruct.PropertyName = "FirstName";
+			Validation = CreateObject("component","ValidateThis.core.validation").init(objectChecker,parameter);
+			Validation.setup(ValidateThis,obj);
+			Validation.load(valStruct);
+			assertEquals(false,Validation.propertyHasValue());
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">
 		<cfargument name="expression" type="any" required="false" default="1" />
 		

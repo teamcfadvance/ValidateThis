@@ -36,6 +36,7 @@
 			objectValue = "";
 			isRequired = true;
 			failureMessage = "";
+			hasValue = false;
 			
 		</cfscript>
 	</cffunction>
@@ -74,6 +75,7 @@
 			validation.getParameters().returns(parameters);
 			validation.getObjectValue().returns(objectValue);
 			validation.getTheObject().returns(theObject);
+			validation.propertyHasValue().returns(hasValue);
 		</cfscript>
 	</cffunction>
 	
@@ -82,6 +84,7 @@
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
 			objectValue = "";
+			hasValue = false;
 			isRequired=false;
 			failureMessage = "";
 			
@@ -95,6 +98,7 @@
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
 		<cfscript>
 			objectValue = "";
+			hasValue = false;
 			isRequired = true;
 			failureMessage = "";
 			

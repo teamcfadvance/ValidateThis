@@ -29,6 +29,7 @@
 	<cffunction name="configureValidationMock" access="private">
 		<cfscript>
 			parameters = {propertyNames="name"};
+			hasValue = true;
 			super.configureValidationMock();
 			validation.getObjectValue("name").returns("badStuff");
 			validation.getParameterValue("propertyNames").returns(parameters.propertyNames);
@@ -69,32 +70,21 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
 		<cfscript>
+			// just an empty test to override the behaviour in the base object
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="validateReturnsTrueForEmptyPropertyIfRequired" access="public" returntype="void">
+		<cfscript>
 			super.setup();
 			objectValue = "";
+			hasValue = false;
 			isRequired = true;
             configureValidationMock();
-			
-			makePublic(SRV,"shouldTest");
-            assertEquals(true,SRV.shouldTest(validation));
 			
 			SRV.validate(validation);
             validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
-	
-	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
-        <cfscript>
-			super.setup();
-			objectValue = "";
-            isRequired = false;
-            configureValidationMock();
 
-            makePublic(SRV,"shouldTest");
-            assertEquals(false,SRV.shouldTest(validation));
-            
-            SRV.validate(validation);
-            validation.verifyTimes(0).fail("{*}"); 
-        </cfscript>  
-    </cffunction>
-		
 </cfcomponent>

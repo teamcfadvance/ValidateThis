@@ -40,6 +40,7 @@
 			isRequired = true;
 			theObjectType="";
 			hasObjectType=false;
+			hasValue=false;
 			
 		</cfscript>
 	</cffunction>

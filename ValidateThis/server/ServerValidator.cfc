@@ -46,6 +46,7 @@
 		<cfargument name="Result" type="any" required="true" />
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
 		<cfargument name="debuggingMode" type="string" required="false" default="#arguments.Result.getDebuggingMode()#" />
+		<cfargument name="ignoreMissingProperties" type="boolean" required="false" default="false" />
 
 		<cfset var v = "" />
 		<cfset var theFailure = 0 />
@@ -69,7 +70,7 @@
 			<cfif IsArray(Validations) and ArrayLen(Validations)>
 				<!--- Loop through the validations array, creating validation objects and using them --->
 				<cfloop Array="#Validations#" index="v">
-					<cfset theVal.load(v) />
+					<cfset theVal.load(v,arguments.ignoreMissingProperties) />
 					<cfset conditionPasses = true />
 					<!--- Deal with various conditions --->
 					<cfif StructKeyExists(v.Condition,"ServerTest")>
