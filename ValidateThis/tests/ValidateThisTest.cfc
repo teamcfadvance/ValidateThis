@@ -284,7 +284,8 @@
 		<cfscript>
 			theObject = "";
 			script = ValidateThis.getValidationScript(theObject=theObject,objectType="RuleWithADynamicParameterThatDoesNotNeedAnObject");
-			assertTrue(script contains "rules('add',{""inlist"": {""list"":2011},""messages"":{""inlist"":""The Test Prop was not found in list: (2011).""}});",htmlEditFormat(script));
+			script = ReReplace(script, "<[^>]{1,}>", "", "all"); // strip HTML tags
+			assertTrue(script contains "fields['testProp'] = jQuery("":input[name='testProp']"",$form_frmMain);fields['testProp'].rules('add',{""inlist"": {""list"":""2011""},""messages"":{""inlist"":""The Test Prop was not found in list: (2011).""}});});");
 		</cfscript>  
 	</cffunction>
 
