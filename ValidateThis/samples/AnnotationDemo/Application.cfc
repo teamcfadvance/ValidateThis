@@ -15,6 +15,10 @@
 
 component output="false" {
 	this.name = "ValidateThisAnnotationDemo";
+	
+	// set up a per application mapping to ValidateThis	
+	this.mappings["/validatethis"] = ExpandPath( "../../../validatethis/" );
+	
 	this.ormEnabled = true;
 	this.datasource = "VTDemo";
 	this.ormSettings = {};
@@ -24,6 +28,7 @@ component output="false" {
 	this.ormSettings.automanageSession = false;
 	this.ormSettings.dbcreate = "dropcreate";
 	this.ormSettings.sqlscript = "import.sql";
+	
 	
 	function onError(any exception, string eventName) {
 		writeDump(arguments);

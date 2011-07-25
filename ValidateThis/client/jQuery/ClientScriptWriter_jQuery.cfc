@@ -65,7 +65,8 @@
 			jQuery(document).ready(function() {
 			<cfloop collection="#scripters#" item="scripter">
 				<cfif structKeyExists(scripters[scripter],"generateInitScript")>
-					#scripters[scripter].generateInitScript(arguments.locale)#
+					<!--- strip out JS comments and whitespace --->
+					#ReReplace( ReReplace( scripters[scripter].generateInitScript(arguments.locale), "//[^\n\r]{1,}", "", "all" ), "[\n\r\t]", "", "all" )#
 				</cfif>
 			</cfloop>
 			});

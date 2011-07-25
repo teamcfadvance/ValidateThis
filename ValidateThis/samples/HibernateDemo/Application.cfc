@@ -15,6 +15,10 @@
 
 component output="false" {
 	this.name = "ValidateThisHibernateDemo";
+	
+	// set up a per application mapping to ValidateThis	
+	this.mappings["/validatethis"] = ExpandPath( "../../../validatethis/" );
+	
 	this.ormEnabled = true;
 	this.datasource = "VTDemo";
 	this.ormSettings = {};

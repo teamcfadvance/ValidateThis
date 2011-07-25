@@ -49,14 +49,22 @@
 		<cfset var theScript = "" />
 		<cfset var theScriptWriter = variables.ScriptWriters[arguments.JSLib] />
 		<cfset var theVal = variables.TransientFactory.newValidation(theObject=theObject) />
+		<!--- I hold the fieldnames that have been rendered to improve JS performance --->
+		<cfset var fields = StructNew() />
 		
 		<cfsetting enableCFoutputOnly = "true">
 		
 		<cfif IsArray(arguments.Validations) and ArrayLen(arguments.Validations)>
 			<cfsavecontent variable="theScript">
 				<cfoutput>#Trim(theScriptWriter.generateScriptHeader(arguments.formName))#</cfoutput>
+				<cfoutput>var fields = {};</cfoutput>
 				<cfloop Array="#arguments.Validations#" index="validation">
 					<cfset theVal.load(validation) />
+					<cfif !StructKeyExists( fields, validation.clientfieldname )>
+						<!--- create js reference --->
+						<cfoutput>fields['#validation.clientfieldname#'] = jQuery(":input[name='#validation.clientfieldname#']",$form_frmMain);</cfoutput>
+						<cfset fields[validation.clientfieldname] = "">
+					</cfif>
 					<cfoutput>#Trim(theScriptWriter.generateValidationScript(theVal,arguments.formName,arguments.locale))#</cfoutput>
 				</cfloop>
 				<cfoutput>#Trim(theScriptWriter.generateScriptFooter())#</cfoutput>
@@ -163,7 +171,7 @@
 				
 		<cfloop list="#swDirs#" index="swDir">
 			<cfset swPaths = listAppend(swPaths, variables.vtFolder & ".client." & swDir) />
-			<cfdump var="#swPaths#" label="swPaths">
+			<!---<cfdump var="#swPaths#" label="swPaths">--->
 		</cfloop>
 		<cfset variables.ScriptWriters = variables.childObjectFactory.loadChildObjects(swPaths & "," & variables.extraClientScriptWriterComponentPaths,"ClientScriptWriter_",structNew(),initArgs) />
 

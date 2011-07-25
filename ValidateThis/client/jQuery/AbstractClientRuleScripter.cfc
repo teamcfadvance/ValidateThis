@@ -18,13 +18,11 @@
 	
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
 		<cfargument name="Translator" type="Any" required="yes" />
-		<cfargument name="getSafeFormName" type="Any" required="yes" />
 		<cfargument name="defaultFailureMessagePrefix" type="string" required="yes" />
 		
 		<cfset variables.ValType = lcase(ListLast(getMetadata(this).name,"_"))/>
 		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
-		<cfset variables.getSafeFormName = arguments.getSafeFormName />
 		<cfset variables.DefaultFailureMessage = "" />
 		
 		<cfreturn this />
@@ -59,7 +57,7 @@
 		<cfargument name="formName" type="Any" required="yes" />
 		<cfargument name="locale" type="Any" required="no" default="" />
 		<cfset var safeSelectorScript = getSafeSelectorScript(argumentCollection=arguments) />
-		<cfset var theScript = "if (#safeSelectorScript#.length) { #generateRuleScript(validation=arguments.validation,selector=safeSelectorScript,locale=arguments.locale)#}" />
+		<cfset var theScript = generateRuleScript(validation=arguments.validation,selector=safeSelectorScript,locale=arguments.locale) />
 		<cfreturn theScript />
 	</cffunction>
 	
@@ -202,9 +200,8 @@
 	<cffunction name="getSafeSelectorScript" returntype="string" access="private" output="false" hint="I generate the JS script required to select a property input element.">
 		<cfargument name="validation" type="any"/>
 		<cfargument name="formName" type="string" default=""/>
-		<cfset var safeFormName = variables.getSafeFormName(arguments.formName)/>
 		<cfset var safeFieldName = arguments.validation.getClientFieldName()/>
-		<cfreturn "jQuery("":input[name='#safeFieldName#']"",$form_#safeFormName#)" />
+		<cfreturn "fields['#safeFieldName#']" />
 	</cffunction>	
 	
 	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I determin the actual failure message to be used.">
