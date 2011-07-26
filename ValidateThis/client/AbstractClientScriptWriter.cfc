@@ -92,7 +92,7 @@
 	</cffunction>
 	<cffunction name="setRuleScripters" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		<cfset var dirName = listLast(listLast(getMetadata(this).Name,"."),"_") />
-		<cfset var initArgs = {translator=variables.translator,getSafeFormName=variables.getSafeFormName,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix,vtFolder=variables.vtFolder} />
+		<cfset var initArgs = {translator=variables.translator,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix,vtFolder=variables.vtFolder} />
 		<cfset variables.RuleScripters = variables.childObjectFactory.loadChildObjects(variables.vtFolder & ".client.#dirName#" & "," & variables.extraClientScriptWriterComponentPaths,"ClientRuleScripter_",structNew(),initArgs) />
 	</cffunction>
 
