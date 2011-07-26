@@ -73,7 +73,18 @@
 		<cfargument name="theObject" type="any" required="false" default="" hint="The object from which to read annotations" />
 		<cfargument name="componentPath" type="any" required="false" default="" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 
+		<cfset var md = "" />
+		<cfset var altPath = "" />
+
 		<cfif NOT StructKeyExists(variables.Validators,arguments.objectType)>
+			<cfif isObject(arguments.theObject)>
+				<cfset md = getMetaData(theObject) />
+				<cfset altPath = replace(md.fullname, ".", "/", "all") />
+				<cfset altPath = listDeleteAt(altPath, listLen(altPath, "/"), "/") />
+				<cfset altPath = expandPath(variables.ValidateThisConfig.definitionPath & "/" & altPath) />
+				<cfset arguments.definitionPath = listAppend(arguments.definitionPath, altPath) />
+			</cfif>			
+			
 			<cfset variables.Validators[arguments.objectType] = createValidator(argumentCollection=arguments) />
 		</cfif>
 		<cfreturn variables.Validators[arguments.objectType] />
