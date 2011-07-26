@@ -26,7 +26,9 @@
 				<script src="//ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js" type="text/javascript"></script>
 				<!---<script src="//ajax.microsoft.com/ajax/jquery.validate/1.7/additional-methods.js" type="text/javascript"></script>--->
 				<script type="text/javascript">
+				/*<![CDATA[*/
 				<cfinclude template="JS/jquery.field.min.js">
+				/*]]>*/
 				</script>
 			</cfoutput>
 		</cfsavecontent>
@@ -44,7 +46,9 @@
 			<cfoutput>
 				<cfif Len(arguments.locale) and ListFirst(arguments.locale,"_") NEQ "en">
 					<script type="text/javascript">
+					/*<![CDATA[*/
 					<cfinclude template="JS/localization/messages_#ListFirst(arguments.locale,'_')#.js">
+					/*]]>*/
 					</script>
 				</cfif>
 			</cfoutput>
@@ -62,6 +66,7 @@
 		<cfsavecontent variable="theScript">
 		<cfoutput>
 		<script type="text/javascript">
+		/*<![CDATA[*/
 			jQuery(document).ready(function() {
 			<cfloop collection="#scripters#" item="scripter">
 				<cfif structKeyExists(scripters[scripter],"generateInitScript")>
@@ -70,6 +75,7 @@
 				</cfif>
 			</cfloop>
 			});
+		/*]]>*/
 		</script>
 		</cfoutput>
 		</cfsavecontent>
@@ -135,7 +141,7 @@
 		<cfset var safeFormName = getSafeFormName(arguments.formName) />
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<script type="text/javascript">jQuery(document).ready(function() {
+				<script type="text/javascript">/*<![CDATA[*/jQuery(document).ready(function() {
 					$form_#safeFormName# = jQuery("###arguments.formName#");
 					$form_#safeFormName#.validate({ignore:'.ignore'});
 			</cfoutput>
@@ -148,7 +154,7 @@
 		<cfsavecontent variable="theScript">
 			<cfoutput>
 					
-				});</script>
+				});/*]]>*/</script>
 			</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />

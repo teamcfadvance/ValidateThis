@@ -62,7 +62,7 @@
 	<cffunction name="generateScriptFooterShouldReturnCorrectScript" access="public" returntype="void">
 		<cfscript>
 			script = ScriptWriter.generateScriptFooter();
-			assertEquals(Trim(Script),"});</script>");
+			assertEquals(Trim(Script),"});/*]]>*/</script>");
 		</cfscript>  
 	</cffunction>
 
