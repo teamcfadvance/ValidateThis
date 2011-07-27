@@ -171,7 +171,6 @@
 				
 		<cfloop list="#swDirs#" index="swDir">
 			<cfset swPaths = listAppend(swPaths, variables.vtFolder & ".client." & swDir) />
-			<!---<cfdump var="#swPaths#" label="swPaths">--->
 		</cfloop>
 		<cfset variables.ScriptWriters = variables.childObjectFactory.loadChildObjects(swPaths & "," & variables.extraClientScriptWriterComponentPaths,"ClientScriptWriter_",structNew(),initArgs) />
 

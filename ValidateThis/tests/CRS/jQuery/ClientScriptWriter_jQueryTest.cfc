@@ -492,7 +492,6 @@
 			
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain");
-debug(script);
 			assertEquals("fields['FirstName'].rules(""add"", { required : function(element) { return jQuery("":input[name='User[LastName]']"").getvalue().length > 0; }, messages: {required: ""the First Name is required if you specify a value for the lastname.""} });",script);
 			
 		</cfscript>  
