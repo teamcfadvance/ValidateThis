@@ -105,12 +105,9 @@
 			theObject = createObject("component","Fixture.level1.level2.ObjectWithDottedPath");
 			BOValidator = validationFactory.getValidator(objectType="ObjectWithDottedPath",definitionPath=ValidateThisConfig.definitionPath,theObject=theObject);
 			allContexts = BOValidator.getAllContexts();
-			debug(allContexts);
-			/*
 			assertEquals(true,structKeyExists(allContexts,"___Default"));
 			assertEquals("firstName",allContexts.___Default[1].propertyName);
 			assertEquals("lastName",allContexts.___Default[2].propertyName);
-			*/
 		</cfscript>  
 	</cffunction>
 

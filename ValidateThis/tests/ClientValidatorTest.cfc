@@ -89,7 +89,6 @@
 			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery",theObject=theObject);
 			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
 			assertTrue(script contains "$form_testFormName.validate({ignore:'.ignore'});");
-			debug(script);
 			assertTrue(script contains "if (jQuery("":input[name='clientFieldName']"",$form_testFormName).length)","invalid input existance check selector");
 			assertTrue(script contains "jQuery("":input[name='clientFieldName']"",$form_testFormName).rules","invalid field selector");
 			assertTrue(script contains 'rules(''add'',{"inlist": {"list":"1,2"},"messages":{"inlist":"The propertyDesc was not found in list: (1,2)."}});',"Invalid Rules('add') script:" & htmlEditFormat(script));

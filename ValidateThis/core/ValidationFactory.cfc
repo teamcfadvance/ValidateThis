@@ -81,10 +81,9 @@
 				<cfset md = getMetaData(theObject) />
 				<cfset altPath = replace(md.fullname, ".", "/", "all") />
 				<cfset altPath = listDeleteAt(altPath, listLen(altPath, "/"), "/") />
-				<!---<cfset altPath = expandPath(variables.ValidateThisConfig.definitionPath & "/" & altPath) />--->
+				<cfset altPath = variables.ValidateThisConfig.definitionPath & "/" & altPath />
 				<cfset arguments.definitionPath = listAppend(arguments.definitionPath, altPath) />
 			</cfif>			
-			<cfset request.debug(arguments) />
 			<cfset variables.Validators[arguments.objectType] = createValidator(argumentCollection=arguments) />
 		</cfif>
 		<cfreturn variables.Validators[arguments.objectType] />
