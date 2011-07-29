@@ -98,6 +98,19 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="getValidatorShouldReturnProperBOWhenXmlFileIsInAConfiguredFolderAndCFCHasDottedPath" access="public" returntype="void">
+		<cfscript>
+			ValidateThisConfig.definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/";
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			theObject = createObject("component","Fixture.level1.level2.ObjectWithDottedPath");
+			BOValidator = validationFactory.getValidator(objectType="ObjectWithDottedPath",definitionPath=ValidateThisConfig.definitionPath,theObject=theObject);
+			allContexts = BOValidator.getAllContexts();
+			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			assertEquals("firstName",allContexts.___Default[1].propertyName);
+			assertEquals("lastName",allContexts.___Default[2].propertyName);
+		</cfscript>  
+	</cffunction>
+
 	<!--- TODO: This test is for a feature that hasn't been written yet 
 	<cffunction name="createBOVsFromCFCsShouldCreateBOVsFromAnnotatedCFCs" returntype="void" access="public">
 		<cfscript>
