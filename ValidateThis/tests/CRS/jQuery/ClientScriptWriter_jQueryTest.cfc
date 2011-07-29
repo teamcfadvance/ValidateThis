@@ -44,7 +44,7 @@
 	<cffunction name="generateScriptHeaderShouldReturnCorrectScript" access="public" returntype="void">
 		<cfscript>
 			script = ScriptWriter.generateScriptHeader("formName");
-			assertTrue(Trim(Script) CONTAINS "jQuery(document).ready(function() {");
+			assertTrue(Trim(Script) CONTAINS "jQuery(document).ready(function(){");
 			assertTrue(Trim(Script) CONTAINS "$form_formName = jQuery(""##formName"");");
 			assertTrue(Trim(Script) CONTAINS "$form_formName.validate({ignore:'.ignore'})");
 		</cfscript>  
@@ -53,7 +53,7 @@
 	<cffunction name="generateScriptHeaderShouldReturnSafeJSForUnsafeFormName" access="public" returntype="void">
 		<cfscript>
 			script = ScriptWriter.generateScriptHeader("form-Name2");
-			assertTrue(Trim(Script) CONTAINS "jQuery(document).ready(function() {");
+			assertTrue(Trim(Script) CONTAINS "jQuery(document).ready(function(){");
 			assertTrue(Trim(Script) CONTAINS "$form_formName2 = jQuery(""##form-Name2"");");
 			assertTrue(Trim(Script) CONTAINS "$form_formName2.validate({ignore:'.ignore'})");
 		</cfscript>  

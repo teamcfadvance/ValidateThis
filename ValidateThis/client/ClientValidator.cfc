@@ -49,6 +49,7 @@
 		<cfset var theScript = "" />
 		<cfset var theScriptWriter = variables.ScriptWriters[arguments.JSLib] />
 		<cfset var theVal = variables.TransientFactory.newValidation(theObject=theObject) />
+		<cfset var safeFormName = reReplace(arguments.formName,"[\W]","","all") />
 		<!--- I hold the fieldnames that have been rendered to improve JS performance --->
 		<cfset var fields = StructNew() />
 		
@@ -62,7 +63,7 @@
 					<cfset theVal.load(validation) />
 					<cfif !StructKeyExists( fields, validation.clientfieldname )>
 						<!--- create js reference --->
-						<cfoutput>fields['#validation.clientfieldname#'] = jQuery(":input[name='#validation.clientfieldname#']",$form_frmMain);</cfoutput>
+						<cfoutput>#Trim(theScriptWriter.generateJSFieldRefence(validation.clientfieldname,arguments.formName))#</cfoutput>
 						<cfset fields[validation.clientfieldname] = "">
 					</cfif>
 					<cfoutput>#Trim(theScriptWriter.generateValidationScript(theVal,arguments.formName,arguments.locale))#</cfoutput>

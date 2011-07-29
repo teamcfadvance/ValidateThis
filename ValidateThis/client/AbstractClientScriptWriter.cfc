@@ -58,6 +58,15 @@
 
 	</cffunction>
 	
+	<cffunction name="generateJSFieldRefence" returntype="any" access="public" output="false" hint="I generate the JS script that references the field name.">
+		<cfargument name="fieldname" type="any" required="yes" hint="The field name." />
+		<cfargument name="formName" type="Any" required="yes" hint="The form name." />
+
+		<cfthrow type="validatethis.client.AbstractClientScriptWriter.generateJSFieldRefence"
+				message="I am an abstract object, hence the generateJSFieldRefence method must be overriden in a concrete object." />
+
+	</cffunction>
+	
 	<cffunction name="generateJSIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required JS libraries.">
 
 		<cfthrow type="validatethis.client.AbstractClientScriptWriter.methodnotdefined"

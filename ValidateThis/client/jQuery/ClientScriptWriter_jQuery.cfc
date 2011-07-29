@@ -15,6 +15,19 @@
 --->
 <cfcomponent output="false" name="ClientScriptWriter_jQuery" extends="ValidateThis.client.AbstractClientScriptWriter" hint="I am responsible for generating jQuery Javascript statements to implement validations.">
 
+		
+	<cffunction name="generateJSFieldRefence" returntype="any" access="public" output="false" hint="I generate the jQuery selector that references the field name.">
+		<cfargument name="fieldname" type="any" required="yes" hint="The field name." />
+		<cfargument name="formName" type="Any" required="yes" hint="The form name." />
+		
+		<cfset var theScript = "" />
+		<cfset var safeFormName = getSafeFormName(arguments.formName) />
+		
+		<cfsavecontent variable="theScript"><cfoutput>fields['#arguments.fieldname#'] = jQuery(":input[name='#arguments.fieldname#']",$form_#safeFormName#);</cfoutput></cfsavecontent>
+		<cfreturn theScript>
+
+	</cffunction>
+	
 	<cffunction name="generateJSIncludeScript" returntype="any" access="public" output="false" hint="I generate the JS to load the required JS libraries.">
 
 		<cfset var theScript = "" />
@@ -141,9 +154,8 @@
 		<cfset var safeFormName = getSafeFormName(arguments.formName) />
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<script type="text/javascript">/*<![CDATA[*/jQuery(document).ready(function() {
-					$form_#safeFormName# = jQuery("###arguments.formName#");
-					$form_#safeFormName#.validate({ignore:'.ignore'});
+				<script type="text/javascript">/*<![CDATA[*/jQuery(document).ready(function(){
+					$form_#safeFormName# = jQuery("###arguments.formName#");$form_#safeFormName#.validate({ignore:'.ignore'});
 			</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />
@@ -153,7 +165,6 @@
 		<cfset var theScript = "" />
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-					
 				});/*]]>*/</script>
 			</cfoutput>
 		</cfsavecontent>
