@@ -83,6 +83,25 @@
 <h3>#PageHeading# (JavaScript Validations are <cfif Form.NoJS>OFF<cfelse>ON</cfif>)</h3>
 <cfif Len(SuccessMessage)><h3>#SuccessMessage#</h3></cfif>
 <div class="formContainer">
+<!--- this is a dummy form to make sure doesnotcontainotherproperties validation is running against the correct form --->
+<form action="index.cfm" method="post" id="dummy-form" name="dummy-form" class="uniForm">
+	<fieldset class="inlineLabels">	
+		<legend>Dummy Form</legend>
+		<div class="ctrlHolder">
+			<label for="UserName">UserName</label>	
+			<input name="UserName" id="UserName" value="" size="35" maxlength="50" type="text" class="textInput" />
+		</div>
+		<div class="ctrlHolder">
+			<label for="UserName">UserPass</label>	
+			<input name="UserPass" id="UserPass" value="" size="35" maxlength="50" type="text" class="textInput" />
+		</div>
+		<div class="ctrlHolder">
+			<label for="Nickname">Nickname</label>	
+			<input name="Nickname" id="Nickname" value="" size="35" maxlength="50" type="text" class="textInput" />
+		</div>
+	</fieldset>
+</form>
+	
 <form action="index.cfm" id="frm-Main2" method="post" name="frm-Main2" class="uniForm">
 	<input type="hidden" name="Context" id="Context" value="#Form.Context#" />
 	<input type="hidden" name="NoJS" id="NoJS" value="#Form.NoJS#" />

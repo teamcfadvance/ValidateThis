@@ -28,9 +28,10 @@ Definition Usage Example:
 		<cfsavecontent variable="theCondition">
 		function(value,element,options) {
 			var isValid = true;
+			var parentForm = $(element).closest("form");
 			jQuery(options).each(function(){		
-				var propertyName = this;			
-				var propertyValue = jQuery(':input[name='+this+']').getValue();
+				var propertyName = this;
+				var propertyValue = jQuery(':input[name='+this+']', parentForm).getValue();
 				if (propertyValue.length){
 					// if this is a mutilple select list, split the value into an array for iteration
 					if (propertyValue.search(",")){
