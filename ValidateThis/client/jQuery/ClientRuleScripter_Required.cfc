@@ -59,9 +59,9 @@
 
 		<cfif len(parameters.DependentInputName) GT 0>
 			<cfif len(parameters.DependentInputValue) gt 0>
-			    <cfset conditionDef = "jQuery("":input[name='#parameters.DependentInputName#']"").getValue() == " & parameters.DependentInputValue & ";"/>
+			    <cfset conditionDef = "$("":input[name='#parameters.DependentInputName#']"").getValue() == " & parameters.DependentInputValue & ";"/>
 			<cfelse>
-			    <cfset conditionDef = "jQuery("":input[name='#parameters.DependentInputName#']"").getValue().length > 0;"/>
+			    <cfset conditionDef = "$("":input[name='#parameters.DependentInputName#']"").getValue().length > 0;"/>
 			</cfif>
 		</cfif>
 		<cfif len(conditionDef)>
@@ -167,14 +167,14 @@
 
 		<!--- Deal with various conditions --->
 		<cfif StructKeyExists(arguments.validation.getCondition(),"ClientTest")>
-			<cfset theCondition = "function(element) { return #arguments.validation.getCondition().ClientTest# }" />
+			<cfset theCondition = "function(element){return #arguments.validation.getCondition().ClientTest#}" />
         </cfif>
 		
         <cfif len(parameters.DependentInputName) GT 0>
             <cfif len(parameters.DependentInputValue) gt 0>
-                <cfset theCondition = "function(element) { return jQuery("":input[name='#parameters.DependentInputName#']"").getValue() == '" & parameters.DependentInputValue & "'; }" />
+                <cfset theCondition = "function(element){return $("":input[name='#parameters.DependentInputName#']"").getValue() == '" & parameters.DependentInputValue & "';}" />
             <cfelse>
-                <cfset theCondition = "function(element) { return jQuery("":input[name='#parameters.DependentInputName#']"").getValue().length > 0; }" />
+                <cfset theCondition = "function(element){return $("":input[name='#parameters.DependentInputName#']"").getValue().length > 0;}" />
             </cfif>
         </cfif>
 		
@@ -182,7 +182,7 @@
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		    #arguments.selector#.rules("add", { #valType# : #theCondition#, messages: {#valType#: "#failureMessage#"} });
+		    #arguments.selector#.rules("add",{#valType#:#theCondition#,messages:{#valType#:"#failureMessage#"}});
 		</cfsavecontent>
 		</cfoutput>		
 		<cfreturn trim(theScript) />

@@ -18,19 +18,19 @@
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="The value cannot not contain the value of another property.">
 		<cfset var theScript="">
-		<cfset var theCondition="" />
+		<cfset var theCondition="function(value, element, param) {return true;}" />
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
-		function(value, element, param) {
-			var $parentForm = $(element).closest("form");
-			var $compareto = $(param, $parentForm);
+		function(v,e,p){
+			var $parentForm = $(e).closest("form");
+			var $compareto = $(p,$parentForm);
 			// bind to the blur event of the target in order to revalidate whenever the target field is updated
 			// TODO find a way to bind the event just once, avoiding the unbind-rebind overhead
-			var target = $compareto.unbind(".validate-equalTo").bind("blur.validate-equalTo", function() {
-				$(element).valid();
+			var target = $compareto.unbind(".validate-equalTo").bind("blur.validate-equalTo",function(){
+				$(e).valid();
 			});
-			return value == target.val();
+			return v==target.getValue();
 		}
 		</cfsavecontent>
 		

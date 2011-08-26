@@ -18,31 +18,28 @@
    <cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="The date entered must be in the range specified.">
 		<cfset var theScript="">
-		<cfset var theCondition="function(value,element,options) { return true; }"/>
+		<cfset var theCondition="function(value,e,options) { return true; }"/>
 
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
-		function(value,element,options) {
-			var dValue  = new Date(value);
+		function(v,e,o){
+			var dValue = new Date(v);
 			var isValid = true;
 			var fromDate = new Date();
 			var toDate = new Date();
-		
-			if( value ){
-				if (options.from){
-					var fromDate = 	new Date(options.from);
+			if(v){
+				if(o.from){
+					var fromDate=new Date(o.from);
 				}
-				if (options.until){
-					var untilDate = new Date(options.until);
+				if(o.until){
+					var untilDate=new Date(o.until);
 				}
-		
-				if (toDate == fromDate){
-					isValid = true;
-				} else {
-					isValid = ((fromDate < dValue) & (dValue < untilDate)) ? true : false;
+				if(toDate===fromDate){
+					isValid=true;
+				}else{
+					isValid=((fromDate<dValue)&&(dValue<untilDate))?true:false;
 				}
 			}
-		
 			return isValid;
 		}
 		</cfsavecontent>

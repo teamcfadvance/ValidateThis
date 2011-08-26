@@ -22,7 +22,14 @@
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
-			function(value,element,options) { var dToday = new Date(); var dValue = new Date(value); if (options.after) { dToday = new Date(options.after); } return (dToday < dValue); } 
+			function(v,e,o){ 
+				var dToday = new Date(); 
+				var dValue = new Date(v); 
+				if(o.after){
+					dToday = new Date(o.after); 
+				}
+				return (dToday<dValue); 
+			}
 		</cfsavecontent>
 		
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage) />

@@ -22,10 +22,10 @@
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
-		<cfsavecontent variable="theCondition">function(value,element,options) {
-			var m = value.search("</?\\w+((\\s+\\w+(\\s*=\\s*(?:\\\".*?\\\"|'.*?'|[^'\\\">\\s]+))?)+\\s*|\\s*)/?>");
-			if (m == -1) return true;
-			else return false;
+		<cfsavecontent variable="theCondition">
+		function(v,e,o){
+			var m = v.search("</?\\w+((\\s+\\w+(\\s*=\\s*(?:\\\".*?\\\"|'.*?'|[^'\\\">\\s]+))?)+\\s*|\\s*)/?>");
+			return m===-1;
 		}</cfsavecontent>
 			
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
