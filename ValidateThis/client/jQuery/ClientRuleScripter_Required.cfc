@@ -167,14 +167,14 @@
 
 		<!--- Deal with various conditions --->
 		<cfif StructKeyExists(arguments.validation.getCondition(),"ClientTest")>
-			<cfset theCondition = "function(element){return #arguments.validation.getCondition().ClientTest#}" />
+			<cfset theCondition = "function(el){return #arguments.validation.getCondition().ClientTest#}" />
         </cfif>
 		
         <cfif len(parameters.DependentInputName) GT 0>
             <cfif len(parameters.DependentInputValue) gt 0>
-                <cfset theCondition = "function(element){return $("":input[name='#parameters.DependentInputName#']"").getValue() == '" & parameters.DependentInputValue & "';}" />
+                <cfset theCondition = "function(el){return $("":input[name='#parameters.DependentInputName#']"").getValue() == '" & parameters.DependentInputValue & "';}" />
             <cfelse>
-                <cfset theCondition = "function(element){return $("":input[name='#parameters.DependentInputName#']"").getValue().length > 0;}" />
+                <cfset theCondition = "function(el){return $("":input[name='#parameters.DependentInputName#']"").getValue().length > 0;}" />
             </cfif>
         </cfif>
 		

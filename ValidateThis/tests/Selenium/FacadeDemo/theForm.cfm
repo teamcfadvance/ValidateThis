@@ -72,6 +72,8 @@
 			});
 		});
 		</script>
+		<!--- include prototype to test for namespace collisions --->
+		<script type="http://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js"></script>
 	</cfsavecontent>	
 	<cfhtmlhead text="#headJS#" />
 	<cfset ValidationScript = application.ValidateThis.getValidationScript(objectType="User",Context=Form.Context,formName="frm-Main2") />

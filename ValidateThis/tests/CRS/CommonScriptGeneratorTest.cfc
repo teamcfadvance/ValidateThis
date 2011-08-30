@@ -23,7 +23,7 @@
 			variables.CSGenerator = validationFactory.getBean("CommonScriptGenerator");
 			variables.JSLib = "jQuery";
 			variables.ExpectedInJSIncludes = '<script src="//ajax.microsoft.com/ajax/jquery/jquery';
-			variables.ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
+			variables.ExpectedInVTSetup = '$.validator.addMethod("regex",function(v,e,p)';
 		</cfscript>
 	</cffunction>
 
