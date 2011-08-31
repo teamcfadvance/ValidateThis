@@ -91,15 +91,15 @@
 		<legend>Dummy Form</legend>
 		<div class="ctrlHolder">
 			<label for="UserName">UserName</label>	
-			<input name="UserName" id="UserName" value="" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="UserName" id="UserName_dummy" value="" size="35" maxlength="50" type="text" class="textInput" />
 		</div>
 		<div class="ctrlHolder">
 			<label for="UserName">UserPass</label>	
-			<input name="UserPass" id="UserPass" value="" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="UserPass" id="UserPass_dummy" value="" size="35" maxlength="50" type="text" class="textInput" />
 		</div>
 		<div class="ctrlHolder">
 			<label for="Nickname">Nickname</label>	
-			<input name="Nickname" id="Nickname" value="" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="Nickname" id="Nickname_dummy" value="" size="35" maxlength="50" type="text" class="textInput" />
 		</div>
 	</fieldset>
 </form>
