@@ -26,19 +26,19 @@ Definition Usage Example:
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
-		function(value,element,options) {
-			var isValid = true;
-			jQuery(options).each(function(){		
-				var propertyName = this;			
-				var propertyValue = jQuery(':input[name='+this+']').getValue();
-				if (propertyValue.length){
-					// if this is a mutilple select list, split the value into an array for iteration
-					if (propertyValue.search(",")){
-						propertyValue = propertyValue.split( "," )
-					};
+		function(v,e,o){
+			var isValid=true;
+			var parentForm=$(e).closest("form");
+			$(o).each(function(){
+				var propertyValue = $(':input[name='+this+']',parentForm).getValue();
+				if(propertyValue.length){
+					// if this is a mutiple select list, split the value into an array for iteration
+					if(propertyValue.search(",")){
+						propertyValue = propertyValue.split(",");
+					}
 					// for each property value in the array to check
-					jQuery(propertyValue).each(function(){
-						var test = value.toString().toLowerCase().search(this.toString().toLowerCase()) == -1;
+					$(propertyValue).each(function(){
+						var test = v.toString().toLowerCase().search(this.toString().toLowerCase())===-1;
 						if (!test){ // Only worrie about failures here so we return true if none of the other values fail.
 							isValid = false;
 						}

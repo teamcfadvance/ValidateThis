@@ -21,20 +21,26 @@ Example Usage:
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
-		function(value,element,options){
+		function(v,e,o){
 			var minMatches = 1;
 			var complexity = 0;
-			if(!value.length) return true;
-			if (options["minMatches"]){ minMatches = options["minMatches"]; }
-			for (var key in options) {
-				if(key.match("^[pattern]") && value.match(options[key]) ){
-					complexity++;
-				};
-				if(complexity == minMatches) {return true;}
+			if(!v.length){
+				return true;
 			}
-			if(complexity << minMatches){
+			if(o["minMatches"]){
+				minMatches = o["minMatches"];
+			}
+			for(var key in o){
+				if(key.match("^[pattern]")&&v.match(o[key])){
+					complexity++;
+				}
+				if(complexity===minMatches){
+					return true;
+				}
+			}
+			if(complexity<<minMatches){
 				return false;
-			};
+			}
 		}
 		</cfsavecontent>
 			

@@ -70,9 +70,9 @@
 		<cfscript>
 			ClientValidator = validateThis.getBean("ClientValidator");
 			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
-			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
+			assertTrue(script contains "$form_testFormName = $(""##testFormName"");");
 			assertTrue(script contains "$form_testFormName.validate({ignore:'.ignore'});");
-			assertTrue(script contains "fields['clientFieldName'] = jQuery("":input[name='clientFieldName']"",$form_testFormName);");
+			assertTrue(script contains "fm['clientFieldName'] = $("":input[name='clientFieldName']"",$form_testFormName);");
 		</cfscript>  
 	</cffunction>
 
@@ -86,11 +86,11 @@
 			theObject = mock();
 			theObject.evaluateExpression("getList()").returns("1,2");
 			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery",theObject=theObject);
-			assertTrue(script contains "$form_testFormName = jQuery(""##testFormName"");");
+			assertTrue(script contains "$form_testFormName = $(""##testFormName"");");
 			assertTrue(script contains "$form_testFormName.validate({ignore:'.ignore'});");
-			assertTrue(script contains "fields['clientFieldName'] = jQuery("":input[name='clientFieldName']"",$form_testFormName);","invalid input selector");
-			assertTrue(script contains "fields['clientFieldName'].rules","invalid field selector");
-			assertTrue(script contains 'rules(''add'',{"inlist": {"list":"1,2"},"messages":{"inlist":"The propertyDesc was not found in list: (1,2)."}});',"Invalid Rules('add') script:" & htmlEditFormat(script));
+			assertTrue(script contains "fm['clientFieldName'] = $("":input[name='clientFieldName']"",$form_testFormName);","invalid input selector");
+			assertTrue(script contains "fm['clientFieldName'].rules","invalid field selector");
+			assertTrue(script contains 'rules(''add'',{"inlist":{"list":"1,2"},"messages":{"inlist":"The propertyDesc was not found in list: (1,2)."}});',"Invalid Rules('add') script:" & htmlEditFormat(script));
 		</cfscript>  
 	</cffunction>
 

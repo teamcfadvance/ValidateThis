@@ -20,7 +20,7 @@
 
 		<cfset var parameters = arguments.validation.getParameters() />
 
-		<cfreturn """range"": [#parameters.min#,#parameters.max#]" />
+		<cfreturn """range"":[#parameters.min#,#parameters.max#]" />
 		
 	</cffunction>
 

@@ -26,6 +26,9 @@
 		<title>ValidateThis Demo Page</title>
 		<link href="../css/demostyle.css" type="text/css" rel="stylesheet" />
 		<link href="../css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
+		
+		<!-- prototype is not required just including to test conflict -->
+		<script src="//ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" type="text/javascript"></script>
 	</head>
 	<body>
 	<div id="container">

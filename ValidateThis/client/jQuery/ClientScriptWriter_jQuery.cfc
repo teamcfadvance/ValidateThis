@@ -23,7 +23,7 @@
 		<cfset var theScript = "" />
 		<cfset var safeFormName = getSafeFormName(arguments.formName) />
 		
-		<cfsavecontent variable="theScript"><cfoutput>fields['#arguments.fieldname#'] = jQuery(":input[name='#arguments.fieldname#']",$form_#safeFormName#);</cfoutput></cfsavecontent>
+		<cfsavecontent variable="theScript"><cfoutput>fm['#arguments.fieldname#'] = $(":input[name='#arguments.fieldname#']",$form_#safeFormName#);</cfoutput></cfsavecontent>
 		<cfreturn theScript>
 
 	</cffunction>
@@ -35,9 +35,9 @@
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<script src="//ajax.microsoft.com/ajax/jquery/jquery-1.5.min.js" type="text/javascript"></script>
-				<script src="//ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js" type="text/javascript"></script>
-				<!---<script src="//ajax.microsoft.com/ajax/jquery.validate/1.7/additional-methods.js" type="text/javascript"></script>--->
+				<script src="//ajax.microsoft.com/ajax/jquery/jquery-1.5.2.min.js" type="text/javascript"></script>
+				<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.min.js" type="text/javascript"></script>
+				<!---<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/additional-methods.min.js" type="text/javascript"></script>--->
 				<script type="text/javascript">
 				/*<![CDATA[*/
 				<cfinclude template="JS/jquery.field.min.js">
@@ -76,18 +76,16 @@
 		<cfset var theScript = "" />
 		<cfset var scripters = this.getRuleScripters()/>
 
-		<cfsavecontent variable="theScript">
-		<cfoutput>
-		<script type="text/javascript">
+		<cfsavecontent variable="theScript"><cfoutput><script type="text/javascript">
 		/*<![CDATA[*/
-			jQuery(document).ready(function() {
+		jQuery(function($){
 			<cfloop collection="#scripters#" item="scripter">
 				<cfif structKeyExists(scripters[scripter],"generateInitScript")>
 					<!--- strip out JS comments and whitespace --->
 					#ReReplace( ReReplace( scripters[scripter].generateInitScript(arguments.locale), "//[^\n\r]{1,}", "", "all" ), "[\n\r\t]", "", "all" )#
 				</cfif>
 			</cfloop>
-			});
+		});
 		/*]]>*/
 		</script>
 		</cfoutput>
@@ -154,8 +152,8 @@
 		<cfset var safeFormName = getSafeFormName(arguments.formName) />
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<script type="text/javascript">/*<![CDATA[*/jQuery(document).ready(function(){
-					$form_#safeFormName# = jQuery("###arguments.formName#");$form_#safeFormName#.validate({ignore:'.ignore'});
+				<script type="text/javascript">
+				/*<![CDATA[*/jQuery(function($){var $form_#safeFormName# = $("###arguments.formName#");$form_#safeFormName#.validate({ignore:'.ignore'});
 			</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />
@@ -164,9 +162,7 @@
 	<cffunction name="generateScriptFooter" returntype="any" access="public" output="false" hint="I generate the JS script required at the top of the script block.">
 		<cfset var theScript = "" />
 		<cfsavecontent variable="theScript">
-			<cfoutput>
-				});/*]]>*/</script>
-			</cfoutput>
+			<cfoutput>});/*]]>*/</script></cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />
 	</cffunction>

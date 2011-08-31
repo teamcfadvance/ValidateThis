@@ -21,13 +21,14 @@
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
-		<cfsavecontent variable="theCondition">function(value,element,options) {
-			var theDelim = (options.delim) ? options.delim : ",";
-			var theList = options.list.split(theDelim);
+		<cfsavecontent variable="theCondition">
+		function(v,e,o){
+			var delim = o.delim ? o.delim : ",";
+			var lst = o.list.split(delim);
 			var isValid = false;
-			jQuery(theList).each(function(){
-				if (value.toLowerCase() == this.toLowerCase()){
-					isValid = true;
+			$(lst).each(function(){
+				if (v.toLowerCase()==this.toLowerCase()){
+					isValid=true;
 				}
 			});
 			return isValid;

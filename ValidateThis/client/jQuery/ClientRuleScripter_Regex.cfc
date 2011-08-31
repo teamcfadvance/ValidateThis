@@ -21,9 +21,10 @@
 		<cfset var theCondition="" />
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
-		<cfsavecontent variable="theCondition">function(value, element, param) {
-			var re = new RegExp(param);
-			return this.optional(element) || re.test(value);
+		<cfsavecontent variable="theCondition">
+		function(v,e,p){
+			var re = new RegExp(p);
+			return this.optional(e)||re.test(v);
 		}</cfsavecontent>
 
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>

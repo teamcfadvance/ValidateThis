@@ -22,7 +22,7 @@
 			variables.className = "user";
 			JSLib = "jQuery";
 			ExpectedInJSIncludes = '<script src="//ajax.microsoft.com/ajax/jquery/jquery';
-			ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
+			ExpectedInVTSetup = '$.validator.addMethod("regex",function(v,e,p)';
 		</cfscript>  
 	</cffunction>
 
