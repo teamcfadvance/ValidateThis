@@ -21,19 +21,20 @@
 		<cfset var theCondition="function(value,element,options) { return true; }"/>
 
 		<!--- JAVASCRIPT VALIDATION METHOD --->
-		<cfsavecontent variable="theCondition">function(value,element,options) {
-			var theDelim = (options.delim) ? options.delim : ",";
-			var theList = options.list.split(theDelim);
+		<cfsavecontent variable="theCondition">
+		function(v,e,o){
+			var delim = o.delim ? o.delim : ",";
+			var lst = o.list.split(delim);
 			var isValid = true;
-			jQuery(theList).each(function(){
-				if (value.toLowerCase() == this.toLowerCase()){
+			$(lst).each(function(){
+				if (v.toLowerCase()==this.toLowerCase()){
 					isValid = false;
 				}
 			});
 			return isValid;
 		}</cfsavecontent>
-			
-		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
+		
+		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 
 	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">

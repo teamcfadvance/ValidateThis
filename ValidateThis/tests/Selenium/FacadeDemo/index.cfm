@@ -24,8 +24,8 @@
 <html>
 	<head>
 		<title>ValidateThis Demo Page</title>
-		<link href="../css/demostyle.css" type="text/css" rel="stylesheet" />
-		<link href="../css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
+		<link href="../../../samples/css/demostyle.css" type="text/css" rel="stylesheet" />
+		<link href="../../../samples/css/uni-form-styles.css" type="text/css" rel="stylesheet" media="all" />
 	</head>
 	<body>
 	<div id="container">

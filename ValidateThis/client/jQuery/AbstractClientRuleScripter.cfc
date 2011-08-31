@@ -44,7 +44,7 @@
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		jQuery.validator.addMethod("#getValType()#", #arguments.theMethod#, jQuery.format("#failureMessage#"));
+		$.validator.addMethod("#getValType()#",#arguments.theMethod#,$.format("#failureMessage#"));
 		</cfsavecontent>
 		</cfoutput>
 
@@ -86,7 +86,7 @@
 		<cfargument name="locale" type="Any" required="no" default="" />
 		<cfset var theJSON = "" />
 		<cfset arguments.selector = getSafeSelectorScript(argumentCollection=arguments) />
-		<cfset theJSON = '{"#validation.getClientFieldName()#" : #generateRuleStruct(argumentCollection=arguments)#}' />
+		<cfset theJSON = '{"#validation.getClientFieldName()#":#generateRuleStruct(argumentCollection=arguments)#}' />
 		<cfreturn theJSON />
 	</cffunction>
 	
@@ -126,7 +126,7 @@
 	<cffunction name="getRuleDef" returntype="any" access="public" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfset var parameterDef = getParameterDef(arguments.validation)/>
-		<cfset var ruleDef = '"#getValType()#": #parameterDef#' />
+		<cfset var ruleDef = '"#getValType()#":#parameterDef#' />
 		<cfreturn ruleDef />
 	</cffunction>	
 	
@@ -172,7 +172,7 @@
 		<cfset var parameters = arguments.validation.getParameters() />
 		<cfset var conditionDef = "" />
 		<cfif arguments.validation.hasClientTest()>
-			<cfreturn  ',"conditions": {"#arguments.validation.getConditionName()#" : "#arguments.validation.getClientTest()#"}' />
+			<cfreturn  ',"conditions":{"#arguments.validation.getConditionName()#":"#arguments.validation.getClientTest()#"}' />
 		<cfelse>
 			<cfreturn ''>
 		</cfif>
@@ -201,7 +201,7 @@
 		<cfargument name="validation" type="any"/>
 		<cfargument name="formName" type="string" default=""/>
 		<cfset var safeFieldName = arguments.validation.getClientFieldName()/>
-		<cfreturn "fields['#safeFieldName#']" />
+		<cfreturn "fm['#safeFieldName#']" />
 	</cffunction>	
 	
 	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I determin the actual failure message to be used.">

@@ -23,7 +23,10 @@
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
-			function(value,element,options) { var pattern = /^([1-9]|(true)|(yes))$/; return value.toLowerCase().match( pattern ) == null ? false : true; } 
+			function(v,e,o){
+				var re = /^([1-9]|true|yes)$/;
+				return v.toLowerCase().match(re) === null ? false : true;
+			}
 		</cfsavecontent>
 		
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage) />

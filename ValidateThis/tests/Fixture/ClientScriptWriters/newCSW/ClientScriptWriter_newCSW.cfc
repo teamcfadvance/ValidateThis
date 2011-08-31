@@ -56,7 +56,7 @@
 			<cfoutput>
 				<script type="text/javascript">
 					jQuery(document).ready(function($) {
-						jQuery.validator.addMethod("regex", function(value, element, param) {
+						$.validator.addMethod("regex",function(v,e,p) {
 							var re = param;
 							return this.optional(element) || re.test(value);
 						}, jQuery.format("The value entered does not match the specified pattern ({0})"));

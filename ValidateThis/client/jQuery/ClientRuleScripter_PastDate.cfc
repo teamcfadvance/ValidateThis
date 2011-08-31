@@ -21,7 +21,14 @@
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
-			function(value,element,options) { var dBefore = new Date(); var dValue = new Date(value); if (options.before) { dBefore = new Date(options.before); } return (dBefore > dValue); } 
+			function(v,e,o){
+				var dBefore = new Date();
+				var dValue = new Date(v);
+				if(o.before){
+					dBefore = new Date(o.before);
+				}
+				return (dBefore>dValue);
+			} 
 		</cfsavecontent>
 		
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage) />

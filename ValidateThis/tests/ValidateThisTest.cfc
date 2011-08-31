@@ -22,7 +22,7 @@
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 			JSLib = "jQuery";
 			ExpectedInJSIncludes = '<script src="//ajax.microsoft.com/ajax/jquery/jquery';
-			ExpectedInVTSetup = 'jQuery.validator.addMethod("regex", function(value, element, param)';
+			ExpectedInVTSetup = '$.validator.addMethod("regex",function(v,e,p)';
 		</cfscript>
 	</cffunction>
 	
@@ -276,7 +276,7 @@
 		<cfscript>
 			theObject = createObject("component","Fixture.CFCWithMethodForExpressionTypeParameter").init();
 			script = ValidateThis.getValidationScript(theObject=theObject);
-			assertTrue(script contains "rules('add',{""inlist"": {""list"":""1,2,3""},""messages"":{""inlist"":""The Test Prop was not found in list: (1,2,3).""}});",htmlEditFormat(script));
+			assertTrue(script contains "rules('add',{""inlist"":{""list"":""1,2,3""},""messages"":{""inlist"":""The Test Prop was not found in list: (1,2,3).""}});",htmlEditFormat(script));
 		</cfscript>  
 	</cffunction>
 
@@ -284,7 +284,8 @@
 		<cfscript>
 			theObject = "";
 			script = ValidateThis.getValidationScript(theObject=theObject,objectType="RuleWithADynamicParameterThatDoesNotNeedAnObject");
-			assertTrue(script contains "fields['testProp'] = jQuery("":input[name='testProp']"",$form_frmMain);fields['testProp'].rules('add',{""inlist"": {""list"":2011},""messages"":{""inlist"":""The Test Prop was not found in list: (2011).""}});});");
+			assertTrue(script contains "fm['testProp'] = $("":input[name='testProp']"",$form_frmMain);fm['testProp'].rules('add',{""inlist"":{""list"":");
+			assertTrue(script contains "},""messages"":{""inlist"":""The Test Prop was not found in list: (2011).""}});});");
 		</cfscript>  
 	</cffunction>
 

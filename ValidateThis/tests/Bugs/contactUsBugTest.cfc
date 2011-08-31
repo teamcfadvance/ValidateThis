@@ -29,11 +29,11 @@
 	<cffunction name="getValidationScriptWithContextPassedShouldReturnOnlyRulesForThatContext" access="public" returntype="void">
 		<cfscript>
 			script = validateThis.getValidationScript(objectType="ContactUs",Context="backEnd");
-			assertTrue(script contains '{ required : true, messages: {required: "The Full Name is required."} }');
-			assertTrue(script contains '{ required : true, messages: {required: "The A category must be selected is required."} }');
+			assertTrue(script contains '{required:true,messages:{required:"The Full Name is required."}}');
+			assertTrue(script contains '{required:true,messages:{required:"The A category must be selected is required."}}');
 			script = validateThis.getValidationScript(objectType="ContactUs",Context="contactUsForm");
-			assertTrue(script contains '{ required : true, messages: {required: "The Full Name is required."} }');
-			assertFalse(script contains '{ required : true, messages: {required: "The A category must be selected is required."} }');
+			assertTrue(script contains '{required:true,messages:{required:"The Full Name is required."}}');
+			assertFalse(script contains '{required:true,messages:{required:"The A category must be selected is required."}}');
 		</cfscript>  
 	</cffunction>
 

@@ -21,8 +21,9 @@
 		<cfset var theCondition="" />
 		
 		<!--- JAVASCRIPT VALIDATION METHOD --->
-		<cfsavecontent variable="theCondition">function(value, element, param) {
-			return this.optional(element) || /^([01][0-9])|(2[0123]):([0-5])([0-9])$/.test(value);
+		<cfsavecontent variable="theCondition">
+		function(v,e,p){
+			return this.optional(e)||/^([01][0-9])|(2[0123]):([0-5])([0-9])$/.test(v);
 		}</cfsavecontent>
 
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
