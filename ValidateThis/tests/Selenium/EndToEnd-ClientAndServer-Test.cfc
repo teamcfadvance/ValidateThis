@@ -127,7 +127,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         selenium.type("Nickname", "a");
         selenium.click("//button[@type='submit']");
         assertEquals("Did not match the patterns for the Nickname.", selenium.getText(errLocator("Nickname")));
-        selenium.type("Nickname", "aB1");
+        selenium.type("Nickname", "aB?");
         selenium.click("//button[@type='submit']");
         assertEquals("Please enter a valid URL.", selenium.getText(errLocator("Nickname")));
         selenium.type("Nickname", "http://aB1.com");
