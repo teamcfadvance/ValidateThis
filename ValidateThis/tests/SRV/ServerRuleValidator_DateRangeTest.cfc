@@ -20,11 +20,10 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			SRV = getSRV("dateRange");
-			parameters = {from="12/29/1968",until="1/1/1969"};
-
+			//parameters = {from="12/29/1968",until="1/1/1969"};
 			
-			shouldPass = ["12/31/1968",dateFormat("12/31/1968"),"Dec. 31 1968","12/31/68","31/12/1968","1968-12-31"];
-			shouldFail = ["12/28/1969","12/29/1968","1/2/1969","01/02/1969","12/31/1969","2010-12-31","abc",-1];
+			shouldPass = ["12/29/1968","1/1/1969","1968/12/29","1968-12-29","12/31/1968","31-Dec-68","December 31, 1968","Dec. 31 1968","12/31/68","31/12/1968","1968-12-31"];
+			shouldFail = ["12/28/1969","1/2/1969","01/02/1969","12/31/1969","2010-12-31","abc",-1];
 		</cfscript>
 	</cffunction>
 	
@@ -33,7 +32,7 @@
             
            super.configureValidationMock();
             
-           validation.getParameterValue("from").returns("12/30/1968");
+           validation.getParameterValue("from").returns("12/29/1968");
            validation.getParameterValue("until").returns("1/1/1969");
 
         </cfscript>

@@ -25,7 +25,7 @@
 		<cfsavecontent variable="theCondition">
 			function(v,e,o){ 
 				var re = /^(0|false|no)$/; 
-				return v.toLowerCase().match(re)===null ? false : true; 
+				return v.toString().toLowerCase().match(re)===null ? false : true; 
 			}
 		</cfsavecontent>
 		

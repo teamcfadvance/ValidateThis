@@ -39,7 +39,7 @@ Definition Usage Example:
 					// for each property value in the array to check
 					$(propertyValue).each(function(){
 						var test = v.toString().toLowerCase().search(this.toString().toLowerCase())===-1;
-						if (!test){ // Only worrie about failures here so we return true if none of the other values fail.
+						if (!test){ // Only worry about failures here so we return true if none of the other values fail.
 							isValid = false;
 						}
 					});

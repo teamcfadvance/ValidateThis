@@ -24,20 +24,19 @@
 		<cfsavecontent variable="theCondition">
 		function(v,e,o){
 			var dValue = new Date(v);
-			var isValid = true;
+			var isValid = !/Invalid|NaN/.test(dValue);
 			var fromDate = new Date();
 			var toDate = new Date();
-			if(v){
+			
+			if(isValid){
 				if(o.from){
 					var fromDate=new Date(o.from);
 				}
 				if(o.until){
 					var untilDate=new Date(o.until);
 				}
-				if(toDate===fromDate){
-					isValid=true;
-				}else{
-					isValid=((fromDate<dValue)&&(dValue<untilDate))?true:false;
+				if(toDate!==fromDate){
+					isValid=((fromDate<=dValue)&&(dValue<=untilDate));
 				}
 			}
 			return isValid;
