@@ -24,8 +24,8 @@
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 			function(v,e,o){ 
-				var re = /^(0|false|no)$/; 
-				return v.toString().toLowerCase().match(re)===null ? false : true; 
+				var re = /^(0|false|no)$/i; 
+				return re.test(v);
 			}
 		</cfsavecontent>
 		

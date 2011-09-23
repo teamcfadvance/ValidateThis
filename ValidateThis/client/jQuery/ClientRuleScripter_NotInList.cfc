@@ -25,13 +25,14 @@
 		function(v,e,o){
 			var delim = o.delim ? o.delim : ",";
 			var lst = o.list.split(delim);
-			var isValid = true;
-			$(lst).each(function(){
-				if (v.toLowerCase()==this.toLowerCase()){
-					isValid = false;
+			var ok = true;
+			$.each(lst, function(i,el){
+				if (v.toLowerCase()===el.toLowerCase()){
+					ok=false;
+					return false;
 				}
 			});
-			return isValid;
+			return ok;
 		}</cfsavecontent>
 		
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>

@@ -25,16 +25,17 @@
 		function(v,e,o){
 			var delim = o.delim ? o.delim : ",";
 			var lst = o.list.split(delim);
-			var isValid = false;
-			$(lst).each(function(){
-				if (v.toLowerCase()==this.toLowerCase()){
-					isValid=true;
+			var ok = false;
+			$.each(lst, function(i,el){
+				if (v.toLowerCase()==el.toLowerCase()){
+					ok=true;
+					return false;
 				}
 			});
-			return isValid;
+			return ok;
 		}</cfsavecontent>
 			
-		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
+		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 
 	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">

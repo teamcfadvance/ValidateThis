@@ -23,8 +23,7 @@
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 		function(v,e,p){
-			var re = new RegExp(p);
-			return this.optional(e)||re.test(v);
+			return v.match(p);
 		}</cfsavecontent>
 
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>

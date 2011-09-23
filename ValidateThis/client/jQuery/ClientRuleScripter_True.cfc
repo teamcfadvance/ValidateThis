@@ -24,8 +24,8 @@
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 			function(v,e,o){
-				var re = /^([1-9]|true|yes)$/;
-				return v.toString().toLowerCase().match(re) === null ? false : true;
+				var re = /^([1-9]|true|yes)$/i;
+				return re.test(v);
 			}
 		</cfsavecontent>
 		

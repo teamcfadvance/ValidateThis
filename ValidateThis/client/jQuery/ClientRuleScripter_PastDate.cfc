@@ -23,11 +23,17 @@
 		<cfsavecontent variable="theCondition">
 			function(v,e,o){
 				var dBefore = new Date();
+				// make sure only date with no time so today is not a valid past date
+				dBefore = new Date(dBefore.toDateString());
 				var dValue = new Date(v);
+				var ok = !/Invalid|NaN/.test(dValue);
 				if(o.before){
 					dBefore = new Date(o.before);
 				}
-				return (dBefore>dValue);
+				if (ok){
+					ok=dBefore>dValue
+				}
+				return ok;
 			} 
 		</cfsavecontent>
 		
