@@ -24,5 +24,5 @@
 	<cfset this.sessionmanagement = true />
 	<cfset this.setclientcookies = true />
 	<cfset this.sessiontimeout = CreateTimeSpan( 0, 0, 20, 0 ) />
-	<cfset this.mappings["/ValidateThis"]=ReReplace(CGI.CF_TEMPLATE_PATH, "samples\\.*", "", "one" ) />
+	<cfset this.mappings["/ValidateThis"]=ReReplace(CGI.CF_TEMPLATE_PATH, "samples.*", "", "one" ) />
 </cfcomponent>
