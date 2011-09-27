@@ -22,6 +22,7 @@
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 			function(v,e,o){
+				if(v===''){return true;}
 				var dBefore = new Date();
 				// make sure only date with no time so today is not a valid past date
 				dBefore = new Date(dBefore.toDateString());

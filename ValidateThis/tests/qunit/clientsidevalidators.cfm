@@ -30,7 +30,7 @@
 		/* --------------- START TESTS --------------- */
 		test("boolean", function() {
 			var method = methodTest("boolean");
-			var shouldPass = [1,0,'1','0',true,false,'true','false',10,'10','yes','no','Yes','No','YES','NO'];
+			var shouldPass = ['',1,0,'1','0',true,false,'true','false',10,'10','yes','no','Yes','No','YES','NO'];
 			var shouldFail = ['abc123',{},[]];
 			
 			//should pass
@@ -51,7 +51,7 @@
 				param = ['firstname','lastname'],
 				e = $("##password")[0];
 				
-			var shouldPass = ['123abc','xyz','','123','abc'];
+			var shouldPass = ['','123abc','xyz','','123','abc'];
 			var shouldFail = ['abc123','xx-abc123','xx-abc123-xx','abc123-xx'];
 
 			//should fail
@@ -77,7 +77,7 @@
 			var method = $.validator.methods.equalTo,
 				e = $('##firstname, ##lastname');
 			
-			var shouldPass = ['abc123'];
+			var shouldPass = ['','abc123'];
 			var shouldFail = ['zzzzz'];
 
 			
@@ -93,7 +93,7 @@
 		
 		test("false", function() {
 			var method = methodTest("false");
-			var shouldPass = ['false','0',false,0];
+			var shouldPass = ['','false','0',false,0];
 			var shouldFail = ['true','1',true,1,'vt rocks'];
 			
 			jQuery.each(shouldPass,function(index,value){
@@ -106,7 +106,7 @@
 		
 		test("true", function() {
 			var method = methodTest("true");
-			var shouldPass = ['true','1',true,1];
+			var shouldPass = ['','true','1',true,1];
 			var shouldFail = ['false','0',false,0,'vt rocks'];
 			
 			jQuery.each(shouldPass,function(index,value){
@@ -131,7 +131,7 @@
 			
 			var e = $("##firstname")[0];
 			
-			var shouldPass = ["abc123XYZ","a1A","!A}1¬a+"];
+			var shouldPass = ['',"abc123XYZ","a1A","!A}1¬a+"];
 			var shouldFail = ["ABC123XYZ","abc123xyz","abcXYZ","!A}1~A+"];
 			
 			jQuery.each(shouldPass,function(index,value){
@@ -148,7 +148,7 @@
 				pattern_upperCaseLetter:"[A-Z]",
 				pattern_digits:"[0-9]"
 			};
-			shouldPass = ["abc123XYZ","a1A","!A}1¬a+","ABC123XYZ","abc123xyz","abcXYZ","!A}1~A+","aA","a1"];
+			shouldPass = ['',"abc123XYZ","a1A","!A}1¬a+","ABC123XYZ","abc123xyz","abcXYZ","!A}1~A+","aA","a1"];
 			shouldFail = ["a","1","aa","AA","10"];
 			
 			jQuery.each(shouldPass,function(index,value){
@@ -162,7 +162,7 @@
 		
 		test("nohtml", function() {
 			var method = methodTest("nohtml");
-			var shouldPass = ["a","a few words","10 < 1","1 > 10","what if there's only a closing tag />","</","/>"];
+			var shouldPass = ['',"a","a few words","10 < 1","1 > 10","what if there's only a closing tag />","</","/>"];
 			var shouldFail = ["<p>","<p />","<p/>","<tag with='attributes'>test</tag>",'<tag with="attributes">',"some words with an <a>embedded","some words with an <a>embedded</a>","<notARealTag>","<notARealTag />","<p>Tag at the beginning","Tag at the end<p>"];
 			
 			jQuery.each(shouldPass,function(index,value){
@@ -179,7 +179,7 @@
 			var param = "^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$";
 			var e = $("##firstname")[0];
 			
-			var shouldPass = ["Dr","Prof","Mr","Mrs","Ms","Miss","Dr.","Prof.","Mr.","Mrs.","Ms.","Miss."];
+			var shouldPass = ['',"Dr","Prof","Mr","Mrs","Ms","Miss","Dr.","Prof.","Mr.","Mrs.","Ms.","Miss."];
 			var shouldFail = [" Miss","dr","prof","mr","mrs","ms","miss","dr.","prof.","mr.","mrs.","ms.","miss."];
 			
 			jQuery.each(shouldPass,function(index,value){
@@ -188,16 +188,6 @@
 			jQuery.each(shouldFail,function(index,value){
 				ok( !method.call( v, value, e, param ), testedvalue(false,value) );
 			});
-			/*
-var v = jQuery("##form").validate();
-var method = function(value, param) {return $.validator.methods.regex.call(v, value, $('##firstname')[0], param)};
-
-ok( method( "picture.doc", "doc"), "Valid custom accept type" );
-ok( method( "picture.pdf", "doc|pdf"), "Valid custom accept type" );
-ok( method( "picture.pdf", "pdf|doc"), "Valid custom accept type" );
-ok( !method( "picture.pdf", "doc"), "Invalid custom accept type" );
-ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
-*/
 		});
 		
 		
@@ -209,8 +199,8 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 			var method = $.validator.methods["inlist"], 
 				param = {list:"milk,cookies,ice cream"},
 				e = $("##firstname")[0];
+			var shouldPass = ['',"milk","cookies","ice cream"];
 			var shouldFail = ["beer","burgers","cheese","chips","ice","cream"];
-			var shouldPass = ["milk","cookies","ice cream"];
 			
 			jQuery.each(shouldPass,function(index,value){
 				ok( method.call( v, value, e, param ), testedvalue(true,value) );
@@ -227,8 +217,8 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 				list: "milk,cookies,ice cream",
 				delim: ','
 			}, e = $("##firstname")[0];
+			var shouldPass = ['',"milk", "cookies", "ice cream"];
 			var shouldFail = ["beer", "burgers", "cheese", "chips", "ice", "cream"];
-			var shouldPass = ["milk", "cookies", "ice cream"];
 			
 			jQuery.each(shouldPass, function(index, value){
 				ok(method.call(v, value, e, param), testedvalue(true, value));
@@ -245,8 +235,8 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 			var method = $.validator.methods["inlist"];
 			
 			var e = $("##firstname")[0];
+			var shouldPass = ['',"milk", "cookies", "ice cream"];
 			var shouldFail = ["beer", "burgers", "cheese", "chips", "ice", "cream"];
-			var shouldPass = ["milk", "cookies", "ice cream"];
 			
 			var param = {list:"milk^cookies^ice cream",delim:'^'};
 			
@@ -266,7 +256,7 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 			var method = $.validator.methods["notinlist"], 
 				param = {list:"milk,cookies,ice cream"},
 				e = $("##firstname")[0];
-			var shouldPass = ["beer","burgers","cheese","chips","cream","ice"];
+			var shouldPass = ['',"beer","burgers","cheese","chips","cream","ice"];
 			var shouldFail = ["milk","cookies","ice cream"];
 				
 			jQuery.each(shouldPass,function(index,value){
@@ -284,7 +274,7 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 				param = {list:"milk,cookies,ice cream",delim:','},
 				e = $("##firstname")[0];
 				
-			var shouldPass = ["beer","burgers","cheese","chips","cream","ice"];
+			var shouldPass = ['',"beer","burgers","cheese","chips","cream","ice"];
 			var shouldFail = ["milk","cookies","ice cream"];
 			
 			jQuery.each(shouldPass,function(index,value){
@@ -302,7 +292,7 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 				param = {list:"milk^cookies^ice cream",delim:'^'},
 				e = $("##firstname")[0];
 				
-			var shouldPass = ["beer","burgers","cheese","chips","cream","ice"];
+			var shouldPass = ['',"beer","burgers","cheese","chips","cream","ice"];
 			var shouldFail = ["milk","cookies","ice cream"];
 			
 			jQuery.each(shouldPass,function(index,value){
@@ -326,7 +316,7 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 			var yesterday = today.setDate(today.getDate()-1);
 			
 			//should pass
-			jQuery.each([new Date(2100,1,1),tomorrow],function(index,value){
+			jQuery.each(['',new Date(2100,1,1),tomorrow],function(index,value){
 				ok( method.call( v, value, e, param ), testedvalue(true,value) );
 			});
 			
@@ -341,7 +331,7 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 				e = $("##firstname")[0];
 				
 			//should pass
-			jQuery.each([new Date(2100,1,1)],function(index,value){
+			jQuery.each('',[new Date(2100,1,1)],function(index,value){
 				ok( method.call( v, value, e, param ), testedvalue(true,value) );
 			});
 			//should fail
@@ -363,8 +353,8 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 				e = $("##firstname")[0];
 		
 			// NOTE: "31/12/1968" is an invalid date
-			var shouldPass = ['#DateFormat(yesterday, "yyyy-mm-dd")#',"12/29/1968","1/1/1969","1968/12/29","1968-12-29","12/31/1968","31-Dec-68","December 31, 1968","Dec. 31 1968","12/31/68","1968-12-31"];
-			var shouldFail = [new Date(2100,1,1),'#DateFormat(tomorrow, "yyyy-mm-dd")#','#DateFormat(today, "yyyy-mm-dd")#'];
+			var shouldPass = ['','#DateFormat(yesterday, "yyyy/mm/dd")#',"12/29/1968","1/1/1969","1968/12/29","12/31/1968","December 31, 1968","12/31/68","1968/12/31"];
+			var shouldFail = [new Date(2100,1,1),'#DateFormat(tomorrow, "yyyy/mm/dd")#','#DateFormat(today, "yyyy/mm/dd")#'];
 			
 			//should pass
 			jQuery.each(shouldPass,function(index,value){
@@ -377,7 +367,7 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 			});
 		});
 			
-		test("pastdate (after:'#DateFormat(tomorrow,'yyyy-mm-dd')#')", function() {
+		test("pastdate (after:'#DateFormat(tomorrow,'yyyy/mm/dd')#')", function() {
 			var v = jQuery("##form").validate();
 			var method = $.validator.methods["pastdate"], 
 				param = {},
@@ -386,15 +376,15 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 
 			var v = jQuery("##form").validate();
 			var method = $.validator.methods["futuredate"], 
-				param = {after:'#DateFormat(tomorrow, "yyyy-mm-dd")#'},
+				param = {after:'#DateFormat(tomorrow, "yyyy/mm/dd")#'},
 				e = $("##firstname")[0];
 				
 			//should pass
-			jQuery.each(['#DateFormat(dayaftertomorrow,'yyyy-mm-dd')#',new Date(2100,1,1)],function(index,value){
+			jQuery.each(['','#DateFormat(dayaftertomorrow,'yyyy/mm/dd')#',new Date(2100,1,1)],function(index,value){
 				ok( method.call( v, value, e, param ), testedvalue(true,value) );
 			});
 			//should fail
-			jQuery.each([new Date(2000,1,1),'#DateFormat(today, "yyyy-mm-dd")#','#DateFormat(yesterday, "yyyy-mm-dd")#','#DateFormat(tomorrow, "yyyy-mm-dd")#'],function(index,value){
+			jQuery.each([new Date(2000,1,1),'#DateFormat(today, "yyyy/mm/dd")#','#DateFormat(yesterday, "yyyy/mm/dd")#','#DateFormat(tomorrow, "yyyy/mm/dd")#'],function(index,value){
 				ok( !method.call( v, value, e, param ), testedvalue(false,value) );
 			});
 		});
@@ -407,7 +397,7 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 				e = $("##firstname")[0];
 
 			// should all pass
-			jQuery.each(["12/29/1968","1/1/1969","1968/12/29","1968-12-29","12/31/1968","31-Dec-68","December 31, 1968","Dec. 31 1968","12/31/68","1968-12-31"],function(index,value){
+			jQuery.each(['',"12/29/1968","1/1/1969","1968/12/29","12/31/1968","December 31, 1968","12/31/68","1968/12/31"],function(index,value){
 				ok( method.call( v, value, e, param ), testedvalue(true,value) );
 			});
 			// should all fail
@@ -426,7 +416,7 @@ ok( !method( "picture.doc", "pdf"), "Invalid custom accept type" );
 	<h2 id="qunit-userAgent"></h2>
 	<ol id="qunit-tests"></ol>
 	
-	<form>
+	<form style="display:none;">
 		<input type="text" id="firstname" name="firstname">
 		<input type="text" id="lastname" name="lastname">
 		<input type="text" id="password" name="password">

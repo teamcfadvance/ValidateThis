@@ -21,6 +21,7 @@
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 		function(v,e,o){
+			if(v===''){return true;}
 			var re = /^((-){0,1}[0-9]{1,}(\.([0-9]{1,})){0,1}|true|false|yes|no)$/i;
 			return re.test(v);
 		}</cfsavecontent>

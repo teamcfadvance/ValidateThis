@@ -23,6 +23,7 @@
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 		function(v,e,p){
+			if(v===''){return true};
 			return v.match(p);
 		}</cfsavecontent>
 

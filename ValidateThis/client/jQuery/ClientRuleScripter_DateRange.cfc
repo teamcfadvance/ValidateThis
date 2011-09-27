@@ -23,6 +23,7 @@
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 		function(v,e,o){
+			if (v==='') return true;
 			var thedate = new Date(v);
 			var ok = !/Invalid|NaN/.test(thedate);
 			var start = new Date();

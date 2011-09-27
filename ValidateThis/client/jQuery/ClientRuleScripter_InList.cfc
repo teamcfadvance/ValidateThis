@@ -23,6 +23,7 @@
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 		function(v,e,o){
+			if(v===''){return true;}
 			var delim = o.delim ? o.delim : ",";
 			var lst = o.list.split(delim);
 			var ok = false;
