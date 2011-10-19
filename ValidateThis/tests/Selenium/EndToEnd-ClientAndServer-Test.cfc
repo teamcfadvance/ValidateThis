@@ -11,6 +11,13 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
     	return "css=p.errorField[htmlfor=#arguments.name#]";
     }
 
+    public void function RunQUnitTests() {
+        selenium.open("http://localhost/validatethis/tests/qunit/clientsidevalidators.cfm");
+        selenium.waitForPageToLoad("30000");
+        assertEquals(true, selenium.getTitle() contains "QUnit Test Suite");
+        assertEquals("0", selenium.getText("css=span.failed"),"There seem to be QUnit test failures!");
+    }
+
     public void function testEndToEndClient() {
         selenium.open("http://localhost/validatethis/samples/FacadeDemo/index.cfm?init=true");
         selenium.waitForPageToLoad("30000");
