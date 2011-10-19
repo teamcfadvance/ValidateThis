@@ -27,10 +27,10 @@ Definition Usage Example:
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 		function(v,e,o){
-			var isValid=true;
-			var parentForm=$(e).closest("form");
+			var ok=true;
+			var $form=$(e).closest("form");
 			$(o).each(function(){
-				var propertyValue = $(':input[name='+this+']',parentForm).getValue();
+				var propertyValue = $(':input[name='+this+']',$form).getValue();
 				if(propertyValue.length){
 					// if this is a mutiple select list, split the value into an array for iteration
 					if(propertyValue.search(",")){
@@ -39,14 +39,14 @@ Definition Usage Example:
 					// for each property value in the array to check
 					$(propertyValue).each(function(){
 						var test = v.toString().toLowerCase().search(this.toString().toLowerCase())===-1;
-						if (!test){ // Only worrie about failures here so we return true if none of the other values fail.
-							isValid = false;
+						if (!test){ // Only worry about failures here so we return true if none of the other values fail.
+							ok = false;
 						}
 					});
 				}
-				return isValid;
+				return ok;
 			});
-			return isValid;
+			return ok;
 		}
 		</cfsavecontent>
 			

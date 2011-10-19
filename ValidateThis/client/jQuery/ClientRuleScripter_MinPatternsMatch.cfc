@@ -27,23 +27,21 @@ Example Usage:
 			if(!v.length){
 				return true;
 			}
-			if(o["minMatches"]){
-				minMatches = o["minMatches"];
+			if(o.minMatches){
+				minMatches = o.minMatches;
 			}
+			var re = /^pattern_/i;
 			for(var key in o){
-				if(key.match("^[pattern]")&&v.match(o[key])){
+				if(re.test(key)&&v.match(o[key])){
 					complexity++;
-				}
-				if(complexity===minMatches){
-					return true;
+					if(complexity===minMatches){
+						return true;
+					}
 				}
 			}
-			if(complexity<<minMatches){
-				return false;
-			}
+			return complexity>=minMatches;
 		}
-		</cfsavecontent>
-			
+		</cfsavecontent>			
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage,arguments.locale)/>
 	</cffunction>
 	

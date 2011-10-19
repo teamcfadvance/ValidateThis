@@ -23,24 +23,24 @@
 		<!--- JAVASCRIPT VALIDATION METHOD --->
 		<cfsavecontent variable="theCondition">
 		function(v,e,o){
-			var dValue = new Date(v);
-			var isValid = true;
-			var fromDate = new Date();
-			var toDate = new Date();
-			if(v){
+			if (v==='') return true;
+			var thedate = new Date(v);
+			var ok = !/Invalid|NaN/.test(thedate);
+			var start = new Date();
+			var end = new Date();
+			
+			if(ok){
 				if(o.from){
-					var fromDate=new Date(o.from);
+					start=new Date(o.from);
 				}
 				if(o.until){
-					var untilDate=new Date(o.until);
+					var end=new Date(o.until);
 				}
-				if(toDate===fromDate){
-					isValid=true;
-				}else{
-					isValid=((fromDate<dValue)&&(dValue<untilDate))?true:false;
+				if(start!==end){
+					ok=((start<=thedate)&&(thedate<=end));
 				}
 			}
-			return isValid;
+			return ok;
 		}
 		</cfsavecontent>
 
