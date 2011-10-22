@@ -200,7 +200,7 @@
 		<cfreturn getFailuresAsValidationErrorCollection(arguments.locale) />
 	</cffunction>
 	
-	<cffunction name="getFailuresAsValidationErrorCollection" access="private" output="false" returntype="any" hint="I return failures in a format expected from a ModelGlue.util.ValidationErrorCollection">
+	<cffunction name="getFailuresAsValidationErrorCollection" access="public" output="false" returntype="any" hint="I return failures in a format expected from a ModelGlue.util.ValidationErrorCollection">
 		<cfargument name="locale" type="Any" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 		<cfset var FailureList = StructNew() />
 		<cfset var Failure = 0 />

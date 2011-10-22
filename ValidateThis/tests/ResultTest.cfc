@@ -377,7 +377,7 @@
 	</cffunction>
 	
 	<!--- test for reported bug http://groups.google.com/group/validatethis/browse_thread/thread/91ef8d6dc44847ff?hl=en --->
-	<cffunction name="bugFixForFailureStructAppendedToFailureStruct" access="public" returntype="void">
+	<cffunction name="testbugFixForFailureStructAppendedToFailureStruct" access="public" returntype="void">
 		<cfscript>
 			addMultipleFailures();
 			rawfailures = result.getRawFailures();
@@ -387,6 +387,19 @@
 			assertFalse(StructKeyExists(failure, "failure"));
 		</cfscript>  
 	</cffunction>
+
+	<!--- test for reported bug https://github.com/ValidateThis/ValidateThis/issues/24 --->
+	<cffunction name="getFailuresAsValidationErrorCollectionShouldReturnAStructOfFailuresInTheExpectedFormat" access="public" returntype="void">
+		<cfscript>
+			addMultipleFailures();
+			failures = result.getFailuresAsValidationErrorCollection();
+			assertEquals(2, structCount(failures));
+			assertEquals("First Message", failures.fieldA[1]);
+			assertEquals("Second Message", failures.fieldA[2]);
+			assertEquals("Third Message", failures.fieldB[1]);
+		</cfscript>  
+	</cffunction>
+
 	
 	
 	<cffunction name="addMultipleFailures" access="private" returntype="void">
