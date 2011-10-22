@@ -20,7 +20,7 @@
 		<cfset var Parameters = arguments.validation.getParameters() />
 		<!--- <cfparam name="Parameters.allowedTags" default=""/> --->
 		<cfif shouldTest(arguments.validation) and reFindNoCase("</?\w+((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>",arguments.validation.getObjectValue(),1,false)>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# cannot contain HTML tags.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# cannot contain HTML tags.")) />
 		</cfif>
 	</cffunction>
 	

@@ -54,7 +54,7 @@
 
 	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
-		<cfset var failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was not found in list:") />
+		<cfset var failureMessage = variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was not found in list:") />
 		<cfif arguments.validation.hasParameter("list")>
 			<cfset failureMessage = failureMessage & " (#arguments.validation.getParameterValue('list')#)." />
 		</cfif>

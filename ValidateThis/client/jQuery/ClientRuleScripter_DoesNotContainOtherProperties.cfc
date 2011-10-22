@@ -57,7 +57,7 @@ Definition Usage Example:
 		<cfargument name="validation" type="any"/>
 
         <cfset var params = arguments.validation.getParameters()/>
-		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#.") />
+		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#.") />
 	</cffunction>
 
 	<cffunction name="getParameterDef" returntype="string" access="public" output="false" hint="I generate the JS script required to pass the appropriate paramters to the validator method.">

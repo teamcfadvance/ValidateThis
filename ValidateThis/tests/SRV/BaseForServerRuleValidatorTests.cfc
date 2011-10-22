@@ -117,7 +117,8 @@
 		<cfargument name="validation" />
 		<cfargument name="defaultFailureMessagePrefix" required="false" default="The " />
 		
-		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.validation#").init(arguments.defaultFailureMessagePrefix) />
+		<cfset msgHelper = CreateObject("component","ValidateThis.core.MessageHelper").init(arguments.defaultFailureMessagePrefix) />
+		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.validation#").init(msgHelper) />
 		
 	</cffunction>
 

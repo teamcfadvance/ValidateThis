@@ -34,20 +34,20 @@
 			<cfif isJSON(theVal)>
 				<cfset theVal = deserializeJSON(theVal)/>
 			<cfelse>
-				<cfset fail(arguments.validation,createDefaultFailureMessage("validation failed because a valid object cannot be a simple value.")) />
+				<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("validation failed because a valid object cannot be a simple value.")) />
 				<cfreturn/>
 			</cfif>
 		</cfif> 
 				
 		<cfif isStruct(theVal) and (not isObject(theVal) and structCount(theVal) eq 0)>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("validation failed because a valid structure cannot be empty.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("validation failed because a valid structure cannot be empty.")) />
 			<cfreturn/>
 		<cfelseif isStruct(theVal) and arguments.validation.hasParameter("objectType")>
 			<cfset objectType = arguments.validation.getParameterValue("objectType")>
 		</cfif>
 		
 		<cfif  isArray(theVal) and arrayLen(theVal) eq 0>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("validation failed because a valid array cannot be empty.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("validation failed because a valid array cannot be empty.")) />
 			<cfreturn/>
 		<cfelseif isArray(theVal)>
 			<cfset toCheck = theVal/>

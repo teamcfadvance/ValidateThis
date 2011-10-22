@@ -22,7 +22,7 @@
 		<cfset var theDate = arguments.validation.getObjectValue()/>
 		
 		<cfif shouldTest(arguments.validation) AND ((theDate lt fromDate) or (theDate gt untilDate))>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date between #fromDate# and #untilDate#.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date between #fromDate# and #untilDate#.")) />
 		</cfif>
 	</cffunction>
 	

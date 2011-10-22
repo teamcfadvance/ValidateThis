@@ -44,7 +44,7 @@ Usage Example:
 				property = propertyNames[propIndex];
 				propValue = arguments.validation.getObjectValue(property);
 				if(propValue NEQ "" AND value contains propValue){
-					fail(validation, createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#."));
+					fail(validation, variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#."));
 				}
 			}
 		}

@@ -19,7 +19,7 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 		<cfset var val = arguments.validation.getObjectValue()/>
 		<cfif shouldTest(arguments.validation) AND (not IsValid("Boolean",val) or (isValid("Boolean",val) and val))>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a false boolean.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a false boolean.")) />
 		</cfif>
 	</cffunction>
 	

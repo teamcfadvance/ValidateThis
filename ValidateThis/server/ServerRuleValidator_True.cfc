@@ -20,7 +20,7 @@
 		<cfset var val = arguments.validation.getObjectValue()/>
 		<cfif shouldTest(arguments.validation) AND not isValid("Boolean",val) or 
 				shouldTest(arguments.validation) AND isValid("Boolean",val) and not val>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a true boolean.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a true boolean.")) />
 		</cfif>
 	</cffunction>
 	

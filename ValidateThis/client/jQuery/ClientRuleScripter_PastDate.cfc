@@ -53,7 +53,7 @@
 
 	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
-		<cfset var failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the past.") />
+		<cfset var failureMessage = variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the past.") />
 		<cfif arguments.validation.hasParameter("before")>
 			<cfset failureMessage = failureMessage & " The date entered must come before #arguments.validation.getParameterValue('before')#." />
 		</cfif>

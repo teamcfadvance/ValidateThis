@@ -19,7 +19,7 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
 		<cfif shouldTest(arguments.validation) AND NOT IsNumeric(arguments.validation.getObjectValue())>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a number.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a number.")) />
 		</cfif>
 	</cffunction>
 	

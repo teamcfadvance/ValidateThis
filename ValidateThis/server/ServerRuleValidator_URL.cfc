@@ -4,7 +4,7 @@
 			var theValue = arguments.validation.getObjectValue();
 			if (not shouldTest(arguments.validation)) return;
 			if (not isValid("URL",theValue)) {
-				fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid URL."));
+				fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid URL."));
 			}
 		}
 	</cfscript>

@@ -48,7 +48,7 @@
 
 	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
-		<cfset var failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the future.") />
+		<cfset var failureMessage = variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the future.") />
 		<cfif arguments.validation.hasParameter("after")>
 			<cfset failureMessage = failureMessage & " The date entered must come after #arguments.validation.getParameterValue('after')#." />
 		</cfif>

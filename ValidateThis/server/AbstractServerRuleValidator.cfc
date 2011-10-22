@@ -16,8 +16,8 @@
 <cfcomponent output="false" name="AbstractServerRuleValidator" hint="I am an abstract validator responsible for performing one specific type of validation.">
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ServerRuleValidator">
-		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
-		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
+		<cfargument name="messageHelper" type="any" required="true" />
+		<cfset variables.messageHelper = arguments.messageHelper />
 		<cfreturn this />
 	</cffunction>
 	
@@ -46,11 +46,6 @@
 		<cfargument name="result" type="any" required="yes" hint="A Result to store." />
 	
 		<cfset arguments.validation.failWithResult(arguments.result) />
-	</cffunction>
-
-	<cffunction name="createDefaultFailureMessage" returntype="string" access="private" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">
-		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to add to." />
-		<cfreturn variables.defaultFailureMessagePrefix & arguments.FailureMessage />
 	</cffunction>
 
 	<cffunction name="propertyIsRequired" returntype="boolean" access="private" output="false" hint="I determine whether the current property is required.">

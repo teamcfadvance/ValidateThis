@@ -31,7 +31,7 @@
 		</cfif>
 
 		<cfif shouldTest(arguments.validation) AND listFindNoCase(theList,theVal,theDelim)>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was found in the list: #theList#. #parameterMessages#")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was found in the list: #theList#. #parameterMessages#")) />
 		</cfif>
 	</cffunction>
 	

@@ -51,7 +51,7 @@
 		<cfargument name="validation" type="any"/>
 
 		<cfset var params = arguments.validation.getParameters()/>
-		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must contain a date between #params['from']# and #params['until']#.") />
+		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must contain a date between #params['from']# and #params['until']#.") />
 	</cffunction>
 
 </cfcomponent>

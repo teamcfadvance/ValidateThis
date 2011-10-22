@@ -19,7 +19,7 @@
 	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false" hint="I return the translated default failure message from the validation object.">
 		<cfargument name="validation" type="any"/>
 		<!---  create a default (basic) 'Required' FailureMessage --->
-		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required.")  />
+		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required.")  />
 	</cffunction>
 	
 	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I determin the actual failure message to be used.">
@@ -38,7 +38,7 @@
 	                <cfset ConditionDesc = " if you specify a value for the " & parameters.DependentInputDesc />
 	            </cfif>
 	            
-	            <cfset failureMessage = createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#ConditionDesc#.")  />
+	            <cfset failureMessage = variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#ConditionDesc#.")  />
 	            
 	    	</cfif>
 		</cfif>

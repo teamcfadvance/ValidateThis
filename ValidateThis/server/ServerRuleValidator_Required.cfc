@@ -39,7 +39,7 @@
 					<cfset conditionDesc = " if you specify a value for " & lCase(variables.defaultFailureMessagePrefix) & propertyDesc />
 				</cfif>
 			</cfif>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#conditionDesc#.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#conditionDesc#.")) />
 		</cfif>
 	</cffunction>
 	

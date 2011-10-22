@@ -18,11 +18,11 @@
 	
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
 		<cfargument name="Translator" type="Any" required="yes" />
-		<cfargument name="defaultFailureMessagePrefix" type="string" required="yes" />
+		<cfargument name="messageHelper" type="any" required="true" />
 		
 		<cfset variables.ValType = lcase(ListLast(getMetadata(this).name,"_"))/>
 		<cfset variables.Translator = arguments.Translator />
-		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
+		<cfset variables.messageHelper = arguments.messageHelper />
 		<cfset variables.DefaultFailureMessage = "" />
 		
 		<cfreturn this />
@@ -238,11 +238,6 @@
 			  3) any jquery.validate plugin default failure messages for base types
 		--->
 		<cfreturn variables.DefaultFailureMessage />
-	</cffunction>
-
-	<cffunction name="createDefaultFailureMessage" returntype="string" access="private" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">
-		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to add to." />
-		<cfreturn variables.defaultFailureMessagePrefix & arguments.FailureMessage />
 	</cffunction>
 
 	<cffunction name="translate" returntype="string" access="private" output="false" hint="I translate a message.">

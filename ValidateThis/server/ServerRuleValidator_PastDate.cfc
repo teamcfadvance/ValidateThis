@@ -27,7 +27,7 @@
 		</cfif>
 		
 		<cfif shouldTest(arguments.validation) AND (not isValid("date",theVal) OR (isValid("date",theVal) AND not dateCompare(theVal,theDate) eq -1))>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the past.#parameterMessages#")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the past.#parameterMessages#")) />
 		</cfif>
 	</cffunction>
 	

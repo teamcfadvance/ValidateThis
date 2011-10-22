@@ -19,7 +19,7 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 
 		<cfif shouldTest(arguments.validation) AND NOT IsValid("Email",arguments.validation.getObjectValue())>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid email address.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid email address.")) />
 		</cfif>
 	</cffunction>
 	

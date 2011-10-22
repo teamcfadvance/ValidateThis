@@ -113,7 +113,7 @@
 		</cfscript>
 		
 		<cfif not valid>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# size is not #parameterMessages#.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# size is not #parameterMessages#.")) />
 		</cfif>
 		
 	</cffunction>

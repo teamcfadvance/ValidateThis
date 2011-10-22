@@ -20,7 +20,7 @@
 
 		<cfset var Parameters = arguments.validation.getParameters() />
 		<cfif shouldTest(arguments.validation) AND Len(arguments.validation.getObjectValue()) GT Parameters.MaxLength>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be no more than #Parameters.MaxLength# characters long.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be no more than #Parameters.MaxLength# characters long.")) />
 		</cfif>
 	</cffunction>
 	

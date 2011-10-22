@@ -91,6 +91,7 @@ Adds a constructor property to a bean.
 		addSingleton("ValidateThis.client.ClientValidator");
 		addSingleton("ValidateThis.client.CommonScriptGenerator");
 		addSingleton("ValidateThis.util.EqualsHelper");
+		addSingleton("ValidateThis.core.MessageHelper");
 		//
 		addTransient("ValidateThis.core.Validation");
 		addTransient("ValidateThis.core.BusinessObjectWrapper");

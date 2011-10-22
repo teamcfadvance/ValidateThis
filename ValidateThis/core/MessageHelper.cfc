@@ -68,6 +68,9 @@ methods in this CFC:
 <cfcomponent output="false" hint="I am a transient Parameter object.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I am the constructor">
+		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
+
+		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
 		<cfreturn this />
 	</cffunction>
 
@@ -113,6 +116,11 @@ methods in this CFC:
 				<cfthrow message="#cfcatch.message#" type="any" detail="#cfcatch.detail#">
 			</cfcatch>
 		</cftry>
+	</cffunction>
+
+	<cffunction name="createDefaultFailureMessage" returntype="string" access="public" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">
+		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to add to." />
+		<cfreturn variables.defaultFailureMessagePrefix & arguments.FailureMessage />
 	</cffunction>
 
 </cfcomponent>

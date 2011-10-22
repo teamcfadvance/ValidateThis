@@ -46,7 +46,7 @@
 	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
 		<cfset var params = arguments.validation.getParameters() />
-		<cfreturn createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as #variables.defaultFailureMessagePrefix##params.ComparePropertyDesc#.") />
+		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as #variables.defaultFailureMessagePrefix##params.ComparePropertyDesc#.") />
 	</cffunction>
 
 </cfcomponent>

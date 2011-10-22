@@ -25,7 +25,7 @@
 			<cfset otherDesc = arguments.validation.getValidateThis().getPropertyDescription(objectType=arguments.validation.getObjectType(),propertyName="otherPropertyName") />
 		</cfif>
 		<cfif arguments.validation.getObjectValue() NEQ otherVal>
-			<cfset fail(arguments.validation,createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as #lCase(variables.defaultFailureMessagePrefix)##otherDesc#.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as #lCase(variables.defaultFailureMessagePrefix)##otherDesc#.")) />
 		</cfif>
 	</cffunction>
 
