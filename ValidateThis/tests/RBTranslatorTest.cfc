@@ -33,7 +33,8 @@ purpose:		I RBTranslatorTest.cfc
 		<cfscript>
 			locales = {en_US=StructNew(),fr_FR=StructNew()};
 			locales.en_US.NotEmail = "Hey, buddy, you call that an Email Address?";
-			locales.fr_FR.NotEmail = "Hé, mon pote, que vous appelez une adresse de courriel?";
+			locales.en_US.ReplaceChars = "Hey, {1}, you call that a {2}, {3,number,currency}?";
+			locales.fr_FR.NotEmail = "Hï¿½, mon pote, que vous appelez une adresse de courriel?";
 			locales.fr_FR.The_Email_Address_is_required = "L'adresse e-mail est requis.";
 			MockRBLoader = mock();
 			MockRBLoader.loadLocales("{struct}").returns(locales);
@@ -74,6 +75,16 @@ purpose:		I RBTranslatorTest.cfc
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="defaultLocaleDefinedKeyReturnsTranslatedAndReplacedText" access="public" returntype="void">
+		<cfscript>
+			theKey = "ReplaceChars";
+			locale = "en_US";
+			expectedText = "Hey, Bob, you call that a Name, $4.00?";
+			translated = variables.RBTranslator.translate(theKey,locale);
+			assertEquals(expectedText,variables.RBTranslator.messageFormat(translated,["Bob","Name",4],locale));
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="defaultLocaleUnDefinedNonKeyReturnsUnTranslatedText" access="public" returntype="void">
 		<cfscript>
 			theKey = "Some Undefined Key";
@@ -96,7 +107,7 @@ purpose:		I RBTranslatorTest.cfc
 		<cfscript>
 			theKey = "NotEmail";
 			locale = "fr_FR";
-			expectedText = "Hé, mon pote, que vous appelez une adresse de courriel?";
+			expectedText = "Hï¿½, mon pote, que vous appelez une adresse de courriel?";
 			assertEquals(expectedText,variables.RBTranslator.translate(theKey,locale));
 		</cfscript>  
 	</cffunction>
