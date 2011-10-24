@@ -37,7 +37,7 @@
 		<cfreturn '"#arguments.validation.getParameterValue('remoteURL')#"' />
 	</cffunction>
 
-	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
 		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# custom validation failed.") />
 	</cffunction>

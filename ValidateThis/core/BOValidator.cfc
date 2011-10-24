@@ -33,6 +33,7 @@
 		<cfargument name="theObject" type="any" required="true" hint="The object from which to read annotations, a blank means no object was passed" />
 		<cfargument name="componentPath" type="any" required="true" hint="The component path to the object - used to read annotations using getComponentMetadata" />
 		<cfargument name="debuggingMode" type="string" required="true" hint="The debuggingMode from the VTConfig struct" />
+		<cfargument name="defaultLocale" type="string" required="true" hint="The defaultLocale for the resource bundle" />
 
 		<cfset variables.instance = {objectType = arguments.objectType, propertyDescs = {}, clientFieldDescs = {}, formContexts = {}, validations = {contexts = {___Default = arrayNew(1)}}, newRules = {}} />
 		<cfset variables.FileSystem = arguments.FileSystem />
@@ -47,6 +48,7 @@
 		<cfset variables.CommonScriptGenerator = arguments.CommonScriptGenerator />
 		<cfset variables.Version = arguments.Version />
 		<cfset variables.debuggingMode = arguments.debuggingMode />
+		<cfset variables.defaultLocale = arguments.defaultLocale />
 
 		<!--- Prepend a specified definitionPath to the paths in the ValidateThisConfig --->
 		<cfset variables.definitionPath = listPrepend(arguments.definitionPath,arguments.specificDefinitionPath) />
@@ -192,13 +194,14 @@
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
 		<cfargument name="debuggingMode" type="string" required="false" default="#variables.debuggingMode#" />
 		<cfargument name="ignoreMissingProperties" type="boolean" required="false" default="false" />
+		<cfargument name="locale" type="string" required="false" default="#variables.defaultLocale#" />
 
 		<cfif IsSimpleValue(arguments.Result)>
 			<cfset arguments.Result = newResult() />
 		</cfif>
 		<!--- Put the object into the result so it can be retrieved from there --->
 		<cfset arguments.Result.setTheObject(arguments.theObject) />
-		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode,arguments.ignoreMissingProperties) />
+		<cfset variables.ServerValidator.validate(this,arguments.theObject,arguments.Context,arguments.Result,arguments.objectList,arguments.debuggingMode,arguments.ignoreMissingProperties,arguments.locale) />
 		<cfreturn arguments.Result />
 		
 	</cffunction>
@@ -208,7 +211,7 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
 		<cfargument name="JSLib" type="any" required="false" default="#variables.defaultJSLib#" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="#variables.defaultLocale#" />
 		<cfargument name="theObject" type="Any" required="no" default="" />
 
 		<cfreturn variables.ClientValidator.getValidationScript(getValidations(arguments.Context),arguments.formName,arguments.JSLib,arguments.locale,arguments.theObject) />
@@ -219,7 +222,7 @@
 		<cfargument name="Context" type="any" required="false" default="" />
 		<cfargument name="formName" type="any" required="false" default="#getFormName(arguments.Context)#" hint="The name of the form for which validations are being generated." />
 		<cfargument name="JSLib" type="any" required="false" default="#variables.defaultJSLib#" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="#variables.defaultLocale#" />
 		<cfargument name="theObject" type="Any" required="no" default="" />
 
 		<cfreturn variables.ClientValidator.getValidationRulesStruct(getValidations(arguments.Context),arguments.formName,arguments.JSLib,arguments.locale,arguments.theObject) />
@@ -230,7 +233,7 @@
 
 		<cfargument name="JSLib" type="any" required="false" default="#variables.defaultJSLib#" />
 		<cfargument name="JSIncludes" type="Any" required="no" default="#variables.JSIncludes#" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="#variables.defaultLocale#" />
 
 		<cfreturn variables.CommonScriptGenerator.getInitializationScript(argumentCollection=arguments) />
 

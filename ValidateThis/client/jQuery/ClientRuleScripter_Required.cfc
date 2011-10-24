@@ -16,7 +16,7 @@
 <cfcomponent output="false" name="ClientRuleScripter_Required" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the required validation.">
 	<cfproperty name="DefaultFailureMessage" type="string" default="This field is required.">
 	
-	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false" hint="I return the translated default failure message from the validation object.">
+	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false" hint="I return the translated default failure message from the validation object.">
 		<cfargument name="validation" type="any"/>
 		<!---  create a default (basic) 'Required' FailureMessage --->
 		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required.")  />
@@ -46,7 +46,7 @@
 	
 		<!---  If we don't have anything yet, lets use getTheDefaultFailuremessage for this validation' --->
 		<cfif len(failureMessage) eq 0>
-			<cfset failureMessage = getDefaultFailureMessage(arguments.validation) />
+			<cfset failureMessage = getGeneratedFailureMessage(arguments.validation) />
 		</cfif>
 
 		<cfreturn failureMessage />

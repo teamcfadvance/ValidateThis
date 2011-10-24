@@ -106,7 +106,7 @@
 		<cfif (NOT (StructCount(arguments.validation.getCondition()) GT 0 OR
 			StructKeyExists(arguments.validation.getParameters(),"DependentPropertyName")) OR valType EQ "required")
 			AND StructKeyExists(variables.RuleScripters,valType)>
-			<cfset theScript = variables.RuleScripters[valType].generateValidationScript(arguments.validation,arguments.formName,arguments.locale) />
+			<cfset theScript = variables.RuleScripters[valType].generateValidationScript(arguments.validation,arguments.locale,arguments.formName) />
 		</cfif>
 		
 		<cfreturn theScript />

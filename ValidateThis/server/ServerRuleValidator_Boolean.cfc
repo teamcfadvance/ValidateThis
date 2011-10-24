@@ -21,7 +21,7 @@
 
 		<cfset var args = [arguments.validation.getPropertyDesc()] />
 		<cfif shouldTest(arguments.validation) AND NOT IsValid("Boolean",arguments.validation.getObjectValue())>
-			<cfset fail(arguments.validation,variables.messageHelper.getDefaultFailureMessage("defaultMessage_Boolean",args,arguments.locale)) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_Boolean",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
 	

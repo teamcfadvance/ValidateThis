@@ -87,6 +87,7 @@
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
 		<cfargument name="debuggingMode" type="string" required="false" default="#variables.ValidateThisConfig.debuggingMode#" />
 		<cfargument name="ignoreMissingProperties" type="boolean" required="false" default="false" />
+		<cfargument name="locale" type="string" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
 
 		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
 		

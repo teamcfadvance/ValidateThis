@@ -45,7 +45,7 @@ Example Usage:
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage,arguments.locale)/>
 	</cffunction>
 	
-	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
 		<cfreturn "Did not match the patterns for #lCase(variables.defaultFailureMessagePrefix)##validation.getPropertyDesc()#." />
 	</cffunction>

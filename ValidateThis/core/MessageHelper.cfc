@@ -121,7 +121,7 @@ methods in this CFC:
 		</cftry>
 	</cffunction>
 
-	<cffunction name="getDefaultFailureMessage" returntype="string" access="public" output="false" hint="I retrieve the default failure message from the resource bundle and do text replacement.">
+	<cffunction name="getGeneratedFailureMessage" returntype="string" access="public" output="false" hint="I retrieve the default failure message from the resource bundle and do text replacement.">
 		<cfargument name="msgKey" type="string" required="yes" hint="The key for the message in the resource bundle." />
 		<cfargument name="args" type="array" required="no" default="#arrayNew(1)#" />
 		<cfargument name="locale" type="string" required="no" default="#variables.defaultLocale#" />

@@ -31,9 +31,15 @@
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 
-	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
+	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
-		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# cannot contain HTML tags.") />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+		
+		<cfdump var="#arguments#" />
+
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
+
+		<cfreturn variables.messageHelper.getGeneratedFailureMessage("defaultMessage_NoHTML",args,arguments.locale) />
 	</cffunction>
 
 </cfcomponent>

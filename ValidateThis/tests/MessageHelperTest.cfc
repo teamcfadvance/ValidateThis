@@ -44,18 +44,18 @@
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="getDefaultFailureMessageShouldReturnSameMessageWhenNotFoundInRB" access="public" returntype="void">
+	<cffunction name="getGeneratedFailureMessageShouldReturnSameMessageWhenNotFoundInRB" access="public" returntype="void">
 		<cfscript>
 			message = "this message does not exist in the RB";
-			assertEquals("The this message does not exist in the RB",msgHelper.getDefaultFailureMessage(message));
+			assertEquals("The this message does not exist in the RB",msgHelper.getGeneratedFailureMessage(message));
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="getDefaultFailureMessageShouldReturnCorrectlyFormattedMessageFromTheRB" access="public" returntype="void">
+	<cffunction name="getGeneratedFailureMessageShouldReturnCorrectlyFormattedMessageFromTheRB" access="public" returntype="void">
 		<cfscript>
 			message = "defaultMessage_Boolean";
 			args = ["propertyDesc"];
-			assertEquals("The propertyDesc must be a valid boolean.",msgHelper.getDefaultFailureMessage(message,args));
+			assertEquals("The propertyDesc must be a valid boolean.",msgHelper.getGeneratedFailureMessage(message,args));
 		</cfscript>  
 	</cffunction>
 	

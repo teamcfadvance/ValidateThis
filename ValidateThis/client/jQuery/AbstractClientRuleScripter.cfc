@@ -23,7 +23,6 @@
 		<cfset variables.ValType = lcase(ListLast(getMetadata(this).name,"_"))/>
 		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.messageHelper = arguments.messageHelper />
-		<cfset variables.DefaultFailureMessage = "" />
 		
 		<cfreturn this />
 	</cffunction>
@@ -32,15 +31,10 @@
 	
 	<cffunction name="generateAddMethod" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="theMethod" type="any" required="yes" hint="The JS method to use for the validator." />
-		<cfargument name="defaultMessage" type="any" required="no" default="" hint="A default message to display on failure." />
 		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfset var theScript = "" />
-		<cfset var failureMessage = "" />
-		
-		<cfif Len(arguments.defaultMessage) GT 0>
-			<cfset failureMessage = getDefaultFailureMessage(arguments.defaultMessage,arguments.locale)/>
-		</cfif>
+		<cfset var failureMessage = getDefaultFailureMessage(arguments.locale) />
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript">
@@ -179,7 +173,7 @@
 	</cffunction>
 	 
 	<cffunction name="getMessageDef" returntype="string" access="public" output="false" hint="I generate the JS script required to display the appropriate failure message.">
-		<cfargument name="message" type="string" default="#getDefaultFailureMessage()#"/>
+		<cfargument name="message" type="string" default="#getGeneratedFailureMessage()#"/>
 		<cfargument name="valType" type="string" default="#getValType()#"/>
 		<cfargument name="locale" type="string" default=""/>
 		
@@ -213,9 +207,10 @@
 
 		<!---  If we don't get anything there, lets go for getTheDefaultFailuremessage for this validation --->
 		<cfif len(failureMessage) eq 0>
-			<cfset failureMessage = getDefaultFailureMessage(arguments.validation,arguments.locale) />
+			<cfset failureMessage = getGeneratedFailureMessage(arguments.validation,arguments.locale) />
 		</cfif>
 		
+		<!---<cfdump var="#variables.ValType#" abort="true" >--->
 		<cfreturn failureMessage/>
 	</cffunction>
 	
@@ -229,16 +224,20 @@
 		</cfif>
 	</cffunction>
 	
-	<!--- TODO: set DefaultFailureMessage property, and or override the getDefaultFailureMessage in a CRS to set custom messages --->
-	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false" hint="I return the translated default failure message from the validation object.">
+	<cffunction name="getGeneratedFailureMessage" returntype="string" access="private" output="false" hint="I return the generated failure message from the resource bundle for this CRS. Override me to customize further.">
 		<cfargument name="validation" type="any"/>
-		<!--- 
-			  If no DefaultFailureMessage proprerty is defined by the CRS then this should ultimately fall back on:
-			  1) any failure messages determined by the custom CRS
-			  2) the CRS generateInitScript's default failure message
-			  3) any jquery.validate plugin default failure messages for base types
-		--->
-		<cfreturn variables.DefaultFailureMessage />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+
+		<cfset var params = arguments.validation.getParameters() />
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
+
+		<cfreturn variables.messageHelper.getGeneratedFailureMessage("defaultMessage_" & variables.ValType,args,arguments.locale) />
+	</cffunction>
+
+
+	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false" hint="I return the generic default failure message for this CRS.">
+		<cfargument name="locale" type="any"/>
+		<cfreturn variables.messageHelper.getGeneratedFailureMessage("genericMessage_" & variables.ValType,[],arguments.locale) />
 	</cffunction>
 
 	<cffunction name="translate" returntype="string" access="private" output="false" hint="I translate a message.">
