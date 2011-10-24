@@ -81,6 +81,8 @@ Adds a constructor property to a bean.
 		addSingleton("ValidateThis.util.ResourceBundle","LoaderHelper");
 		addSingleton(variables.ValidateThisConfig.LocaleLoaderPath,"LocaleLoader");
 		addSingleton(variables.ValidateThisConfig.TranslatorPath,"Translator");
+		addSingleton("ValidateThis.core.RBLocaleLoader","RBLocaleLoader");
+		addSingleton("ValidateThis.core.RBTranslator","RBTranslator");
 		addSingleton("ValidateThis.util.ObjectChecker");
 		addSingleton("ValidateThis.util.FileSystem");
 		addSingleton("ValidateThis.util.TransientFactory");

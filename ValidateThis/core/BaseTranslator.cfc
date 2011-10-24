@@ -36,6 +36,10 @@
 		<cfreturn variables.instance.locales />
 	</cffunction>
 	
+	<cffunction name="getDefaultLocale" returnType="string" access="public" output="false" hint="I return the default locale">
+		<cfreturn variables.defaultLocale />
+	</cffunction>
+	
 	<cffunction name="safeKey" returnType="any" access="public" output="false" hint="I take a message and turn it into a key">
 		<cfargument name="message" type="Any" required="true" />
 		

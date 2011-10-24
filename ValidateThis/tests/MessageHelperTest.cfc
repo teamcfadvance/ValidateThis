@@ -19,11 +19,14 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			msgHelper = CreateObject("component","ValidateThis.core.MessageHelper").init();
+			ValidateThisConfig = getVTConfig();
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			msgHelper = validationFactory.getBean("MessageHelper");
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="messageFormatDoesExpectedTextReplacementAndFormatting" access="public" returntype="void">
+	<cffunction name="messageFormatShouldDoExpectedTextReplacementAndFormatting" access="public" returntype="void">
 		<cfscript>
 			locale = "en_US";
 			theDate = now();
@@ -31,6 +34,28 @@
 			expectedText = "Hey, Bob, you call that a Name, $4.00, #dateFormat(theDate,'full')#, #timeFormat(theDate,'medium')#, 3?";
 			formatted = msgHelper.messageFormat(pattern,["Bob","Name",4,theDate,3.1415926]);
 			assertEquals(expectedText,formatted,locale);
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="createDefaultFailureMessageShouldPrependPrefixToMessage" access="public" returntype="void">
+		<cfscript>
+			message = "message";
+			assertEquals("The message",msgHelper.createDefaultFailureMessage(message));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="getDefaultFailureMessageShouldReturnSameMessageWhenNotFoundInRB" access="public" returntype="void">
+		<cfscript>
+			message = "this message does not exist in the RB";
+			assertEquals("The this message does not exist in the RB",msgHelper.getDefaultFailureMessage(message));
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="getDefaultFailureMessageShouldReturnCorrectlyFormattedMessageFromTheRB" access="public" returntype="void">
+		<cfscript>
+			message = "defaultMessage_Boolean";
+			args = ["propertyDesc"];
+			assertEquals("The propertyDesc must be a valid boolean.",msgHelper.getDefaultFailureMessage(message,args));
 		</cfscript>  
 	</cffunction>
 	

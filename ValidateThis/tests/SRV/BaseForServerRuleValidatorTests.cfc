@@ -115,9 +115,10 @@
 	
 	<cffunction name="getSRV" access="private" returntype="Any">
 		<cfargument name="validation" />
+		<cfargument name="defaultLocale" required="false" default="en_US" />
 		<cfargument name="defaultFailureMessagePrefix" required="false" default="The " />
 		
-		<cfset msgHelper = CreateObject("component","ValidateThis.core.MessageHelper").init(arguments.defaultFailureMessagePrefix) />
+		<cfset msgHelper = CreateObject("component","ValidateThis.core.MessageHelper").init(arguments.defaultLocale,arguments.defaultFailureMessagePrefix) />
 		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.validation#").init(msgHelper) />
 		
 	</cffunction>

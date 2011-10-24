@@ -18,12 +18,14 @@
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ClientScriptWriter">
 		<cfargument name="childObjectFactory" type="any" required="true" />
 		<cfargument name="Translator" type="any" required="true" />
+		<cfargument name="messageHelper" type="any" required="true" />
 		<cfargument name="JSRoot" type="string" required="true" />
 		<cfargument name="extraClientScriptWriterComponentPaths" type="string" required="true" />
 		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
 		<cfargument name="vtFolder" type="string" required="true" />
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.Translator = arguments.Translator />
+		<cfset variables.messageHelper = arguments.messageHelper />
 		<cfset variables.JSRoot = arguments.JSRoot />
 		<cfset variables.extraClientScriptWriterComponentPaths = arguments.extraClientScriptWriterComponentPaths />
 		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
@@ -101,7 +103,7 @@
 	</cffunction>
 	<cffunction name="setRuleScripters" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		<cfset var dirName = listLast(listLast(getMetadata(this).Name,"."),"_") />
-		<cfset var initArgs = {translator=variables.translator,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix,vtFolder=variables.vtFolder} />
+		<cfset var initArgs = {translator=variables.translator,messageHelper=variables.messageHelper,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix,vtFolder=variables.vtFolder} />
 		<cfset variables.RuleScripters = variables.childObjectFactory.loadChildObjects(variables.vtFolder & ".client.#dirName#" & "," & variables.extraClientScriptWriterComponentPaths,"ClientRuleScripter_",structNew(),initArgs) />
 	</cffunction>
 

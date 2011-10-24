@@ -68,9 +68,12 @@ methods in this CFC:
 <cfcomponent output="false" hint="I am a transient Parameter object.">
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I am the constructor">
+		<cfargument name="rbTranslator" type="any" required="true" />
 		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
 
+		<cfset variables.rbTranslator = arguments.rbTranslator />
 		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
+		<cfset variables.defaultLocale = variables.rbTranslator.getDefaultLocale() />
 		<cfreturn this />
 	</cffunction>
 
@@ -118,11 +121,21 @@ methods in this CFC:
 		</cftry>
 	</cffunction>
 
+	<cffunction name="getDefaultFailureMessage" returntype="string" access="public" output="false" hint="I retrieve the default failure message from the resource bundle and do text replacement.">
+		<cfargument name="msgKey" type="string" required="yes" hint="The key for the message in the resource bundle." />
+		<cfargument name="args" type="array" required="no" default="#arrayNew(1)#" />
+		<cfargument name="locale" type="string" required="no" default="#variables.defaultLocale#" />
+		
+		<cfscript>
+			var pattern = variables.rbTranslator.translate(arguments.msgKey,arguments.locale);
+			var formatted = messageFormat(pattern,arguments.args);
+			return createDefaultFailureMessage(formatted);
+		</cfscript>
+	</cffunction>
+
 	<cffunction name="createDefaultFailureMessage" returntype="string" access="public" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">
 		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to add to." />
 		<cfreturn variables.defaultFailureMessagePrefix & arguments.FailureMessage />
 	</cffunction>
 
 </cfcomponent>
-	
-

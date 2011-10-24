@@ -18,6 +18,7 @@
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientValidator">
 		<cfargument name="childObjectFactory" type="any" required="true" />
 		<cfargument name="translator" type="any" required="true" />
+		<cfargument name="messageHelper" type="any" required="true" />
 		<cfargument name="fileSystem" type="any" required="true" />
 		<cfargument name="transientFactory" type="any" required="true" />
 		<cfargument name="JSRoot" type="string" required="true" />
@@ -27,6 +28,7 @@
 
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.translator = arguments.translator />
+		<cfset variables.messageHelper = arguments.messageHelper />
 		<cfset variables.fileSystem = arguments.fileSystem />
 		<cfset variables.transientFactory = arguments.TransientFactory />
 		<cfset variables.JSRoot = arguments.JSRoot />
@@ -164,7 +166,7 @@
 
 	<cffunction name="setScriptWriters" returntype="void" access="private" output="false" hint="I create script writer objects from a list of component paths">
 		
-		<cfset var initArgs = {childObjectFactory=variables.childObjectFactory,translator=variables.translator,JSRoot=variables.JSRoot,extraClientScriptWriterComponentPaths=variables.extraClientScriptWriterComponentPaths,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix,vtFolder=variables.vtFolder} />
+		<cfset var initArgs = {childObjectFactory=variables.childObjectFactory,translator=variables.translator,messageHelper=variables.messageHelper,JSRoot=variables.JSRoot,extraClientScriptWriterComponentPaths=variables.extraClientScriptWriterComponentPaths,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix,vtFolder=variables.vtFolder} />
 		<cfset var thisFolder = getDirectoryFromPath(getCurrentTemplatePath()) />
 		<cfset var swDirs = variables.fileSystem.listDirs(thisFolder) />
 		<cfset var swDir = 0 />

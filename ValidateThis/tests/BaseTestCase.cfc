@@ -80,7 +80,7 @@
 			ValidateThisConfig.JSRoot="js/";
 			ValidateThisConfig.defaultFormName="frmMain";
 			ValidateThisConfig.definitionPath="/validatethis/samples/model/";
-			ValidateThisConfig.localeMap="#StructNew()#";
+			ValidateThisConfig.localeMap={en_US='/ValidateThis/locales/en_US.properties'};
 			ValidateThisConfig.defaultLocale="en_US";
 			ValidateThisConfig.abstractGetterMethod="";
 			ValidateThisConfig.ExtraRuleValidatorComponentPaths="";

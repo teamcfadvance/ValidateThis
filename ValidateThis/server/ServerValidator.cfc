@@ -20,6 +20,7 @@
 		<cfargument name="TransientFactory" type="any" required="true" />
 		<cfargument name="ObjectChecker" type="any" required="true" />
 		<cfargument name="EqualsHelper" type="any" required="true" />
+		<cfargument name="messageHelper" type="any" required="true" />
 		<cfargument name="ExtraRuleValidatorComponentPaths" type="string" required="true" />
 		<cfargument name="injectResultIntoBO" type="string" required="true" />
 		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
@@ -29,6 +30,7 @@
 		<cfset variables.TransientFactory = arguments.TransientFactory />
 		<cfset variables.ObjectChecker = arguments.ObjectChecker />
 		<cfset variables.EqualsHelper = arguments.EqualsHelper />
+		<cfset variables.messageHelper = arguments.messageHelper />
 		<cfset variables.ExtraRuleValidatorComponentPaths = arguments.ExtraRuleValidatorComponentPaths />
 		<cfset variables.injectResultIntoBO = arguments.injectResultIntoBO />
 		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
@@ -145,7 +147,7 @@
 
 	<cffunction name="setRuleValidators" returntype="void" access="private" output="false" hint="I create rule validator objects from a list of component paths">
 		
-		<cfset var initArgs = {defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix,vtFolder=variables.vtFolder} />
+		<cfset var initArgs = {messageHelper=variables.messageHelper,defaultFailureMessagePrefix=variables.defaultFailureMessagePrefix,vtFolder=variables.vtFolder} />
 		<cfset variables.RuleValidators = variables.childObjectFactory.loadChildObjects(variables.vtFolder & ".server,#variables.ExtraRuleValidatorComponentPaths#","ServerRuleValidator_",structNew(),initArgs) />
 
 	</cffunction>

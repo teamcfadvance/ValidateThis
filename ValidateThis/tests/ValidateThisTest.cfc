@@ -58,12 +58,12 @@
 			assertEquals("getValue",VTConfig.abstractGetterMethod);
 			assertEquals("The ",VTConfig.defaultFailureMessagePrefix);
 			assertEquals("frmMain",VTConfig.defaultFormName);
-			assertEquals("",VTConfig.defaultLocale);
+			assertEquals("en_US",VTConfig.defaultLocale);
 			assertEquals("/model/",VTConfig.definitionPath);
 			assertEquals("xml,json",VTConfig.externalFileTypes);
 			assertEquals("",VTConfig.extraFileReaderComponentPaths);
 			assertEquals(false,VTConfig.injectResultIntoBO);
-			assertEquals(structNew(),VTConfig.localeMap);
+			assertEquals({en_US="/ValidateThis/locales/en_US.properties"},VTConfig.localeMap);
 			assertEquals("",VTConfig.BOComponentPaths);
 			assertEquals("",VTConfig.ExtraAnnotationTypeReaderComponentPaths);
 			assertEqualsCase("ValidateThis",VTConfig.vtFolder);
