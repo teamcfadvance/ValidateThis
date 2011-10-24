@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("PastDate");
 			defaultBefore="12/29/1968";
             hasBefore = true;
@@ -54,8 +55,8 @@
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
-			super.setup();
 			
+			super.setup();
             hasBefore = true;
             defaultBefore = "1/2/1969";
             objectValue = arguments.value;
@@ -69,8 +70,8 @@
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
-			super.setup();
 			
+			super.setup();
 			hasBefore = true;
             objectValue = arguments.value;
             configureValidationMock();
@@ -82,7 +83,6 @@
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			hasBefore = true;
             objectValue = "";
             isRequired=false;
@@ -96,7 +96,6 @@
 
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			super.setup();
 			hasBefore = true;
             objectValue = "";
             isRequired=true;

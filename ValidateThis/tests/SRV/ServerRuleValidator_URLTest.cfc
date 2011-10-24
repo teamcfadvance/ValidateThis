@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("URL");
 			shouldPass = ["http://domain.com","https://domain.com","http://www.domain.com","https://secure.domain.com","http://domain.com/","http://domain.com?test=test"];
 			shouldFail = ["domain.com","www.domain.com","htpp://","htpt::/","http;//","domain.com"];
@@ -27,7 +28,6 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			super.setup();
 			objectValue = "";
 			isRequired = true;
             

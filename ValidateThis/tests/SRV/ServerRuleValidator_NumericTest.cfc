@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("Numeric");
 			shouldPass = [1,-1,0,1234567890,-1234567890,1.1,-1.1,123456789.0,-123456789.0];
 			shouldFail = ["a","5a","2010-01-01","5:25pm"];

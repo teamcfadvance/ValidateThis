@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("NotInList");
 			shouldPass = ["beer","burgers","cheese","chips"];
 			shouldFail = ["milk","cookies","ice cream"];
@@ -68,7 +69,6 @@
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			objectValue = "";
             isRequired= false;
             
@@ -83,7 +83,6 @@
 
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			super.setup();
 			objectValue = "";
             isRequired= true;
             

@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("DoesNotContainOtherProperties");
             hasPropertyNames = true;
 			shouldPass = ["goodStuff"];
@@ -41,7 +42,6 @@
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
-			super.setup();
 			objectValue = arguments.value;
 			configureValidationMock();
             
@@ -55,7 +55,6 @@
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
         <cfargument name="value" hint="each item in the shouldFail dataprovider array" />
         <cfscript>
-			super.setup();
             objectValue = arguments.value;
             isRequired = false;
             configureValidationMock();
@@ -76,7 +75,6 @@
 	
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfRequired" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			objectValue = "";
 			hasValue = false;
 			isRequired = true;

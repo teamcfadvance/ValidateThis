@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("date");
 			shouldPass = ["2010-01-01","Jan 1, 2010"];
 			shouldFail = ["a"];

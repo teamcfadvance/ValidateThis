@@ -19,6 +19,7 @@
 
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("FutureDate");
 			defaultAfter="12/29/1968";
 			hasAfter = true;
@@ -85,7 +86,6 @@
 
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
-			super.setup();
 			objectValue = "";
             parameters = {after="12/29/1969"};
             hasAfter = true;
@@ -101,7 +101,6 @@
 
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			super.setup();
 			objectValue = "";
             parameters = {after="12/29/1969"};
             hasAfter = true;

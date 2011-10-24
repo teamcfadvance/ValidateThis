@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("noHTML");
 			shouldPass = ["a","a few words","10 < 1","1 > 10","what if there's only a closing tag />","</","/>"];
 			shouldFail = ["<p>","<p />","<p/>","<tag with='attributes'>test</tag>",'<tag with="attributes">',"some words with an <a>embedded","some words with an <a>embedded</a>","<notARealTag>","<notARealTag />","<p>Tag at the beginning","Tag at the end<p>"];
@@ -27,7 +28,6 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			super.setup();
 		    objectValue = "";
 		    isRequired = true;
             configureValidationMock();

@@ -75,16 +75,6 @@ purpose:		I RBTranslatorTest.cfc
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="defaultLocaleDefinedKeyReturnsTranslatedAndReplacedText" access="public" returntype="void">
-		<cfscript>
-			theKey = "ReplaceChars";
-			locale = "en_US";
-			expectedText = "Hey, Bob, you call that a Name, $4.00?";
-			translated = variables.RBTranslator.translate(theKey,locale);
-			assertEquals(expectedText,variables.RBTranslator.messageFormat(translated,["Bob","Name",4],locale));
-		</cfscript>  
-	</cffunction>
-	
 	<cffunction name="defaultLocaleUnDefinedNonKeyReturnsUnTranslatedText" access="public" returntype="void">
 		<cfscript>
 			theKey = "Some Undefined Key";
@@ -94,7 +84,7 @@ purpose:		I RBTranslatorTest.cfc
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="defaultLocaleUnDefinedProperKeyThrowsExpectedException" access="public" returntype="void" mxunit:expectedException="validatethis.core.RBTranslator.KeyNotDefined">
+	<cffunction name="defaultLocaleUnDefinedProperKeyReturnsUntranslatedText" access="public" returntype="void">
 		<cfscript>
 			theKey = "Undefined_Proper_Key";
 			locale = "en_US";
@@ -112,7 +102,7 @@ purpose:		I RBTranslatorTest.cfc
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="notDefaultLocaleUnDefinedKeyThrowsExpectedException" access="public" returntype="void" mxunit:expectedException="validatethis.core.RBTranslator.KeyNotDefined">
+	<cffunction name="notDefaultLocaleUnDefinedKeyReturnsUntranslatedText" access="public" returntype="void" >
 		<cfscript>
 			theKey = "Some Undefined Key";
 			locale = "fr_FR";

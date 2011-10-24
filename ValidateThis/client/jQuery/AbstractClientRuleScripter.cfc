@@ -54,25 +54,25 @@
 
 	<cffunction name="generateValidationScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="locale" type="Any" required="yes" />
 		<cfargument name="formName" type="Any" required="yes" />
-		<cfargument name="locale" type="Any" required="no" default="" />
 		<cfset var safeSelectorScript = getSafeSelectorScript(argumentCollection=arguments) />
-		<cfset var theScript = generateRuleScript(validation=arguments.validation,selector=safeSelectorScript,locale=arguments.locale) />
+		<cfset var theScript = generateRuleScript(validation=arguments.validation,locale=arguments.locale,selector=safeSelectorScript) />
 		<cfreturn theScript />
 	</cffunction>
 	
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="locale" type="Any" required="yes" />
 		<cfargument name="selector" type="Any" required="yes" />
-		<cfargument name="locale" type="Any" required="no" default="" />
 		
 		<cfreturn generateAddRule(argumentCollection=arguments) />
 	</cffunction>
 	
 	<cffunction name="generateAddRule" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="locale" type="Any" required="yes" />
 		<cfargument name="selector" type="Any" required="yes" />
-		<cfargument name="locale" type="Any" required="no" default="" />
 		<cfset var theScript = "" />
 		
 		<cfset theScript = "#arguments.selector#.rules('add',#generateRuleStruct(argumentCollection=arguments)#);" />
@@ -82,8 +82,8 @@
 	
 	<cffunction name="generateValidationJSON" returntype="any" access="public" output="false" hint="I generate the JS JSON object required to implement the validations.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="locale" type="Any" required="yes" />
 		<cfargument name="formName" type="Any" required="yes" />
-		<cfargument name="locale" type="Any" required="no" default="" />
 		<cfset var theJSON = "" />
 		<cfset arguments.selector = getSafeSelectorScript(argumentCollection=arguments) />
 		<cfset theJSON = '{"#validation.getClientFieldName()#":#generateRuleStruct(argumentCollection=arguments)#}' />
@@ -104,8 +104,8 @@
 
 	<cffunction name="generateRuleStruct" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="locale" type="Any" required="yes" />
 		<cfargument name="selector" type="Any" required="yes" />
-		<cfargument name="locale" type="Any" required="no" default="" />
 		
 		<!--- Determine what failureMessage to use for this Validation --->
 		<cfset var failureMessage = determineFailureMessage(argumentCollection=arguments) />
@@ -206,13 +206,14 @@
 	
 	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I determin the actual failure message to be used.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 
 		<!--- Lets first try getCustomFailureMessage on either the AbstractClientRuleScripter or the CRS implementation --->
 		<cfset var failureMessage = getCustomFailureMessage(arguments.validation) />
 
-		<!---  If we don't get anything there, lets go for getTheDefaultFailuremessage for this validation' --->
+		<!---  If we don't get anything there, lets go for getTheDefaultFailuremessage for this validation --->
 		<cfif len(failureMessage) eq 0>
-			<cfset failureMessage = getDefaultFailureMessage(arguments.validation) />
+			<cfset failureMessage = getDefaultFailureMessage(arguments.validation,arguments.locale) />
 		</cfif>
 		
 		<cfreturn failureMessage/>

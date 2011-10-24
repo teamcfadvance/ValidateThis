@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("Time");
 			shouldPass = ["00:00","23:59","01:00","02:02"];
 			shouldFail = ["a","1","00:60","01:61","24:00","24:60","99:99"];

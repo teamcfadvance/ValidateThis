@@ -24,6 +24,7 @@
 	
 	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I determin the actual failure message to be used.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 		<cfset var conditionDesc = "" />
 		<cfset var parameters = arguments.validation.getParameters() />
 		
@@ -78,8 +79,8 @@
 	
 	<cffunction name="generateRuleStruct" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="locale" type="Any" required="yes" />
 		<cfargument name="selector" type="Any" required="yes" />
-		<cfargument name="locale" type="Any" required="no" default="" />
 
 		<cfscript>
 			if (arguments.validation.hasParameter("DependentFieldName")){
@@ -116,8 +117,8 @@
 	
 	<cffunction name="generateRuleScript" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="locale" type="string" required="yes" />
 		<cfargument name="selector" type="string" required="no" default="" />
-		<cfargument name="locale" type="string" required="no" default="" />
 
 		<cfset var theCondition = "true" />
 		<cfset var ConditionDesc = "" />
@@ -163,7 +164,7 @@
 
 		<cfset parameters = arguments.validation.getParameters() />
 
-		<cfset failureMessage = determineFailureMessage(validation=arguments.validation) />
+		<cfset failureMessage = determineFailureMessage(arguments.validation,arguments.locale) />
 
 		<!--- Deal with various conditions --->
 		<cfif StructKeyExists(arguments.validation.getCondition(),"ClientTest")>

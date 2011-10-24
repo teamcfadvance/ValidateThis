@@ -17,6 +17,7 @@
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
 		<cfargument name="defaultMessage" type="string" required="false" default="The value cannot not contain the value of another property.">
+		<!--- TODO: We can probably do away with the defaultMessage in here as it should never be used --->
 		<cfset var theScript="">
 		<cfset var theCondition="function(value, element, param) {return true;}" />
 		
@@ -45,8 +46,12 @@
 
 	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+
 		<cfset var params = arguments.validation.getParameters() />
-		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as #variables.defaultFailureMessagePrefix##params.ComparePropertyDesc#.") />
+		<cfset var args = [arguments.validation.getPropertyDesc(),params.ComparePropertyDesc] />
+
+		<cfreturn variables.messageHelper.getDefaultFailureMessage("defaultMessage_EqualTo",args,arguments.locale) />
 	</cffunction>
 
 </cfcomponent>

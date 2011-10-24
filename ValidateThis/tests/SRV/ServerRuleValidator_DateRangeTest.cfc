@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("dateRange");
 			//parameters = {from="12/29/1968",until="1/1/1969"};
 			
@@ -40,7 +41,6 @@
     
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			super.setup();
 			objectValue = "";
 			isRequired = true;
 			

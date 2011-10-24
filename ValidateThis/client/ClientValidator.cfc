@@ -25,6 +25,7 @@
 		<cfargument name="extraClientScriptWriterComponentPaths" type="string" required="true" />
 		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
 		<cfargument name="vtFolder" type="string" required="true" />
+		<cfargument name="defaultLocale" type="string" required="true" />
 
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.translator = arguments.translator />
@@ -35,6 +36,7 @@
 		<cfset variables.extraClientScriptWriterComponentPaths = arguments.extraClientScriptWriterComponentPaths />
 		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
 		<cfset variables.vtFolder = arguments.vtFolder />
+		<cfset variables.defaultLocale = arguments.defaultLocale />
 
 		<cfset setScriptWriters() />
 		<cfreturn this />
@@ -44,7 +46,7 @@
 		<cfargument name="Validations" type="any" required="true" />
 		<cfargument name="formName" type="any" required="true" />
 		<cfargument name="JSLib" type="any" required="true" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="#variables.defaultLocale#" />
 		<cfargument name="theObject" type="Any" required="no" default="" />
 
 		<cfset var validation = "" />
@@ -83,7 +85,7 @@
 		<cfargument name="Validations" type="any" required="true" />
 		<cfargument name="formName" type="any" required="true" />
 		<cfargument name="JSLib" type="any" required="true" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="#variables.defaultLocale#" />
 		<cfargument name="theObject" type="Any" required="no" default="" />
 		
 		<cfset var validation = "" />
@@ -105,7 +107,7 @@
 		<cfif IsArray(arguments.Validations) and ArrayLen(arguments.Validations)>
 			<cfloop Array="#arguments.Validations#" index="validation">
 				<cfset theVal.load(validation) />
-				<cfset theJSON = listAppend(theJSON,Trim(theScriptWriter.generateValidationJSON(theVal,arguments.formName,arguments.locale)))/>
+				<cfset theJSON = listAppend(theJSON,Trim(theScriptWriter.generateValidationJSON(theVal,arguments.locale,arguments.formName)))/>
 			</cfloop>
 			
 			<!--- Wrap validation json as array  --->
@@ -152,7 +154,7 @@
 		<cfargument name="scriptType" type="any" required="true" hint="Current valid values are JSInclude, Locale and VTSetup." />
 		<cfargument name="JSLib" type="any" required="true" />
 		<cfargument name="formName" type="any" required="false" default="" />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="locale" type="Any" required="no" default="#variables.defaultLocale#" />
 
 		<cfset var theScript = "" />
 		<cfinvoke component="#variables.ScriptWriters[arguments.JSLib]#" method="generate#arguments.scriptType#Script" locale="#arguments.locale#" formName="#arguments.formName#" returnvariable="theScript" />
