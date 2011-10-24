@@ -19,6 +19,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			super.setup();
 			SRV = getSRV("MinPatternsMatch");
 			parameters = {minMatches=1,pattern_Name="[a-z]]"};
 			shouldPass = ["a"];
@@ -31,7 +32,6 @@
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
-			super.setup();
             objectValue = arguments.value;
 
             configureValidationMock();
@@ -45,6 +45,7 @@
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail">
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
+			// not sure why this is needed, but it was there before and removing it makes the test fail
 			super.setup();
 			objectValue = arguments.value;
 
@@ -60,7 +61,6 @@
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
 		<cfscript>
-			super.setup();
 			objectValue = "";
 			isRequired = true;
             

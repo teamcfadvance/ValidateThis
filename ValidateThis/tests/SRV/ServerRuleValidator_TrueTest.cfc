@@ -66,16 +66,7 @@
 			validation.verifyTimes(1).setFailureMessage("The PropertyDesc must be a valid true boolean."); 
 		</cfscript>  
 	</cffunction>
+	--->
 	
-	<cffunction name="failureMessageIsPrefixedByOverridenPrefix" access="public" returntype="void">
-		<cfscript>
-			SRV = getSRV("AssertTrue","");
-			validation.getObjectValue().returns("abc");
-			validation.setFailureMessage("PropertyDesc must be a valid true boolean.").returns();
-			SRV.validate(validation);
-			validation.verifyTimes(1).fail("{*}"); 
-			validation.verifyTimes(1).setFailureMessage("PropertyDesc must be a valid true boolean."); 
-		</cfscript>  
-	</cffunction> --->
 	
 </cfcomponent>

@@ -17,8 +17,11 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
 		<cfif shouldTest(arguments.validation) AND NOT IsValid("Boolean",arguments.validation.getObjectValue())>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid boolean.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getDefaultFailureMessage("defaultMessage_Boolean",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
 	

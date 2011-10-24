@@ -20,14 +20,19 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			
+			ValidateThisConfig = getVTConfig();
+			ValidateThisConfig = {definitionPath="/validatethis/tests/Fixture/models/cf9"};
+			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
+			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
+			msgHelper = validationFactory.getBean("MessageHelper");
+			locale = "en_US";
+
 			// local variables used by common tests and methods
-			needsFacade=false;
 			emptyValueShouldFail = true;
 			
 			// mocks used
 			validation = mock();		// see  core/Validation.cfc
 			theObject = mock();
-			validateThis = "";
 			
 			//Default Validation Mock Values
 			propertyDesc="PropertyDesc";
@@ -44,21 +49,8 @@
 	<cffunction name="tearDown" access="public" returntype="void">
 	</cffunction>
 	
-	<cffunction name="createRealFacade" access="private">
-		<cfscript>
-  		   // Integration Testing
-			VTConfig = {definitionPath="/validatethis/tests/Fixture/models/cf9"};
-			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
-			
-		</cfscript>
-	</cffunction>
-	
 	<cffunction name="configureValidationMock" access="private">
 		<cfscript>
-
-			if (needsFacade eq true){
-				createRealFacade();
-			}
 
 			//validation.setIsSuccess(false).returns();
 			validation.getValidateThis().returns(ValidateThis);
@@ -90,7 +82,7 @@
 			
 			configureValidationMock();			
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -104,7 +96,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			if (emptyValueShouldFail) {
 				validation.verifyTimes(1).fail("{*}");
 			} else { 
@@ -118,8 +110,15 @@
 		<cfargument name="defaultLocale" required="false" default="en_US" />
 		<cfargument name="defaultFailureMessagePrefix" required="false" default="The " />
 		
-		<cfset msgHelper = CreateObject("component","ValidateThis.core.MessageHelper").init(arguments.defaultLocale,arguments.defaultFailureMessagePrefix) />
 		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.validation#").init(msgHelper) />
+		
+	</cffunction>
+
+	<cffunction name="executeValidate" access="private" returntype="Any">
+		<cfargument name="validation" />
+		<cfargument name="defaultLocale" required="false" default="en_US" />
+
+		<cfset SRV.validate(arguments.validation,arguments.defaultLocale) />
 		
 	</cffunction>
 

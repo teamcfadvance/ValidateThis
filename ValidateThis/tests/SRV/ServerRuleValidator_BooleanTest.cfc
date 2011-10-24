@@ -29,7 +29,7 @@
 			objectValue = true;
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -40,7 +40,7 @@
             failureMessage = "The PropertyDesc must be a valid boolean.";
             configureValidationMock();
             
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
@@ -51,20 +51,8 @@
             failureMessage = "The PropertyDesc must be a valid boolean.";
             configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail(failureMessage); 
-		</cfscript>  
-	</cffunction>
-	
-	<cffunction name="failureMessageIsPrefixedByOverridenPrefix" access="public" returntype="void">
-		<cfscript>
-			SRV = getSRV("Boolean","en_US","");
-			objectValue = "abc";
-            failureMessage = "PropertyDesc must be a valid boolean.";
-            configureValidationMock();
-
-			SRV.validate(validation);
-			validation.verifyTimes(1).fail(failureMessage);
 		</cfscript>  
 	</cffunction>
 	

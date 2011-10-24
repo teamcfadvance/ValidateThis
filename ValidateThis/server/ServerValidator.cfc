@@ -25,6 +25,7 @@
 		<cfargument name="injectResultIntoBO" type="string" required="true" />
 		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
 		<cfargument name="vtFolder" type="string" required="true" />
+		<cfargument name="defaultLocale" type="string" required="true" />
 		
 		<cfset variables.childObjectFactory = arguments.childObjectFactory />
 		<cfset variables.TransientFactory = arguments.TransientFactory />
@@ -35,6 +36,7 @@
 		<cfset variables.injectResultIntoBO = arguments.injectResultIntoBO />
 		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
 		<cfset variables.vtFolder = arguments.vtFolder />
+		<cfset variables.defaultLocale = arguments.defaultLocale />
 
 		<cfset setRuleValidators() />
 				
@@ -49,6 +51,7 @@
 		<cfargument name="objectList" type="array" required="false" default="#arrayNew(1)#" />
 		<cfargument name="debuggingMode" type="string" required="false" default="#arguments.Result.getDebuggingMode()#" />
 		<cfargument name="ignoreMissingProperties" type="boolean" required="false" default="false" />
+		<cfargument name="locale" type="string" required="false" default="#variables.defaultLocale#" />
 
 		<cfset var v = "" />
 		<cfset var theFailure = 0 />
@@ -92,7 +95,7 @@
 						</cfif>
 						<cfif conditionPasses>
 							<cfset theVal.setIsRequired(arguments.BOValidator.propertyIsRequired(v.PropertyName)) />
-							<cfset variables.RuleValidators[v.ValType].validate(theVal) />
+							<cfset variables.RuleValidators[v.ValType].validate(theVal,arguments.locale) />
 							<cfif NOT theVal.getIsSuccess()>
 								<cfset arguments.Result.setIsSuccess(false) />
 								<cfif not theVal.hasResult()>

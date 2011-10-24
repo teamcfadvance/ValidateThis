@@ -23,6 +23,7 @@
 	
 	<cffunction name="validate" returntype="void" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object being used to perform the validation." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 
 		<cfthrow type="validatethis.server.AbstractServerRuleValidator.methodnotdefined"
 				message="I am an abstract object, hence the validate method must be overriden in a concrete object." />
