@@ -54,19 +54,16 @@
 		</cfscript>  
 	</cffunction>
 
-	
-	<!--- TODO: Test Failure Messages
-	
 	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
 		<cfscript>
-			validation.getObjectValue().returns("abc");
-			validation.setFailureMessage("The PropertyDesc must be a valid false boolean.").returns();
+			objectValue = true;
+            failureMessage = "The PropertyDesc must be a false boolean.";
+			
+			configureValidationMock();
+			
 			executeValidate(validation);
-			validation.verifyTimes(2).setIsSuccess(false); 
-			validation.verifyTimes(1).setFailureMessage("The PropertyDesc must be a valid false boolean."); 
+			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
-	
-	--->
 	
 </cfcomponent>

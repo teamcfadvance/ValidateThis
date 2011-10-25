@@ -17,10 +17,13 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 
 		<cfset var Parameters = arguments.validation.getParameters() />
+		<cfset var args = [arguments.validation.getPropertyDesc(),Parameters.Max] />
+
 		<cfif shouldTest(arguments.validation) AND Val(arguments.validation.getObjectValue()) GT Parameters.Max>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be no more than #Parameters.Max#.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_Max",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
 	

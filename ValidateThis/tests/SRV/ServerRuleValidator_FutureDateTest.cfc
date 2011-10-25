@@ -114,4 +114,34 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "";
+            hasAfter = false;
+            isRequired=true;
+            failureMessage = "The PropertyDesc must be a date in the future.";
+            
+            configureValidationMock();
+            
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="failureMessageIsCorrectWithAfter" access="public" returntype="void">
+		<cfscript>
+			objectValue = "";
+            parameters = {after="12/29/1969"};
+            hasAfter = true;
+            defaultAfter="12/29/1969";
+            isRequired=true;
+            failureMessage = "The PropertyDesc must be a date in the future. The date entered must come after 12/29/1969.";
+            
+            configureValidationMock();
+            
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
 </cfcomponent>

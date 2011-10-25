@@ -97,5 +97,20 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "beer";
+            failureMessage = "The PropertyDesc was not found in the list: milk,cookies,ice cream.";
+			
+			configureValidationMock();
+			
+			validation.hasParameter("list").returns(true);
+			validation.getParameterValue("list").returns(parameters.list);
+
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
 </cfcomponent>
 

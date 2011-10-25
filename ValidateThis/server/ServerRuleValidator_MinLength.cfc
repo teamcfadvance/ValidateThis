@@ -17,10 +17,13 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 
 		<cfset var Parameters = arguments.validation.getParameters() />
+		<cfset var args = [arguments.validation.getPropertyDesc(),Parameters.MinLength] />
+
 		<cfif shouldTest(arguments.validation) AND Len(arguments.validation.getObjectValue()) LT Parameters.MinLength>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be at least #Parameters.MinLength# characters long.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_MinLength",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
 	

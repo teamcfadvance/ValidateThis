@@ -74,5 +74,22 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "";
+			isRequired = true;
+            failureMessage = "0 patterns were matched but 1 were required.";
+            
+            configureValidationMock();
+            
+            validation.getParameterValue("minMatches",1).returns(1);
+            validation.getParameterValue("pattern_Name").returns("^(test)");
+
+			executeValidate(validation);
+			
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+		
 </cfcomponent>
 

@@ -17,6 +17,7 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 
 		<cfset var parameters = arguments.validation.getParameters() />
 		<cfset var theVal = arguments.validation.getObjectValue()/>
@@ -26,6 +27,7 @@
 		<cfset var theObject = 0/>
 		<cfset var theResult = arguments.validation.getValidateThis().newResult()/>
 		<cfset var validateArgumentCollection = {context=context,theResult=theResult,objectList=arguments.validation.getObjectList()} />
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
 		
 		<cfif not shouldTest(arguments.validation)><cfreturn/></cfif>
 
@@ -34,20 +36,20 @@
 			<cfif isJSON(theVal)>
 				<cfset theVal = deserializeJSON(theVal)/>
 			<cfelse>
-				<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("validation failed because a valid object cannot be a simple value.")) />
+				<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_IsValidObjectSimpleValue",args,arguments.locale)) />
 				<cfreturn/>
 			</cfif>
 		</cfif> 
 				
 		<cfif isStruct(theVal) and (not isObject(theVal) and structCount(theVal) eq 0)>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("validation failed because a valid structure cannot be empty.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_IsValidObjectEmptyStruct",args,arguments.locale)) />
 			<cfreturn/>
 		<cfelseif isStruct(theVal) and arguments.validation.hasParameter("objectType")>
 			<cfset objectType = arguments.validation.getParameterValue("objectType")>
 		</cfif>
 		
 		<cfif  isArray(theVal) and arrayLen(theVal) eq 0>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("validation failed because a valid array cannot be empty.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_IsValidObjectEmptyArray",args,arguments.locale)) />
 			<cfreturn/>
 		<cfelseif isArray(theVal)>
 			<cfset toCheck = theVal/>

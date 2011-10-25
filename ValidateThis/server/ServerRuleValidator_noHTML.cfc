@@ -17,10 +17,12 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
-		<cfset var Parameters = arguments.validation.getParameters() />
-		<!--- <cfparam name="Parameters.allowedTags" default=""/> --->
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
+
 		<cfif shouldTest(arguments.validation) and reFindNoCase("</?\w+((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>",arguments.validation.getObjectValue(),1,false)>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# cannot contain HTML tags.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_NoHTML",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
 	

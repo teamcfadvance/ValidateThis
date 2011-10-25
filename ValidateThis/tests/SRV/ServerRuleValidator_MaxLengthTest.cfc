@@ -49,4 +49,16 @@
 		hint="Need to override this from the base test as it isn't valid in here">
 	</cffunction>
 	
-</cfcomponent>
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = 123456;
+            failureMessage = "The PropertyDesc must be no more than 5 characters long.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction
+
+></cfcomponent>

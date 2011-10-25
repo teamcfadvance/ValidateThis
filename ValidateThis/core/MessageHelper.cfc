@@ -125,10 +125,14 @@ methods in this CFC:
 		<cfargument name="msgKey" type="string" required="yes" hint="The key for the message in the resource bundle." />
 		<cfargument name="args" type="array" required="no" default="#arrayNew(1)#" />
 		<cfargument name="locale" type="string" required="no" default="#variables.defaultLocale#" />
+		<cfargument name="addPrefix" type="boolean" required="no" default="true" />
 		
 		<cfscript>
 			var pattern = variables.rbTranslator.translate(arguments.msgKey,arguments.locale);
 			var formatted = messageFormat(pattern,arguments.args);
+			if (not arguments.addPrefix) {
+				return formatted;
+			}
 			return createDefaultFailureMessage(formatted);
 		</cfscript>
 	</cffunction>

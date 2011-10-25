@@ -35,5 +35,17 @@
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
-	
+
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "<p>";
+            failureMessage = "The PropertyDesc cannot contain HTML tags.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+		
 </cfcomponent>

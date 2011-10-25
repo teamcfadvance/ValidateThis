@@ -26,4 +26,16 @@
 		</cfscript>
 	</cffunction>
 	
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "a";
+            failureMessage = "The PropertyDesc must be an integer.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
 </cfcomponent>
