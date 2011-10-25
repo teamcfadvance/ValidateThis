@@ -35,8 +35,6 @@
 		<cfargument name="validation" type="any"/>
 		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 		
-		<cfdump var="#arguments#" />
-
 		<cfset var args = [arguments.validation.getPropertyDesc()] />
 
 		<cfreturn variables.messageHelper.getGeneratedFailureMessage("defaultMessage_NoHTML",args,arguments.locale) />

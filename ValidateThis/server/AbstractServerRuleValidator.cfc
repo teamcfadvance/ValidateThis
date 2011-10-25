@@ -17,7 +17,11 @@
 
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ServerRuleValidator">
 		<cfargument name="messageHelper" type="any" required="true" />
+		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
+
 		<cfset variables.messageHelper = arguments.messageHelper />
+		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
+
 		<cfreturn this />
 	</cffunction>
 	

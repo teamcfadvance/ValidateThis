@@ -21,6 +21,7 @@
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ScriptWriter = validationFactory.getBean("ClientValidator").getScriptWriter("jQuery");
 			validation = validationFactory.getBean("Validation");
+			locale = "en_US";
 			createValStruct();
 		</cfscript>
 	</cffunction>
@@ -426,7 +427,7 @@
 		<cfscript>
 			valStruct.ValType = "required";
 			validation.load(valStruct);
-			script = ScriptWriter.generateValidationScript(validation,"frmMain");
+			script = ScriptWriter.generateValidationScript(validation,"frmMain",locale);
 			
 			assertEquals("fm['firstname'].rules(""add"",{required:true,messages:{required:""the first name is required.""}});",script);
 			
@@ -438,7 +439,7 @@
 			valStruct.ValType = "required";
 			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
 			validation.load(valStruct);
-			script = ScriptWriter.generateValidationScript(validation,"frmMain");
+			script = ScriptWriter.generateValidationScript(validation,"frmMain",locale);
 			
 			assertEquals("fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue().length > 0;},messages:{required:""the first name is required if you specify a value for the lastname.""}});",script);
 
@@ -450,7 +451,7 @@
 			valStruct.ValType = "required";
 			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
 			validation.load(valStruct);
-			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2",locale);
 			
 			assertEquals("fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue().length > 0;},messages:{required:""the first name is required if you specify a value for the lastname.""}});",script);
 
@@ -463,7 +464,7 @@
 			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
 			valStruct.Parameters.DependentPropertyValue = {value="Silverberg",type="value"};
 			validation.load(valStruct);
-			script = ScriptWriter.generateValidationScript(validation,"frmMain");
+			script = ScriptWriter.generateValidationScript(validation,"frmMain",locale);
 			
 			assertEquals("fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue() == 'silverberg';},messages:{required:""the first name is required based on what you entered for the lastname.""}});",script);
 
@@ -476,7 +477,7 @@
 			valStruct.Parameters.DependentPropertyName = {value="LastName",type="value"};
 			valStruct.Parameters.DependentPropertyValue = {value="Silverberg",type="value"};
 			validation.load(valStruct);
-			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2",locale);
 
 			assertEquals("fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue() == 'silverberg';},messages:{required:""the first name is required based on what you entered for the lastname.""}});",script);
 
@@ -491,7 +492,7 @@
 			valStruct.Parameters.DependentPropertyDesc = {value="lastname",type="value"};
 			
 			validation.load(valStruct);
-			script = ScriptWriter.generateValidationScript(validation,"frmMain");
+			script = ScriptWriter.generateValidationScript(validation,"frmMain",locale);
 			assertEquals("fm['FirstName'].rules(""add"",{required:function(el){return $("":input[name='User[LastName]']"").getvalue().length > 0;},messages:{required:""the First Name is required if you specify a value for the lastname.""}});",script);
 			
 		</cfscript>  
@@ -504,7 +505,7 @@
 			valStruct.Parameters.DependentFieldName = {value="User[LastName]",type="value"};
 			valStruct.Parameters.DependentPropertyDesc = {value="lastname",type="value"};
 			validation.load(valStruct);
-			script = ScriptWriter.generateValidationScript(validation,"frm-Main2");
+			script = ScriptWriter.generateValidationScript(validation,"frm-Main2",locale);
 			
 			assertEquals("fm['FirstName'].rules(""add"",{required:function(el){return $("":input[name='User[LastName]']"").getvalue().length > 0;},messages:{required:""the First Name is required if you specify a value for the lastname.""}});",script);
 			

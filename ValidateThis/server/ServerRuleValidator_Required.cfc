@@ -17,30 +17,57 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 
-		<cfset var parameters = arguments.validation.getParameters() />
-		<cfset var theCondition = arguments.validation.getCondition() />
-		<cfset var conditionDesc = "" />
-		<cfset var propertyDesc = "" />
-		<cfset var theValue = arguments.validation.getObjectValue() />
+		<cfscript>
 		
-		<cfif isSimpleValue(theValue) AND Len(theValue) EQ 0>
-			<cfif StructKeyExists(theCondition,"Desc")>
-				<cfset conditionDesc =  " " & theCondition.Desc />
-			<cfelseif StructKeyExists(parameters,"DependentPropertyName")>
-				<cfif StructKeyExists(parameters,"DependentPropertyDesc")>
-					<cfset propertyDesc = parameters.DependentPropertyDesc />
-				<cfelse>
-					<cfset propertyDesc = arguments.validation.getValidateThis().getPropertyDescription(objectType=arguments.validation.getObjectType(),propertyName=parameters.DependentPropertyName) />
-				</cfif>
-				<cfif StructKeyExists(parameters,"DependentPropertyValue")>
-					<cfset conditionDesc = " based on what you entered for " & lCase(variables.defaultFailureMessagePrefix) & propertyDesc />
-				<cfelse>
-					<cfset conditionDesc = " if you specify a value for " & lCase(variables.defaultFailureMessagePrefix) & propertyDesc />
-				</cfif>
-			</cfif>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#conditionDesc#.")) />
-		</cfif>
+		var parameters = arguments.validation.getParameters();
+		var theCondition = arguments.validation.getCondition();
+		var conditionDesc = "";
+		var otherPropertyDesc = "";
+		var theValue = arguments.validation.getObjectValue();
+		var args = [arguments.validation.getPropertyDesc()];
+		var msgKey = "defaultMessage_Required";
+
+		if (isSimpleValue(theValue) AND Len(theValue) EQ 0) {
+			
+			if (StructKeyExists(theCondition,"Desc")) {
+
+				msgKey = "defaultMessage_Required_Condition";
+				arrayAppend(args,theCondition.Desc);
+
+			} else {
+				
+				if (StructKeyExists(parameters,"DependentPropertyName")) {
+					
+					arrayAppend(args,variables.defaultFailureMessagePrefix);
+
+					if (StructKeyExists(parameters,"DependentPropertyDesc")) {
+						
+						otherPropertyDesc = parameters.DependentPropertyDesc;
+
+					} else {
+						
+						otherPropertyDesc = arguments.validation.getValidateThis().getPropertyDescription(objectType=arguments.validation.getObjectType(),propertyName=parameters.DependentPropertyName);
+						
+					}
+
+					arrayAppend(args,otherPropertyDesc);
+
+					if (StructKeyExists(parameters,"DependentPropertyValue")) {
+						
+						msgKey = "defaultMessage_Required_DependentPropertyValue";
+
+					} else {
+						
+						msgKey = "defaultMessage_Required_DependentProperty";
+
+					}
+				}
+			}
+			fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage(msgKey,args,arguments.locale));
+		}
+		</cfscript>
 	</cffunction>
 	
 </cfcomponent>
