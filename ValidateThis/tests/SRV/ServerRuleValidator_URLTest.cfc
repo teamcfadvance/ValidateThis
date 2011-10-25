@@ -36,5 +36,17 @@
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
+
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "aaa";
+            failureMessage = "The PropertyDesc must be a valid url.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
 	
 </cfcomponent>
