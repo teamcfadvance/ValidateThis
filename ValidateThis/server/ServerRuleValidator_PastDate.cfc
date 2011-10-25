@@ -17,18 +17,25 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
+
 		<cfset var theVal = arguments.validation.getObjectValue()/>
 		<cfset var theDate = now()/>
-		<cfset var parameterMessages = ""/>
 		
+		<cfset var msgKey = "defaultMessage_PastDate" />
+
 		<cfif arguments.validation.hasParameter("before")>
 			<cfset theDate = arguments.validation.getParameterValue("before")/>
-			<cfset parameterMessages = " The date entered must come before #theDate#.">
+			<cfset msgKey = "defaultMessage_PastDate_WithBefore" />
+			<cfset arrayAppend(args,theDate) />
 		</cfif>
 		
 		<cfif shouldTest(arguments.validation) AND (not isValid("date",theVal) OR (isValid("date",theVal) AND not dateCompare(theVal,theDate) eq -1))>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the past.#parameterMessages#")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage(msgKey,args,arguments.locale)) />
 		</cfif>
+
 	</cffunction>
 	
 </cfcomponent>

@@ -25,5 +25,17 @@
 			shouldFail = ["a","5a","2010-01-01","5:25pm"];
 		</cfscript>
 	</cffunction>
+
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "aaa";
+            failureMessage = "The PropertyDesc must be a number.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
 	
 </cfcomponent>

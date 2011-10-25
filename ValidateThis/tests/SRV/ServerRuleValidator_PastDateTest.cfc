@@ -106,5 +106,36 @@
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
+
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			hasBefore = false;
+            objectValue = "";
+            isRequired=true;
+            failureMessage = "The PropertyDesc must be a date in the past.";
+            
+            configureValidationMock();
+            
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="failureMessageIsCorrectWithAfter" access="public" returntype="void">
+		<cfscript>
+			objectValue = "";
+            parameters = {before="12/29/1969"};
+            hasBefore = true;
+            defaultBefore="12/29/1969";
+            isRequired=true;
+            failureMessage = "The PropertyDesc must be a date in the past. The date entered must come before 12/29/1969.";
+            
+            configureValidationMock();
+            
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
 		
 </cfcomponent>

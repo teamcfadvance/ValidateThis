@@ -17,10 +17,13 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
+
         <cfset var theVal = arguments.validation.getObjectValue()/>
 		<cfset var theList = ""/>
 		<cfset var theDelim= ","/>
-		<cfset var parameterMessages = ""/>
 
 		<cfif arguments.validation.hasParameter("list")>
 			<cfset theList = arguments.validation.getParameterValue("list")/>
@@ -31,7 +34,8 @@
 		</cfif>
 
 		<cfif shouldTest(arguments.validation) AND listFindNoCase(theList,theVal,theDelim)>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was found in the list: #theList#. #parameterMessages#")) />
+			<cfset arrayAppend(args,theList) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_NotInList",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
 	
