@@ -53,13 +53,6 @@ Definition Usage Example:
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 	
-	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
-		<cfargument name="validation" type="any"/>
-
-        <cfset var params = arguments.validation.getParameters()/>
-		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#.") />
-	</cffunction>
-
 	<cffunction name="getParameterDef" returntype="string" access="public" output="false" hint="I generate the JS script required to pass the appropriate paramters to the validator method.">
 		<cfargument name="validation" type="any"/>
 		
@@ -67,5 +60,14 @@ Definition Usage Example:
 		<cfreturn serializeJSON(listToArray(trim(params.propertyNames))) />
 		
 	</cffunction>
+	
+	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
+
+		<cfreturn [arguments.parameters.propertyNames] />
+		
+	</cffunction>
+
+
 
 </cfcomponent>

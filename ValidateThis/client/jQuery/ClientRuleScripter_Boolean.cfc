@@ -29,10 +29,5 @@
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 
-	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
-		<cfargument name="validation" type="any"/>
-		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid boolean value.") />
-	</cffunction>
-
 </cfcomponent>
 

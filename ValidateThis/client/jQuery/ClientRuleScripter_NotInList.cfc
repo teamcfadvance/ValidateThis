@@ -51,13 +51,15 @@
 		<cfreturn serializeJSON(options) />
 	</cffunction>
 
-	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
-		<cfargument name="validation" type="any"/>
-		<cfset var failureMessage = variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# was found in list:") />
-		<cfif arguments.validation.hasParameter("list")>
-			<cfset failureMessage = failureMessage & " (#arguments.validation.getParameterValue('list')#)." />
+	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
+
+		<cfset var args = [""] />
+		<cfif structKeyExists(arguments.parameters,"list")>
+			<cfset args = [arguments.parameters.list] />
 		</cfif>
-		<cfreturn failureMessage />
+		<cfreturn args />
+		
 	</cffunction>
 
 </cfcomponent>
