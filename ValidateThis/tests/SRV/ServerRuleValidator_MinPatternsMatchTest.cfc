@@ -37,7 +37,7 @@
             configureValidationMock();
 			validation.getParameterValue("minMatches",1).returns(0);
 			validation.getParameterValue("pattern_Name").returns("[a-z]]");
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -54,7 +54,7 @@
 			validation.getParameterValue("minMatches",1).returns(1);
 			validation.getParameterValue("pattern_Name").returns("test");
 
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -69,7 +69,7 @@
             validation.getParameterValue("minMatches",1).returns(1);
             validation.getParameterValue("pattern_Name").returns("^(test)");
             
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

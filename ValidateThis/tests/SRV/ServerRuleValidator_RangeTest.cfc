@@ -30,7 +30,7 @@
             objectValue = 5;
             configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -40,7 +40,7 @@
             objectValue = 1;
             configureValidationMock();
 
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -50,7 +50,7 @@
             objectValue = 11;
             configureValidationMock();
 
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

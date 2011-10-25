@@ -100,7 +100,7 @@
 
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -112,7 +112,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
@@ -124,7 +124,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
@@ -136,7 +136,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
@@ -147,7 +147,7 @@
 
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -160,7 +160,7 @@
 
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -174,7 +174,7 @@
 
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).failWithResult("{*}"); 
 			
 		</cfscript>  
@@ -187,7 +187,7 @@
 
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(arrayLen(objectValue)).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -201,7 +201,7 @@
 
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(arrayLen(objectValue)).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -214,7 +214,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -227,7 +227,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -240,7 +240,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -253,7 +253,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -266,7 +266,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -279,7 +279,7 @@
 			
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).failWithResult("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -292,14 +292,13 @@
 			companyB.setCompanyName("a");
 			userB.setUserName("a");
 			
-			createRealFacade();
 			validation = validateThis.getBean("TransientFactory").newValidation(companyA);
 			validation.setObjectList([companyA]);
 			valStruct = {parameters={},propertyName="user"};
 
 			validation.load(valStruct);
 
-			SRV.validate(validation);
+			executeValidate(validation);
 			failures = validation.getResult().getFailures();
 			assertEquals(3,arrayLen(failures));
 			expectedStruct = failures[1];

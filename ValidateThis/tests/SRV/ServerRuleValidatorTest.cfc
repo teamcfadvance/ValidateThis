@@ -23,24 +23,11 @@
             
             configureValidationMock();			
             
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="defaultFailureMessagesShouldBePrependedWithTheOverriddenPrefix" access="public" returntype="void">
-		<cfscript>
-			SRV = getSRV("required","");
-			objectValue = "";
-            failureMessage = "PropertyDesc is required.";
-            
-            configureValidationMock();         
-            
-            SRV.validate(validation);
-            validation.verifyTimes(1).fail(failureMessage); 
-		</cfscript>  
-	</cffunction>
-	
 	<cffunction name="propertyIsRequiredShouldReturnTrueIfPropertyIsRequired" access="public" returntype="void">
 		<cfscript>
 			SRV = getSRV("email");

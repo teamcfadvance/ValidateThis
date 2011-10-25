@@ -40,7 +40,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 			objectValue = "abc";
 
             configureValidationMock();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -50,7 +50,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 			objectValue = mock();
 
             configureValidationMock();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -60,7 +60,7 @@ purpose:		I ServerRuleValidatorTest.cfc
 			objectValue = "";
 			
             configureValidationMock();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

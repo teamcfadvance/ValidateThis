@@ -34,7 +34,7 @@
             
             configureValidationMock();                     			
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -47,7 +47,7 @@
             
             configureValidationMock(); 
                    
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -64,7 +64,7 @@
             
             configureValidationMock();  
                   
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -80,7 +80,7 @@
             
             configureValidationMock();
             
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

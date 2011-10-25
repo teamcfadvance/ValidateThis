@@ -31,7 +31,7 @@
 		    objectValue = "";
 		    isRequired = true;
             configureValidationMock();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

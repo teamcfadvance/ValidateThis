@@ -46,7 +46,7 @@
             validation.hasParameter("list").returns(true);
             validation.getParameterValue("list").returns(parameters.list);
             
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -62,7 +62,7 @@
             validation.hasParameter("list").returns(true);
             validation.getParameterValue("list").returns(parameters.list);
             
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -76,7 +76,7 @@
             
             validation.hasParameter("list").returns(true);
             validation.getParameterValue("list").returns(parameters.list);
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -90,7 +90,7 @@
             
             validation.hasParameter("list").returns(true);
             validation.getParameterValue("list").returns(parameters.list);
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

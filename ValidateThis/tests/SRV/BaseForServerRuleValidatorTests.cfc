@@ -110,7 +110,7 @@
 		<cfargument name="defaultLocale" required="false" default="en_US" />
 		<cfargument name="defaultFailureMessagePrefix" required="false" default="The " />
 		
-		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.validation#").init(msgHelper) />
+		<cfreturn CreateObject("component","ValidateThis.server.ServerRuleValidator_#arguments.validation#").init(msgHelper,arguments.defaultFailureMessagePrefix) />
 		
 	</cffunction>
 

@@ -48,7 +48,7 @@
 			makePublic(SRV,"shouldTest");
             assertEquals(true,SRV.shouldTest(validation));
             
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -62,7 +62,7 @@
             makePublic(SRV,"shouldTest");
             assertEquals(true,SRV.shouldTest(validation));
             
-            SRV.validate(validation);
+            executeValidate(validation);
             validation.verifyTimes(1).fail("{*}"); 
         </cfscript>  
     </cffunction>
@@ -80,7 +80,7 @@
 			isRequired = true;
             configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
             validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

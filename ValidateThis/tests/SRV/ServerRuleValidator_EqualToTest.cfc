@@ -42,7 +42,7 @@
 			otherObjectValue = "12345";
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -54,7 +54,7 @@
 			otherObjectValue = "";
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -67,7 +67,7 @@
 			otherObjectValue = "";
 			configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
@@ -83,7 +83,7 @@
 			otherObjectValue = "";
             configureValidationMock();
 			
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>

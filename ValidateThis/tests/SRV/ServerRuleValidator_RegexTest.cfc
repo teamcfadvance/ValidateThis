@@ -30,7 +30,7 @@
 			objectValue= "Mr.";
 			configureValidationMock();
 
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -39,7 +39,7 @@
 		<cfscript>
 			objectValue= 1;
             configureValidationMock();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -49,7 +49,7 @@
             objectValue= 1;
 			parameters = {ServerRegex="^(Dr|Prof|Mr|Mrs|Ms|Miss)(\.)?$"};
             configureValidationMock();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

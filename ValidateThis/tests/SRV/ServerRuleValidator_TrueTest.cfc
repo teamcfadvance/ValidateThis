@@ -29,7 +29,7 @@
 			objectValue = true;
             
             configureValidationMock();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -39,7 +39,7 @@
 			objectValue = false;
             
             configureValidationMock();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -49,7 +49,7 @@
 			objectValue = "abc";
             
             configureValidationMock();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -61,7 +61,7 @@
 		<cfscript>
 			validation.getObjectValue().returns("abc");
 			validation.setFailureMessage("The PropertyDesc must be a valid true boolean.").returns();
-			SRV.validate(validation);
+			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
 			validation.verifyTimes(1).setFailureMessage("The PropertyDesc must be a valid true boolean."); 
 		</cfscript>  
