@@ -54,14 +54,5 @@
 		
 	</cffunction>
 
-	<!---
-	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
-		<cfargument name="validation" type="any"/>
-
-		<cfset var params = arguments.validation.getParameters()/>
-		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must contain a date between #params['from']# and #params['until']#.") />
-	</cffunction>
-	--->
-
 </cfcomponent>
 

@@ -44,14 +44,11 @@
 		<cfreturn """:input[name='#params.ComparePropertyName#']""" />
 	</cffunction>
 
-	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
-		<cfargument name="validation" type="any"/>
-		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
 
-		<cfset var params = arguments.validation.getParameters() />
-		<cfset var args = [arguments.validation.getPropertyDesc(),params.ComparePropertyDesc] />
-
-		<cfreturn variables.messageHelper.getGeneratedFailureMessage("defaultMessage_EqualTo",args,arguments.locale) />
+		<cfreturn [variables.defaultFailureMessagePrefix,arguments.parameters.ComparePropertyDesc] />
+		
 	</cffunction>
 
 </cfcomponent>
