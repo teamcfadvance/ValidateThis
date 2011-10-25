@@ -17,12 +17,15 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+
 		<cfset var fromDate = arguments.validation.getParameterValue("from")/>
 		<cfset var untilDate = arguments.validation.getParameterValue("until")/>
 		<cfset var theDate = arguments.validation.getObjectValue()/>
+		<cfset var args = [arguments.validation.getPropertyDesc(),fromDate,untilDate] />
 		
 		<cfif shouldTest(arguments.validation) AND ((theDate lt fromDate) or (theDate gt untilDate))>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date between #fromDate# and #untilDate#.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_DateRange",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
 	

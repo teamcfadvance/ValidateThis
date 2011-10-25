@@ -90,43 +90,11 @@
 		</cfscript>  
 	</cffunction>
 	
-	<!---
-	<cffunction name="EqualToValidationShouldWorkAsExpected" access="public" returntype="void">
-		<cfscript>
-			// cannot seem to get mock objectChecker to work with call to two getters, so using the real one
-			objectChecker = CreateObject("component","ValidateThis.util.ObjectChecker").init();
-			ComparePropertyName = "LastName";
-			ComparePropertyDesc = "Last Name";
-			Parameters = {ComparePropertyName = ComparePropertyName, ComparePropertyDesc = ComparePropertyDesc};
-			theValue = "Bobby";
-			theObject.setFirstName(theValue);
-			theObject.setLastName(theValue);
-			Validation = validate(theObject,"EqualTo",Parameters,"");
-			assertTrue(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"");
-			theValue = "Bob";
-			theObject.setLastName(theValue);
-			Validation = validate(theObject,"EqualTo",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"The #Validation.getPropertyDesc()# must be the same as the #ComparePropertyDesc#.");
-		</cfscript>  
+	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void" hint="Inherited method that is not applicable to this test case.">
 	</cffunction>
-
-	<cffunction name="CustomValidationOnCFCShouldWorkAsExpected" access="public" returntype="void">
-		<cfscript>
-			methodName = "customMethod";
-			Parameters = {methodName = methodName};
-			theObject.setCustomReturn(true);
-			Validation = validate(theObject,"Custom",Parameters,"");
-			assertTrue(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"");
-			theObject.setCustomReturn(false);
-			Validation = validate(theObject,"Custom",Parameters,"");
-			assertFalse(Validation.getIsSuccess());
-			assertEquals(Validation.getFailureMessage(),"No!");
-		</cfscript>  
+	
+	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Inherited method that is not applicable to this test case.">
 	</cffunction>
-	--->
 
 	<cffunction name="validate" access="private" returntype="Any">
 		<cfargument name="theObject" />

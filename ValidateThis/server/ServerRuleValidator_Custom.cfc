@@ -17,6 +17,7 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 		<cfset var customResult = 0 />
 		<cfset var failureMessage = "A custom validator failed." />
 		<cfset var theObject = arguments.validation.getTheObject() />

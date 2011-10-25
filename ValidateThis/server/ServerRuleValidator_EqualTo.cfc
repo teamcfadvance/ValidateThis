@@ -17,15 +17,20 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+
 
 		<cfset var otherPropertyName = arguments.validation.getParameterValue("ComparePropertyName") />
 		<cfset var otherVal = arguments.validation.getObjectValue(otherPropertyName) />
 		<cfset var otherDesc = arguments.validation.getParameterValue("ComparePropertyDesc","") />
+		<cfset var args = [arguments.validation.getPropertyDesc(),lCase(variables.defaultFailureMessagePrefix)] />
+
 		<cfif len(otherDesc) eq 0>
 			<cfset otherDesc = arguments.validation.getValidateThis().getPropertyDescription(objectType=arguments.validation.getObjectType(),propertyName="otherPropertyName") />
 		</cfif>
 		<cfif arguments.validation.getObjectValue() NEQ otherVal>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be the same as #lCase(variables.defaultFailureMessagePrefix)##otherDesc#.")) />
+			<cfset arrayAppend(args,otherDesc) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_EqualTo",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
 

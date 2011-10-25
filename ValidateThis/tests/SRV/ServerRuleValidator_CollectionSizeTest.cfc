@@ -261,4 +261,19 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "asdfasdfasdfasdfasdf";
+			parameters={min=1,max=10};
+			hasMin = true;
+			hasMax = true;
+            failureMessage = "The PropertyDesc size is not between 1 and 10.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
 </cfcomponent>

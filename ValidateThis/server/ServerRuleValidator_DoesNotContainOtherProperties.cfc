@@ -22,7 +22,7 @@ Usage Example:
 
 <cfcomponent output="false" extends="AbstractServerRuleValidator" hint="Fails if the validated property contains the values of nother properties">
 	<cfscript>
-		function validate(validation){
+		function validate(validation,locale){
 			var value = arguments.validation.getObjectValue();
 			var params = arguments.validation.getParameters();
 			var property = "";
@@ -30,6 +30,7 @@ Usage Example:
 			var propValue = "";
 			var propertyNames = "";
 			var theDelim= ",";
+			var args = [arguments.validation.getPropertyDesc(),params.propertyNames];
 
 		 	if (not shouldTest(arguments.validation) or len(value) eq 0) {
 			   return;
@@ -44,7 +45,7 @@ Usage Example:
 				property = propertyNames[propIndex];
 				propValue = arguments.validation.getObjectValue(property);
 				if(propValue NEQ "" AND value contains propValue){
-					fail(validation, variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must not contain the values of properties named: #params.propertyNames#."));
+					fail(validation, variables.messageHelper.getGeneratedFailureMessage("defaultMessage_DoesNotContainOtherProperties",args,arguments.locale));
 				}
 			}
 		}

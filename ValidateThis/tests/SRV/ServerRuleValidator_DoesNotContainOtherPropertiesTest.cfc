@@ -85,4 +85,19 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+            objectValue = "badStuff";
+            isRequired = false;
+            failureMessage = "The PropertyDesc must not contain the values of properties named: name.";
+            configureValidationMock();
+            
+            makePublic(SRV,"shouldTest");
+            assertEquals(true,SRV.shouldTest(validation));
+            
+            executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>

@@ -47,6 +47,18 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "bob.silverberg";
+            failureMessage = "The PropertyDesc must be a valid email address.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
 </cfcomponent>
 
 

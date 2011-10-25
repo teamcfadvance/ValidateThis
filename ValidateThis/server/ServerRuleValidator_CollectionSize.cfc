@@ -52,6 +52,7 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 		<cfset var theVal = arguments.validation.getObjectValue()/>
 		<cfset var minLength = 1/>
 		<cfset var maxLength  = 1/>
@@ -61,6 +62,8 @@
 		<cfset var low = false/>
 		<cfset var high = false/>
 		<cfset var valid = true/>
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
+		<cfset var msgKey = "" />
 
 		<cfif not shouldTest(arguments.validation)><cfreturn/></cfif>
 		
@@ -104,16 +107,18 @@
 			}
 			
 			if(not valid){
+				arrayAppend(args,minLength);
 				if (isRangeCheck){
-					parameterMessages = parameterMessages &  " between #minLength# and #maxLength#";
+					msgKey = "defaultMessage_CollectionSize_Between";
+					arrayAppend(args,maxLength);
 				} else {
-					parameterMessages = parameterMessages &  " equal or greater than #minLength#";
+					msgKey = "defaultMessage_CollectionSize_GTE";
 				}
 			}
 		</cfscript>
 		
 		<cfif not valid>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# size is not #parameterMessages#.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage(msgKey,args,arguments.locale)) />
 		</cfif>
 		
 	</cffunction>

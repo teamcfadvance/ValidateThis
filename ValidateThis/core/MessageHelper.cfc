@@ -133,7 +133,7 @@ methods in this CFC:
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="createDefaultFailureMessage" returntype="string" access="public" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">
+	<cffunction name="createDefaultFailureMessage" returntype="string" access="private" output="false" hint="I prepend the defaultFailureMessagePrefix to a message.">
 		<cfargument name="FailureMessage" type="any" required="yes" hint="A Failure message to add to." />
 		<cfreturn variables.defaultFailureMessagePrefix & arguments.FailureMessage />
 	</cffunction>
