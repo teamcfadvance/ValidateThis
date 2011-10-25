@@ -46,13 +46,20 @@
 		<cfreturn serializeJSON(options) />
 	</cffunction>
 
-	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
+	<cffunction name="getGeneratedFailureMessage" returntype="string" access="private" output="false" hint="I return the generated failure message from the resource bundle for this CRS. Override me to customize further.">
 		<cfargument name="validation" type="any"/>
-		<cfset var failureMessage = variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a date in the future.") />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
+
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
+		<cfset var msgKey = "defaultMessage_FutureDate" />
+
 		<cfif arguments.validation.hasParameter("after")>
-			<cfset failureMessage = failureMessage & " The date entered must come after #arguments.validation.getParameterValue('after')#." />
+			<cfset theDate = arguments.validation.getParameterValue("after")/>
+			<cfset msgKey = "defaultMessage_FutureDate_WithAfter" />
+			<cfset arrayAppend(args,theDate) />
 		</cfif>
-		<cfreturn failureMessage />
+		<cfreturn variables.messageHelper.getGeneratedFailureMessage(msgKey,args,arguments.locale) />
 	</cffunction>
 
 </cfcomponent>

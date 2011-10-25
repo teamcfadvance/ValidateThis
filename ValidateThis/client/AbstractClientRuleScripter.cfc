@@ -17,7 +17,10 @@
 
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
 		<cfargument name="Translator" type="Any" required="yes" />
+		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
+
 		<cfset variables.Translator = arguments.Translator />
+		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
 		<cfreturn this />
 	</cffunction>
 

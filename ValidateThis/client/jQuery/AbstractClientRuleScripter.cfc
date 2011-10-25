@@ -19,10 +19,12 @@
 	<cffunction name="init" access="Public" returntype="any" output="false" hint="I build a new ClientRuleScripter">
 		<cfargument name="Translator" type="Any" required="yes" />
 		<cfargument name="messageHelper" type="any" required="true" />
-		
+		<cfargument name="defaultFailureMessagePrefix" type="string" required="true" />
+
 		<cfset variables.ValType = lcase(ListLast(getMetadata(this).name,"_"))/>
 		<cfset variables.Translator = arguments.Translator />
 		<cfset variables.messageHelper = arguments.messageHelper />
+		<cfset variables.defaultFailureMessagePrefix = arguments.defaultFailureMessagePrefix />
 		
 		<cfreturn this />
 	</cffunction>
@@ -102,11 +104,12 @@
 		<cfargument name="selector" type="Any" required="yes" />
 		
 		<!--- Determine what failureMessage to use for this Validation --->
-		<cfset var failureMessage = determineFailureMessage(argumentCollection=arguments) />
+		<cfset var parameters = arguments.validation.getParameters() />
+		<cfset var failureMessage = determineFailureMessage(arguments.validation,arguments.locale,parameters) />
 		<cfset var theStruct = "" />
 		
 		<cfset var conditionDef = getConditionDef(argumentCollection=arguments)>
-		<cfset var ruleDef = getRuleDef(arguments.validation) />
+		<cfset var ruleDef = getRuleDef(arguments.validation,parameters) />
 		<cfset var messageDef = getMessageDef(failureMessage,getValType(),arguments.locale)/>
 		
 		<cfif len(ruleDef) GT 0>
@@ -119,6 +122,7 @@
 	
 	<cffunction name="getRuleDef" returntype="any" access="public" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
 		<cfset var parameterDef = getParameterDef(arguments.validation)/>
 		<cfset var ruleDef = '"#getValType()#":#parameterDef#' />
 		<cfreturn ruleDef />
@@ -201,13 +205,14 @@
 	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I determin the actual failure message to be used.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
 
 		<!--- Lets first try getCustomFailureMessage on either the AbstractClientRuleScripter or the CRS implementation --->
 		<cfset var failureMessage = getCustomFailureMessage(arguments.validation) />
 
 		<!---  If we don't get anything there, lets go for getTheDefaultFailuremessage for this validation --->
 		<cfif len(failureMessage) eq 0>
-			<cfset failureMessage = getGeneratedFailureMessage(arguments.validation,arguments.locale) />
+			<cfset failureMessage = getGeneratedFailureMessage(arguments.validation,arguments.locale,arguments.parameters) />
 		</cfif>
 		
 		<!---<cfdump var="#variables.ValType#" abort="true" >--->
@@ -227,11 +232,18 @@
 	<cffunction name="getGeneratedFailureMessage" returntype="string" access="private" output="false" hint="I return the generated failure message from the resource bundle for this CRS. Override me to customize further.">
 		<cfargument name="validation" type="any"/>
 		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
 
-		<cfset var params = arguments.validation.getParameters() />
+		<!--- TODO: Here is where the failure message is being retrieved from the RB --->
 		<cfset var args = [arguments.validation.getPropertyDesc()] />
+		<cfset args.addAll(getFailureArgs(arguments.parameters)) />
 
 		<cfreturn variables.messageHelper.getGeneratedFailureMessage("defaultMessage_" & variables.ValType,args,arguments.locale) />
+	</cffunction>
+
+	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
+		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfreturn [] />
 	</cffunction>
 
 

@@ -16,39 +16,39 @@
 <cfcomponent output="false" name="ClientRuleScripter_Required" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the required validation.">
 	<cfproperty name="DefaultFailureMessage" type="string" default="This field is required.">
 	
-	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false" hint="I return the translated default failure message from the validation object.">
-		<cfargument name="validation" type="any"/>
-		<!---  create a default (basic) 'Required' FailureMessage --->
-		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required.")  />
-	</cffunction>
-	
 	<cffunction name="determineFailureMessage" returntype="any" access="private" output="false" hint="I determin the actual failure message to be used.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
-		<cfset var conditionDesc = "" />
+		<cfset var otherInput = "" />
 		<cfset var parameters = arguments.validation.getParameters() />
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
+		<cfset var msgKey = "defaultMessage_Required" />
+
 		
 		<!--- Lets first try getCustomFailureMessage on either the AbstractClientRuleScripter or the CRS implementation --->
 		<cfset var failureMessage = getCustomFailureMessage(arguments.validation) />
-		
+
 		<cfif len(failureMessage) eq 0>
-			<cfif arguments.validation.hasParameter("DependentInputDesc") and len(parameters.DependentInputDesc) gt 0>
+
+			<cfif arguments.validation.hasParameter("DependentInputName") and len(parameters.DependentInputName) gt 0>
+				
+				<cfif arguments.validation.hasParameter("DependentInputDesc") and len(parameters.DependentInputDesc) gt 0>
+					<cfset otherInput = parameters.DependentInputDesc />
+				<cfelse>
+					<cfset otherInput = parameters.DependentInputName />
+				</cfif>
+				
+				<cfset arrayAppend(args,variables.defaultFailureMessagePrefix) />
+				<cfset arrayAppend(args,otherInput) />
 	             <cfif len(parameters.DependentInputValue) gt 0>
-	                <cfset ConditionDesc = " based on what you entered for the " & parameters.DependentInputDesc />
+					<cfset msgKey = "defaultMessage_Required_DependentPropertyValue" />
 	            <cfelse>
-	                <cfset ConditionDesc = " if you specify a value for the " & parameters.DependentInputDesc />
+					<cfset msgKey = "defaultMessage_Required_DependentProperty" />
 	            </cfif>
-	            
-	            <cfset failureMessage = variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# is required#ConditionDesc#.")  />
-	            
 	    	</cfif>
+	        <cfset failureMessage = variables.messageHelper.getGeneratedFailureMessage(msgKey,args,arguments.locale)  />
 		</cfif>
 	
-		<!---  If we don't have anything yet, lets use getTheDefaultFailuremessage for this validation' --->
-		<cfif len(failureMessage) eq 0>
-			<cfset failureMessage = getGeneratedFailureMessage(arguments.validation) />
-		</cfif>
-
 		<cfreturn failureMessage />
 	</cffunction>
 	

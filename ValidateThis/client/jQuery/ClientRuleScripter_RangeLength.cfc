@@ -16,11 +16,17 @@
 <cfcomponent output="false" name="ClientRuleScripter_RangeLength" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the range validation.">
 
 	<cffunction name="getRuleDef" returntype="any" access="private" output="false" hint="I return just the rule definition which is required for the generateAddRule method.">
-		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
+		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
 
-		<cfset var parameters = arguments.validation.getParameters() />
+		<cfreturn """rangelength"":[#arguments.parameters.minlength#,#arguments.parameters.maxlength#]" />
+		
+	</cffunction>
 
-		<cfreturn """rangelength"":[#parameters.minlength#,#parameters.maxlength#]" />
+	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
+
+		<cfreturn [#arguments.parameters.minlength#,#arguments.parameters.maxlength#] />
 		
 	</cffunction>
 

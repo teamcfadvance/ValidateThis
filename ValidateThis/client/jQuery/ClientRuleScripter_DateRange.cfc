@@ -47,12 +47,21 @@
 		<cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
 	</cffunction>
 
+	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
+
+		<cfreturn [#arguments.parameters.from#,#arguments.parameters.until#] />
+		
+	</cffunction>
+
+	<!---
 	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
 		<cfargument name="validation" type="any"/>
 
 		<cfset var params = arguments.validation.getParameters()/>
 		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must contain a date between #params['from']# and #params['until']#.") />
 	</cffunction>
+	--->
 
 </cfcomponent>
 
