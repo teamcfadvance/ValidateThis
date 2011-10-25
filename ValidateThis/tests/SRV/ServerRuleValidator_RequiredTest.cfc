@@ -72,6 +72,18 @@ purpose:		I ServerRuleValidatorTest.cfc
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
 	</cffunction>
 
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = "";
+            failureMessage = "The PropertyDesc is required.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>
 
 

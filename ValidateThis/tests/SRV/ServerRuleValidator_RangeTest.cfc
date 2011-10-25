@@ -54,5 +54,17 @@
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
+
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = 1;
+            failureMessage = "The PropertyDesc must be between 5 and 10.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
 		
 </cfcomponent>

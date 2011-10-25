@@ -17,10 +17,13 @@
 
 	<cffunction name="validate" returntype="any" access="public" output="false" hint="I perform the validation returning info in the validation object.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
+		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 
 		<cfset var Parameters = arguments.validation.getParameters() />
 		<cfset var theRegex = "" />
 		<cfset var theValue = arguments.validation.getObjectValue() />
+		<cfset var args = [arguments.validation.getPropertyDesc()] />
+
 		<cfif StructKeyExists(Parameters,"serverRegex")>
 			<cfset theRegex = Parameters.serverRegex />
 		<cfelseif StructKeyExists(Parameters,"regex")>
@@ -29,8 +32,9 @@
 			<cfthrow type="validatethis.server.ServerRuleValidator_Regex.missingParameter"
 			message="Either a regex or a serverRegex parameter must be defined for a regex rule type." />
 		</cfif>
+
 		<cfif shouldTest(arguments.validation) AND REFind(theRegex,theValue) EQ 0>
-			<cfset fail(arguments.validation,variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must match the specified pattern.")) />
+			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_Regex",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
 	

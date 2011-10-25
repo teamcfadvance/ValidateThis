@@ -54,4 +54,16 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+		<cfscript>
+			objectValue = 1;
+            failureMessage = "The PropertyDesc must match the specified pattern.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>

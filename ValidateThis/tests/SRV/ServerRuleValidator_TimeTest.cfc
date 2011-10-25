@@ -51,39 +51,17 @@
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
-	
-	<!---
-	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
+
+	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
 		<cfscript>
-			super.setup();
-			objectValue = "";
-            parameters = {after="12/29/1969"};
-            hasAfter = true;
-            defaultAfter="12/29/1969";
-            isRequired=false;
-            
-            configureValidationMock();  
-                  
+			objectValue = "aaa";
+            failureMessage = "The PropertyDesc must be a valid time, between 00:00 and 23:59.";
+			
+			configureValidationMock();
+			
 			executeValidate(validation);
-			validation.verifyTimes(0).fail("{*}"); 
+			validation.verifyTimes(1).fail(failureMessage); 
 		</cfscript>  
 	</cffunction>
-	
-	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void" hint="Overriding this as it actually should return true.">
-		<cfscript>
-			super.setup();
-			objectValue = "";
-            parameters = {after="12/29/1969"};
-            hasAfter = true;
-            defaultAfter="12/29/1969";
-            isRequired=true;
-            
-            configureValidationMock();
-            
-			executeValidate(validation);
-			validation.verifyTimes(1).fail("{*}"); 
-		</cfscript>  
-	</cffunction>
-	--->
 	
 </cfcomponent>
