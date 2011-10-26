@@ -294,7 +294,7 @@
 			
 			validation = validateThis.getBean("TransientFactory").newValidation(companyA);
 			validation.setObjectList([companyA]);
-			valStruct = {parameters={},propertyName="user"};
+			valStruct = {parameters={},propertyName="user",PropertyDesc="user"};
 
 			validation.load(valStruct);
 

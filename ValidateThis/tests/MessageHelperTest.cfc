@@ -39,6 +39,7 @@
 	
 	<cffunction name="createDefaultFailureMessageShouldPrependPrefixToMessage" access="public" returntype="void">
 		<cfscript>
+			makePublic(msgHelper,"createDefaultFailureMessage");
 			message = "message";
 			assertEquals("The message",msgHelper.createDefaultFailureMessage(message));
 		</cfscript>  

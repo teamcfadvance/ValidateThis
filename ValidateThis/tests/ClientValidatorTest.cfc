@@ -90,7 +90,8 @@
 			assertTrue(script contains "$form_testFormName.validate({ignore:'.ignore'});");
 			assertTrue(script contains "fm['clientFieldName'] = $("":input[name='clientFieldName']"",$form_testFormName);","invalid input selector");
 			assertTrue(script contains "fm['clientFieldName'].rules","invalid field selector");
-			assertTrue(script contains 'rules(''add'',{"inlist":{"list":"1,2"},"messages":{"inlist":"The propertyDesc was not found in list: (1,2)."}});',"Invalid Rules('add') script:" & htmlEditFormat(script));
+			debug(script);
+			assertTrue(script contains 'rules(''add'',{"inlist":{"list":"1,2"},"messages":{"inlist":"The propertyDesc was not found in the list: 1,2."}});',"Invalid Rules('add') script:" & htmlEditFormat(script));
 		</cfscript>  
 	</cffunction>
 
@@ -128,8 +129,8 @@
 			assertTrue(structKeyExists(theStruct.messages.clientFieldName,"inlist"),"Validation JSON does not contain inlist message for clientFieldName");
 			
 			// Test actual Rule and Message contents
-			assertEquals(theStruct.rules.clientFieldName.inlist,"{list={1,2}}");
-			assertEquals(theStruct.messages.clientFieldName.inlist,"The propertyDesc was not found in list: (1,2).");
+			assertEquals("{list={1,2}}",theStruct.rules.clientFieldName.inlist);
+			assertEquals("The PropertyDesc was not found in the list: 1,2.",theStruct.messages.clientFieldName.inlist);
 		</cfscript>  
 	</cffunction>
 	

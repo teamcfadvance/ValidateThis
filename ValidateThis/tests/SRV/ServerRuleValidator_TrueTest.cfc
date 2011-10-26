@@ -57,7 +57,7 @@
 	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
 		<cfscript>
 			objectValue = "aaa";
-            failureMessage = "The PropertyDesc must be a true boolean.";
+            failureMessage = "The PropertyDesc must be true.";
 			
 			configureValidationMock();
 			
