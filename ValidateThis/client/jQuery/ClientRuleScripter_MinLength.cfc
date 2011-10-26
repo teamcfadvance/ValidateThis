@@ -15,6 +15,13 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_MinLength" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the minlength validation.">
 
+	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
+
+		<cfreturn [arguments.parameters.minLength] />
+		
+	</cffunction>
+
 </cfcomponent>
 
 

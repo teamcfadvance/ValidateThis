@@ -26,7 +26,7 @@
 	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
 		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
 
-		<cfreturn [#arguments.parameters.minlength#,#arguments.parameters.maxlength#] />
+		<cfreturn [arguments.parameters.minlength,arguments.parameters.maxlength] />
 		
 	</cffunction>
 

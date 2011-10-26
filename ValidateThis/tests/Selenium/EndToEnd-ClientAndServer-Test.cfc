@@ -40,7 +40,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         assertEquals("That Nickname is already taken. Please try a different Nickname.", selenium.getText(errLocator("Nickname")));
         assertEquals("Only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.", selenium.getText(errLocator("Salutation")));
         assertEquals("The Last Name is required if you specify a value for the First Name.", selenium.getText(errLocator("LastName")));
-        assertEquals("Please enter a valid number.", selenium.getText(errLocator("HowMuch")));
+        assertEquals("The how much money would you like? must be a number.", selenium.getText(errLocator("HowMuch")));
         assertEquals("If you are allowing communication, you must choose a communication method.", selenium.getText(errLocator("CommunicationMethod")));
         selenium.type("UserName", "xxxx");
         selenium.click("//button[@type='submit']");
@@ -133,7 +133,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         assertEquals("The Nickname must not contain the values of properties named: UserName,UserPass.", selenium.getText(errLocator("Nickname")));
         selenium.type("Nickname", "a");
         selenium.click("//button[@type='submit']");
-        assertEquals("Did not match the patterns for the Nickname.", selenium.getText(errLocator("Nickname")));
+        assertEquals("The Nickname did not match the required number of patterns.", selenium.getText(errLocator("Nickname")));
         selenium.type("Nickname", "aB?");
         selenium.click("//button[@type='submit']");
         assertEquals("The Nickname must be a valid url.", selenium.getText(errLocator("Nickname")));
@@ -156,6 +156,9 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         selenium.type("FirstName", "2001-01-01");
         selenium.click("//button[@type='submit']");
         assertEquals("The First Name must be a valid date between 2010-01-01 and 2011-12-31.", selenium.getText(errLocator("FirstName")));
+        selenium.type("LastName", "1.1");
+        selenium.click("//button[@type='submit']");
+        assertEquals("The Last Name must be an integer.", selenium.getText(errLocator("LastName")));
         selenium.type("FirstName", "");
         selenium.click("//button[@type='submit']");
         assertEquals("", selenium.getText(errLocator("FirstName")));

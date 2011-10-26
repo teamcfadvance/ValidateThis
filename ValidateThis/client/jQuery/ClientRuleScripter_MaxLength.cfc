@@ -15,6 +15,13 @@
 --->
 <cfcomponent output="false" name="ClientRuleScripter_MaxLength" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the maxlength validation.">
 
+	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
+		<cfargument name="parameters" type="any" required="yes" hint="The parameters stored in the validation object." />
+
+		<cfreturn [arguments.parameters.maxLength] />
+		
+	</cffunction>
+
 </cfcomponent>
 
 

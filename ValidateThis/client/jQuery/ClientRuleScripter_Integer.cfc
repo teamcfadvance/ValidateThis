@@ -22,6 +22,14 @@
 		
 	</cffunction>
 
+	<cffunction name="getMessageDef" returntype="string" access="public" output="false" hint="I generate the JS script required to display the appropriate failure message.">
+		<cfargument name="message" type="string" default="#getGeneratedFailureMessage()#"/>
+		<cfargument name="valType" type="string" default="#getValType()#"/>
+		<cfargument name="locale" type="string" default=""/>
+		
+		<cfreturn super.getMessageDef(arguments.message,"digits",arguments.locale) />
+	</cffunction>
+
 </cfcomponent>
 
 

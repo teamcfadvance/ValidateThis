@@ -82,7 +82,7 @@
 			<cfloop collection="#scripters#" item="scripter">
 				<cfif structKeyExists(scripters[scripter],"generateInitScript")>
 					<!--- strip out JS comments and whitespace --->
-					#ReReplace( ReReplace( scripters[scripter].generateInitScript(arguments.locale), "//[^\n\r]{1,}", "", "all" ), "[\n\r\t]", "", "all" )#
+					#ReReplace( ReReplace( scripters[scripter].generateInitScript(), "//[^\n\r]{1,}", "", "all" ), "[\n\r\t]", "", "all" )#
 				</cfif>
 			</cfloop>
 		});

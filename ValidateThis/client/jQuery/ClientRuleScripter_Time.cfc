@@ -16,7 +16,7 @@
 <cfcomponent output="false" name="ClientRuleScripter_Time" extends="AbstractClientRuleScripter" hint="I am responsible for generating JS code for the Time validation.">
 
 	<cffunction name="generateInitScript" returntype="any" access="public" output="false" hint="I generate the validation 'method' function for the client during fw initialization.">
-		<cfargument name="defaultMessage" type="string" required="false" default="#getDefaultFailureMessage()#">
+		<cfargument name="defaultMessage" type="string" required="false" default="The value must be a valid time.">
 		<cfset var theScript="" />
 		<cfset var theCondition="" />
 		
@@ -27,11 +27,6 @@
 		}</cfsavecontent>
 
 		 <cfreturn generateAddMethod(theCondition,arguments.defaultMessage)/>
-	</cffunction>
-
-	<cffunction name="getGeneratedFailureMessage" returntype="any" access="private" output="false">
-		<cfargument name="validation" type="any"/>
-		<cfreturn variables.messageHelper.createDefaultFailureMessage("#arguments.validation.getPropertyDesc()# must be a valid time, between 00:00 and 23:59.") />
 	</cffunction>
 
 </cfcomponent>

@@ -76,10 +76,23 @@
 			</rule>
 		</property>
 		<property name="LastName">
+			<rule type="integer" contexts="*" />
 		</property>
 		<property name="LikeOther" desc="What do you like?">
 		</property>
 		<property name="HowMuch" desc="How much money would you like?">
+			<rule type="max" contexts="*">
+				<param name="max" value="1000" />
+			</rule>
+			<rule type="min" contexts="*">
+				<param name="min" value="5" />
+			</rule>
+			<rule type="maxLength" contexts="*">
+				<param name="maxLength" value="2" />
+			</rule>
+			<rule type="minLength" contexts="*">
+				<param name="minLength" value="1" />
+			</rule>
 		</property>
 		<property name="AllowCommunication" />
 		<property name="CommunicationMethod">

@@ -33,14 +33,13 @@
 	
 	<cffunction name="generateAddMethod" returntype="any" access="public" output="false" hint="I generate the JS script required to implement a validation.">
 		<cfargument name="theMethod" type="any" required="yes" hint="The JS method to use for the validator." />
-		<cfargument name="locale" type="Any" required="no" default="" />
+		<cfargument name="defaultMessage" type="string" required="yes">
 
 		<cfset var theScript = "" />
-		<cfset var failureMessage = getDefaultFailureMessage(arguments.locale) />
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		$.validator.addMethod("#getValType()#",#arguments.theMethod#,$.format("#failureMessage#"));
+		$.validator.addMethod("#getValType()#",#arguments.theMethod#,$.format("#arguments.defaultMessage#"));
 		</cfsavecontent>
 		</cfoutput>
 
@@ -215,7 +214,6 @@
 			<cfset failureMessage = getGeneratedFailureMessage(arguments.validation,arguments.locale,arguments.parameters) />
 		</cfif>
 		
-		<!---<cfdump var="#variables.ValType#" abort="true" >--->
 		<cfreturn failureMessage/>
 	</cffunction>
 	
@@ -244,12 +242,6 @@
 	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
 		<cfreturn [] />
-	</cffunction>
-
-
-	<cffunction name="getDefaultFailureMessage" returntype="any" access="private" output="false" hint="I return the generic default failure message for this CRS.">
-		<cfargument name="locale" type="any"/>
-		<cfreturn variables.messageHelper.getGeneratedFailureMessage("genericMessage_" & variables.ValType,[],arguments.locale) />
 	</cffunction>
 
 	<cffunction name="translate" returntype="string" access="private" output="false" hint="I translate a message.">

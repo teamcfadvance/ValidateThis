@@ -33,7 +33,7 @@ Example Usage:
 			
 			if(complexity LT minMatches){
 				args = [complexity,minMatches];
-				fail(validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_MinPatternsMatch",args,arguments.locale,false));
+				fail(validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_MinPatternsMatch_Server",args,arguments.locale,false));
 			}
 		}
 	</cfscript>
