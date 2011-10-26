@@ -256,4 +256,20 @@ Version 0.99
 Version 1.0 RC1
 ---------------
 - removed the query.validate.pack.js file as it is no longer provided by the plugin author - users pointing directly to that file will have to point to query.validate.min.js instead
-
+- generated failure messages are now being pulled from the file /ValidateThis/locales/en_US.properties, for both client and server
+- added support for optionality in client rule scripters that required it
+- added Qunit tests for CRSs
+- performance improvements to the JavaScript generated for client-side validations
+- added an ignoreMissingProperties argument to the validate() method which defaults to false
+- fixed a bug which caused recursive failure information to be added to the Result object
+- converted Selenium end-to-end tests to use CFSelenium
+- fixed bug where the client daterange validator did not ignore blank fields
+- fixed bug where the desc attribute was ignored if it was the same as the name attribute.
+- added an ANT build file
+- fixed issue #26 - addressed issues with the use of $ in CRSs
+- fixed issue #17 - replaced use of local struct with var scope
+- added custom inheritance checking to work around significant performance problem with the CF in-build isInstanceOf()
+- fixes for case-sensitivity issues of ValidateThis folder
+- now using protocol-agnostic URLs to pull in scripts from CDN
+- added project README.md file
+- changed links in sample apps to be relative
