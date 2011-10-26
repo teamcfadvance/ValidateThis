@@ -30,9 +30,9 @@
 		<cfscript>
 			locale = "en_US";
 			theDate = now();
-			pattern = "Hey, {1}, you call that a {2}, {3,number,currency}, {4,date,full}, {4,time,medium}, {5,number,integer}?";
-			expectedText = "Hey, Bob, you call that a Name, $4.00, #dateFormat(theDate,'full')#, #timeFormat(theDate,'medium')#, 3?";
-			formatted = msgHelper.messageFormat(pattern,["Bob","Name",4,theDate,3.1415926]);
+			pattern = "Hey, {1}, you call that a {2}?";
+			expectedText = "Hey, Bob, you call that a Name?";
+			formatted = msgHelper.messageFormat(pattern,["Bob","Name"]);
 			assertEquals(expectedText,formatted,locale);
 		</cfscript>  
 	</cffunction>

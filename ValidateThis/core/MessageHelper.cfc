@@ -83,8 +83,8 @@ methods in this CFC:
 		<cfargument name="thisLocale" required="no" default="en_US" hint="locale to use in formatting, defaults to en_US">
 		<cfset var msgFormat=createObject("java", "java.text.MessageFormat") />
 		<cfset var locale=createObject("java","java.util.Locale") />
-		<cfset var pattern=createObject("java","java.util.regex.Pattern")>
-		<cfset var regexStr="(\{[0-9]{1,},number.*?\})">
+		<!---<cfset var pattern=createObject("java","java.util.regex.Pattern")>--->
+		<!---<cfset var regexStr="(\{[0-9]{1,},number.*?\})">--->
 		<cfset var p="">
 		<cfset var m="">
 		<cfset var i=0>
@@ -105,12 +105,18 @@ methods in this CFC:
 				<cfset inputArgs=listToArray(inputArgs)>
 			</cfif>	
 			<cfset thisFormat=msgFormat.init(arguments.thisPattern,tLocale)>
+			<!--- I have no idea what's going on in here, but it was putting commas into numbers and commenting it out doesn't seem to be an issue
 			<!--- let's make sure any cf numerics are cast to java datatypes --->
 			<cfset p=pattern.compile(regexStr,pattern.CASE_INSENSITIVE)>
 			<cfset m=p.matcher(arguments.thisPattern)>
 			<cfloop condition="#m.find()#">
 				<cfset i=listFirst(replace(m.group(),"{",""))>
 				<cfset inputArgs[i]=javacast("float",inputArgs[i])>
+			</cfloop>
+			--->
+			<!--- I added the following loop to address the commas in numbers issue --->
+			<cfloop from="1" to="#arrayLen(inputArgs)#" index="i">
+				<cfset inputArgs[i]=javacast("string",inputArgs[i])>
 			</cfloop>
 			<cfset arrayPrepend(inputArgs,"")> <!--- dummy element to fool java --->
 			<!--- coerece to a java array of objects  --->

@@ -276,7 +276,7 @@
 		<cfscript>
 			theObject = createObject("component","Fixture.CFCWithMethodForExpressionTypeParameter").init();
 			script = ValidateThis.getValidationScript(theObject=theObject);
-			assertTrue(script contains "rules('add',{""inlist"":{""list"":""1,2,3""},""messages"":{""inlist"":""The Test Prop was not found in list: (1,2,3).""}});",htmlEditFormat(script));
+			assertTrue(script contains "rules('add',{""inlist"":{""list"":""1,2,3""},""messages"":{""inlist"":""The Test Prop was not found in the list: 1,2,3.""}});",htmlEditFormat(script));
 		</cfscript>  
 	</cffunction>
 
@@ -284,8 +284,9 @@
 		<cfscript>
 			theObject = "";
 			script = ValidateThis.getValidationScript(theObject=theObject,objectType="RuleWithADynamicParameterThatDoesNotNeedAnObject");
+			debug(script);
 			assertTrue(script contains "fm['testProp'] = $("":input[name='testProp']"",$form_frmMain);fm['testProp'].rules('add',{""inlist"":{""list"":");
-			assertTrue(script contains "},""messages"":{""inlist"":""The Test Prop was not found in list: (2011).""}});});");
+			assertTrue(script contains "},""messages"":{""inlist"":""The Test Prop was not found in the list: #year(now())#.""}});});");
 		</cfscript>  
 	</cffunction>
 

@@ -325,8 +325,8 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         selenium.click("//button[@type='submit']");
         selenium.waitForPageToLoad("30000");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
-        assertEquals("The Email Address is required.#crlf#The Email Address must be a date between 2010-01-01 and 2011-12-31.#crlf#The Email Address must be a date in the future. The date entered must come after 2010-12-31.#crlf#The Email Address must be a date in the past. The date entered must come before 2011-02-01.#crlf#The Email Address was not found in the list: 2011-01-30,2011-01-29.", selenium.getText("error-UserName"));
-        assertEquals("The Password is required.#crlf#The Password must be a valid boolean.#crlf#The Password must be a true boolean.#crlf#The Password must be a false boolean.", selenium.getText("error-UserPass"));
+        assertEquals("The Email Address is required.#crlf#The Email Address must be a valid date between 2010-01-01 and 2011-12-31.#crlf#The Email Address must be a date in the future. The date entered must come after 2010-12-31.#crlf#The Email Address must be a date in the past. The date entered must come before 2011-02-01.#crlf#The Email Address was not found in the list: 2011-01-30,2011-01-29.", selenium.getText("error-UserName"));
+        assertEquals("The Password is required.#crlf#The Password must be a valid boolean.#crlf#The Password must be true.#crlf#The Password must be false.", selenium.getText("error-UserPass"));
         assertEquals("The User Group Name is required.", selenium.getText("error-UserGroupName"));
         selenium.type("UserName", "b");
         selenium.type("Nickname", "abcd");
@@ -334,7 +334,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         selenium.click("//button[@type='submit']");
         selenium.waitForPageToLoad("30000");
         assertEquals("The Nickname must not contain the values of properties named: UserName,UserPass.#crlf#1 patterns were matched but 3 were required.#crlf#The Nickname must be a valid URL.", selenium.getText("error-Nickname"));
-        assertEquals("The Email Address must be a date between 2010-01-01 and 2011-12-31.#crlf#The Email Address must be a date in the future. The date entered must come after 2010-12-31.#crlf#The Email Address must be a date in the past. The date entered must come before 2011-02-01.#crlf#The Email Address was not found in the list: 2011-01-30,2011-01-29.", selenium.getText("error-UserName"));
+        assertEquals("The Email Address must be a valid date between 2010-01-01 and 2011-12-31.#crlf#The Email Address must be a date in the future. The date entered must come after 2010-12-31.#crlf#The Email Address must be a date in the past. The date entered must come before 2011-02-01.#crlf#The Email Address was not found in the list: 2011-01-30,2011-01-29.", selenium.getText("error-UserName"));
         selenium.type("UserName", "2010-02-02");
         selenium.click("//button[@type='submit']");
         selenium.waitForPageToLoad("30000");
@@ -371,15 +371,15 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         selenium.type("UserPass", "abc");
         selenium.click("//button[@type='submit']");
         selenium.waitForPageToLoad("30000");
-        assertEquals("The Password must be a valid boolean.#crlf#The Password must be a true boolean.#crlf#The Password must be a false boolean.", selenium.getText("error-UserPass"));
+        assertEquals("The Password must be a valid boolean.#crlf#The Password must be true.#crlf#The Password must be false.", selenium.getText("error-UserPass"));
         selenium.type("UserPass", "yes");
         selenium.click("//button[@type='submit']");
         selenium.waitForPageToLoad("30000");
-        assertEquals("The Password must be a false boolean.", selenium.getText("error-UserPass"));
+        assertEquals("The Password must be false.", selenium.getText("error-UserPass"));
         selenium.type("UserPass", "0");
         selenium.click("//button[@type='submit']");
         selenium.waitForPageToLoad("30000");
-        assertEquals("The Password must be a true boolean.", selenium.getText("error-UserPass"));
+        assertEquals("The Password must be true.", selenium.getText("error-UserPass"));
         selenium.type("VerifyPassword", "ab");
         selenium.click("//button[@type='submit']");
         selenium.waitForPageToLoad("30000");
