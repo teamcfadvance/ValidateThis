@@ -66,7 +66,7 @@
 			<cfset scriptInclude.addResource(file='jquery-1.3.2.min',type='JS',path='') />
 		</cfif>
 		<cfset scriptInclude.addResource(file='jquery.field.min',type='JS',path='') />
-		<cfset scriptInclude.addResource(file='jquery.validate.pack',type='JS',path='') />
+		<cfset scriptInclude.addResource(file='jquery.validate.min',type='JS',path='') />
 		<cfset scriptInclude.addScript(script=getInitializationScript(JSLib="jQuery",JSIncludes=false,locale=arguments.locale)) />
 		<cfloop index="object" list="#arguments.objectList#">		
 			<cfset scriptInclude.addScript(script=getValidationScript(JSLib="jQuery",objectType=object,Context=arguments.context,formName=arguments.formName,locale=arguments.locale)) />

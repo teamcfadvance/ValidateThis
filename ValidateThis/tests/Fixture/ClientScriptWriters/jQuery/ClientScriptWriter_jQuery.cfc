@@ -24,7 +24,7 @@
 			<cfoutput>
 				<script src="#JSRoot#jquery-1.3.2.min.js" type="text/javascript"></script>
 				<script src="#JSRoot#jquery.field.min.js" type="text/javascript"></script>
-				<script src="#JSRoot#jquery.validate.pack.js" type="text/javascript"></script>
+				<script src="#JSRoot#jquery.validate.min.js" type="text/javascript"></script>
 			</cfoutput>
 		</cfsavecontent>
 		<cfreturn theScript />
