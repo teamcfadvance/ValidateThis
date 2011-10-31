@@ -1,14 +1,13 @@
-ValidateThis QuickStart Guide (v 0.98)
+ValidateThis QuickStart Guide (v 1.0RC1)
 
 1. Unzip the contents of the distribution into a folder on your machine. You can place this folder in your webroot, or place it elsewhere and create a mapping to it called "ValidateThis".
-2. Copy the JavaScript files from /client/jQuery/js/ into a folder that will be accessible by your web pages (e.g., /js/ off your web root).
-3. Create an xml file for each of your Business Objects for which you want ValidateThis to generate validations.  Place all of them in the same folder.  Take a look at the sample xml file in /ServiceDemo/model/User.xml for an example.  There is also an XML Schema Definition available in /ValidateThis/core/validateThis.xsd.
-4. To use the framework, create a ValidateThisConfig struct, and then instantiate the ValidateThis.cfc service object, passing in the struct, like so:
+2. Create an xml file for each of your Business Objects for which you want ValidateThis to generate validations.  Place all of them in the same folder.  Take a look at the sample xml file in /ServiceDemo/model/User.xml for an example.  There is also an XML Schema Definition available in /ValidateThis/core/validateThis.xsd.
+3. To use the framework, create a ValidateThisConfig struct, and then instantiate the ValidateThis.cfc service object, passing in the struct, like so:
 
-<cfset ValidateThisConfig = {JSRoot="/js/",definitionPath="/validatethis/samples/model/"} />
+<cfset ValidateThisConfig = {definitionPath="/validatethis/samples/model/"} />
 <cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 
-Where JSRoot points to the folder into which you copied the required JS files, which you did in Step 2 above, and definitionPath points to the location of your ValidateThis xml files, which you created in Step 3 above.
+Where definitionPath points to the location of your ValidateThis xml files, which you created in Step 2 above.
 
 You should now be able to utilize the framework by calling methods on application.ValidateThis.
 
@@ -19,7 +18,7 @@ getRequiredFields()
 getInitializationScript()
 getValidationScript()
 
-Please see the demo application in /ServiceDemo for examples of using these methods.
+Please see the demo application in /samples/FacadeDemo for examples of using these methods.
 
 More information is available at http://www.validatethis.org/ and questions may be asked at http://groups.google.ca/group/validatethis.
 
