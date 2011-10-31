@@ -241,7 +241,7 @@
 
 	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation struct that describes the validation." />
-		<cfreturn [] />
+		<cfreturn ArrayNew(1) />
 	</cffunction>
 
 	<cffunction name="translate" returntype="string" access="private" output="false" hint="I translate a message.">

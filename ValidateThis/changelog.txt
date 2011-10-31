@@ -260,6 +260,7 @@ Version 1.0 RC1
 - added support for optionality in client rule scripters that required it
 - added Qunit tests for CRSs
 - performance improvements to the JavaScript generated for client-side validations
+- edited getValidator to allow it to search components dot-path under definitionPath e.g model.entity.User -> /mydefinitionPath/mode/entity/User.xml
 - added an ignoreMissingProperties argument to the validate() method which defaults to false
 - fixed a bug which caused recursive failure information to be added to the Result object
 - converted Selenium end-to-end tests to use CFSelenium

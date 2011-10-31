@@ -18,6 +18,7 @@
 	<cffunction name="init" returnType="any" access="public" output="false" hint="I build a new ValidateThis">
 		<cfargument name="ValidateThisConfig" type="any" required="false" default="#StructNew()#" />
 
+		<cfset var defaultLocaleMap = {en_US='/ValidateThis/locales/en_US.properties'} />
 		<cfset variables.ValidateThisConfig = arguments.ValidateThisConfig />
 		<!--- Set default values for keys in ValidateThisConfig --->
 		<cfparam name="variables.ValidateThisConfig.TranslatorPath" default="ValidateThis.core.BaseTranslator" />
@@ -28,7 +29,7 @@
 		<cfparam name="variables.ValidateThisConfig.JSRoot" default="js/" />
 		<cfparam name="variables.ValidateThisConfig.defaultFormName" default="frmMain" />
 		<cfparam name="variables.ValidateThisConfig.definitionPath" default="/model/" />
-		<cfparam name="variables.ValidateThisConfig.localeMap" default="#{en_US='/ValidateThis/locales/en_US.properties'}#" />
+		<cfparam name="variables.ValidateThisConfig.localeMap" default="#defaultLocaleMap#" />
 		<cfparam name="variables.ValidateThisConfig.defaultLocale" default="en_US" />
 		<cfparam name="variables.ValidateThisConfig.abstractGetterMethod" default="getValue" />
 		<cfparam name="variables.ValidateThisConfig.ExtraRuleValidatorComponentPaths" default="" />

@@ -31,8 +31,9 @@
 			locale = "en_US";
 			theDate = now();
 			pattern = "Hey, {1}, you call that a {2}?";
+			args = ["Bob","Name"];
 			expectedText = "Hey, Bob, you call that a Name?";
-			formatted = msgHelper.messageFormat(pattern,["Bob","Name"]);
+			formatted = msgHelper.messageFormat(pattern,args);
 			assertEquals(expectedText,formatted,locale);
 		</cfscript>  
 	</cffunction>

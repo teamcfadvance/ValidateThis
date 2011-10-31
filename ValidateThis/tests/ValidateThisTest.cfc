@@ -46,6 +46,7 @@
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(structNew());
 			injectMethod(ValidateThis, this, "getVTConfig", "getVTConfig");
 			VTConfig = ValidateThis.getVTConfig();
+			expectedLocaleMap = {en_US="/ValidateThis/locales/en_US.properties"};
 			assertEquals("ValidateThis.core.BOValidator",VTConfig.BOValidatorPath);
 			assertEquals("jQuery",VTConfig.DefaultJSLib);
 			assertEquals("",VTConfig.ExtraClientScriptWriterComponentPaths);
@@ -63,7 +64,7 @@
 			assertEquals("xml,json",VTConfig.externalFileTypes);
 			assertEquals("",VTConfig.extraFileReaderComponentPaths);
 			assertEquals(false,VTConfig.injectResultIntoBO);
-			assertEquals({en_US="/ValidateThis/locales/en_US.properties"},VTConfig.localeMap);
+			assertEquals(expectedLocaleMap,VTConfig.localeMap);
 			assertEquals("",VTConfig.BOComponentPaths);
 			assertEquals("",VTConfig.ExtraAnnotationTypeReaderComponentPaths);
 			assertEqualsCase("ValidateThis",VTConfig.vtFolder);
