@@ -18,7 +18,6 @@
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
-			ValidateThisConfig.JSRoot="/JS/";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			variables.CSGenerator = validationFactory.getBean("CommonScriptGenerator");
 			variables.JSLib = "jQuery";

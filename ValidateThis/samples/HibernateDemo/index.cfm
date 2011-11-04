@@ -18,7 +18,7 @@
 	<cfparam name="url.defPath" default="/validatethis/samples/HibernateDemo/model/xml/" />
 	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"ValidateThis")>
 		<cfset ormReload() />
-		<cfset ValidateThisConfig = {definitionPath=url.defPath,JSRoot="../js/"} />
+		<cfset ValidateThisConfig = {definitionPath=url.defPath} />
 		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 	</cfif>
 </cfsilent>

@@ -17,7 +17,7 @@
 	<!--- Reload ORM and ValidateThis, if needed --->
 	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"validateThis")>
 		<cfset ormReload() />
-		<cfset validateThisConfig = {definitionPath="",JSRoot="../js/"} />
+		<cfset validateThisConfig = {definitionPath=""} />
 		<cfset application.validateThis = createObject("component","ValidateThis.ValidateThis").init(validateThisConfig) />
 	</cfif>
 </cfsilent>

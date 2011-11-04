@@ -19,7 +19,7 @@
 	<cfset form.noJS = not structKeyExists(url,"noJS") ? form.noJS : url.noJS />
 
 	<!--- Reload ValidateThis - reloading on every request for the Demo --->
-	<cfset ValidateThisConfig = {definitionPath="/cfO2010Demo/model/",jsRoot="/js/"} />
+	<cfset ValidateThisConfig = {definitionPath="/cfO2010Demo/model/"} />
 	<cfset application.VT = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 
 	<!--- Create a new user object to work with --->

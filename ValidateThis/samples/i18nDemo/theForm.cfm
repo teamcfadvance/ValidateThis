@@ -23,32 +23,31 @@
 </cfif>
 
 <!--- We need a User record --->
-<cfset UserTO = application.Reactor.createRecord("User").load(userId=Form.UserId) />
+<cfset user = createObject("component","model.user").init(form.userId) />
 
 <!--- Default the validation failures to an empty struct --->
-<cfset UniFormErrors = {} />
+<cfset validationErrors = {} />
 <!--- Are we processing the form? --->
 <cfif StructKeyExists(Form,"Processing")>
 	<!--- Populate the object from the form scope --->
-	<cfloop collection="#form#" item="fld">
-		<cfif StructKeyExists(UserTO,"set" & fld)>
-			<cfinvoke component="#UserTO#" method="set#fld#">
-				<cfinvokeargument name="#fld#" value="#form[fld]#" />
-			</cfinvoke>
-		</cfif>
-	</cfloop>
+	<cfset user.populate(form) />
 	<!--- Validate the object using ValidateThis --->
-	<cfset Result = application.ValidateThis.validate(objectType="User",theObject=UserTO,Context=Form.Context) />
-	<cfset UniFormErrors = Result.getFailuresForUniForm(locale=Form.Locale) />
+	<cfset Result = application.ValidateThis.validate(objectType="User",theObject=user,Context=Form.Context, locale=Form.locale) />
+	<cfset validationErrors = result.getFailureMessagesByField(delimiter="<br/>",locale=form.locale) />
 	<!--- If validations passed, save the record --->
-	<cfif Result.getIsSuccess()>
-		<cfset UserTO.save() />
-		<cfset SuccessMessage = "The User has been saved!" />
+	<cfif result.getIsSuccess()>
+		<cfset user.save() />
+		<cfset successMessage = "The User has been saved!" />
 	<cfelse>
-		<cfset SuccessMessage = "" />
+		<cfset successMessage = "" />
 	</cfif>
 </cfif>
-<cfset UserGroupId = UserTO.getUserGroup().getUserGroupId() />
+
+<cfif Form.UserId eq 0>
+	<cfset UserGroupId = 0 />
+<cfelse>
+	<cfset UserGroupId = user.getUserGroup().getUserGroupId() />
+</cfif>
 
 <!--- Get the list of required fields to use to dynamically add asterisks in front of each field --->
 <cfset RequiredFields = application.ValidateThis.getRequiredFields(objectType="User",Context=Form.Context) />
@@ -92,13 +91,13 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("UserName")#
 			<label for="UserName">#isRequired("UserName")#Email Address</label>
-			<input name="UserName" id="UserName" value="#UserTO.getUserName()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="UserName" id="UserName" value="#trim(user.getUserName())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required, Must be a valid Email Address.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("Nickname")#
 			<label for="Nickname">#isRequired("Nickname")#Nickname</label>
-			<input name="Nickname" id="Nickname" value="#UserTO.getNickname()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="Nickname" id="Nickname" value="#trim(user.getNickname())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Custom - must be unique. Try 'BobRules'.</p>
 		</div>
 		<div class="ctrlHolder">
@@ -130,59 +129,59 @@
 		<div class="ctrlHolder">
 			#isErrorMsg("Salutation")#
 			<label for="Salutation">#isRequired("Salutation")#Salutation</label>
-			<input name="Salutation" id="Salutation" value="#UserTO.getSalutation()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="Salutation" id="Salutation" value="#trim(user.getSalutation())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: A regex ensures that only Dr, Prof, Mr, Mrs, Ms, or Miss (with or without a period) are allowed.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("FirstName")#
 			<label for="FirstName">#isRequired("FirstName")#First Name</label>
-			<input name="FirstName" id="FirstName" value="#UserTO.getFirstName()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="FirstName" id="FirstName" value="#trim(user.getFirstName())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required on Update.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("LastName")#
 			<label for="LastName">#isRequired("LastName")#Last Name</label>
-			<input name="LastName" id="LastName" value="#UserTO.getLastName()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="LastName" id="LastName" value="#trim(user.getLastName())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required on Update OR if a First Name has been specified during Register.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("LikeCheese")#
 			<p class="label">#isRequired("LikeCheese")#Do you like Cheese?</p>
-			<label for="LikeCheese-1" class="inlineLabel"><input name="LikeCheese" id="LikeCheese-1" value="1" type="radio" class=""<cfif UserTO.getLikeCheese() EQ 1> checked="checked"</cfif> />&nbsp;Yes</label>
-			<label for="LikeCheese-2" class="inlineLabel"><input name="LikeCheese" id="LikeCheese-2" value="0" type="radio" class=""<cfif UserTO.getLikeCheese() EQ 0> checked="checked"</cfif> />&nbsp;No</label>
+			<label for="LikeCheese-1" class="inlineLabel"><input name="LikeCheese" id="LikeCheese-1" value="1" type="radio" class=""<cfif user.getLikeCheese() EQ 1> checked="checked"</cfif> />&nbsp;Yes</label>
+			<label for="LikeCheese-2" class="inlineLabel"><input name="LikeCheese" id="LikeCheese-2" value="0" type="radio" class=""<cfif user.getLikeCheese() EQ 0> checked="checked"</cfif> />&nbsp;No</label>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("LikeChocolate")#
 			<p class="label">#isRequired("LikeChocolate")#Do you like Chocolate?</p>
-			<label for="LikeChocolate-1" class="inlineLabel"><input name="LikeChocolate" id="LikeChocolate-1" value="1" type="radio" class=""<cfif UserTO.getLikeChocolate() EQ 1> checked="checked"</cfif> />&nbsp;Yes</label>
-			<label for="LikeChocolate-2" class="inlineLabel"><input name="LikeChocolate" id="LikeChocolate-2" value="0" type="radio" class=""<cfif UserTO.getLikeChocolate() EQ 0> checked="checked"</cfif> />&nbsp;No</label>
+			<label for="LikeChocolate-1" class="inlineLabel"><input name="LikeChocolate" id="LikeChocolate-1" value="1" type="radio" class=""<cfif user.getLikeChocolate() EQ 1> checked="checked"</cfif> />&nbsp;Yes</label>
+			<label for="LikeChocolate-2" class="inlineLabel"><input name="LikeChocolate" id="LikeChocolate-2" value="0" type="radio" class=""<cfif user.getLikeChocolate() EQ 0> checked="checked"</cfif> />&nbsp;No</label>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("LikeOther")#
 			<label for="LikeOther">#isRequired("LikeOther")#What do you like?</label>
-			<input name="LikeOther" id="LikeOther" value="#UserTO.getLikeOther()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="LikeOther" id="LikeOther" value="#trim(user.getLikeOther())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Required if neither Do you like Cheese? nor Do you like Chocolate? are true.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("HowMuch")#
 			<label for="HowMuch">#isRequired("HowMuch")#How much money would you like?</label>
-			<input name="HowMuch" id="HowMuch" value="#UserTO.getHowMuch()#" size="35" maxlength="50" type="text" class="textInput" />
+			<input name="HowMuch" id="HowMuch" value="#trim(user.getHowMuch())#" size="35" maxlength="50" type="text" class="textInput" />
 			<p class="formHint">Validations: Numeric - notice that an invalid value is redisplayed upon server side validation failure.</p>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("AllowCommunication")#
 			<p class="label">#isRequired("AllowCommunication")#Allow Communication</p>
-			<label for="AllowCommunication-1" class="inlineLabel"><input name="AllowCommunication" id="AllowCommunication-1" value="1" type="radio" class=""<cfif UserTO.getAllowCommunication() EQ 1> checked="checked"</cfif> />&nbsp;Yes</label>
-			<label for="AllowCommunication-2" class="inlineLabel"><input name="AllowCommunication" id="AllowCommunication-2" value="0" type="radio" class=""<cfif UserTO.getAllowCommunication() EQ 0> checked="checked"</cfif> />&nbsp;No</label>
+			<label for="AllowCommunication-1" class="inlineLabel"><input name="AllowCommunication" id="AllowCommunication-1" value="1" type="radio" class=""<cfif user.getAllowCommunication() EQ 1> checked="checked"</cfif> />&nbsp;Yes</label>
+			<label for="AllowCommunication-2" class="inlineLabel"><input name="AllowCommunication" id="AllowCommunication-2" value="0" type="radio" class=""<cfif user.getAllowCommunication() EQ 0> checked="checked"</cfif> />&nbsp;No</label>
 		</div>
 		<div class="ctrlHolder">
 			#isErrorMsg("CommunicationMethod")#
 			<label for="CommunicationMethod">#isRequired("CommunicationMethod")#Communication Method</label>
 			<select name="CommunicationMethod" id="CommunicationMethod" class="selectInput">
-				<option value=""<cfif UserTO.getCommunicationMethod() EQ ""> selected="selected"</cfif>>Select one...</option>
-				<option value="Email"<cfif UserTO.getCommunicationMethod() EQ "Email"> selected="selected"</cfif>>Email</option>
-				<option value="Phone"<cfif UserTO.getCommunicationMethod() EQ "Phone"> selected="selected"</cfif>>Phone</option>
-				<option value="Pony Express"<cfif UserTO.getCommunicationMethod() EQ "Pony Express"> selected="selected"</cfif>>Pony Express</option>
+				<option value=""<cfif user.getCommunicationMethod() EQ ""> selected="selected"</cfif>>Select one...</option>
+				<option value="Email"<cfif user.getCommunicationMethod() EQ "Email"> selected="selected"</cfif>>Email</option>
+				<option value="Phone"<cfif user.getCommunicationMethod() EQ "Phone"> selected="selected"</cfif>>Phone</option>
+				<option value="Pony Express"<cfif user.getCommunicationMethod() EQ "Pony Express"> selected="selected"</cfif>>Pony Express</option>
 			</select>
 			<p class="formHint">Validations: Required if Allow Communication? is true.</p>
 		</div>
@@ -208,8 +207,8 @@
 
 <cffunction name="isErrorMsg" returntype="any" output="false" hint="I am used to display error messages for a field.  I only exist for this demo page - there are much better ways of doing this!">
 	<cfargument name="fieldName" type="any" required="yes" />
-	<cfif StructKeyExists(UniFormErrors,arguments.fieldName)>
-		<cfreturn '<p id="error-UserName" class="errorField bold">#UniFormErrors[arguments.fieldName]#</p>' />
+	<cfif StructKeyExists(validationErrors,arguments.fieldName)>
+		<cfreturn '<p id="error-#arguments.fieldName#" class="errorField bold">#validationErrors[arguments.fieldName]#</p>' />
 	<cfelse>
 		<cfreturn "" />
 	</cfif>

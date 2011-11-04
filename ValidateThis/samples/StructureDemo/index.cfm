@@ -16,7 +16,7 @@
 <cfsilent>
 	<!--- Create Reactor and ValidateThis, if needed --->
 	<cfif StructKeyExists(url,"init") OR NOT StructKeyExists(application,"ValidateThis")>
-		<cfset ValidateThisConfig = {definitionPath="/validatethis/samples/StructureDemo/",JSRoot="../js/"} />
+		<cfset ValidateThisConfig = {definitionPath="/validatethis/samples/StructureDemo/"} />
 		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 	</cfif>
 </cfsilent>

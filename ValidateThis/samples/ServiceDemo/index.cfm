@@ -19,7 +19,7 @@
 		<!--- Reactor First --->
 		<cfset application.Reactor = createObject("component", "reactor.reactorFactory").init("/ServiceDemo/model/config/reactor.xml") />
 		<!--- ValidateThis --->
-		<cfset ValidateThisConfig = {definitionPath="/ServiceDemo/model/",JSRoot="/js/"} />
+		<cfset ValidateThisConfig = {definitionPath="/ServiceDemo/model/"} />
 		<cfset application.ValidateThis = createObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig) />
 	</cfif>
 </cfsilent>
