@@ -15,7 +15,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.unitTests.SRV.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -26,7 +26,7 @@
 	
 	<cffunction name="validateReturnsFalseWhenExpressionEvaluatesToFalse" access="public" returntype="void">
 		<cfscript>
-			theObject = createObject("component","validatethis.tests.Fixture.User").init();
+			theObject = createObject("component","validatethis.unitTests.Fixture.User").init();
 			theObject.setUserId(1);
 			theObject.setUserName(2);
 			parameters = {expression="getUserId() eq getUserName()"};
@@ -40,7 +40,7 @@
 	
 	<cffunction name="validateReturnsTrueWhenExpressionEvaluatesToTrue" access="public" returntype="void">
 		<cfscript>
-			theObject = createObject("component","validatethis.tests.Fixture.User").init();
+			theObject = createObject("component","validatethis.unitTests.Fixture.User").init();
 			theObject.setUserId(1);
 			theObject.setUserName(1);
 			parameters = {expression="getUserId() eq getUserName()"};

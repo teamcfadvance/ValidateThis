@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -30,7 +30,7 @@
 	
 	<cffunction name="loadRulesFromAnnotationsReturnsEmptyStructIfNoValidAnnotationFormatFound" access="public" returntype="void">
 		<cfscript>
-			theObject = createObject("component","validatethis.tests.Fixture.User");
+			theObject = createObject("component","validatethis.unitTests.Fixture.User");
 			PropertyDescs = annotationReader.loadRulesFromAnnotations(objectType="user",theObject=theObject,componentPath="").PropertyDescs;
 			assertTrue(structIsEmpty(PropertyDescs));
 		</cfscript>  
@@ -38,7 +38,7 @@
 
 	<cffunction name="loadRulesFromAnnotationsReturnsCorrectPropertyDescsForObjectWithJSON" access="public" returntype="void">
 		<cfscript>
-			theObject = createObject("component","validatethis.tests.Fixture.AnnotatedBOs.User");
+			theObject = createObject("component","validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			PropertyDescs = annotationReader.loadRulesFromAnnotations(objectType="user",theObject=theObject,componentPath="").PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -46,7 +46,7 @@
 
 	<cffunction name="loadRulesReturnsCorrectValidationsForObjectWithJSON" access="public" returntype="void">
 		<cfscript>
-			theObject = createObject("component","validatethis.tests.Fixture.AnnotatedBOs.User");
+			theObject = createObject("component","validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			Validations = annotationReader.loadRulesFromAnnotations(objectType="user",theObject=theObject,componentPath="").Validations;
 			assertEquals(StructCount(Validations),1);
 			assertEquals(StructCount(Validations.Contexts),3);
@@ -197,7 +197,7 @@
 
 	<cffunction name="getObjectMetadataReturnsAccurateMetadataForAnObject" access="public" returntype="void">
 		<cfscript>
-			theObject = createObject("component","validatethis.tests.Fixture.AnnotatedBOs.User");
+			theObject = createObject("component","validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			makePublic(annotationReader,"getObjectMetadata");
 			md = annotationReader.getObjectMetadata(theObject=theObject,componentPath="");
 			assertEquals(16,arrayLen(md.properties));
@@ -207,14 +207,14 @@
 	<cffunction name="getObjectMetadataReturnsAccurateMetadataForAComponentPath" access="public" returntype="void">
 		<cfscript>
 			makePublic(annotationReader,"getObjectMetadata");
-			md = annotationReader.getObjectMetadata(theObject="",componentPath="validatethis.tests.Fixture.AnnotatedBOs.User");
+			md = annotationReader.getObjectMetadata(theObject="",componentPath="validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			assertEquals(16,arrayLen(md.properties));
 		</cfscript>  
 	</cffunction>
 	
 	<cffunction name="determineAnnotationFormatReturnsJSONForJSONAnnotations" access="public" returntype="void">
 		<cfscript>
-			properties = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User").properties;
+			properties = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User").properties;
 			makePublic(annotationReader,"determineAnnotationFormat");
 			format = annotationReader.determineAnnotationFormat(properties);
 			assertEquals("json",format);
@@ -223,7 +223,7 @@
 
 	<cffunction name="determineAnnotationFormatReturnsXMLForXMLAnnotations" access="public" returntype="void">
 		<cfscript>
-			properties = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_XML").properties;
+			properties = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User_XML").properties;
 			makePublic(annotationReader,"determineAnnotationFormat");
 			format = annotationReader.determineAnnotationFormat(properties);
 			assertEquals("xml",format);

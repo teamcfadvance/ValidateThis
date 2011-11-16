@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -39,7 +39,7 @@
 
 	<cffunction name="loadRulesReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
+			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			PropertyDescs = annotationTypeReader.getValidations("user",md).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -47,7 +47,7 @@
 
 	<cffunction name="loadRulesReturnsCorrectValidations" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
+			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			Validations = annotationTypeReader.getValidations("user",md).Validations;
 			assertEquals(StructCount(Validations),1);
 			assertEquals(StructCount(Validations.Contexts),3);

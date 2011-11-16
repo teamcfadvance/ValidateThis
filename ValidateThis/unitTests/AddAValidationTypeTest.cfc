@@ -13,13 +13,13 @@
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
 			VTConfig = getVTConfig();
-			VTConfig.extraClientScriptWriterComponentPaths="validatethis.tests.Fixture.BigNumberTest.CRSs.jQuery";
-			VTConfig.extraRuleValidatorComponentPaths="validatethis.tests.Fixture.BigNumberTest.SRVs";
+			VTConfig.extraClientScriptWriterComponentPaths="validatethis.unitTests.Fixture.BigNumberTest.CRSs.jQuery";
+			VTConfig.extraRuleValidatorComponentPaths="validatethis.unitTests.Fixture.BigNumberTest.SRVs";
 			VTConfig.definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/BigNumberTest";
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 		</cfscript>
@@ -31,7 +31,7 @@
 	<cffunction name="additionalRuleShouldBeAvailableToServerSideValidations" access="public" returntype="void">
 		<cfscript>
 			assertEquals(true,structKeyExists(ValidateThis.getServerRuleValidators(),"BigNumber"),"Did not load the BigNumber SRV!");
-			bigNumber = createObject("component","validatethis.tests.Fixture.BigNumberTest.BigNumber").init();
+			bigNumber = createObject("component","validatethis.unitTests.Fixture.BigNumberTest.BigNumber").init();
 			result = ValidateThis.validate(bigNumber);
 			assertEquals(false,result.getIsSuccess());
 			failures = result.getFailures();

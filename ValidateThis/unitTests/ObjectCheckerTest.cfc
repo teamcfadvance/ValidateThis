@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 
 	<!--- ***** NOTE *****
 		These tests, the ones for Wheels objects and Groovy objects anyway, aren't really testing those objects, as we're using fakes.

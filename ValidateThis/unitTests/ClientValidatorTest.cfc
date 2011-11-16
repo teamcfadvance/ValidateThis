@@ -13,7 +13,7 @@
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cfset ClientValidator = "" />
 	
@@ -42,7 +42,7 @@
 
 	<cffunction name="ExtraClientScriptWriterShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig.extraClientScriptWriterComponentPaths="validatethis.tests.Fixture.ClientScriptWriters.newCSW";
+			ValidateThisConfig.extraClientScriptWriterComponentPaths="validatethis.unitTests.Fixture.ClientScriptWriters.newCSW";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ClientValidator = validationFactory.getBean("ClientValidator");
 			ClientScriptWriters = ClientValidator.getScriptWriters();
@@ -54,7 +54,7 @@
 
 	<cffunction name="OverrideClientScriptWritersShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig.extraClientScriptWriterComponentPaths="validatethis.tests.Fixture.ClientScriptWriters.newCSW,validatethis.tests.Fixture.ClientScriptWriters.jQuery";
+			ValidateThisConfig.extraClientScriptWriterComponentPaths="validatethis.unitTests.Fixture.ClientScriptWriters.newCSW,validatethis.unitTests.Fixture.ClientScriptWriters.jQuery";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			ClientValidator = validationFactory.getBean("ClientValidator");
 			ClientScriptWriters = ClientValidator.getScriptWriters();

@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -45,10 +45,10 @@
 
 	<cffunction name="newResultShouldReturnCustomResultObjectWhenspecifiedViaConfig" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig.ResultPath="validatethis.tests.Fixture.CustomResult";
+			ValidateThisConfig.ResultPath="validatethis.unitTests.Fixture.CustomResult";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			result = validationFactory.newResult();
-			assertEquals("validatethis.tests.Fixture.CustomResult",GetMetadata(result).name);
+			assertEquals("validatethis.unitTests.Fixture.CustomResult",GetMetadata(result).name);
 		</cfscript>
 	</cffunction>
 
@@ -115,7 +115,7 @@
 	<cffunction name="createBOVsFromCFCsShouldCreateBOVsFromAnnotatedCFCs" returntype="void" access="public">
 		<cfscript>
 			assertTrue(false,"This should fail as this hasn't been fully implemented yet!");
-			ValidateThisConfig.BOComponentPaths="validatethis.tests.Fixture.AnnotatedBOs";
+			ValidateThisConfig.BOComponentPaths="validatethis.unitTests.Fixture.AnnotatedBOs";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			injectMethod(validationFactory, this, "getBOVs", "getBOVs");
 			validationFactory.createBOVsFromCFCs();

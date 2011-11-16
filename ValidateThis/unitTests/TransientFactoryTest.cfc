@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent  extends="validatethis.tests.BaseTestCase">
+<cfcomponent  extends="validatethis.unitTests.BaseTestCase">
 
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -45,10 +45,10 @@
 
 	<cffunction name="newResultShouldReturnCustomResultObjectWhenOverrideInPlace" access="public" returntype="void">
 		<cfscript>
-			extra = {ResultPath="validatethis.tests.Fixture.CustomResult"};
+			extra = {ResultPath="validatethis.unitTests.Fixture.CustomResult"};
 			createTransientFactory(extra);
 			result = transientFactory.newResult();
-			assertEquals("validatethis.tests.Fixture.CustomResult",GetMetadata(result).name);
+			assertEquals("validatethis.unitTests.Fixture.CustomResult",GetMetadata(result).name);
 		</cfscript>
 	</cffunction>
 

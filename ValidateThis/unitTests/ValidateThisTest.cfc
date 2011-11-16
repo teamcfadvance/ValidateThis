@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -258,10 +258,10 @@
 
 	<cffunction name="newResultShouldReturnCustomResultObjectWhenspecifiedViaConfig" access="public" returntype="void">
 		<cfscript>
-			vtConfig = {ResultPath="validatethis.tests.Fixture.CustomResult"};
+			vtConfig = {ResultPath="validatethis.unitTests.Fixture.CustomResult"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(vtConfig);
 			result = ValidateThis.newResult();
-			assertEquals("validatethis.tests.Fixture.CustomResult",GetMetadata(result).name);
+			assertEquals("validatethis.unitTests.Fixture.CustomResult",GetMetadata(result).name);
 		</cfscript>
 	</cffunction>
 

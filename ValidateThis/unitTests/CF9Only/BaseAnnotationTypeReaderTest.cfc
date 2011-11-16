@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -52,7 +52,7 @@
 
 	<cffunction name="processContextsReturnsCorrectArrayForJSONContexts" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
+			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			makePublic(annotationTypeReader,"processContexts");
 			annotationTypeReader.processContexts(md.vtContexts);
 			injectMethod(annotationTypeReader, this, "getContexts", "getContexts");
@@ -62,7 +62,7 @@
 
 	<cffunction name="processContextsReturnsCorrectArrayForListContexts" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithLists");
+			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User_WithLists");
 			makePublic(annotationTypeReader,"processContexts");
 			annotationTypeReader.processContexts(md.vtContexts);
 			injectMethod(annotationTypeReader, this, "getContexts", "getContexts");
@@ -77,7 +77,7 @@
 
 	<cffunction name="processConditionsReturnsCorrectArrayForJSONConditions" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
+			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			makePublic(annotationTypeReader,"processConditions");
 			annotationTypeReader.processConditions(md.vtConditions);
 			injectMethod(annotationTypeReader, this, "getConditions", "getConditions");
@@ -87,7 +87,7 @@
 
 	<cffunction name="processConditionsReturnsCorrectArrayForListConditions" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithLists");
+			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User_WithLists");
 			makePublic(annotationTypeReader,"processConditions");
 			annotationTypeReader.processConditions(md.vtConditions);
 			injectMethod(annotationTypeReader, this, "getConditions", "getConditions");
@@ -102,7 +102,7 @@
 
 	<cffunction name="processPropertyDescsReturnsCorrectArrayForJSON" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User");
+			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			makePublic(annotationTypeReader,"processPropertyDescs");
 			makePublic(annotationTypeReader,"reformatProperties");
 			annotationTypeReader.processPropertyDescs(annotationTypeReader.reformatProperties(md.properties));

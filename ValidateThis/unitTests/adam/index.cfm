@@ -16,7 +16,7 @@ NOTE: these tests take a long time to run. A lot of the time is in a subset of t
 <cfinvoke component="#DTS#" 
 	method="run"
 	directory="#dir#"
-	componentpath="validatethis.tests.adam" 
+	componentpath="validatethis.unitTests.adam" 
 	recurse="true" 
 	excludes="#excludes#"
 	returnvariable="Results">

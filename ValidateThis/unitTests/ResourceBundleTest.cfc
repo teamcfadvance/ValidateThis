@@ -21,7 +21,7 @@ purpose:		I ResourceBundleTest.cfc
 	License.
 	
 --->
-<cfcomponent displayname="validatethis.tests.ResourceBundleTest" extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent displayname="validatethis.unitTests.ResourceBundleTest" extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cfset ResourceBundle = "" />
 	

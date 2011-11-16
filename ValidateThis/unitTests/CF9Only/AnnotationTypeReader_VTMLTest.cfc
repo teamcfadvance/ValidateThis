@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -70,7 +70,7 @@
 
 	<cffunction name="loadRulesReturnsCorrectPropertyDescs" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithVTML");
+			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User_WithVTML");
 			PropertyDescs = annotationTypeReader.getValidations("User_WithVTML",md).PropertyDescs;
 			isPropertiesStructCorrect(PropertyDescs);
 		</cfscript>  
@@ -78,7 +78,7 @@
 	
 	<cffunction name="loadRulesReturnsCorrectPropertyRules" access="public" returntype="void">
 		<cfscript>
-			md = getComponentMetadata("validatethis.tests.Fixture.AnnotatedBOs.User_WithVTML");
+			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User_WithVTML");
 			PropertyRules = annotationTypeReader.getValidations("User_WithVTML",md);
 			
 			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['___DEFAULT']) eq 12 ,"Inncorect Rule count in DEFAULT context");

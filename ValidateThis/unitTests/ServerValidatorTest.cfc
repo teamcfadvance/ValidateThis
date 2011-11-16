@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cfset ServerValidator = "" />
 	
@@ -40,7 +40,7 @@
 	<cffunction name="setUpUser" access="private" returntype="any">
 		<cfargument name="emptyUser" type="boolean" required="false" default="false" />
 		<cfscript>
-			user = createObject("component","validatethis.tests.Fixture.User").init();
+			user = createObject("component","validatethis.unitTests.Fixture.User").init();
 			if (not arguments.emptyUser) {
 				user.setUserName("bob.silverberg@gmail.com");
 				user.setUserPass("Bobby");
@@ -59,7 +59,7 @@
 
 	<cffunction name="setupCustomRuleTester" access="private" returntype="void">
 		<cfscript>
-			customRuleTester = createObject("component","validatethis.tests.Fixture.CustomRuleTester").init();
+			customRuleTester = createObject("component","validatethis.unitTests.Fixture.CustomRuleTester").init();
 			BOValidator = validationFactory.getValidator("CustomRuleTester",getDirectoryFromPath(getMetadata(customRuleTester).path));
 		</cfscript>  
 	</cffunction>
@@ -109,28 +109,28 @@
 
 	<cffunction name="ExtraRuleValidatorShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
-			extra = {ExtraRuleValidatorComponentPaths="validatethis.tests.Fixture.ServerRuleValidators"};
+			extra = {ExtraRuleValidatorComponentPaths="validatethis.unitTests.Fixture.ServerRuleValidators"};
 			createServerValidator(extra);
 			RuleValidators = serverValidator.getRuleValidators();
 			assertTrue(GetMetadata(RuleValidators.Custom).name CONTAINS "ServerRuleValidator_Custom");
 			assertTrue(GetMetadata(RuleValidators.Required).name CONTAINS "ServerRuleValidator_Required");
 			assertTrue(StructKeyExists(RuleValidators.Required,"validate"));
 			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
-			assertEquals("validatethis.tests.fixture.serverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
+			assertEquals("validatethis.unitTests.fixture.serverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
 			assertTrue(StructKeyExists(RuleValidators.Extra,"validate"));
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="OverrideRuleValidatorsShouldBeLoaded" access="public" returntype="void">
 		<cfscript>
-			extra = {ExtraRuleValidatorComponentPaths="validatethis.tests.Fixture.OverrideServerRuleValidators"};
+			extra = {ExtraRuleValidatorComponentPaths="validatethis.unitTests.Fixture.OverrideServerRuleValidators"};
 			createServerValidator(extra);
 			RuleValidators = serverValidator.getRuleValidators();
 			assertEquals(true,structKeyExists(RuleValidators,"Custom"));
 			assertEquals(true,structKeyExists(RuleValidators,"Extra"));
 			assertEquals(true,structKeyExists(RuleValidators,"Required"));
-			assertEquals("validatethis.tests.fixture.overrideserverrulevalidators.serverrulevalidator_custom",GetMetadata(RuleValidators.Custom).name);
-			assertEquals("validatethis.tests.fixture.overrideserverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
+			assertEquals("validatethis.unitTests.fixture.overrideserverrulevalidators.serverrulevalidator_custom",GetMetadata(RuleValidators.Custom).name);
+			assertEquals("validatethis.unitTests.fixture.overrideserverrulevalidators.serverrulevalidator_extra",GetMetadata(RuleValidators.Extra).name);
 			assertEquals("validatethis.server.serverrulevalidator_required",GetMetadata(RuleValidators.Required).name);
 			assertTrue(StructKeyExists(RuleValidators.Custom,"validate"));
 		</cfscript>  

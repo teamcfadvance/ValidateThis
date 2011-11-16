@@ -13,7 +13,7 @@
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
@@ -34,7 +34,7 @@
 
 	<cffunction name="createBOVFromCFC" access="private" returntype="any">
 		<cfscript>
-			theObject = createObject("component","validatethis.tests.Fixture.AnnotatedBOs.User");
+			theObject = createObject("component","validatethis.unitTests.Fixture.AnnotatedBOs.User");
 			return validationFactory.getValidator(objectType="User",theObject=theObject,definitionPath=getDirectoryFromPath(getMetadata(theObject).path));
 		</cfscript>  
 	</cffunction>

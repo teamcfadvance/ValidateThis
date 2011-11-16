@@ -26,7 +26,7 @@ purpose:		I BaseLocaleLoaderTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="validatethis.tests.BaseLocaleLoaderTest" extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent displayname="validatethis.unitTests.BaseLocaleLoaderTest" extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cfset BaseLocaleLoader = "" />
 	

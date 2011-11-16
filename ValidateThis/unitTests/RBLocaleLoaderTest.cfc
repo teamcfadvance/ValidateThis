@@ -26,7 +26,7 @@ purpose:		I RBLocaleLoaderTest.cfc
 	2008-10-22	New																		BS
 
 --->
-<cfcomponent displayname="validatethis.tests.RBLocaleLoaderTest" extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent displayname="validatethis.unitTests.RBLocaleLoaderTest" extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>

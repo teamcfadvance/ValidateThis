@@ -15,7 +15,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.SRV.BaseForServerRuleValidatorTests" output="false">
+<cfcomponent extends="validatethis.unitTests.SRV.BaseForServerRuleValidatorTests" output="false">
 	
 	<cffunction name="beforeTests" access="public" returntype="void">
 		<cfscript>
@@ -60,35 +60,35 @@
 	
 	<cffunction name="setupValidCompanyFixture" access="private">
 		<cfscript>
-			validCompany = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.Company");
+			validCompany = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.Company");
 			validCompany.setCompanyName("Adam Drew");
 		</cfscript>
 	</cffunction>
 
 	<cffunction name="setupInvalidCompanyFixture" access="private">
 		<cfscript>
-			invalidCompany = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.Company");
+			invalidCompany = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.Company");
 			invalidCompany.setCompanyName("A");
 		</cfscript>
 	</cffunction>
 
 	<cffunction name="setupNoruleCompanyFixture" access="private">
 		<cfscript>
-			noruleCompany = createObject("component","validatethis.tests.Fixture.models.cf9.norules.Company");
+			noruleCompany = createObject("component","validatethis.unitTests.Fixture.models.cf9.norules.Company");
 			noruleCompany.setCompanyName("A");
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="setupValidUserFixture" access="private">
 		<cfscript>
-			validUser = createObject("component","validatethis.tests.Fixture.models.cf9.json.User").init();
+			validUser = createObject("component","validatethis.unitTests.Fixture.models.cf9.json.User").init();
 			validUser.setUserName("epner81@gmail.com");
 		</cfscript>
 	</cffunction>
 	
 	<cffunction name="setupInvalidUserFixture" access="private">
 		<cfscript>
-			invalidUser = createObject("component","validatethis.tests.Fixture.models.cf9.json.User").init();
+			invalidUser = createObject("component","validatethis.unitTests.Fixture.models.cf9.json.User").init();
 			invalidUser.setUserName("a");
 		</cfscript>
 	</cffunction>
@@ -327,10 +327,10 @@
 
 	<cffunction name="setupRecursion" access="private" returntype="void">
 		<cfscript>
-			companyA = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.Company_With_User");
-			userA = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.User_With_Company");
-			companyB = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.Company_With_User");
-			userB = createObject("component","validatethis.tests.Fixture.models.cf9.vtml.User_With_Company");
+			companyA = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.Company_With_User");
+			userA = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.User_With_Company");
+			companyB = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.Company_With_User");
+			userB = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.User_With_Company");
 			
 			companyA.setUser(userA);
 			userA.setCompany(companyB);

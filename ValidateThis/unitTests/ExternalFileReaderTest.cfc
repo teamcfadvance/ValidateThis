@@ -14,7 +14,7 @@
 	License.
 	
 --->
-<cfcomponent extends="validatethis.tests.BaseTestCase" output="false">
+<cfcomponent extends="validatethis.unitTests.BaseTestCase" output="false">
 	
 	<cfset externalFileReader = "" />
 	
@@ -33,7 +33,7 @@
 	<!--- need to address extra and override file readers
 	<cffunction name="ExtraFileReadersShouldLoadOnInit" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig.extraFileReaderComponentPaths="validatethis.tests.Fixture.FileReaders";
+			ValidateThisConfig.extraFileReaderComponentPaths="validatethis.unitTests.Fixture.FileReaders";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			externalFileReader = validationFactory.getBean("externalFileReader");
 			makePublic(externalFileReader,"getFileReaders");
@@ -49,7 +49,7 @@
 
 	<cffunction name="OverrideFileReadersShouldLoadOnInit" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig.extraFileReaderComponentPaths="validatethis.tests.Fixture.OverrideFileReaders";
+			ValidateThisConfig.extraFileReaderComponentPaths="validatethis.unitTests.Fixture.OverrideFileReaders";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			externalFileReader = validationFactory.getBean("externalFileReader");
 			makePublic(externalFileReader,"getFileReaders");

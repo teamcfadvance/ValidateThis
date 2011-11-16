@@ -18,7 +18,7 @@ NOTE: these tests take a long time to run. A lot of the time is in a subset of t
 <cfinvoke component="#DTS#" 
 	method="run"
 	directory="#dir#"
-	componentpath="validatethis.tests.cf9only" 
+	componentpath="validatethis.unitTests.cf9only" 
 	recurse="true" 
 	excludes="#excludes#"
 	returnvariable="Results">
