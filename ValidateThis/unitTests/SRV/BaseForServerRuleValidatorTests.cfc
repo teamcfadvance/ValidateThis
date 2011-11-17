@@ -21,7 +21,7 @@
 		<cfscript>
 			
 			ValidateThisConfig = getVTConfig();
-			ValidateThisConfig = {definitionPath="/validatethis/tests/Fixture/models/cf9"};
+			ValidateThisConfig = {definitionPath="/validatethis/unitTests/Fixture/models/cf9"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			msgHelper = validationFactory.getBean("MessageHelper");
