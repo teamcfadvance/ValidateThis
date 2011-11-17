@@ -19,6 +19,8 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			// TODO: The test for shouldPass is failing under Railo, at the second value. Why?
+
 			super.setup();
 			SRV = getSRV("date");
 			shouldPass = ["2010-01-01","Jan 1, 2010"];

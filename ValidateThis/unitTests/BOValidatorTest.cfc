@@ -46,7 +46,7 @@
 
 	<cffunction name="initReturnsCorrectObjectWithExplicitMappedPath" access="public" returntype="void">
 		<cfscript>
-			defPath = "/validatethis/tests/Fixture";
+			defPath = "/validatethis/unitTests/Fixture";
 			BOValidator = validationFactory.getValidator(variables.className,defPath);
 			isBOVCorrect(BOValidator);
 		</cfscript>  
@@ -54,14 +54,14 @@
 
 	<cffunction name="initThrowsWithBadExplicitMappedPath" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			defPath = "/validatethis/samples/validatethis/tests/Fixture/_Doesnt_Exist/";
+			defPath = "/validatethis/samples/validatethis/unitTests/Fixture/_Doesnt_Exist/";
 			BOValidator = validationFactory.getValidator(variables.className,defPath);
 		</cfscript>  
 	</cffunction>
 
 	<cffunction name="initReturnsCorrectObjectWithMappingInValidateThisConfig" access="public" returntype="void">
 		<cfscript>
-			ValidateThisConfig.definitionPath = "/validatethis/tests/Fixture";
+			ValidateThisConfig.definitionPath = "/validatethis/unitTests/Fixture";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			BOValidator = validationFactory.getValidator(variables.className);
 			isBOVCorrect(BOValidator);
@@ -70,7 +70,7 @@
 
 	<cffunction name="initThrowsWithBadMappingInValidateThisConfig" access="public" returntype="void" mxunit:expectedException="ValidateThis.core.externalFileReader.definitionPathNotFound">
 		<cfscript>
-			ValidateThisConfig.definitionPath = "/validatethis/samples/validatethis/tests/Fixture/_DoesntExist";
+			ValidateThisConfig.definitionPath = "/validatethis/samples/validatethis/unitTests/Fixture/_DoesntExist";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			BOValidator = validationFactory.getValidator(variables.className);
 		</cfscript>  

@@ -26,6 +26,7 @@
             configureValidationMock();
             
 			executeValidate(validation);
+			debug(arguments.value);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
@@ -33,12 +34,16 @@
 	<cffunction name="validateReturnsFalseForExamplesThatShouldNotPass" access="public" returntype="void" mxunit:dataprovider="shouldFail" hint="Tests a set of invalid values to see if they fail">
 		<cfargument name="value" hint="each item in the shouldFail dataprovider array" />
 		<cfscript>
+			
 			super.setup();
 			objectValue = arguments.value;
             
             configureValidationMock();
             
 			executeValidate(validation);
+			
+			debug(objectValue);
+			
 			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

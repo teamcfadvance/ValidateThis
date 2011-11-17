@@ -78,8 +78,10 @@
 	
 	<cffunction name="loadRulesReturnsCorrectPropertyRules" access="public" returntype="void">
 		<cfscript>
+			// TODO: This test fails under Railo, and I think it may have to do with ordering of the items in the array at PropertyRules['Validations']['Contexts']['Profile']
 			md = getComponentMetadata("validatethis.unitTests.Fixture.AnnotatedBOs.User_WithVTML");
 			PropertyRules = annotationTypeReader.getValidations("User_WithVTML",md);
+			//debug(PropertyRules);
 			
 			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['___DEFAULT']) eq 12 ,"Inncorect Rule count in DEFAULT context");
 			assertTrue(arrayLen(PropertyRules['Validations']['Contexts']['Profile']) eq 15 ,"Inncorect Rule count in Profile context");

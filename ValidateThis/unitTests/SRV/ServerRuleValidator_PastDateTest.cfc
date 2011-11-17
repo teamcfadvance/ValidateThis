@@ -41,6 +41,9 @@
 	<cffunction name="validateReturnsTrueForDateWithNoBeforeParam" access="public" returntype="void" mxunit:dataprovider="shouldPassDefault">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
+			
+			//TODO: Railo returns false for 2nd item that should pass
+			
 			super.setup();
 			parameters = structNew();
 			hasBefore = false;
@@ -48,6 +51,9 @@
 			configureValidationMock();
 
 			executeValidate(validation);
+			
+			debug(objectValue);
+			
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
 	</cffunction>

@@ -18,7 +18,7 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
-			VTConfig = {definitionPath="/validatethis/tests/Fixture"};
+			VTConfig = {definitionPath="/validatethis/unitTests/Fixture"};
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(VTConfig);
 			JSLib = "jQuery";
 			ExpectedInJSIncludes = '<script src="//ajax.microsoft.com/ajax/jquery/jquery';

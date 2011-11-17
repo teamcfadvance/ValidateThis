@@ -286,6 +286,9 @@
 	
 	<cffunction name="expectedResultObjectShouldBeReturnedByValidationWith4LevelsContainingThreeUniqueObjects" access="public" returntype="void">
 		<cfscript>
+			
+			//TODO: This test is failing under Railo because of ordering of the items in the array. Why?
+			
 			setupRecursion();
 			companyA.setCompanyName("a");
 			userA.setUserName("a");
@@ -300,6 +303,7 @@
 
 			executeValidate(validation);
 			failures = validation.getResult().getFailures();
+			debug(failures);
 			assertEquals(3,arrayLen(failures));
 			expectedStruct = failures[1];
 			assertEquals("userName",expectedStruct.clientFieldName);

@@ -40,6 +40,9 @@
 	<cffunction name="validateReturnsTrueForDateWithNoBeforeParam" access="public" returntype="void" mxunit:dataprovider="shouldPassDefault">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
+
+			// TODO: The test for shouldPass is failing under Railo, at the second value. Why?
+
 			super.setup();
 			objectValue = arguments.value;
 			parameters = structNew();
@@ -47,6 +50,7 @@
 
 			configureValidationMock();			
 
+			debug(objectValue);
 			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  
@@ -55,6 +59,9 @@
 	<cffunction name="validateReturnsTrueForExamplesThatShouldPass" access="public" returntype="void" mxunit:dataprovider="shouldPass">
 		<cfargument name="value" hint="each item in the shouldPass dataprovider array" />
 		<cfscript>
+			
+			// TODO: The test for shouldPass is failing under Railo, at the second value. Why?
+
 			super.setup();
 			objectValue = arguments.value;
             parameters = {after="12/29/1969"};
@@ -63,6 +70,8 @@
             
             configureValidationMock();                     			
 
+			debug(objectValue);
+			
 			executeValidate(validation);
 			validation.verifyTimes(0).fail("{*}"); 
 		</cfscript>  

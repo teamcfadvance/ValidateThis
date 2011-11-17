@@ -100,12 +100,16 @@
 
 	<cffunction name="getValidatorShouldReturnProperBOWhenXmlFileIsInAConfiguredFolderAndCFCHasDottedPath" access="public" returntype="void">
 		<cfscript>
+			
+			// TODO: This test is failing under Railo. BOValidator.getAllContexts() is returning an empty ___Default context.
+			
 			ValidateThisConfig.definitionPath = getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/Rules/";
 			validationFactory = CreateObject("component","ValidateThis.core.ValidationFactory").init(ValidateThisConfig);
 			theObject = createObject("component","Fixture.level1.level2.ObjectWithDottedPath");
 			BOValidator = validationFactory.getValidator(objectType="ObjectWithDottedPath",definitionPath=ValidateThisConfig.definitionPath,theObject=theObject);
 			allContexts = BOValidator.getAllContexts();
 			assertEquals(true,structKeyExists(allContexts,"___Default"));
+			debug(allContexts);
 			assertEquals("firstName",allContexts.___Default[1].propertyName);
 			assertEquals("lastName",allContexts.___Default[2].propertyName);
 		</cfscript>  

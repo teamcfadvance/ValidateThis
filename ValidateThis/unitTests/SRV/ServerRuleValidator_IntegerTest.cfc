@@ -19,6 +19,9 @@
 	
 	<cffunction name="setUp" access="public" returntype="void">
 		<cfscript>
+			
+			// TODO: Railo returns true for value of "2010-01-01", using IsValid("Integer",value)
+
 			super.setup();
 			SRV = getSRV("Integer");
 			shouldPass = [1,-1,0,1234567890,-1234567890];

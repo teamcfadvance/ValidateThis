@@ -20,6 +20,7 @@
 		<cfreturn this />
 	</cffunction>
 	
+	<!--- TODO: isEqual does not seem to work under Railo --->
 	<cffunction name="isEqual" access="public" returntype="boolean">
 		<cfargument name="thing1" type="any" required="true" hint="One thing to compare" />
 		<cfargument name="thing2" type="any" required="true" hint="Another thing to compare" />

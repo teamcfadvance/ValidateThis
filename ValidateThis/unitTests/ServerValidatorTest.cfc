@@ -75,7 +75,7 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="ResultShouldNotBeInjectedIntoBOWithInjectResultIntoBOFalse" access="public" returntype="void" mxunit:expectedException="Application">
+	<cffunction name="ResultShouldNotBeInjectedIntoBOWithInjectResultIntoBOFalse" access="public" returntype="void" mxunit:expectedException="Application,Expression">
 		<cfscript>
 			extra = {injectResultIntoBO=false};
 			createServerValidator(extra);
@@ -86,7 +86,7 @@
 		</cfscript>  
 	</cffunction>
 
-	<cffunction name="ResultShouldNotBeInjectedIntoBOWithDefaultConfig" access="public" returntype="void" mxunit:expectedException="Application">
+	<cffunction name="ResultShouldNotBeInjectedIntoBOWithDefaultConfig" access="public" returntype="void" mxunit:expectedException="Application,Expression">
 		<cfscript>
 			createServerValidator();
 			user = setUpUser(true);

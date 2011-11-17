@@ -1,5 +1,5 @@
 ﻿<cfscript>
-	VTConfig = {definitionPath="/validatethis/tests/Fixture/models/cf9"};
+	VTConfig = {definitionPath="/validatethis/unitTests/Fixture/models/cf9"};
 	ValidateThis = createObject("component","ValidateThis.ValidateThis").init(VTConfig);
 	companyA = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.Company_With_User");
 	userA = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.User_With_Company");
