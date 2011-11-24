@@ -54,8 +54,8 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 		<cfset var theVal = arguments.validation.getObjectValue()/>
-		<cfset var minLength = 1/>
-		<cfset var maxLength  = 1/>
+		<cfset var minLength = 0/>
+		<cfset var maxLength  = 0/>
 		<cfset var isRangeCheck = false/>
 		<cfset var parameterMessages = ""/>
 		<cfset var theSize = 0/>
@@ -69,42 +69,23 @@
 		
 		<cfscript>
 			minLength = arguments.validation.getParameterValue("min",minLength);
+			
 			if (arguments.validation.hasParameter("max")){
 				maxLength = arguments.validation.getParameterValue("max");
+				isRangeCheck = true;
 			} else {
 				maxLength = minLength;
 			}
-			if (minLength neq maxLength){
-				isRangeCheck = true;
-			}
 			
 			if (isSimpleValue(theVal)) {
-				if (listLen(theVal) gt 1) {
-					theSize = listLen(theVal);
-				} else if (listLen(theVal) lte 1) {
-					if (isRangeCheck) {
-						theSize = len(theVal);
-				 	} else {
-				 		theSize = 1;
-					}
-				}
+				theSize = listLen(theVal);
 			} else if (isStruct(theVal)) {
 				theSize = structCount(theVal);
 			} else if (isArray(theVal)) {
 				theSize = arrayLen(theVal);
 			}
 			
-			if (not isRangeCheck){
-				low = theSize lt minLength;
-				if (minLength neq maxLength){
-					high = theSize gt maxLength;
-				}
-				valid = not low and not high;
-			} else {
-				low = theSize lt minLength;
-				high = theSize gt maxLength;
-				valid = not low and not high;
-			}
+			valid = theSize lte minLength or theSize gte maxLength;
 			
 			if(not valid){
 				arrayAppend(args,minLength);
