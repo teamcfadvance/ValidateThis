@@ -85,7 +85,7 @@
 				theSize = arrayLen(theVal);
 			}
 			
-			valid = theSize lt minLength or theSize gt maxLength;
+			valid = theSize lte minLength or theSize gte maxLength;
 			
 			if(not valid){
 				arrayAppend(args,minLength);
