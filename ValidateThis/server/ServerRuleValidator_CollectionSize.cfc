@@ -54,8 +54,8 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 		<cfset var theVal = arguments.validation.getObjectValue()/>
-		<cfset var minLength = 1/>
-		<cfset var maxLength  = 1/>
+		<cfset var minLength = 0/>
+		<cfset var maxLength  = 0/>
 		<cfset var isRangeCheck = false/>
 		<cfset var parameterMessages = ""/>
 		<cfset var theSize = 0/>
