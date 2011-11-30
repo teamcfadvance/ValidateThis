@@ -99,7 +99,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
     }
 
     public void function testEndToEndClientnewValidations() {
-        selenium.open("http://localhost/validatethis/unitTests/selenium/FacadeDemo/index.cfm?init=true&context=newValidations-client");
+        selenium.open("http://localhost/validatethis/functionalTests/FacadeDemo/index.cfm?init=true&context=newValidations-client");
         selenium.waitForPageToLoad("30000");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
         selenium.type("UserName", "");
@@ -321,7 +321,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
     }
 
     public void function testEndToEndServerNewValidations() {
-        selenium.open("http://localhost/validatethis/unitTests/selenium/FacadeDemo/index.cfm?init=true&noJS=true&context=newValidations-server");
+        selenium.open("http://localhost/validatethis/functionalTests/FacadeDemo/index.cfm?init=true&noJS=true&context=newValidations-server");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
         selenium.type("UserName", "");
         selenium.type("UserPass", "");
