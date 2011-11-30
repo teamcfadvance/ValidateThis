@@ -35,7 +35,7 @@
 		<cfargument name="debuggingMode" type="string" required="true" hint="The debuggingMode from the VTConfig struct" />
 		<cfargument name="defaultLocale" type="string" required="true" hint="The defaultLocale for the resource bundle" />
 
-		<cfset variables.instance = {objectType = arguments.objectType, propertyDescs = {}, clientFieldDescs = {}, formContexts = {}, validations = {contexts = {___Default = arrayNew(1)}}, newRules = {}} />
+		<cfset variables.instance = {objectType = arguments.objectType, propertyDescs = {}, clientFieldDescs = {}, ClientFieldNames = {}, formContexts = {}, validations = {contexts = {___Default = arrayNew(1)}}, newRules = {}} />
 		<cfset variables.FileSystem = arguments.FileSystem />
 		<cfset variables.externalFileReader = arguments.externalFileReader />
 		<cfset variables.annotationReader = arguments.annotationReader />
@@ -90,6 +90,7 @@
 
 		<cfset structAppend(variables.instance.propertyDescs,theStruct.propertyDescs) />
 		<cfset structAppend(variables.instance.clientFieldDescs,theStruct.clientFieldDescs) />
+		<cfset structAppend(variables.instance.clientFieldNames,theStruct.clientFieldNames) />
 		<cfset structAppend(variables.instance.formContexts,theStruct.formContexts) />
 		
 		<cfif structKeyExists(arguments.theStruct,"validations") and structKeyExists(arguments.theStruct.validations,"contexts")>
@@ -267,6 +268,14 @@
 			<cfreturn variables.instance.propertyDescs[arguments.propertyName] />
 		</cfif>
 		<cfreturn determineLabel(arguments.propertyName) />
+	</cffunction>
+	
+	<cffunction name="getClientFieldName" access="public" output="false" returntype="string" hint="Returns the clientFieldName of a property">
+		<cfargument name="propertyName" required="true" type="string" />
+		<cfif not structKeyExists(variables.instance.clientFieldNames,arguments.propertyName)>
+			<cfthrow type="validatethis.core.BOValidator.missingPropertyName" message="The property: #arguments.propertyName# is not defined for this object." >
+		</cfif>
+		<cfreturn variables.instance.clientFieldNames[arguments.propertyName] />
 	</cffunction>
 	
 	<cffunction name="getRequiredPropertiesAndDescs" access="public" output="false" returntype="any">

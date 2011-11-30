@@ -41,7 +41,9 @@
 	<cffunction name="getParameterDef" returntype="any" access="public" output="false" hint="I override the parameter def because the VT param names do not match those expected by the jQuery plugin.">
 		<cfargument name="validation" type="any" required="yes" hint="The validation object that describes the validation." />
 		<cfset var params = arguments.validation.getParameters() />
-		<cfreturn """:input[name='#params.ComparePropertyName#']""" />
+		<cfset var compareFieldName = arguments.validation.getValidateThis().getClientFieldName(objectType=arguments.validation.getObjectType(),propertyName=params.ComparePropertyName) />
+
+		<cfreturn """:input[name='#compareFieldName#']""" />
 	</cffunction>
 
 	<cffunction name="getFailureArgs" returntype="array" access="private" output="false" hint="I provide arguments needed to generate the failure message.">
