@@ -261,6 +261,20 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="validateReturnsFalseForListWith2ItemsWithMinAndMaxOf1" access="public" returntype="void">
+		<cfscript>
+			objectValue = "item1,item2";
+			parameters={min=1,max=1};
+			hasMin = true;
+			hasMax = true;
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail("{*}");
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
 		<cfscript>
 			objectValue = "asdfasdfasdfasdfasdf";
