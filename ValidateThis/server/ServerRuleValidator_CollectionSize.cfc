@@ -45,7 +45,7 @@
 			<param name="min" value="150"/>
 		</rule>	
 	</property>
-
+	
 	
 --->
 <cfcomponent output="false" name="ServerRuleValidator_Size" extends="AbstractServerRuleValidator" hint="I am responsible for performing the Size validation.">
@@ -54,9 +54,10 @@
 		<cfargument name="validation" type="any" required="yes" hint="The validation object created by the business object being validated." />
 		<cfargument name="locale" type="string" required="yes" hint="The locale to use to generate the default failure message." />
 		<cfset var theVal = arguments.validation.getObjectValue()/>
-		<cfset var minLength = 1/>
-		<cfset var maxLength  = 1/>
-		<cfset var isRangeCheck = false/>
+		<cfset var minLength = 0/>
+		<cfset var maxLength  = 0/>
+		<cfset var hasUpperLimit = false />
+		<cfset var hasLowerLimit = false />
 		<cfset var parameterMessages = ""/>
 		<cfset var theSize = 0/>
 		<cfset var low = false/>
@@ -68,55 +69,55 @@
 		<cfif not shouldTest(arguments.validation)><cfreturn/></cfif>
 		
 		<cfscript>
-			minLength = arguments.validation.getParameterValue("min",minLength);
+			
+			// Setup the Min Paramaters
 			if (arguments.validation.hasParameter("max")){
+				hasUpperLimit = true;
 				maxLength = arguments.validation.getParameterValue("max");
-			} else {
-				maxLength = minLength;
-			}
-			if (minLength neq maxLength){
-				isRangeCheck = true;
 			}
 			
+			// Setup the Max Paramaters
+			if (arguments.validation.hasParameter("min")) {
+				hasLowerLimit = true;
+				minLength = arguments.validation.getParameterValue("min");
+			}
+			
+			// Determine the data type and check the size
 			if (isSimpleValue(theVal)) {
-				if (listLen(theVal) gt 1) {
-					theSize = listLen(theVal);
-				} else if (listLen(theVal) lte 1) {
-					if (isRangeCheck) {
-						theSize = len(theVal);
-				 	} else {
-				 		theSize = 1;
-					}
-				}
+				theSize = listLen(theVal);
 			} else if (isStruct(theVal)) {
 				theSize = structCount(theVal);
 			} else if (isArray(theVal)) {
 				theSize = arrayLen(theVal);
 			}
 			
-			if (not isRangeCheck){
-				low = theSize lt minLength;
-				if (minLength neq maxLength){
-					high = theSize gt maxLength;
-				}
-				valid = not low and not high;
-			} else {
-				low = theSize lt minLength;
-				high = theSize gt maxLength;
-				valid = not low and not high;
+			// If there is an upper and lower set, then we check the range
+			if(hasLowerLimit && hasUpperLimit && (theSize < minLength || theSize > maxLength)) {
+				
+				valid = false;
+				arrayAppend(args, minLength);
+				arrayAppend(args, maxLength);
+				msgKey = "defaultMessage_CollectionSize_Between";
+				
+			// If only a lower limit, then we test for that
+			} else if (hasLowerLimit && theSize < minLength) {
+				
+				valid = false;
+				arrayAppend(args, minLength);
+				msgKey = "defaultMessage_CollectionSize_LTE";
+				
+			// If only an upper limit, then we test for that
+			} else if (hasUpperLimit && theSize > maxLength) {
+				
+				valid = false;
+				arrayAppend(args, maxLength);
+				msgKey = "defaultMessage_CollectionSize_GTE";
+				
 			}
-			
-			if(not valid){
-				arrayAppend(args,minLength);
-				if (isRangeCheck){
-					msgKey = "defaultMessage_CollectionSize_Between";
-					arrayAppend(args,maxLength);
-				} else {
-					msgKey = "defaultMessage_CollectionSize_GTE";
-				}
-			}
+
 		</cfscript>
 		
+		<!--- If not valid for any reason, then call the fail method --->
 		<cfif not valid>
 			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage(msgKey,args,arguments.locale)) />
 		</cfif>

@@ -249,7 +249,7 @@
 	
 	<cffunction name="validateReturnsFalseForValueOutOfRangeHigh" access="public" returntype="void">
 		<cfscript>
-			objectValue = "asdfasdfasdfasdfasdf";
+			objectValue = "1,2,3,4,5,6,7,8,9,10,11,12";
 			parameters={min=1,max=10};
 			hasMin = true;
 			hasMax = true;
@@ -261,13 +261,43 @@
 		</cfscript>  
 	</cffunction>
 	
-	<cffunction name="failureMessageIsCorrect" access="public" returntype="void">
+	<cffunction name="failureMessageIsCorrectForValueOutOfRange" access="public" returntype="void">
 		<cfscript>
-			objectValue = "asdfasdfasdfasdfasdf";
-			parameters={min=1,max=10};
+			objectValue = "1,2,3";
+			parameters={min=5,max=10};
 			hasMin = true;
 			hasMax = true;
-            failureMessage = "The PropertyDesc size is not between 1 and 10.";
+            failureMessage = "The PropertyDesc size is not between 5 and 10.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="failureMessageIsCorrectForValueOutOfRangeWithOnlyMinSet" access="public" returntype="void">
+		<cfscript>
+			objectValue = "1,2,3";
+			parameters={min=5};
+			hasMin = true;
+			hasMax = false;
+            failureMessage = "The PropertyDesc size is not equal to or greater than 5.";
+			
+			configureValidationMock();
+			
+			executeValidate(validation);
+			validation.verifyTimes(1).fail(failureMessage); 
+		</cfscript>  
+	</cffunction>
+	
+	<cffunction name="failureMessageIsCorrectForValueOutOfRangeWithOnlyMaxSet" access="public" returntype="void">
+		<cfscript>
+			objectValue = "1,2,3,4,5,6,7,8";
+			parameters={max=5};
+			hasMin = false;
+			hasMax = true;
+            failureMessage = "The PropertyDesc size is not equal to or less than 5.";
 			
 			configureValidationMock();
 			
