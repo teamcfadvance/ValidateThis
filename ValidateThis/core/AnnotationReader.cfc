@@ -66,7 +66,7 @@
 		<cfargument name="theObject" type="any" required="true" />
 		<cfargument name="componentPath" type="any" required="true" />
 
-		<cfset var rulesStruct = {PropertyDescs = StructNew(), ClientFieldDescs = StructNew(), FormContexts = StructNew(), Validations = {Contexts = {___Default = ArrayNew(1)}}} />
+		<cfset var rulesStruct = {PropertyDescs = StructNew(), ClientFieldDescs = StructNew(), ClientFieldNames = StructNew(), FormContexts = StructNew(), Validations = {Contexts = {___Default = ArrayNew(1)}}} />
 		<cfset var md = getObjectMetadata(argumentCollection=arguments) />
 		<cfset var annotationFormat = 0 />
 		<cfset var annotationTypeReader = 0 />

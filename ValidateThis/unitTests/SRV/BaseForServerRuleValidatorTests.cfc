@@ -37,6 +37,7 @@
 			//Default Validation Mock Values
 			propertyDesc="PropertyDesc";
 			propertyName="PropertyName";
+			clientFieldName="PropertyName";
 			parameters={};
 			objectValue = "";
 			isRequired = true;
@@ -56,7 +57,7 @@
 			validation.getValidateThis().returns(ValidateThis);
 			validation.getPropertyDesc().returns(propertyDesc);
 			validation.getPropertyName().returns(propertyName);
-			validation.getClientFieldName().returns(propertyName);
+			validation.getClientFieldName().returns(clientFieldName);
 			validation.getFailureMessage().returns(failureMessage);
 			if (len(failureMessage)) {
 				validation.fail(failureMessage).returns();

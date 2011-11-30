@@ -19,6 +19,7 @@
 
 		<cfset variables.propertyDescs = {} />
 		<cfset variables.clientFieldDescs = {} />
+		<cfset variables.clientFieldNames = {} />
 		<cfset variables.conditions = {} />
 		<cfset variables.contexts = {} />
 		<cfset variables.formContexts = {} />
@@ -41,7 +42,7 @@
 		<cfset var returnStruct = 0 />
 
 		<cfset loadRules(arguments.objectType,arguments.metadataSource) />
-		<cfset returnStruct = {propertyDescs=variables.propertyDescs,clientFieldDescs=variables.clientFieldDescs,formContexts=variables.formContexts,validations=variables.validations} />
+		<cfset returnStruct = {propertyDescs=variables.propertyDescs,clientFieldDescs=variables.clientFieldDescs,clientFieldNames=variables.clientFieldNames,formContexts=variables.formContexts,validations=variables.validations} />
 		<cfreturn returnStruct />
 	</cffunction>
 
@@ -145,7 +146,6 @@
 		<cfloop array="#arguments.properties#" index="theProperty">
 			<cfif structKeyExists(theProperty,"rules")>
 				<cfloop array="#theProperty.rules#" index="theRule">
-					<!--- TODO: add the objectType into the theVal struct here, which should make it available to the Validation object --->
 					<cfset theVal = {objectType = arguments.objectType, propertyName = theProperty.name, valType = theRule.type, parameters = structNew()} />
 					<cfif StructKeyExists(theProperty,"desc")>
 						<cfset theVal.PropertyDesc = theProperty.desc />
@@ -157,6 +157,7 @@
 					<cfelse>
 						<cfset theVal.ClientFieldName = theVal.PropertyName />
 					</cfif>
+					<cfset variables.clientFieldNames[theProperty.name] = theVal.ClientFieldName />
 					<cfif structKeyExists(theRule,"params")>
 						<cfloop array="#theRule.params#" index="theParam">
 							<cfset theVal.parameters[theParam.name] = theParam />

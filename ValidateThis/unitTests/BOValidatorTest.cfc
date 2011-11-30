@@ -248,6 +248,13 @@
 		</cfscript>  
 	</cffunction>
 	
+	<cffunction name="getClientFieldNameReturnsCorrectClientFieldNameFromMetadata" access="public" returntype="void">
+		<cfscript>
+			BOValidator = createDefaultBOV();
+			assertEquals("UserGroupId",BOValidator.getClientFieldName("UserGroup"));
+		</cfscript>  
+	</cffunction>
+	
 	<cffunction name="createDefaultBOV" access="private" returntype="any">
 		<cfscript>
 			// Note, the following contains hardcoded path delimeters - had to change when moving to a Mac
