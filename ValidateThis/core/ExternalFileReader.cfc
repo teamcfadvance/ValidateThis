@@ -80,7 +80,7 @@
 		<cfset var fileType = "" />
 		<cfset var fileName = "" />
 		<cfset var fileReader = "" />
-		<cfset var rulesStruct = {PropertyDescs = StructNew(), ClientFieldDescs = StructNew(), FormContexts = StructNew(), Validations = {Contexts = {___Default = ArrayNew(1)}}} />
+		<cfset var rulesStruct = {PropertyDescs = StructNew(), ClientFieldDescs = StructNew(), ClientFieldNames = StructNew(), FormContexts = StructNew(), Validations = {Contexts = {___Default = ArrayNew(1)}}} />
 
 		<cfset verifyAtLeastOnePathIsValid(arguments.definitionPath) />
 		
