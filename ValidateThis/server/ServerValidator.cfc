@@ -52,6 +52,7 @@
 		<cfargument name="debuggingMode" type="string" required="false" default="#arguments.Result.getDebuggingMode()#" />
 		<cfargument name="ignoreMissingProperties" type="boolean" required="false" default="false" />
 		<cfargument name="locale" type="string" required="false" default="#variables.defaultLocale#" />
+		<cfargument name="injectResultIntoBO" type="boolean" default="#variables.injectResultIntoBO#" />
 
 		<cfset var v = "" />
 		<cfset var theFailure = 0 />
@@ -122,7 +123,7 @@
 					</cfif>
 				</cfloop>
 				<!--- inject the Result object into the BO if configured to do so --->
-				<cfif variables.injectResultIntoBO and isObject>
+				<cfif arguments.injectResultIntoBO and isObject>
 					<cfset arguments.theObject["setVTResult"] = this["setVTResult"] />
 					<cfset arguments.theObject["getVTResult"] = this["getVTResult"] />
 					<cfset arguments.theObject.setVTResult(arguments.Result) />
