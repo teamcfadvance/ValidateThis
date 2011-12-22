@@ -76,7 +76,13 @@
 
 	<cffunction name="getAbsolutePath" access="public" output="false" returntype="string" hint="Turn any system path, either relative or absolute, into a fully qualified one">
 		<cfargument name="path" type="string" required="true" hint="Abstract pathname">
-		<cfif not DirectoryExists(arguments.path)>
+		
+		<cfset var dirExists = false />
+		<cftry>
+            <cfset dirExists = DirectoryExists(arguments.path) /> 
+            <cfcatch type="security" /> 
+        </cftry>
+        <cfif not dirExists>
 			<cfif Right(arguments.path,1) EQ "/">
 				<cfset arguments.path = left(arguments.path,len(arguments.path)-1) />
 			</cfif>
