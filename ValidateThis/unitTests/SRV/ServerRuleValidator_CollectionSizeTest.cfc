@@ -190,20 +190,22 @@
 
 	<cffunction name="validateReturnsTrueForEmptyPropertyIfNotRequired" access="public" returntype="void">
 		<cfscript>
+			// Changing logic in here to actually test for validate returning false, as this SRV does not support optionality
 			objectValue = "";
 			hasMin = true;
 			hasMax = false;
 			isRequired = false;
+			defaultMin=1;
 			
 			configureValidationMock();
 			
 			executeValidate(validation);
-			validation.verifyTimes(0).fail("{*}"); 
+			validation.verifyTimes(1).fail("{*}"); 
 		</cfscript>  
 	</cffunction>
 	
 	<cffunction name="validateReturnsFalseForEmptyPropertyIfRequired" access="public" returntype="void">
-		<!--- <cfscript>
+		<cfscript>
 			objectValue = "";
 			hasMin = true;
 			hasMax = false;
@@ -214,13 +216,14 @@
 			
 			executeValidate(validation);
 			validation.verifyTimes(1).fail("{*}"); 
-		</cfscript>   --->
+		</cfscript>
 	</cffunction>
 	
 	<cffunction name="validateReturnsTrueForValueInRange" access="public" returntype="void">
 		<cfscript>
 			objectValue = "test";
-			parameters={min=1,max=10};
+			defaultmin=1;
+			defaultMax=10;
 			hasMin = true;
 			hasMax = true;
 			
@@ -235,7 +238,8 @@
 	<cffunction name="validateReturnsFalseForValueOutOfRangeLow" access="public" returntype="void">
 		<cfscript>
 			objectValue = "";
-			parameters={min=1,max=10};
+			defaultmin=1;
+			defaultMax=10;
 			hasMin = true;
 			hasMax = true;
 			
@@ -250,7 +254,8 @@
 	<cffunction name="validateReturnsFalseForValueOutOfRangeHigh" access="public" returntype="void">
 		<cfscript>
 			objectValue = "1,2,3,4,5,6,7,8,9,10,11,12";
-			parameters={min=1,max=10};
+			defaultmin=1;
+			defaultMax=10;
 			hasMin = true;
 			hasMax = true;
 			
@@ -264,7 +269,8 @@
 	<cffunction name="validateReturnsFalseForListWith2ItemsWithMinAndMaxOf1" access="public" returntype="void">
 		<cfscript>
 			objectValue = "item1,item2";
-			parameters={min=1,max=1};
+			defaultmin=1;
+			defaultMax=1;
 			hasMin = true;
 			hasMax = true;
 			
@@ -278,7 +284,8 @@
 	<cffunction name="failureMessageIsCorrectForValueOutOfRange" access="public" returntype="void">
 		<cfscript>
 			objectValue = "1,2,3";
-			parameters={min=5,max=10};
+			defaultmin=5;
+			defaultMax=10;
 			hasMin = true;
 			hasMax = true;
             failureMessage = "The PropertyDesc size is not between 5 and 10.";
@@ -293,7 +300,7 @@
 	<cffunction name="failureMessageIsCorrectForValueOutOfRangeWithOnlyMinSet" access="public" returntype="void">
 		<cfscript>
 			objectValue = "1,2,3";
-			parameters={min=5};
+			defaultmin=5;
 			hasMin = true;
 			hasMax = false;
             failureMessage = "The PropertyDesc size is not equal to or greater than 5.";
@@ -308,7 +315,7 @@
 	<cffunction name="failureMessageIsCorrectForValueOutOfRangeWithOnlyMaxSet" access="public" returntype="void">
 		<cfscript>
 			objectValue = "1,2,3,4,5,6,7,8";
-			parameters={max=5};
+			defaultMax=5;
 			hasMin = false;
 			hasMax = true;
             failureMessage = "The PropertyDesc size is not equal to or less than 5.";
