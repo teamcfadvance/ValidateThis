@@ -253,8 +253,8 @@ Version 0.99
 - success is now set to 'false' automatically when calling addFailure()
 - updated API for addFailure() to allow for specific arguments
 
-Version 1.0 RC1
----------------
+Version 1.0
+-----------
 - removed the query.validate.pack.js file as it is no longer provided by the plugin author - users pointing directly to that file will have to point to query.validate.min.js instead
 - generated failure messages are now being pulled from the file /ValidateThis/locales/en_US.properties, for both client and server
 - added support for optionality in client rule scripters that required it
@@ -274,3 +274,8 @@ Version 1.0 RC1
 - now using protocol-agnostic URLs to pull in scripts from CDN
 - added project README.md file
 - changed links in sample apps to be relative
+
+Version 1.1
+-----------
+- assorted fixes contributed by users
+- new validation type: notRegex
