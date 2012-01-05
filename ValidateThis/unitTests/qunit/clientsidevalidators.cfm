@@ -190,7 +190,23 @@
 			});
 		});
 		
-		
+		test("notregex", function() {
+			var v = jQuery("##form").validate();
+			var method = $.validator.methods["notregex"]; 
+			var param = "[,\.\*]+";
+			var e = $("##firstname")[0];
+			
+			var shouldFail = ["abc,123","abc.123","abc*123"];
+			var shouldPass = ["","abc123","abc-123","+-\/"];
+			
+			jQuery.each(shouldPass,function(index,value){
+				ok( method.call( v, value, e, param ), testedvalue(true,value) );
+			});
+			jQuery.each(shouldFail,function(index,value){
+				ok( !method.call( v, value, e, param ), testedvalue(false,value) );
+			});
+		});
+				
 
 		module("inlist");
 		
