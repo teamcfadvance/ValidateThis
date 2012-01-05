@@ -1,5 +1,6 @@
 component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
 
+/* Commenting out so the tests don't run by default
     public void function beforeTests() {
         browserUrl = "http://localhost:8888/validatethis/samples/FacadeDemo/";
         super.beforeTests();
@@ -417,4 +418,5 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         assertFalse(selenium.isElementPresent("error-VerifyPassword"));
     }
     
+	*/
 }
