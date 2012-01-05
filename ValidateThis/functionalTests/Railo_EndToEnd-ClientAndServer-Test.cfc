@@ -1,6 +1,5 @@
 component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
 
-/* Commenting out so the tests don't run by default
     public void function beforeTests() {
         browserUrl = "http://localhost:8888/validatethis/samples/FacadeDemo/";
         super.beforeTests();
@@ -12,6 +11,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
     	return "css=p.errorField[htmlfor=#arguments.name#]";
     }
 
+/* Commenting out so the tests don't run by default
     public void function RunQUnitTests() {
         selenium.open("http://localhost:8888/validatethis/unitTests/qunit/clientsidevalidators.cfm");
         selenium.waitForPageToLoad("30000");

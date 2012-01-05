@@ -383,14 +383,6 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
         selenium.click("//button[@type='submit']");
         selenium.waitForPageToLoad("30000");
         assertEquals("The Password must be true.", selenium.getText("error-UserPass"));
-        selenium.type("VerifyPassword", "ab");
-        selenium.click("//button[@type='submit']");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("The Verify Password size is not between 3 and 10.", selenium.getText("error-VerifyPassword"));
-        selenium.type("VerifyPassword", "abc");
-        selenium.click("//button[@type='submit']");
-        selenium.waitForPageToLoad("30000");
-        assertFalse(selenium.isElementPresent("error-VerifyPassword"));
         selenium.type("VerifyPassword", "a,b");
         selenium.click("//button[@type='submit']");
         selenium.waitForPageToLoad("30000");
