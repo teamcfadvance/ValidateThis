@@ -72,7 +72,7 @@
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript" >
-			if( #arguments.selector#.size() ){
+			if( #arguments.selector#.length ){
 				#arguments.selector#.rules('add',#generateRuleStruct(argumentCollection=arguments)#);
 			}
 		</cfsavecontent>
