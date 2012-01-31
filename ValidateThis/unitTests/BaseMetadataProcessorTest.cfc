@@ -70,5 +70,28 @@
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="processPropertyRulesShouldPickupProcessOnAttribute" access="public" returntype="void">
+		<cfscript>
+			properties = [{name="theName",rules=[{type="required",processOn="client"}]}];
+			baseMetadataProcessor.processPropertyRules("user",properties);
+			validations = baseMetadataProcessor.getVariables().validations;
+			rule = validations.contexts.___default[1];
+			debug(rule);
+			assertEquals(true,structKeyExists(rule,"processOn"));
+			assertEquals("client",rule.processOn);
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="processPropertyRulesShouldAddDefaultProcessOnToEachValidation" access="public" returntype="void">
+		<cfscript>
+			properties = [{name="theName",rules=[{type="required",processOn="server"},{type="email"}]}];
+			baseMetadataProcessor.processPropertyRules("user",properties);
+			validations = baseMetadataProcessor.getVariables().validations;
+			validations = validations.contexts.___default;
+			assertEquals("server",validations[1].processOn);
+			assertEquals("both",validations[2].processOn);
+		</cfscript>
+	</cffunction>
+
 </cfcomponent>
 

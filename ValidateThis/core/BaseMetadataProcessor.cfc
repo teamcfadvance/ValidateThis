@@ -146,7 +146,7 @@
 		<cfloop array="#arguments.properties#" index="theProperty">
 			<cfif structKeyExists(theProperty,"rules")>
 				<cfloop array="#theProperty.rules#" index="theRule">
-					<cfset theVal = {objectType = arguments.objectType, propertyName = theProperty.name, valType = theRule.type, parameters = structNew()} />
+					<cfset theVal = {objectType = arguments.objectType, propertyName = theProperty.name, valType = theRule.type, parameters = structNew(), processOn = "both"} />
 					<cfif StructKeyExists(theProperty,"desc")>
 						<cfset theVal.PropertyDesc = theProperty.desc />
 					<cfelse>
@@ -183,6 +183,9 @@
 						<cfset theVal.condition = variables.conditions[theRule.condition] />
 					<cfelse>
 						<cfset theVal.condition = {} />
+					</cfif>
+					<cfif structKeyExists(theRule,"processOn")>
+						<cfset theVal.processOn = theRule.processOn />
 					</cfif>
 					<cfif NOT structKeyExists(theRule,"contexts") OR listFind(theRule.contexts,"*")>
 						<cfloop collection="#variables.validations.contexts#" item="theContext">
