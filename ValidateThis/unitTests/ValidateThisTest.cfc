@@ -31,7 +31,7 @@
 	
 	<cffunction name="getVersionReturnsCurrentVersion" access="public" returntype="void">
 		<cfscript>
-			assertEquals("1.0 RC1",ValidateThis.getVersion());
+			assertEquals("1.1",ValidateThis.getVersion());
 		</cfscript>  
 	</cffunction>
 
@@ -285,7 +285,6 @@
 		<cfscript>
 			theObject = "";
 			script = ValidateThis.getValidationScript(theObject=theObject,objectType="RuleWithADynamicParameterThatDoesNotNeedAnObject");
-			debug(script);
 			assertTrue(script contains "fm['testProp'] = $("":input[name='testProp']"",$form_frmMain);fm['testProp'].rules('add',{""inlist"":{""list"":");
 			assertTrue(script contains "},""messages"":{""inlist"":""The Test Prop was not found in the list: #year(now())#.""}});});");
 		</cfscript>  

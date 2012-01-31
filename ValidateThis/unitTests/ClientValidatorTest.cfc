@@ -90,7 +90,6 @@
 			assertTrue(script contains "$form_testFormName.validate({ignore:'.ignore'});");
 			assertTrue(script contains "fm['clientFieldName'] = $("":input[name='clientFieldName']"",$form_testFormName);","invalid input selector");
 			assertTrue(script contains "fm['clientFieldName'].rules","invalid field selector");
-			debug(script);
 			assertTrue(script contains 'rules(''add'',{"inlist":{"list":"1,2"},"messages":{"inlist":"The propertyDesc was not found in the list: 1,2."}});',"Invalid Rules('add') script:" & htmlEditFormat(script));
 		</cfscript>  
 	</cffunction>
