@@ -21,7 +21,7 @@
 		<cfscript>
 			ValidateThisConfig = getVTConfig();
 			ValidateThis = CreateObject("component","ValidateThis.ValidateThis").init(ValidateThisConfig);
-			validation = {clientFieldName="clientFieldName",condition=structNew(),formName="formName",parameters=structNew(),propertyDesc="propertyDesc",propertyName="propertyName",valType="required"};
+			validation = {clientFieldName="clientFieldName",condition=structNew(),formName="formName",parameters=structNew(),propertyDesc="propertyDesc",propertyName="propertyName",valType="required",processOn="both"};
 			validations = [validation];
 		</cfscript>
 	</cffunction>
@@ -81,7 +81,7 @@
 			ClientValidator = validateThis.getBean("ClientValidator");
 			parameter = {name="list",value="getList()",type="expression"};
 			parameters = {list=parameter};
-			validation = {clientFieldName="clientFieldName",condition=structNew(),formName="formName",parameters=parameters,propertyDesc="propertyDesc",propertyName="propertyName",valType="inList"};
+			validation = {clientFieldName="clientFieldName",condition=structNew(),formName="formName",parameters=parameters,propertyDesc="propertyDesc",propertyName="propertyName",valType="inList",processOn="both"};
 			validations = [validation];
 			theObject = mock();
 			theObject.evaluateExpression("getList()").returns("1,2");
@@ -132,6 +132,41 @@
 			assertEquals("The PropertyDesc was not found in the list: 1,2.",theStruct.messages.clientFieldName.inlist);
 		</cfscript>  
 	</cffunction>
+
+	<cffunction name="validateShouldEnforceRuleWhenProcessOnIsClient" access="public" returntype="void">
+		<cfscript>
+			ClientValidator = validateThis.getBean("ClientValidator");
+			validations[1].processOn = "client";
+			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
+			assertTrue(script contains "fm['clientFieldName'] = $("":input[name='clientFieldName']"",$form_testFormName);");
+		</cfscript>  
+	</cffunction>
 	
+	<cffunction name="validateShouldNotEnforceRuleWhenProcessOnIsServer" access="public" returntype="void">
+		<cfscript>
+			ClientValidator = validateThis.getBean("ClientValidator");
+			validations[1].processOn = "server";
+			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
+			assertFalse(script contains "fm['clientFieldName'] = $("":input[name='clientFieldName']"",$form_testFormName);");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateShouldEnforceRuleWhenProcessOnIsBoth" access="public" returntype="void">
+		<cfscript>
+			ClientValidator = validateThis.getBean("ClientValidator");
+			validations[1].processOn = "both";
+			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
+			assertTrue(script contains "fm['clientFieldName'] = $("":input[name='clientFieldName']"",$form_testFormName);");
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateShouldEnforceRuleWhenProcessOnIsNotSpecified" access="public" returntype="void">
+		<cfscript>
+			ClientValidator = validateThis.getBean("ClientValidator");
+			script = ClientValidator.getValidationScript(validations=validations,formName="testFormName",jsLib="jQuery");
+			assertTrue(script contains "fm['clientFieldName'] = $("":input[name='clientFieldName']"",$form_testFormName);");
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>
 

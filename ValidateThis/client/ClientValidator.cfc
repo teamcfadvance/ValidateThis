@@ -64,13 +64,15 @@
 				<cfoutput>#Trim(theScriptWriter.generateScriptHeader(arguments.formName))#</cfoutput>
 				<cfoutput>var fm={};</cfoutput>
 				<cfloop Array="#arguments.Validations#" index="validation">
-					<cfset theVal.load(validation) />
-					<cfif !StructKeyExists( fields, validation.clientfieldname )>
-						<!--- create js reference --->
-						<cfoutput>#Trim(theScriptWriter.generateJSFieldRefence(validation.clientfieldname,arguments.formName))#</cfoutput>
-						<cfset fm[validation.clientfieldname]="">
+					<cfif validation.processOn NEQ "server">
+						<cfset theVal.load(validation) />
+						<cfif !StructKeyExists( fields, validation.clientfieldname )>
+							<!--- create js reference --->
+							<cfoutput>#Trim(theScriptWriter.generateJSFieldRefence(validation.clientfieldname,arguments.formName))#</cfoutput>
+							<cfset fm[validation.clientfieldname]="">
+						</cfif>
+						<cfoutput>#Trim(theScriptWriter.generateValidationScript(theVal,arguments.formName,arguments.locale))#</cfoutput>
 					</cfif>
-					<cfoutput>#Trim(theScriptWriter.generateValidationScript(theVal,arguments.formName,arguments.locale))#</cfoutput>
 				</cfloop>
 				<cfoutput>#Trim(theScriptWriter.generateScriptFooter())#</cfoutput>
 			</cfsavecontent>

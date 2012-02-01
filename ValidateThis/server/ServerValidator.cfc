@@ -64,7 +64,6 @@
 		<cfset var conditionPasses = true />
 		<cfset var isObject = variables.ObjectChecker.isCFC(arguments.theObject) />
 		<cfset var classname = "struct" />
-		<cfset var processOnServer = true />
 		
 		<cfif arguments.debuggingMode neq "none" AND isObject>
 			<!--- for performance, only inspect metadata to get classname if debugging is enabled --->
@@ -79,7 +78,7 @@
 				<cfloop Array="#Validations#" index="v">
 					<cfif v.processOn NEQ "client">
 						<cfset theVal.load(v) />
-						<cfif theVal.propertyExists() AND processOnServer>
+						<cfif theVal.propertyExists()>
 							<cfset conditionPasses = true />
 							<!--- Deal with various conditions --->
 							<cfif StructKeyExists(v.Condition,"ServerTest")>
