@@ -70,7 +70,13 @@
 		<cfargument name="selector" type="Any" required="yes" />
 		<cfset var theScript = "" />
 		
-		<cfset theScript = "#arguments.selector#.rules('add',#generateRuleStruct(argumentCollection=arguments)#);" />
+		<cfoutput>
+		<cfsavecontent variable="theScript" >
+			if( #arguments.selector#.length ){
+				#arguments.selector#.rules('add',#generateRuleStruct(argumentCollection=arguments)#);
+			}
+		</cfsavecontent>
+		</cfoutput>		
 		
 		<cfreturn theScript/>
 	</cffunction>
