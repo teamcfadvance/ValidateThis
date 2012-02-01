@@ -140,9 +140,14 @@ b. Needs a description recorded for it.  E.g., if it relates to another property
                             <xs:documentation>A message to display to the user when a validation failure occrus.  If none is specified the framework will generate a failure message.</xs:documentation>
                           </xs:annotation>
                         </xs:attribute>
-                        <xs:attribute name="condition" type="xs:string">
+                        <xs:attribute name="condition" type="xs:string" use="optional">
                           <xs:annotation>
                             <xs:documentation>The unique name of a condition that has been defined in the conditions collection</xs:documentation>
+                          </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="processOn" type="xs:string" use="optional">
+                          <xs:annotation>
+                            <xs:documentation>Where the rule should be processed. Valid values are client, server and both, with both being the default.</xs:documentation>
                           </xs:annotation>
                         </xs:attribute>
                       </xs:complexType>

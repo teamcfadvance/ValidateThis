@@ -289,6 +289,14 @@
 		<cfreturn variables.context/>
 	</cffunction>
 
+	<cffunction name="setProcessOn" access="public" output="false" returntype="any">
+		<cfargument name="processOn" type="string" required="false" default="" />
+		<cfset variables.processOn = arguments.processOn/>
+	</cffunction>
+	<cffunction name="getProcessOn" access="public" output="false" returntype="any">
+		<cfreturn variables.processOn/>
+	</cffunction>
+
 	<cffunction name="setResult" access="public" output="false" returntype="any">
 		<cfargument name="result" type="any" required="false" default="" />
 		<cfset variables.Instance.result = arguments.result/>

@@ -489,6 +489,61 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="validateShouldEnforceRuleWhenProcessOnIsServer" access="public" returntype="void">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			user.setUserName("");
+			BOValidator = validationFactory.getValidator("rulesForProcessOnTest",getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator=BOValidator,theObject=user,Context="",Result=Result);
+			failures = Result.getFailures();
+			assertEquals(1,arrayLen(failures));
+			assertEquals("UserName",failures[1].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateShouldEnforceRuleWhenProcessOnIsBoth" access="public" returntype="void">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			user.setLastName("");
+			BOValidator = validationFactory.getValidator("rulesForProcessOnTest",getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator=BOValidator,theObject=user,Context="",Result=Result);
+			failures = Result.getFailures();
+			assertEquals(1,arrayLen(failures));
+			assertEquals("LastName",failures[1].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateShouldEnforceRuleWhenProcessOnIsNotSpecified" access="public" returntype="void">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			user.setUserPass("");
+			BOValidator = validationFactory.getValidator("rulesForProcessOnTest",getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator=BOValidator,theObject=user,Context="",Result=Result);
+			failures = Result.getFailures();
+			assertEquals(1,arrayLen(failures));
+			assertEquals("UserPass",failures[1].propertyName);
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateShouldNotEnforceRuleWhenProcessOnIsClient" access="public" returntype="void">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			user.setFirstName("");
+			BOValidator = validationFactory.getValidator("rulesForProcessOnTest",getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator=BOValidator,theObject=user,Context="",Result=Result);
+			failures = Result.getFailures();
+			assertEquals(0,arrayLen(failures));
+		</cfscript>  
+	</cffunction>
+
 	<cffunction name="evaluateExpression" access="Public" returntype="any" output="false" hint="I dynamically evaluate an expression and return the result.">
 		<cfargument name="expression" type="any" required="false" default="1" />
 		
