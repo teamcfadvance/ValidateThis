@@ -183,7 +183,9 @@
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		    #arguments.selector#.rules("add",{#valType#:#theCondition#,messages:{#valType#:"#failureMessage#"}});
+			if( #arguments.selector#.length ){
+				 #arguments.selector#.rules("add",{#valType#:#theCondition#,messages:{#valType#:"#failureMessage#"}});
+			}
 		</cfsavecontent>
 		</cfoutput>		
 		<cfreturn trim(theScript) />
