@@ -429,7 +429,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain",locale);
 			
-			assertEquals("fm['firstname'].rules(""add"",{required:true,messages:{required:""the first name is required.""}});",script);
+			assertTrue(script contains "fm['firstname'].rules(""add"",{required:true,messages:{required:""the first name is required.""}});");
 			
 		</cfscript>  
 	</cffunction>
@@ -441,7 +441,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain",locale);
 			
-			assertEquals("fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue().length > 0;},messages:{required:""the first name is required if you specify a value for the lastname.""}});",script);
+			assertTrue(script contains "fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue().length > 0;},messages:{required:""the first name is required if you specify a value for the lastname.""}});");
 
 		</cfscript>  
 	</cffunction>
@@ -453,7 +453,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frm-Main2",locale);
 			
-			assertEquals("fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue().length > 0;},messages:{required:""the first name is required if you specify a value for the lastname.""}});",script);
+			assertTrue(script contains "fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue().length > 0;},messages:{required:""the first name is required if you specify a value for the lastname.""}});");
 
 		</cfscript>  
 	</cffunction>
@@ -466,7 +466,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain",locale);
 			
-			assertEquals("fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue() == 'silverberg';},messages:{required:""the first name is required based on what you entered for the lastname.""}});",script);
+			assertTrue(script contains "fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue() == 'silverberg';},messages:{required:""the first name is required based on what you entered for the lastname.""}});");
 
 		</cfscript>  
 	</cffunction>
@@ -479,7 +479,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frm-Main2",locale);
 
-			assertEquals("fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue() == 'silverberg';},messages:{required:""the first name is required based on what you entered for the lastname.""}});",script);
+			assertTrue(script contains "fm['firstname'].rules(""add"",{required:function(el){return $("":input[name='lastname']"").getvalue() == 'silverberg';},messages:{required:""the first name is required based on what you entered for the lastname.""}});");
 
 		</cfscript>  
 	</cffunction>
@@ -493,7 +493,7 @@
 			
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frmMain",locale);
-			assertEquals("fm['FirstName'].rules(""add"",{required:function(el){return $("":input[name='User[LastName]']"").getvalue().length > 0;},messages:{required:""the First Name is required if you specify a value for the lastname.""}});",script);
+			assertTrue(script contains "fm['FirstName'].rules(""add"",{required:function(el){return $("":input[name='User[LastName]']"").getvalue().length > 0;},messages:{required:""the First Name is required if you specify a value for the lastname.""}});");
 			
 		</cfscript>  
 	</cffunction>
@@ -507,7 +507,7 @@
 			validation.load(valStruct);
 			script = ScriptWriter.generateValidationScript(validation,"frm-Main2",locale);
 			
-			assertEquals("fm['FirstName'].rules(""add"",{required:function(el){return $("":input[name='User[LastName]']"").getvalue().length > 0;},messages:{required:""the First Name is required if you specify a value for the lastname.""}});",script);
+			assertTrue(script contains "fm['FirstName'].rules(""add"",{required:function(el){return $("":input[name='User[LastName]']"").getvalue().length > 0;},messages:{required:""the First Name is required if you specify a value for the lastname.""}});");
 			
 		</cfscript>  
 	</cffunction>

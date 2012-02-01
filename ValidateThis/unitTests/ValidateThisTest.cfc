@@ -285,8 +285,10 @@
 		<cfscript>
 			theObject = "";
 			script = ValidateThis.getValidationScript(theObject=theObject,objectType="RuleWithADynamicParameterThatDoesNotNeedAnObject");
-			assertTrue(script contains "fm['testProp'] = $("":input[name='testProp']"",$form_frmMain);fm['testProp'].rules('add',{""inlist"":{""list"":");
-			assertTrue(script contains "},""messages"":{""inlist"":""The Test Prop was not found in the list: #year(now())#.""}});});");
+			debug(script);
+			assertTrue(script contains "fm['testProp'] = $("":input[name='testProp']"",$form_frmMain);");
+			assertTrue(script contains "if( fm['testProp'].length )");
+			assertTrue(script contains "fm['testProp'].rules('add',{""inlist""");
 		</cfscript>  
 	</cffunction>
 
