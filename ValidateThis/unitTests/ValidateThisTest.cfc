@@ -285,7 +285,6 @@
 		<cfscript>
 			theObject = "";
 			script = ValidateThis.getValidationScript(theObject=theObject,objectType="RuleWithADynamicParameterThatDoesNotNeedAnObject");
-			debug(script);
 			assertTrue(script contains "fm['testProp'] = $("":input[name='testProp']"",$form_frmMain);");
 			assertTrue(script contains "if( fm['testProp'].length )");
 			assertTrue(script contains "fm['testProp'].rules('add',{""inlist""");

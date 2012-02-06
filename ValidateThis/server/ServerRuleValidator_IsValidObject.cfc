@@ -60,6 +60,7 @@
 		<cfloop array="#toCheck#" index="theObject">
 			<!--- try to validate any apparent objects --->
 			<cfset validateArgumentCollection.theObject = theObject />
+			<cfset validateArgumentCollection.result = theResult />
 			<cfif isSimpleValue(objectType) and len(objectType) gt 0>
 				<cfset validateArgumentCollection.objectType = objectType />
 			</cfif>

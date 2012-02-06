@@ -76,7 +76,6 @@
 			baseMetadataProcessor.processPropertyRules("user",properties);
 			validations = baseMetadataProcessor.getVariables().validations;
 			rule = validations.contexts.___default[1];
-			debug(rule);
 			assertEquals(true,structKeyExists(rule,"processOn"));
 			assertEquals("client",rule.processOn);
 		</cfscript>

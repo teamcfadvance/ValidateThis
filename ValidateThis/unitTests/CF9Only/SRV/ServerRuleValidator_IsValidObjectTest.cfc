@@ -339,4 +339,31 @@
 		</cfscript>  
 	</cffunction>
 
+	<cffunction name="validateShouldIncludeMessagesFromAllFailuresForAllObjects" access="public" returntype="void">
+		<cfscript>
+			container = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.Container");
+			objA = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.sample");
+			objB = createObject("component","validatethis.unitTests.Fixture.models.cf9.vtml.sample");
+			
+			objA.setId("objA");
+			objA.setProp1("");
+			objA.setProp2("");
+			objB.setId("objB");
+			objB.setProp1("");
+			objB.setProp2("");
+			container.setObjects([objA,objB]);
+			
+			validation = validateThis.getBean("TransientFactory").newValidation(container);
+			valStruct = {parameters={},propertyName="objects",PropertyDesc="objects"};
+
+			validation.load(valStruct);
+
+			executeValidate(validation);
+			failures = validation.getResult().getFailures();
+			
+			assertEquals(6,arrayLen(failures));
+		</cfscript>  
+	</cffunction>
+
 </cfcomponent>
+
