@@ -71,8 +71,8 @@
 		<cfset var theScript = "" />
 		
 		<cfoutput>
-		<cfsavecontent variable="theScript" >
-			if( #arguments.selector#.length ){
+		<cfsavecontent variable="theScript">
+			if(#arguments.selector#.length){
 				#arguments.selector#.rules('add',#generateRuleStruct(argumentCollection=arguments)#);
 			}
 		</cfsavecontent>

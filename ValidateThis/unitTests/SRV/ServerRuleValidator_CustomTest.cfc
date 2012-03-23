@@ -22,11 +22,12 @@
 			super.setup();
 			SRV = getSRV("Custom");
 			defaultMethod = "myMethod";
-			defaultRemoteURL = "";
 			parameters = {MethodName=defaultMethod};
 			hasMethod = true;
 			hasRemote = false;
 			proxied = false;
+			// create dynamically so doesn't need to run from webserver root
+			defaultRemoteURL = ReReplace( CGI.SCRIPT_NAME, "unitTests(.)+", "" ) & "samples/remotedemo/remoteproxy.cfc";
 		</cfscript>
 	</cffunction>
 	
@@ -44,7 +45,9 @@
 	<cffunction name="validateReturnsTrueForValidRemoteURLCall" access="public" returntype="void">
 		<cfscript>
 			defaultMethod = "isIndeedValid";
-			defaultRemoteURL = "/validatethis/samples/remotedemo/remoteproxy.cfc";
+			
+			debug( defaultRemoteURL );
+			
 			hasMethod = true;
 			hasRemote = true;
 			proxied = true;
@@ -55,14 +58,13 @@
 			configureValidationMock();
 			
 			executeValidate(validation);
-			validation.verifyTimes(0).fail("{*}"); 
+			validation.verifyTimes(0).fail("{*}");
 		</cfscript>
 	</cffunction>
 
 	<cffunction name="validateReturnsFalseForInvalidRemoteURLCall" access="public" returntype="void">
 		<cfscript>
 			defaultMethod = "isInvalid";
-			defaultRemoteURL = "/validatethis/samples/remotedemo/remoteproxy.cfc";
 			parameters = {remoteURL=defaultRemoteURL};
 			hasMethod = true;
 			hasRemote = true;

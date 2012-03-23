@@ -74,13 +74,14 @@
 		<cfset var theScript = "" />
 		<cfset var scripters = this.getRuleScripters()/>
 
-		<cfsavecontent variable="theScript"><cfoutput><script type="text/javascript">
+		<cfsavecontent variable="theScript"><cfoutput>
+		<script type="text/javascript">
 		/*<![CDATA[*/
 		jQuery(function($){
 			<cfloop collection="#scripters#" item="scripter">
 				<cfif structKeyExists(scripters[scripter],"generateInitScript")>
-					<!--- strip out JS comments and whitespace --->
-					#ReReplace( ReReplace( scripters[scripter].generateInitScript(), "//[^\n\r]{1,}", "", "all" ), "[\n\r\t]", "", "all" )#
+					<!--- strip out JS commentse --->
+					#ReReplace( scripters[scripter].generateInitScript(), "//[^\n\r]{1,}", "", "all" )#
 				</cfif>
 			</cfloop>
 		});
@@ -88,7 +89,8 @@
 		</script>
 		</cfoutput>
 		</cfsavecontent>
-		<cfreturn theScript />
+		<!--- strip whitespace --->
+		<cfreturn ReReplace( theScript, "[\n\r\t]", "", "all" ) />
 
 	</cffunction>
 

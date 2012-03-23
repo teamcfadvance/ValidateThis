@@ -25,7 +25,7 @@
 		<cfsavecontent variable="theCondition">
 			function(v,e,o){ 
 				if (v===''){return true;}
-				var re = /^(0|false|no)$/i; 
+				var re = /^(0|false|no)$/i;
 				return re.test(v);
 			}
 		</cfsavecontent>
