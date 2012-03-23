@@ -400,8 +400,17 @@
 		</cfscript>  
 	</cffunction>
 
-	
-	
+	<cffunction name="addResultShouldMakeReceivingResultAFailureIfTheOriginalResultWasAFailure" access="public" returntype="void">
+		<cfscript>
+			assertEquals(true,result.getIsSuccess());
+			result2 = CreateObject("component","ValidateThis.util.Result").init(MockTranslator,validatethisconfig);
+			addMultipleFailures(result2);
+			assertEquals(false,result2.getIsSuccess());
+			result.addResult(result2);
+			assertEquals(false,result.getIsSuccess());
+		</cfscript>  
+	</cffunction>
+		
 	<cffunction name="addMultipleFailures" access="private" returntype="void">
 		<cfargument name="toResult" required="false" default="#result#" >
 		<cfscript>
