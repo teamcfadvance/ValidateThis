@@ -57,8 +57,6 @@
 		<!--- I hold the fieldnames that have been rendered to improve JS performance --->
 		<cfset var fields = StructNew() />
 		
-		<cfsetting enableCFoutputOnly = "true">
-		
 		<cfif IsArray(arguments.Validations) and ArrayLen(arguments.Validations)>
 			<cfsavecontent variable="theScript">
 				<cfoutput>#Trim(theScriptWriter.generateScriptHeader(arguments.formName))#</cfoutput>
@@ -77,9 +75,9 @@
 				<cfoutput>#Trim(theScriptWriter.generateScriptFooter())#</cfoutput>
 			</cfsavecontent>
 		</cfif>
-		<cfsetting enableCFoutputOnly = "false">
 		
-		<cfreturn theScript />
+		<!--- strip whitespace --->
+		<cfreturn ReReplace( theScript, "[\n\r\t]", "", "all" ) />
 
 	</cffunction>
 	

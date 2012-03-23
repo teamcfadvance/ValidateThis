@@ -24,12 +24,12 @@
 		<cfsavecontent variable="theCondition">
 			function(v,e,o){ 
 				if(v===''){return true;}
-				var dToday = new Date(); 
-				var dValue = new Date(v); 
+				var dToday = new Date();
+				var dValue = new Date(v);
 				if(o.after){
-					dToday = new Date(o.after); 
+					dToday = new Date(o.after);
 				}
-				return (dToday<dValue); 
+				return (dToday<dValue);
 			}
 		</cfsavecontent>
 		
