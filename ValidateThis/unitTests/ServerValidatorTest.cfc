@@ -474,7 +474,7 @@
 			user = setUpUser();
 			BOValidator = validationFactory.getValidator("rulesWithMissingProperty",getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/");
 			result = validationFactory.newResult();
-			serverValidator.validate(BOValidator,user,"",Result);
+			serverValidator.validate(BOValidator,user,"normal",Result);
 		</cfscript>  
 	</cffunction>
 
@@ -484,7 +484,18 @@
 			user = setUpUser();
 			BOValidator = validationFactory.getValidator("rulesWithMissingProperty",getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/");
 			result = validationFactory.newResult();
-			serverValidator.validate(BOValidator=BOValidator,theObject=user,Context="",Result=Result,ignoreMissingProperties=true);
+			serverValidator.validate(BOValidator=BOValidator,theObject=user,Context="normal",Result=Result,ignoreMissingProperties=true);
+			assertEquals(0,arrayLen(Result.getFailures()));
+		</cfscript>  
+	</cffunction>
+
+	<cffunction name="validateWithAMissingPropertyIgnoresMissingPropertyForCustomValidationType" access="public" returntype="void">
+		<cfscript>
+			createServerValidator();
+			user = setUpUser();
+			BOValidator = validationFactory.getValidator("rulesWithMissingProperty",getDirectoryFromPath(getCurrentTemplatePath()) & "Fixture/");
+			result = validationFactory.newResult();
+			serverValidator.validate(BOValidator,user,"custom",Result);
 			assertEquals(0,arrayLen(Result.getFailures()));
 		</cfscript>  
 	</cffunction>
