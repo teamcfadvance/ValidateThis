@@ -279,3 +279,13 @@ Version 1.1
 -----------
 - assorted fixes contributed by users
 - new validation type: notRegex
+
+Version 1.2
+-----------
+- a fix to the JS generation to avoid errors being thrown when a field is missing
+- processOn attribute added to rule entity, to allow for validation only on server and/or only on client
+- fixed a bug in the isValidObject SRV
+- performance enhancements to some CRSs
+- updated ServerValidator so it doesn't care about missing properties for custom validation types
+- fixed a bug where calling addResult didn't make the receiving result a failure if the added result was a failure
+ 

@@ -78,7 +78,8 @@
 				<cfloop Array="#Validations#" index="v">
 					<cfif v.processOn NEQ "client">
 						<cfset theVal.load(v) />
-						<cfif theVal.propertyExists()>
+						<!--- we only need to check if the property exists if the validation type IS NOT custom --->
+						<cfif v.ValType EQ "custom" OR theVal.propertyExists()>
 							<cfset conditionPasses = true />
 							<!--- Deal with various conditions --->
 							<cfif StructKeyExists(v.Condition,"ServerTest")>

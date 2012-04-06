@@ -257,6 +257,9 @@
 	<cffunction name="addResult" access="public" output="false" returntype="void" hint="Pass in a Result object and I will add it to the current Result object.">
 		<cfargument name="theResult" type="any" required="true" />
 		<cfset getRawFailures().addAll(arguments.theResult.getRawFailures()) />
+		<cfif NOT arguments.theResult.getIsSuccess()>
+			<cfset setIsSuccess(false) />
+		</cfif>
 	</cffunction>
 	
 	<!--- debugging methods --->
