@@ -89,7 +89,7 @@
 		<cfargument name="debuggingMode" type="string" required="false" default="#variables.ValidateThisConfig.debuggingMode#" />
 		<cfargument name="ignoreMissingProperties" type="boolean" required="false" default="false" />
 		<cfargument name="locale" type="string" required="false" default="#variables.ValidateThisConfig.defaultLocale#" />
-		<cfargument name="injectResultIntoBO" type="string" required="false" default="#variables.ValidateThisConfig.injectResultIntoBO#" />
+		<cfargument name="injectResultIntoBO" type="boolean" required="false" default="#variables.ValidateThisConfig.injectResultIntoBO#" />
 
 		<cfset var BOValidator = getValidator(argumentCollection=arguments) />
 		
