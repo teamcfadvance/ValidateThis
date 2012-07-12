@@ -19,6 +19,8 @@
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="userId" required="true" type="any" />
 		
+		<cfset var i = "">
+		
 		<cfif arguments.userId neq 1>
 			<cfloop collection="#this#" item="i">
 				<cfif left(i,3) eq "set">
