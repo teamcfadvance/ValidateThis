@@ -97,6 +97,18 @@
 
 	</cffunction>
 	
+	<!--- pre-Module Load --->
+	<cffunction name="preModuleLoad" access="public" returntype="void" hint="This occurs before any module is loaded in the system " output="false" >
+		<cfset Configure() />
+	</cffunction>
+
+	<!--- post-Module Load --->
+	<cffunction name="postModuleLoad" access="public" returntype="void" hint="This occurs after a module has been loaded in the system " output="false" >
+		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
+		<cfargument name="interceptData" required="true" type="struct" hint="interceptData of intercepted info.">
+		<cfset afterAspectsLoad(event=arguments.event,interceptData=arguments.interceptData) />
+	</cffunction>	
+	
 	<!--- Validate API --->
 	<cffunction name="preValidate" access="public" returntype="void" output="false" hint="Perform validation via ValidateThis Facade">
 		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
