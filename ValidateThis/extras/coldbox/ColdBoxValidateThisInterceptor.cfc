@@ -100,7 +100,6 @@
 	<!--- pre-Module Load --->
 	<cffunction name="preModuleLoad" access="public" returntype="void" hint="This occurs before any module is loaded in the system " output="false" >
 		<cfset Configure() />
-		<cfreturn />
 	</cffunction>
 
 	<!--- post-Module Load --->
@@ -108,7 +107,6 @@
 		<cfargument name="event" 		 required="true" type="any" hint="The event object.">
 		<cfargument name="interceptData" required="true" type="struct" hint="interceptData of intercepted info.">
 		<cfset afterAspectsLoad(event=arguments.event,interceptData=arguments.interceptData) />
-		<cfreturn />
 	</cffunction>	
 	
 	<!--- Validate API --->
