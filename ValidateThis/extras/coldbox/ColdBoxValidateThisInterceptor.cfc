@@ -12,9 +12,12 @@
 	implied.  See the License for the specific language governing permissions and limitations under the 
 	License.
 	
+	----------------------------------------------------------------------------------------------------
+	Plugin for ColdBox 3
+	----------------------------------------------------------------------------------------------------
 --->
 <cfcomponent name="ColdBoxValidateThis"
-			 extends="coldbox.system.interceptor" 
+			 extends="coldbox.system.Interceptor" 
 			 hint="I load and configure ValidateThis" 
 			 output="false">
 
@@ -83,8 +86,7 @@
 			}
 			catch(Any exception) 
 			{
-				// using the logger plugin for compatibility with ColdBox 2.6 and ColdBox 3
-				getPlugin("logger").error("ColdBoxValidateThisInterceptor error: setResourceBundle method not found in  #getProperty('translatorPath')#");
+				getPlugin("Logger").error("ColdBoxValidateThisInterceptor error: setResourceBundle method not found in  #getProperty('translatorPath')#");
 			}
 		}
 
@@ -191,7 +193,7 @@
 		<cfargument name="message" type="string"/>
 		<cfargument name="extrainfo" type="string"/>
 		<cfscript>
-			getPlugin("logger").info("ValidateThis " & getValidateThis().getVersion() & " " & arguments.message,arguments.extrainfo);
+			getPlugin("Logger").info("ValidateThis " & getValidateThis().getVersion() & " " & arguments.message,arguments.extrainfo);
 		</cfscript>
 	</cffunction>
 	
