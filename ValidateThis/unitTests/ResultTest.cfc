@@ -67,6 +67,16 @@
 			assertEquals(result.getDummyValue(),DummyValue);
 		</cfscript>  
 	</cffunction>
+	
+	<cffunction name="addFailureMessage" access="public" returntype="void">
+		<cfscript>
+			result.addFailureMessage("abc");
+			assertTrue(result.hasErrors());
+			failures = result.getFailures();
+			assertEquals(ArrayLen(failures),1);
+			assertEquals(failures[1].Message,"abc");
+		</cfscript>  
+	</cffunction>
 
 	<cffunction name="addFailureWithValidStructShouldAddAFailure" access="public" returntype="void">
 		<cfscript>
