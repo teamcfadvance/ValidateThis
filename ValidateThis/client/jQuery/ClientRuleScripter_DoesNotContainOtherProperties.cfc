@@ -30,7 +30,7 @@ Definition Usage Example:
 			var ok=true;
 			var $form=$(e).closest("form");
 			$(o).each(function(){
-				var propertyValue = $(':input[name='+this+']',$form).getValue();
+				var propertyValue = $(':input[name='+this+']',$form).val();
 				if(propertyValue.length){
 					// if this is a mutiple select list, split the value into an array for iteration
 					if(propertyValue.search(",")){
