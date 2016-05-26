@@ -36,7 +36,7 @@ component
 			
 			var validMimeTypes = parameters.accept;
 			
-			var isValid = listFind(
+			isValid = listFind(
 				validMimeTypes,
 				fileMimeType,
 				"|"

@@ -29,7 +29,7 @@ component
 			var fileExtension = getFileExtension(fileName);
 			var validFileExtensions = parameters.extension;
 			
-			var isValid = listFind(
+			isValid = listFind(
 				validFileExtensions,
 				fileExtension,
 				"|"
