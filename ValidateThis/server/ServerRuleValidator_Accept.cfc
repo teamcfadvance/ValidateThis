@@ -12,7 +12,6 @@ component
 		hint = "I perform the validation returning info in the validation object."
 	{
 		var parameters = arguments.validation.getParameters();
-		var theRegex = "";
 		var theValue = arguments.validation.getObjectValue();
 		var args = [arguments.validation.getPropertyDesc()];
 		
@@ -49,7 +48,7 @@ component
 		}
 	}
 	
-	private string function  getUploadMimeTypeLucee(
+	private string function getUploadMimeTypeLucee(
 		required string formFieldName hint="Upload field name from which to get mime type."
 	)
 		hint="Gets the mime (a.k.a., 'content') type of an upload file. (Lucee version.)"
@@ -63,7 +62,7 @@ component
 	* fileUpload() does. This is just some static method that checks file names,
 	* but its probably not as complete (or guaranteed to match) the browser's.
 	*/
-	private string function  getFileMimeTypeACF(
+	private string function getFileMimeTypeACF(
 		required string fileName hint="File name from which to get mime type.."
 	)
 		hint="Gets the mime (a.k.a., 'content') type from a file name. (Adobe ColdFusion version.)"
