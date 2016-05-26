@@ -39,7 +39,7 @@
 		
 		<cfoutput>
 		<cfsavecontent variable="theScript">
-		$.validator.addMethod("#getValType()#",#arguments.theMethod#,$.format("#arguments.defaultMessage#"));
+		$.validator.addMethod("#getValType()#",#arguments.theMethod#,$.validator.format("#arguments.defaultMessage#"));
 		</cfsavecontent>
 		</cfoutput>
 
