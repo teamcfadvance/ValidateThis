@@ -34,9 +34,10 @@
 
 		<cfsavecontent variable="theScript">
 			<cfoutput>
-				<script src="//ajax.microsoft.com/ajax/jquery/jquery-1.11.1.js" type="text/javascript"></script>
-				<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js" type="text/javascript"></script>
-				<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/additional-methods.js" type="text/javascript"></script>
+				<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.2.min.js" type="text/javascript"></script>
+				<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js" type="text/javascript"></script>
+				<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/additional-methods.min.js" type="text/javascript"></script>
+				<!-- <script src="//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.2.1.js" type="text/javascript"></script> -->
 				<script type="text/javascript">
 				/*<![CDATA[*/
 				<cfinclude template="JS/jquery.field.min.js">
