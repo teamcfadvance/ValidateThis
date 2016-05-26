@@ -28,7 +28,7 @@ component
 			var formFieldName = validation.getClientFieldName();
 			
 			if ( listFindNoCase("railo,lucee", server.coldfusion.productname) ) {
-				var fileMimeType = getUploadMimeType(formFieldname);
+				var fileMimeType = getUploadMimeTypeLucee(formFieldname);
 			} else {
 				// FIXME: untested (i don't have acf handy)
 				var fileName = getUploadFileName(formFieldName);
