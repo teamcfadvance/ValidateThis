@@ -13,3 +13,5 @@ settings.xml
 
 
 /WEB-INF
+/cfSelenium/
+/mxunit/
