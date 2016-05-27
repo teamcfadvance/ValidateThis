@@ -7,17 +7,17 @@ ValidateThis is a framework that allows you to define validation rules for your 
 ## Getting Started
 
 1. [Download](http://validatethis.riaforge.org/index.cfm?event=action.download) the ValidateThis current stable release, which includes the framework and all demo code.
-2. Check out the [ValidateThis Quick-Start Guide](http://www.validatethis.org/docs/wiki/QuickStart_Guide.cfm)
+2. Check out the [ValidateThis Quick-Start Guide](https://web.archive.org/web/20141007151527/http://www.validatethis.org/docs/wiki/QuickStart_Guide.cfm) (archived on web.archive.org)
 3. Refer to the following useful resources.
 
 ### Resources
 
-* [Documentation](http://www.validatethis.org/docs/) (near complete)
+* [Documentation](https://web.archive.org/web/20141011160101/http://www.validatethis.org/docs/) (archived on web.archive.org)
 * [API Documentation](http://www.validatethis.org/docs/api/) (JavaDoc style)
-* [Live Demo](http://validatethis.org/validatethis/samples/FacadeDemo/index.cfm)
+* ~~[Live Demo](https://web.archive.org/web/20141007151527/http://validatethis.org/validatethis/samples/FacadeDemo/index.cfm)~~ (archived; broken)
 * [Bob Silverberg's ValidateThis blog posts](http://www.silverwareconsulting.com/index.cfm/ValidateThis)
 * [Questions and Discussion](http://groups.google.com/group/validatethis)
-* [ValidateThis.org Project Home Page](http://www.validatethis.org/)
+* [ValidateThis.org Project Home Page](https://web.archive.org/web/20141007151527/http://www.validatethis.org/)
 
 ## Contributing
 
@@ -25,7 +25,7 @@ You are encouraged to contribute to ValidateThis, and there are a variety of way
 
 * Discuss ideas and help answer questions on the [ValidateThis discussion list](http://groups.google.com/group/validatethis)
 * Report bugs or feature requests to the [issue tracker](https://github.com/ValidateThis/ValidateThis/issues)
-* Help improve the [documentation](http://www.validatethis.org/docs/)
+* ~~Help improve the [documentation](https://web.archive.org/web/20141007151527/http://www.validatethis.org/docs/)~~ (wiki is dead)
 * Help test new features and releases
 * Contribute to the discussion on developing the framework on the [ValidateThis development list](http://groups.google.com/group/validatethis-dev)
 * Submit bug fixes or help code new features (see _Code Contributions and Git Workflow_, below)
