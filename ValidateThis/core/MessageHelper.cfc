@@ -89,7 +89,7 @@ methods in this CFC:
 		<cfset var m="">
 		<cfset var i=0>
 		<cfset var thisFormat="">
-		<cfset var inputArgs=arguments.args>
+		<cfset var inputArgs=duplicate(arguments.args)>
 		<cfset var lang="">
 		<cfset var country="">
 		<cfset var variant="">
@@ -134,12 +134,15 @@ methods in this CFC:
 		<cfargument name="addPrefix" type="boolean" required="no" default="true" />
 		
 		<cfscript>
+			var out = "";
 			var pattern = variables.rbTranslator.translate(arguments.msgKey,arguments.locale);
 			var formatted = messageFormat(pattern,arguments.args);
 			if (not arguments.addPrefix) {
-				return formatted;
+				out = formatted;
+			} else {
+				out = createDefaultFailureMessage(formatted);
 			}
-			return createDefaultFailureMessage(formatted);
+			return out;
 		</cfscript>
 	</cffunction>
 
