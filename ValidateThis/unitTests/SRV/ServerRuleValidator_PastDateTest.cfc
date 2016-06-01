@@ -23,7 +23,7 @@
 			SRV = getSRV("PastDate");
 			defaultBefore="12/29/1968";
             hasBefore = true;
-			shouldPassDefault = ["12/21/1920","Dec. 21 1920"];
+			shouldPassDefault = ["12/21/1920"]; // Lucee can't parse "Dec. 21 1920"
 			shouldFail = ["12/31/1969","Dec. 31 2010","12/31/90","31/12/2012"];
 			shouldPass = ["12/28/1968","12/29/1968","1/2/1920","01/1969","12/31/1967"];
 		</cfscript>
