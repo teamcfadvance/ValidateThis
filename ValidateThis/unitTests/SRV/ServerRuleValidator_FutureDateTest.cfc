@@ -23,7 +23,7 @@
 			SRV = getSRV("FutureDate");
 			defaultAfter="12/29/1968";
 			hasAfter = true;
-			shouldPassDefault = ["12/21/2099","Dec. 21 2099"];
+			shouldPassDefault = ["12/21/2099","01/2999"]; // Lucee can't parse "Dec. 21 2099"
 			shouldPass = ["12/31/1969","12/31/90","31/12/2012"]; // Lucee can't parse "Dec. 31 2010"
 			shouldFail = ["12/28/1968","12/29/1968","1/2/1920","01/1969","12/31/1967"];
 		</cfscript>
