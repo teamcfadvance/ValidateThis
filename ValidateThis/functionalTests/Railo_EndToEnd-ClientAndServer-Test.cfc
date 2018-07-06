@@ -1,7 +1,8 @@
 component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
 
     public void function beforeTests() {
-        browserUrl = "http://localhost:8888/validatethis/samples/FacadeDemo/";
+        baseurl = "http://#cgi.server_name#:#cgi.server_port#";
+        browserUrl = "#baseUrl#/validatethis/samples/FacadeDemo/";
         super.beforeTests();
         selenium.setTimeout(30000);
         crlf = chr(10);
@@ -13,14 +14,14 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
 
 /* Commenting out so the tests don't run by default
     public void function RunQUnitTests() {
-        selenium.open("http://localhost:8888/validatethis/unitTests/qunit/clientsidevalidators.cfm");
+        selenium.open("#baseUrl#/validatethis/unitTests/qunit/clientsidevalidators.cfm");
         selenium.waitForPageToLoad("30000");
         assertEquals(true, selenium.getTitle() contains "QUnit Test Suite");
         assertEquals("0", selenium.getText("css=span.failed"),"There seem to be QUnit test failures!");
     }
 
     public void function testEndToEndClient() {
-        selenium.open("http://localhost:8888/validatethis/samples/FacadeDemo/index.cfm?init=true");
+        selenium.open("#baseUrl#/validatethis/samples/FacadeDemo/index.cfm?init=true");
         selenium.waitForPageToLoad("30000");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
         selenium.type("UserPass", "");
@@ -100,7 +101,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
     }
 
     public void function testEndToEndClientnewValidations() {
-        selenium.open("http://localhost:8888/validatethis/unitTests/selenium/FacadeDemo/index.cfm?init=true&context=newValidations-client");
+        selenium.open("#baseUrl#/validatethis/unitTests/selenium/FacadeDemo/index.cfm?init=true&context=newValidations-client");
         selenium.waitForPageToLoad("30000");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
         selenium.type("UserName", "");
@@ -167,7 +168,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
     }
 
     public void function testEndToEndServer() {
-        selenium.open("http://localhost:8888/validatethis/samples/FacadeDemo/index.cfm?init=true&noJS=true");
+        selenium.open("#baseUrl#/validatethis/samples/FacadeDemo/index.cfm?init=true&noJS=true");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
         selenium.type("UserPass", "");
         selenium.click("//button[@type='submit']");
@@ -244,7 +245,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
     }
 
     public void function testEndToEndServer_Struct() {
-        selenium.open("http://localhost:8888/validatethis/samples/StructureDemo/index.cfm?init=true&noJS=true");
+        selenium.open("#baseUrl#/validatethis/samples/StructureDemo/index.cfm?init=true&noJS=true");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
         selenium.type("UserPass", "");
         selenium.click("//button[@type='submit']");
@@ -322,7 +323,7 @@ component extends="cfselenium.CFSeleniumTestCase" displayName="EndToEndTests" {
     }
 
     public void function testEndToEndServerNewValidations() {
-        selenium.open("http://localhost:8888/validatethis/unitTests/selenium/FacadeDemo/index.cfm?init=true&noJS=true&context=newValidations-server");
+        selenium.open("#baseUrl#/validatethis/unitTests/selenium/FacadeDemo/index.cfm?init=true&noJS=true&context=newValidations-server");
         assertEquals("ValidateThis Demo Page", selenium.getTitle());
         selenium.type("UserName", "");
         selenium.type("UserPass", "");

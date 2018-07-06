@@ -24,7 +24,28 @@
 		<cfset var theDate = arguments.validation.getObjectValue()/>
 		<cfset var args = [arguments.validation.getPropertyDesc(),fromDate,untilDate] />
 		
-		<cfif shouldTest(arguments.validation) AND ((theDate lt fromDate) or (theDate gt untilDate))>
+		<cfscript>
+		var doFail = false;
+		if (shouldTest(arguments.validation)) {
+			if (isDate(theDate)) {
+				theDate = parseDateTime(theDate);
+			} else {
+				doFail = true;
+			}
+		}
+		if (isDate(fromDate)) {
+			fromDate = parseDateTime(fromDate);
+		} else {
+			doFail = true;
+		}
+		if (isDate(untilDate)) {
+			untilDate = parseDateTime(untilDate);
+		} else {
+			doFail = true;
+		}
+		</cfscript>
+		
+		<cfif doFail or (shouldTest(arguments.validation) AND ((theDate lt fromDate) or (theDate gt untilDate))) >
 			<cfset fail(arguments.validation,variables.messageHelper.getGeneratedFailureMessage("defaultMessage_DateRange",args,arguments.locale)) />
 		</cfif>
 	</cffunction>
